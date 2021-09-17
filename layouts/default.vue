@@ -1,6 +1,7 @@
 <template>
   <div>
-    <sparc-header />
+    <twelve-labours-header />
+  
     <nuxt />
   </div>
 </template>
