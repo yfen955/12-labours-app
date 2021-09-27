@@ -17,6 +17,7 @@ export default {
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
+    
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
