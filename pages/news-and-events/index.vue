@@ -6,8 +6,8 @@
         <span>{{banner.values.title}}</span>
       </div>
     </div>
-    <LatestNews :newsList="topNews.newsList"/>
-    <LatestEvents :eventsList="topEvents.eventsList"/>
+    <latest-news :newsList="topNews.newsList"/>
+    <latest-events :eventsList="topEvents.eventsList"/>
   </div>
 </template>
 

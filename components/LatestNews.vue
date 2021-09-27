@@ -6,9 +6,9 @@
             </h1>
         </div>       
         <div class="news-items">
-            <div class="news-items__item"><NewsCard :newsItem="newsList[0]"/></div>
-            <div class="news-items__item"><NewsCard :newsItem="newsList[1]"/></div>
-            <div class="news-items__item"><NewsCard :newsItem="newsList[2]"/></div>
+            <div class="news-items__item"><news-card :newsItem="newsList[0]"/></div>
+            <div class="news-items__item"><news-card :newsItem="newsList[1]"/></div>
+            <div class="news-items__item"><news-card :newsItem="newsList[2]"/></div>
         </div>
         <div class="view-all">
             <a href="news-and-events/news/">VIEW ALL</a>
