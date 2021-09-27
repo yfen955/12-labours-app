@@ -43,7 +43,7 @@
                     </div>               
                 </div>
                 <div class="view-all">
-                    <a href="news-and-events/events/">VIEW ALL EVENTS</a>
+                    <NuxtLink to="news-and-events/events/">VIEW ALL EVENTS</NuxtLink>
                 </div>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default {
                 }  
                 &:nth-child(even)
                 {
-                    color: #00467F;
+                    color: $blue;
                     font-weight:600;
                     span{
                         overflow: hidden;

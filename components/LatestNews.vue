@@ -11,7 +11,7 @@
             <div class="news-items__item"><news-card :newsItem="newsList[2]"/></div>
         </div>
         <div class="view-all">
-            <a href="news-and-events/news/">VIEW ALL</a>
+            <NuxtLink to="news-and-events/news/">VIEW ALL</NuxtLink>        
         </div>
     </div>
 </template>
