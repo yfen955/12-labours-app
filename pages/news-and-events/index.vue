@@ -50,6 +50,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+   @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
 
   .news-and-events-page{
         width:100%;
@@ -72,7 +73,7 @@ export default {
     width:340px;
     margin-right:60px;
     border-radius:20px;
-    background-color: #00467F;
+    background-color: $blue;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -80,7 +81,7 @@ export default {
       font-weight:bold;
       font-size: 40px;
       line-height: 44px;
-      color: #FFFFFF;
+      color:$cochlear;
     }
   }
 </style>

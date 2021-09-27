@@ -35,12 +35,14 @@ export default {
 
 <style scoped lang="scss">
 
+    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
+
     .news-item-container{
         width: 367px;
         height: 530px;
         background: #FFFFFF 0% 0% no-repeat padding-box;
         box-shadow: 0px 2px 5px #0000001A;
-        border: 1px solid #D1D1D1;
+        border: 1px solid $lineColor1;
         border-radius: 20px;
         display:flex;
 

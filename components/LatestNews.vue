@@ -35,12 +35,15 @@ export default {
 
 
 <style scoped lang="scss">
+
+    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
+
     .news-container{
         display:flex;
         flex-direction:column;
         padding-left:60px;
         padding-right:60px;
-        background-color:#F8F8F8;
+        background-color:$background;
 
         h1{
             margin:0px;
@@ -61,7 +64,6 @@ export default {
         justify-content:center;      
         align-items: center;
         .news-items__item{
-            //width:33.3%;
             padding-left:19px;
             padding-right:19px;
         }

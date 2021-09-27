@@ -95,6 +95,9 @@ export default {
 
 
 <style scoped lang="scss">
+
+    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
+
     .events-container{
         display:flex;
         flex-direction:column;
@@ -131,7 +134,7 @@ export default {
     .main-box{     
             background: #FFFFFF 0% 0% no-repeat padding-box;
             box-shadow: 0px 2px 5px #0000001A;
-            border: 1px solid #D1D1D1;
+            border: 1px solid $lineColor1;
             display:flex;    
             flex-direction:column;
             justify-content:flex-start;
@@ -235,7 +238,6 @@ export default {
     }
 
     .view-all{
-        //background-color:limegreen;
         text-align: right; 
         a{
             font-weight:600;
