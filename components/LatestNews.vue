@@ -6,12 +6,12 @@
             </h1>
         </div>       
         <div class="news-items">
-            <div class="news-items__item"><news-card :newsItem="newsList[0]"/></div>
-            <div class="news-items__item"><news-card :newsItem="newsList[1]"/></div>
-            <div class="news-items__item"><news-card :newsItem="newsList[2]"/></div>
+            <div v-for="newsItem in newsList"  class="news-items__item">
+                <NewsCard :newsItem="newsItem"/>
+            </div>
         </div>
         <div class="view-all">
-            <NuxtLink to="news-and-events/news/">VIEW ALL</NuxtLink>        
+            <nuxt-link to="news-and-events/news/">VIEW ALL</nuxt-link>        
         </div>
     </div>
 </template>
@@ -35,8 +35,6 @@ export default {
 
 
 <style scoped lang="scss">
-
-    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
 
     .news-container{
         display:flex;

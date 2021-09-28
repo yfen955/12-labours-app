@@ -43,7 +43,7 @@
                     </div>               
                 </div>
                 <div class="view-all">
-                    <NuxtLink to="news-and-events/events/">VIEW ALL EVENTS</NuxtLink>
+                    <nuxt-link to="news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
                 </div>
             </div>
           </div>
@@ -95,8 +95,6 @@ export default {
 
 
 <style scoped lang="scss">
-
-    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
 
     .events-container{
         display:flex;

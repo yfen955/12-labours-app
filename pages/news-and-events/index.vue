@@ -50,10 +50,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-   @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
 
   .news-and-events-page{
-        width:100%;
+    width:100%;
   }
 
   .news-events-banner{

@@ -35,8 +35,6 @@ export default {
 
 <style scoped lang="scss">
 
-    @import "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss";
-
     .news-item-container{
         width: 367px;
         height: 530px;
