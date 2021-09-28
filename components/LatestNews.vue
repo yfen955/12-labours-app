@@ -7,7 +7,7 @@
         </div>       
         <div class="news-items">
             <div v-for="newsItem in newsList"  class="news-items__item">
-                <NewsCard :newsItem="newsItem"/>
+                <news-card :newsItem="newsItem"/>
             </div>
         </div>
         <div class="view-all">
