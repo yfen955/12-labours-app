@@ -34,7 +34,7 @@
 
 <script>
 import graphcmsQuery from '@/services/graphcmsQuery'
-import PotalHelp from '@/components/PortalHelp.vue'
+import PotalHelp from '@/components/PortalHelp/PortalHelp.vue'
 
 export default {
   name: 'App',
