@@ -93,10 +93,90 @@ async function portalHelp(graphcms, name) {
     return await graphcms.request(query4,  variables);
 }
 
+
+async function banner(graphcms, name) {
+  const variables = {
+    "name": name
+  }
+  const query = gql`
+    query ($name: String!) {
+      values: bannerImage(where: {name: $name}) {
+        image {
+          url
+        }
+        title
+      }
+    }
+  `
+  return await graphcms.request(query, variables);
+}
+
+
+async function topNews(graphcms, fetchCount) {
+  const variables = {
+    "fetchCount": fetchCount
+  }
+  const query = gql`
+    query ($fetchCount: Int!) {
+      newsList:  newsItems(
+        orderBy: publishedDate_DESC
+        first: $fetchCount
+      ) {
+        publishedDate
+        title
+        image{
+          url
+        }
+        category
+        blurb
+        slug
+        detail{
+          html
+        }
+      }
+    }
+  ` 
+  return await graphcms.request(query, variables);
+}
+
+async function topEvents(graphcms, fetchCount) {
+  const variables = {
+    "fetchCount": fetchCount,
+  }
+  const query = gql`
+    query ($fetchCount: Int) {
+      eventsList:  eventsItems(
+        orderBy: startDate_DESC
+        first: $fetchCount
+      ) 
+      {
+        startDate
+        endDate
+        title
+        image{
+          url
+        }
+        category
+        slug
+        detail{
+          html
+        }
+        blurb
+        externalLink
+      }
+    }
+  ` 
+  return await graphcms.request(query, variables);
+}
+
+
 export default {
   content,
   multiContent,
   projectInformation,
   partnerShips,
-  portalHelp
+  portalHelp,
+  topNews,
+  topEvents,
+  banner
 }

@@ -2,12 +2,15 @@
   <div class="about-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="first-container">
-      <div class="imagebox"></div>
+      <div class="left-subcontainer">
+        <div class="imagebox"></div>
+      </div>
       <div class="first-right-container">  
         <div class ="title">{{ about.title.toUpperCase() }} </div>
         <div class="page-content" v-html="about.content.html"></div>
       </div>
     </div>
+  
 
     <div class="second-container">
       <div class="left-box">
@@ -45,19 +48,30 @@
           </div>
         </div>
       </div>
-
-      <div class="third-container"></div>
-      <div class="fourth-container"></div>
-      <div class="fifth-container">
-        <div class="image-5"></div>
-        <div class ="title5">{{ partners.title.toUpperCase() }} </div>
-        <div class="page-content5-1" v-html="partners.contents[0].html"></div>
-        <div class="page-content5-2" v-html="partners.contents[1].html"></div>
-        <div class="page-content5-3" v-html="partners.contents[2].html"></div>
-        <div class="page-content5-4" v-html="partners.contents[3].html"></div>
+      
+      <div class="third-container">
+        <latest-news :newsList="topNews.newsList"/>
       </div>
-    </div>
 
+      <div class="fourth-container">
+        <latest-events :eventsList="topEvents.eventsList"/>
+      </div>
+
+      <div class="fifth-container">
+        <div class ="title5">{{ partners.title.toUpperCase() }} </div>
+        <div class="fifth-sub-container">
+          <div class="left-sub-container">
+            <div class="page-content5-1" v-html="partners.contents[0].html"></div>
+            <div class="page-content5-2" v-html="partners.contents[1].html"></div>
+            <div class="page-content5-3" v-html="partners.contents[2].html"></div>
+            <div class="page-content5-4" v-html="partners.contents[3].html"></div>
+          </div>
+          <div class="right-sub-container">
+            <div class="image-5"></div>
+          </div>
+        </div> 
+      </div>
+  </div> 
 </template>
 
 <script>
@@ -65,23 +79,23 @@ import graphcmsQuery from '@/services/graphcmsQuery'
 
 export default {
   name: 'AboutPage',
-  
-
- 
 
    async asyncData({$graphcms}) {
     const [data1, data2, data3, data4] = await Promise.all([ 
       graphcmsQuery.content($graphcms, 'about_long'),
       graphcmsQuery.multiContent($graphcms, 'project_aims'),
       graphcmsQuery.projectInformation($graphcms, 'info'),
-      graphcmsQuery.partnerShips($graphcms, 'partners')
-
+      graphcmsQuery.partnerShips($graphcms, 'partners'),
     ]);
+      const topNews= await graphcmsQuery.topNews($graphcms, 3);    
+      const topEvents= await graphcmsQuery.topEvents($graphcms, 5); 
     return {
       about: data1.values,
       project_aims: data2.values,   
       info: data3.values,
       partners: data4.values,
+      topNews,
+      topEvents
     };
     
   },
@@ -105,35 +119,134 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.about-page{
- height: 2859px;
- @media screen and (max-width: 1440px){
-   margin-top: 0;
- }
-}
-
-
 .first-container{
   height: 540px;
   background: #F8F8F8 0% 0% no-repeat padding-box;;
   opacity: 1;
-  position: relative;
+  display: flex;
+  flex-direction:row;
+  align-items:flex-start;
+  justify-content:center;
 
-  .imagebox{
-    border: 1px solid lightskyblue;
-    width: 241px;
-    height: 460px;
-    margin-top: 40px;
-    margin-left: 155px;
-    position: absolute;
-  }
-  .first-right-container{
-    .title{
-      position: absolute;
+  .left-subcontainer{
+    width: 50.4%;
+    height: 540px;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    .imagebox{
+      height: 460px;
+      border: 1px solid lightskyblue;
+      flex-basis: 241px;
+      height: 460px;
       margin-top: 40px;
-      margin-left: 504px;
-      margin-bottom: 32px;
-      width: 876px;
+      margin-left: 155px;
+    }
+  }
+  
+    .first-right-container{
+      width: 100%;
+      height: 540px;
+      display: flex;
+      flex-direction:column;
+      margin-right: 72px;
+      .title{
+        margin-top: 40px;
+        width: 876px;
+        height: 33px;
+        text-align: center;
+        font: normal normal bold 30px/36px Arimo;
+        letter-spacing: 0px;
+        color: #00467F;
+        opacity: 1;
+      }
+      .page-content{
+        width: 864px;
+        margin-top: 32px;
+        height: 336px;
+        text-align: left;
+        font: normal normal normal 18px/24px Arimo;
+        letter-spacing: 0px;
+        color: #262626;
+        opacity: 1;
+      }
+    }
+
+}
+
+
+.second-container{
+  height: 570px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  opacity: 1;
+  display: flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-around;
+  
+
+  
+  .left-box{
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    width: 71.4%;
+    height: 570px;
+    margin-left: 60px;
+      .title1-2{
+        align-self: center;
+        margin-top: 41px;
+        margin-left: 60px;
+        flex-basis: 654px;
+        height: 33px;
+        text-align: center;
+        font: normal normal bold 30px/36px Arimo;
+        letter-spacing: 0px;
+        color: #00467F;
+        opacity: 1;
+    }
+ 
+    .page-content2{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      
+      .multicontent-num{
+        align-self: center;
+        flex-basis: 83px;
+        height: 168px;
+        text-align: left;
+        font: normal normal normal 150px/150px Arimo;
+        letter-spacing: 0px;
+        color: #0080A7;
+        opacity: 0.1;
+    }
+      .content-html{
+        align-self: flex-start;
+        margin-top: 22px;
+        flex-basis: 507px;
+        text-align: left;
+        font: normal normal normal 18px/24px Arimo;
+        letter-spacing: 0px;
+        color: #262626;
+        opacity: 1;
+      }
+    }
+  }
+  .right-box{
+    width: 72.6%;
+    height: 540px;
+    display: flex;
+    flex-direction:column;
+    align-items: flex-start;
+    margin-right: 72px;
+    height: 570px;
+    justify-content: flex-start;
+    .title2-2{
+      align-self: flex-start;
+      margin-top: 41px;
+      width: 654px;
       height: 33px;
       text-align: center;
       font: normal normal bold 30px/36px Arimo;
@@ -141,97 +254,13 @@ export default {
       color: #00467F;
       opacity: 1;
     }
-    .page-content{
-      position: absolute;
-      margin-top: 105px;
-      margin-left: 504px;
-      width: 864px;
-      height: 116px;
-      text-align: left;
-      font: normal normal normal 18px/24px Arimo;
-      letter-spacing: 0px;
-      color: #262626;
-      opacity: 1;
-          p{
-          margin: 0 0 4px !important;
-          }
-      }
-  }
-
-}
-
-.second-container{
-  height: 539px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  opacity: 1;
-  position: relative;
-  .left-box{
-    position:absolute;
-    width: 714px;
-    height: 539px;
-    .title1-2{
-    position: absolute;
-    margin-top: 41px;
-    margin-left: 60px;
-    width: 654px;
-    height: 33px;
-    text-align: center;
-    font: normal normal bold 30px/36px Arimo;
-    letter-spacing: 0px;
-    color: #00467F;
-    opacity: 1;
-  }
-    .page-content2{
-      .multicontent-num{
-    position: absolute;
-    margin-top: 74px;
-    margin-left: 92px;
-    padding-bottom: 20px;
-    width: 83px;
-    height: 168px;
-    text-align: left;
-    font: normal normal normal 150px/150px Arimo;
-    letter-spacing: 0px;
-    color: #0080A7;
-    opacity: 0.1;
+    .right-page-content{
+      align-self: flex-start;
     }
-      .content-html{
-      position: relative;
-      padding-top: 90px;
-      margin-left: 175px;
-      width: 507px;
-      height: 68px;
-      text-align: left;
-      font: normal normal normal 18px/24px Arimo;
-      letter-spacing: 0px;
-      color: #262626;
-      opacity: 1;
-      }
-    }
-  }
-}
-  .right-box{
-    position:absolute;
-    width: 687px;
-    height: 539px;
-    margin-left: 726px;
-    .title2-2{
-    position: absolute;
-    margin-top: 41px;
-    margin-left: 0px;
-    width: 654px;
-    height: 33px;
-    text-align: center;
-    font: normal normal bold 30px/36px Arimo;
-    letter-spacing: 0px;
-    color: #00467F;
-    opacity: 1;
   }
 }
 
 ::v-deep .el-collapse-item__header{
-      display: flex;
-      align-items: center;
       height: 20px;
       width: 590px;
       cursor: pointer;
@@ -253,7 +282,7 @@ export default {
 }
 
 ::v-deep .el-collapse{
-  margin-top:106px;
+  margin-top:22px;
   margin-left: 32px;
   border-top: 2px solid #D1D1D1;
   width: 590px;
@@ -324,95 +353,96 @@ export default {
   margin: 16px;
 }
 
-.third-container{
-  height: 730px;
-  background: #F8F8F8 0% 0% no-repeat padding-box;
-  opacity: 1;
-  position: relative;
-}
-.fourth-container{
-  height: 559px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  opacity: 1;
-  position: relative;
-}
+
 .fifth-container{
   height: 451px;
   background: #F8F8F8 0% 0% no-repeat padding-box;
   opacity: 1;
-  position: relative;
-
-  .image-5{
-    border: 1px solid lightskyblue;
-    width: 246px;
-    height: 322px;
-    margin-top: 89px;
-    margin-left: 1080px;
-    position: absolute;
-  }
-
+  display: flex;
+  flex-direction: column;
+  
   .title5{
-    position: absolute;
-    margin-top: 40px;
-    margin-left: 60px;
+   
     width: 1320px;
+    margin-top: 40px;
     height: 33px;
+    align-self: center;
     text-align: center;
     font: normal normal bold 30px/34px Arimo;
     letter-spacing: 0px;
     color: #00467F;
     opacity: 1;
   }
-  .page-content5-1{
-    margin-top: 105px;
-    margin-left: 92px;
-    width: 895px;
-    height: 20px;
-    text-align: left;
-    font: normal normal 600 18px/24px Arimo;
-    letter-spacing: 0px;
-    color: #262626;
-    opacity: 1;
-    position: absolute;
+}
+
+.fifth-sub-container{
+    display: flex;
+    flex-direction: row;
   }
-  .page-content5-2{
-    margin-top: 133px;
-    margin-left: 105px;
-    width: 895px;
-    height: 116px;
-    text-align: left;
-    font: normal normal normal 18px/24px Arimo;
-    letter-spacing: 0px;
-    color: #262626;
-    position: absolute;
-    opacity: 1;
+  .left-sub-container{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    width: 89.5%;
+    margin-top:32px;
+    .page-content5-1{
+      margin-left: 92px;
+      width: 895px;
+      height: 20px;
+      text-align: left;
+      font: normal normal 600 18px/24px Arimo;
+      letter-spacing: 0px;
+      color: #262626;
+      opacity: 1;
      
+    }
+    .page-content5-2{
+      margin-top: 8px;      
+      width: 895px;
+      align-self: center;
+      margin-left: 140px;      
+      text-align: left;
+      font: normal normal normal 18px/24px Arimo;
+      letter-spacing: 0px;
+      color: #262626;
+      opacity: 1;          
+    }
+     .page-content5-3{
+      margin-top: 24px;
+      margin-left: 92px;
+      width: 895px;
+      height: 20px;
+      text-align: left;
+      font: normal normal 600 18px/24px Arimo;
+      letter-spacing: 0px;
+      color: #262626;
+      opacity: 1;
+      
+    }
+     .page-content5-4{
+      margin-top: 8px;
+      margin-left: 140px;
+      width: 895px;
+      height: 68px;
+      text-align: left;
+      font: normal normal normal 18px/24px Arimo;
+      letter-spacing: 0px;
+      color: #262626;
+      opacity: 1;
+      
+    }
+  }
+  .right-sub-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 36%;
+    margin-top:16px;
+    .image-5{
+      border: 1px solid lightblue;
+      width: 246px;
+      height: 322px;
+    }
   }
 
-  .page-content5-3{
-    margin-top: 273px;
-    margin-left: 92px;
-    width: 895px;
-    height: 20px;
-    text-align: left;
-    font: normal normal 600 18px/24px Arimo;
-    letter-spacing: 0px;
-    color: #262626;
-    opacity: 1;
-    position: absolute;
-  }
-  .page-content5-4{
-    margin-top: 301px;
-    margin-left: 92px;
-    width: 895px;
-    height: 68px;
-    text-align: left;
-    font: normal normal normal 18px/24px Arimo;
-    letter-spacing: 0px;
-    color: #262626;
-    opacity: 1;
-    position: absolute;
-  }
-  
-}
 </style>
