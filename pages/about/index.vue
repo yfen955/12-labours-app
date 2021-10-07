@@ -260,6 +260,11 @@ export default {
   }
 }
 
+.third-container{
+  background: #F8F8F8  0% 0% no-repeat padding-box;
+  opacity: 1;
+}
+
 ::v-deep .el-collapse-item__header{
       height: 20px;
       width: 590px;
