@@ -43,7 +43,7 @@
                     </div>               
                 </div>
                 <div class="view-all">
-                    <nuxt-link to="news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
+                    <nuxt-link to="/news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
                 </div>
             </div>
           </div>

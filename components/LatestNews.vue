@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="view-all">
-            <nuxt-link to="news-and-events/news/">VIEW ALL</nuxt-link>        
+            <nuxt-link to="/news-and-events/news/">VIEW ALL</nuxt-link>        
         </div>
     </div>
 </template>
