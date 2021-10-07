@@ -17,6 +17,11 @@ export default {
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
+
+    social_twitter: process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
+    social_facebook: process.env.SOCIAL_FACEBOOK || "https://wwww.facebook.com/12-labours",
+    social_linkedIn: process.env.SOCIAL_LINKEDIN || "https://www.linkedin.com/12-labours",
+    social_youYube: process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours"
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
