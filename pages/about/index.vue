@@ -10,7 +10,7 @@
         <div class="page-content" v-html="about.content.html"></div>
       </div>
     </div>
-  
+       
 
     <div class="second-container">
       <div class="left-box">
