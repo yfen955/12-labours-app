@@ -6,7 +6,7 @@
             </h1>
         </div>       
         <div class="news-items">
-            <div v-for="newsItem in newsList"  class="news-items__item">
+            <div v-for="newsItem in newsList" :key="newsItem.index" class="news-items__item">
                 <news-card :newsItem="newsItem"/>
             </div>
         </div>
@@ -41,7 +41,7 @@ export default {
         flex-direction:column;
         padding-left:60px;
         padding-right:60px;
-        background-color:$background;
+        // background-color:$background;
 
         h1{
             margin:0px;

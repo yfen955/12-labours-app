@@ -6,7 +6,10 @@
         <span>{{banner.values.title}}</span>
       </div>
     </div>
-    <latest-news :newsList="topNews.newsList"/>
+    <div class="news-container">
+       <latest-news :newsList="topNews.newsList"/>
+    </div>
+   
     <latest-events :eventsList="topEvents.eventsList"/>
   </div>
 </template>
@@ -50,6 +53,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .news-container{
+    background: #F8F8F8;
+  }
 
   .news-and-events-page{
     width:100%;

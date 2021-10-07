@@ -2,7 +2,7 @@
     <div class="news-item-container">
         <div class="news-item-card">
             <div class="news-item-card__image">
-                <img :src="newsItem.image.url"></img>
+                <img :src="newsItem.image.url" />
             </div>
             <div class="news-item-card__title">
                 <h3>{{newsItem.title}}</h3>
