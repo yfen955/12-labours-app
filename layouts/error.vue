@@ -1,4 +1,4 @@
-<template>
+<template>    
   <div class="error-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="page-wrap-container">
