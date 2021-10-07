@@ -4,7 +4,7 @@
       <div class="first-containerbox">
         <div class="firstbox">
           <div class="box-title">
-            Welcome to the 12 Labours Portal, the gateway to predictive medical modelling
+            Welcome to the <br /> 12 Labours Portal, the gateway to predictive <br />medical modelling
           </div>
         </div>
       </div>
@@ -24,10 +24,10 @@
           </a>
         </div>
       </div>
-
-      <div class="fourth-containerbox"></div>      
-
-     
+      <div class="fourth-containerbox">
+        <latest-news :newsList="topNews.newsList"/>
+     </div>      
+       
     </div>
   </div>
 </template>
@@ -35,19 +35,19 @@
 <script>
 import graphcmsQuery from '@/services/graphcmsQuery'
 import PotalHelp from '@/components/PortalHelp/PortalHelp.vue'
+// import LatestNews from '@/components/LatestNews.vue'
 
 export default {
   name: 'App',
   components: {
-    PotalHelp
+    PotalHelp,
+    // LatestNews
   },
-  // async asyncData({$graphcms}) {
-  //   return await graphcmsQuery.content($graphcms, 'about');
-  // },
    async asyncData({$graphcms}) {
     const content= await graphcmsQuery.content($graphcms, 'about');    
     const portalHelp= await graphcmsQuery.portalHelp($graphcms, 'portal_help'); 
-    return {content,portalHelp}
+    const topNews= await graphcmsQuery.topNews($graphcms, 3);    
+    return {content,portalHelp,topNews}
   },
 
   data() {
@@ -60,23 +60,16 @@ export default {
 </script>
 
 <style lang="scss">
-.content-body {
-  height: 2504px;
-  @media screen and (max-width: 1440px){
-   margin-top: 0;
- }
- background: red;
-}
+
 .first-containerbox{
-  border: 1px solid lightblue;
-  position: relative;
+  display: flex;
+  flex-direction: row;
   height: 806px;
+  justify-content:flex-end;
   background: #F8F8F8 0% 0% no-repeat padding-box;
-  opacity: 1;
   .firstbox{
-    margin-top: 205px;
-    margin-left: 680px;
-    position:absolute;
+    margin-top:205px;
+    margin-right:13.6%;
     width: 710px;
     height: 243px;
     background: #00467F 0% 0% no-repeat padding-box;
@@ -84,7 +77,7 @@ export default {
     opacity: 1;
     .box-title{
       margin: 32px 36px 35px 40px;
-      position:absolute;
+      align-self: center;
       width: 634px;
       height: 176px;
       text-align: left;
@@ -94,24 +87,17 @@ export default {
       opacity: 1;
     }
   }
-  
-}
-
-.second-containerbox{
-  position: relative;
-  height: 668px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  opacity: 1;
 }
 
 .third-containerbox{
-  position: relative;
-  height: 293px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: #F8F8F8 0% 0% no-repeat padding-box;
-  opacity: 1;
+  height: 293px;
   .t-title{
-    margin: 40px 448px 220px 449px;
-    position: absolute;
+    align-self: center;
+    margin-top: 40px;
     width: 543px;
     height: 33px;
     text-align: center;
@@ -121,9 +107,8 @@ export default {
     opacity: 1;
   }
   .t-content{
-    margin-top: 105px;
-    margin-left: 100px;
-    position: absolute;
+    align-self: center;
+    margin-top:32px;
     width: 1240px;
     height: 116px;
     text-align: left;
@@ -133,13 +118,12 @@ export default {
     opacity: 1;
       p{
       margin: 0 0 1rem !important;
-      }
+    }
   }
   .hyperlink{
-    margin-top: 237px;
-    margin-left: 982px;
-    position: absolute;
-    width: 358px;
+    margin-top: 16px;
+    margin-bottom: 40px;
+    width: 1240px;
     height: 16px;
     text-align: right;
     text-decoration: underline;
@@ -147,14 +131,14 @@ export default {
     letter-spacing: 0px;
     color: #D11241;
     opacity: 1;
-  }
+    }
 }
+// .fourth-containerbox{
+//   background: red 0% 0% no-repeat padding-box !important;
+//   opacity: 1;
+// }
 
-.fourth-containerbox{
-  position: relative;
-  height: 737px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  opacity: 1;
-}
+
+      
 
 </style>
