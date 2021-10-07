@@ -40,14 +40,15 @@ async function banner(graphcms, name) {
 
 async function topNews(graphcms, fetchCount) {
   const variables = {
-    "fetchCount": fetchCount
+    "fetchCount":  fetchCount  //fetchCount is nullable. In case fetchCount is not provided, all records will be returned
   }
   const query = gql`
-    query ($fetchCount: Int!) {
+    query ($fetchCount: Int) {
       newsList:  newsItems(
         orderBy: publishedDate_DESC
         first: $fetchCount
-      ) {
+      ) 
+      {
         publishedDate
         title
         image{
@@ -64,6 +65,21 @@ async function topNews(graphcms, fetchCount) {
   ` 
   return await graphcms.request(query, variables);
 }
+
+async function newsCategory(graphcms) {
+
+  const query = gql`
+    query introspectNewsCategoryType {
+      __type(name: "NewsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 
 async function topEvents(graphcms, fetchCount) {
   const variables = {
@@ -97,7 +113,9 @@ async function topEvents(graphcms, fetchCount) {
 
 export default {
   content,
+  banner,
   topNews,
-  topEvents,
-  banner
+  newsCategory,
+  topEvents
+  
 }
