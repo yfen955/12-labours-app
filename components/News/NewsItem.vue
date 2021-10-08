@@ -11,10 +11,13 @@
                     </nuxt-link>
                 </div>
                 <div class="item-date">
-                    <span>{{formattedPublishedDate}}</span>
+                    <span>
+                        {{formattedPublishedDate}}
+                    </span>
                 </div>
                 <div class="item-detail">
-                    <span v-html="newsItem.detail.html">                      
+                    <span> 
+                        {{newsItem.blurb}}                    
                     </span>
                 </div>
             </div>
@@ -36,9 +39,7 @@ export default {
    computed: { 
         formattedPublishedDate: function() { 
             var dt=new Date(this.newsItem.publishedDate)
-            var fotmatted=dt.getDate() + " " + dt.toLocaleString('default', { month: 'long' }) + " " + dt.getFullYear()
-            this.newsItem.publishedDate=fotmatted     //Update, so not needed to format again in detail
-            return fotmatted
+            return dt.getDate() + " " + dt.toLocaleString('default', { month: 'long' }) + " " + dt.getFullYear()
         } 
     } 
 }
@@ -78,8 +79,8 @@ export default {
             }
 
             .item-date{
-                //padding-top:5px;      //5 px- as per wireframes
-                padding-bottom:4px;     //12 px- as per wireframes
+                padding-top:6px;
+                padding-bottom:12px;    
                 span{
                     font-size:14px;
                     line-height:20px;
