@@ -12,7 +12,7 @@
                 </div>
                 <div class="item-date">
                     <span>
-                        {{formattedPublishedDate}}
+                        {{this.$formatMonthDDYear(newsItem.publishedDate)}}
                     </span>
                 </div>
                 <div class="item-detail">
@@ -34,14 +34,7 @@ export default {
     newsItem: {
       default: () => {}
     }
-   },
-
-   computed: { 
-        formattedPublishedDate: function() { 
-            var dt=new Date(this.newsItem.publishedDate)
-            return dt.getDate() + " " + dt.toLocaleString('default', { month: 'long' }) + " " + dt.getFullYear()
-        } 
-    } 
+   }
 }
 </script>
 

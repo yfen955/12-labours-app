@@ -8,7 +8,7 @@
             </div>
             <div class="date-social">
                 <div class="date-social__published">
-                    <span>Published {{newsItem.publishedDate}}</span>
+                    <span>Published {{this.$formatMonthDDYear(newsItem.publishedDate)}}</span>
                 </div>               
                 <social-box/>                  
             </div>            
@@ -47,7 +47,7 @@ export default {
             ] 
         }
     },
-    
+
     created() {
         this.newsItem=this.$route.params.item,
         this.pageTitle= this.newsItem.title
