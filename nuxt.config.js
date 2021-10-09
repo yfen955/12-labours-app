@@ -33,7 +33,7 @@ export default {
   plugins: [
     "@/plugins/dsc",
     "@/plugins/graphcms.js",
-    "@/plugins/vue-sphinx-xml.js",
+    "@/plugins/vue-sphinx-xml.client.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -43,7 +43,7 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources"],
+  modules: ["@nuxtjs/style-resources", "~/modules/routes.js"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
