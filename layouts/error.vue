@@ -16,7 +16,7 @@
             </p>
             </div>
             <div class="btn-backhome">
-              <el-button @click="backToHome()">VISIT THE HOMEPAGE</el-button>
+              <NuxtLink to="/"><el-button>VISIT THE HOMEPAGE</el-button></NuxtLink>
             </div>  
           </div>
           <div class="right-container">
@@ -90,9 +90,9 @@ export default {
     }
   },
   methods:{
-    backToHome(){
-      this.$router.push('/');
-    }
+  //   backToHome(){
+  //     this.$router.push('/');
+  //   }
   }
 }
 </script>

@@ -4,12 +4,15 @@
       label-position="top"
       :model="form"
       :hide-required-asterisk="false"
+      :rules="formRules"
     >
-      <el-form-item>
+      <el-form-item
+        prop="title"
+      >
         <label slot="label">Title <span style="color:#D11241">*</span></label>
 
         <el-select
-          v-model="form.value"
+          v-model="form.title"   
           placeholder="Select title"
           :popper-append-to-body="false"
         >
@@ -90,6 +93,7 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
           phone: '',
           email: '',
           cemail: '',
+          title:'',   
           titles: [
           {
             label: 'Dr',
@@ -105,14 +109,57 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
           },
           {
             label: 'Mrs',
-            value: 'Mrs'
+            value: 'Mrs'  
           },
           {
             label: 'Ms',
-            value: 'Mrs'
+            value: 'Ms'  
           }
 
         ],
+        },
+        formRules: {
+          title: [
+            {
+              required: true,
+              message: 'Please select one',
+              trigger: 'change'
+            }
+          ],
+
+           firstName: [
+            {
+              required: true,
+              message: 'Please enter your first name',
+              trigger: 'blur'
+            }
+          ],
+
+          lastName: [
+            {
+              required: true,
+              message: 'Please enter your last name',
+              trigger: 'blur'
+            }
+          ],
+          phone: [
+            {
+              required: false,
+              type: 'number',
+              message: 'Please enter a valid phone number',
+              trigger: 'blur'
+            }
+          ],
+
+          email: [
+            {
+              required: true,
+              message: 'Please enter your email',
+              type: 'email',
+              trigger: 'blur'
+            }
+          ],
+
         }
       }
     },

@@ -47,6 +47,7 @@
         detailForm: {
           textArea: '',
           maxLength:250,
+          value: '',
           titles: [
           {
             label: 'Modelling',
