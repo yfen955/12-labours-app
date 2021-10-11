@@ -52,6 +52,8 @@
         <el-input
           v-model="form.phone"
           placeholder="Enter your phone number"
+          
+
         />
       </el-form-item>
 
@@ -66,7 +68,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="c-email"
+        prop="confirmEmail"
       >
         <label slot="label">Confirm email address <span style="color:#D11241">*</span></label>
           <el-input
@@ -79,12 +81,10 @@
 </template>
 
 <script>
-import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
+
   export default {
     name:'ContactForm',
-  // components: {
-  //   ContactDetail
-  // },
+ 
     data() {
       return {
         form: {
@@ -145,9 +145,16 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
           phone: [
             {
               required: false,
-              type: 'number',
-              message: 'Please enter a valid phone number',
-              trigger: 'blur'
+            },
+            {
+              validator: function(rule, value, callback) {
+                if (/^(\+?64|0)2\d{7,9}$/.test(value) == false) {
+                  callback(new Error("Please enter a valid phone number"));
+                } else {
+                  callback();
+                }
+            },
+            trigger: "blur"
             }
           ],
 
@@ -160,6 +167,13 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
             }
           ],
 
+          confirmEmail: [
+            {
+              required: true,
+              
+
+            }
+          ]
         }
       }
     },
@@ -171,11 +185,9 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
 
 <style lang="scss" scoped>
 .contactForm{
-  position: absolute;
-  margin-top: 317px;
-  margin-left: 108px;
+  margin: 0;
   width: 1256px;
-  height: 576px;
+  height: 600px;
   background: #F8F8F8 0% 0% no-repeat padding-box;
   opacity: 1;
 }
@@ -209,5 +221,9 @@ import ContactDetail from "@/components/ContactUsForm/ContactDetail.vue";
 }
 .el-form-item{
   margin: 0px;
+}
+::v-deep .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+    content: "";
+   
 }
 </style>'

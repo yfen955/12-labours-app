@@ -78,9 +78,8 @@
 
 <style lang="scss" scope>
 .contactDetail{
-  position: absolute;
-  margin-top: 953px;
-  margin-left: 108px;
+  margin-top: 16px;
+  margin-left: 16px;
   width: 1256px;
   height: 327px;
   background: #F8F8F8 0% 0% no-repeat padding-box;
