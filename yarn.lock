@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@abi-software/twelve-labours-design-system-components@0.1.0-beta-2":
-  version "0.1.0-beta-2"
-  resolved "https://registry.yarnpkg.com/@abi-software/twelve-labours-design-system-components/-/twelve-labours-design-system-components-0.1.0-beta-2.tgz#57a5780b32b9df446af03ed9747a66f583b8e0d7"
-  integrity sha512-h61GumxsRSeN1Z9YQqE+6NbCoX63B7KMagquR6Ke7ORmAyJd0DOhrzk/12vuizHm7Qtrxz6STCYiNUNc0Z65wA==
+"@abi-software/twelve-labours-design-system-components@0.1.0-beta-3":
+  version "0.1.0-beta-3"
+  resolved "https://registry.yarnpkg.com/@abi-software/twelve-labours-design-system-components/-/twelve-labours-design-system-components-0.1.0-beta-3.tgz#d0628ee58b101780e525c4ad24067ac8ebfc533c"
+  integrity sha512-p5SGIj6tEDFLmoo35ppRkvZYGJYQ/blCPO1+A/HBvyLtGkYZB/5dIWi3xlt6RNdd8NGkrm27cjhk/XgR5KAIdA==
   dependencies:
     "@carbon/grid" "10.17.0"
     core-js "^3.6.5"
