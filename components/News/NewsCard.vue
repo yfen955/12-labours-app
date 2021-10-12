@@ -13,7 +13,11 @@
                 </span>
             </div>
             <div class="news-item-card__button">
-                <el-button>READ MORE</el-button>
+                <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug, item:newsItem}}">
+                    <el-button>
+                        READ MORE
+                    </el-button>
+                </nuxt-link>
             </div>
         </div>
     </div>

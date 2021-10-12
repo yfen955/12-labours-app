@@ -114,14 +114,15 @@ async function banner(graphcms, name) {
 
 async function topNews(graphcms, fetchCount) {
   const variables = {
-    "fetchCount": fetchCount
+    "fetchCount":  fetchCount
   }
   const query = gql`
-    query ($fetchCount: Int!) {
+    query ($fetchCount: Int) {
       newsList:  newsItems(
-        orderBy: publishedDate_DESC
         first: $fetchCount
-      ) {
+        orderBy: publishedDate_DESC
+      ) 
+      {
         publishedDate
         title
         image{
@@ -138,6 +139,21 @@ async function topNews(graphcms, fetchCount) {
   ` 
   return await graphcms.request(query, variables);
 }
+
+async function newsCategory(graphcms) {
+
+  const query = gql`
+    query introspectNewsCategoryType {
+      __type(name: "NewsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 
 async function topEvents(graphcms, fetchCount) {
   const variables = {
@@ -170,6 +186,20 @@ async function topEvents(graphcms, fetchCount) {
 }
 
 
+async function eventsCategory(graphcms) {
+
+  const query = gql`
+    query introspectEventsCategoryType {
+      __type(name: "EventsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 export default {
   content,
   multiContent,
@@ -177,6 +207,8 @@ export default {
   partnerShips,
   portalHelp,
   topNews,
+  newsCategory,
   topEvents,
+  eventsCategory,
   banner
 }

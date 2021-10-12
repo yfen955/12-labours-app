@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="fourth-containerbox">
-        <latest-news :newsList="topNews.newsList"/>
+        <latest-news :news-list="topNews.newsList" hide-bg-color/>
      </div>      
        
     </div>
