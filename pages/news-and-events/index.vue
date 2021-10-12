@@ -1,9 +1,16 @@
 <template>
   <div class="news-and-events-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
-    <banner :banner-data="banner.values"/>
-    <latest-news :news-list="topNews.newsList"/>
-    <latest-events :events-list="topEvents.eventsList"/>
+    <div :style="urlStyle" class="news-events-banner">
+      <div class="banner__title-box">
+        <span>{{banner.values.title}}</span>
+      </div>
+    </div>
+    <div class="news-container">
+       <latest-news :newsList="topNews.newsList"/>
+    </div>
+   
+    <latest-events :eventsList="topEvents.eventsList"/>
   </div>
 </template>
 
@@ -46,6 +53,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .news-container{
+    background: #F8F8F8;
+  }
 
   .news-and-events-page{
     width:100%;
