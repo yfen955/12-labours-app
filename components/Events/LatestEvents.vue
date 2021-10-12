@@ -10,11 +10,7 @@
             <div class="main-box-container">
                 <div class="main-box">
                     <div class="main-box__image-box">
-<<<<<<< HEAD:components/Events/LatestEvents.vue
                         <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
-=======
-                        <img :src="eventsList[0].image===null?'':eventsList[0].image.url" />
->>>>>>> b5d705d6bb2240b6b5c97be8fcc86d862ea5a08e:components/LatestEvents.vue
                     </div>
                     <div class="main-box__title">
                         <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: specialEvent.slug, item:specialEvent}}">

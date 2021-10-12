@@ -186,6 +186,20 @@ async function topEvents(graphcms, fetchCount) {
 }
 
 
+async function eventsCategory(graphcms) {
+
+  const query = gql`
+    query introspectEventsCategoryType {
+      __type(name: "EventsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 export default {
   content,
   multiContent,
@@ -195,5 +209,6 @@ export default {
   topNews,
   newsCategory,
   topEvents,
-  eventsCategory
+  eventsCategory,
+  banner
 }

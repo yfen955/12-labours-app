@@ -17,6 +17,10 @@ export default {
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
+    social_twitter: process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
+    social_facebook: process.env.SOCIAL_FACEBOOK || "https://wwww.facebook.com/12-labours",
+    social_linkedIn: process.env.SOCIAL_LINKEDIN || "https://www.linkedin.com/12-labours",
+    social_youYube: process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours"
     
   },
 
@@ -35,11 +39,18 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/dsc',
-    '@/plugins/graphcms.js'
+    '@/plugins/graphcms.js',
+    '@/plugins/helpers'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: {
+    dirs: [
+      '~/components',
+      '~/components/News',
+      '~/components/Events'
+    ]
+  },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
