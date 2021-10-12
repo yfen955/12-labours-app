@@ -1,23 +1,24 @@
 <template>
-    <div class="news-item-container">
-        <div class="news-item">
-            <div class="news-item__image">
-                <img :src="newsItem.image.url"></img>
+    <div class="event-item-container">
+        <div class="event-item">
+            <div class="event-item__image">
+                <img :src="eventItem.image.url"></img>
             </div>
-            <div class=news-item__info>
+            <div class=event-item__info>
                 <div class="item-title">     
-                    <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug, item:newsItem}}">
-                        <h4>{{newsItem.title}}</h4>
+                    <nuxt-link :to="{ name: 'news-and-events-events-detail', params: { detail: eventItem.slug, item:eventItem}}">
+                        <h4>{{eventItem.title}}</h4>
                     </nuxt-link>
                 </div>
                 <div class="item-date">
                     <span>
-                        {{this.$formatDDMonthYear(newsItem.publishedDate)}}
-                    </span>
+                        {{this.$formatDDMonthYear(eventItem.startDate)}}
+                        {{eventItem.endDate? " - " + this.$formatDDMonthYear(eventItem.endDate) : ""}}
+                    </span> 
                 </div>
                 <div class="item-detail">
                     <span> 
-                        {{newsItem.blurb}}                    
+                        {{eventItem.blurb}}                    
                     </span>
                 </div>
             </div>
@@ -28,10 +29,10 @@
 <script>
 
 export default {
-  name: 'NewsItem',
+  name: 'EventItem',
 
    props: {
-    newsItem: {
+    eventItem: {
       default: () => {}
     }
    }
@@ -41,12 +42,12 @@ export default {
 
 <style scoped lang="scss">
 
-    .news-item-container{
+    .event-item-container{
         height: 138px;
         display:flex;  
     }
 
-    .news-item{      
+    .event-item{      
         display:flex;   
 
         &__image{
