@@ -41,7 +41,7 @@ export default {
         flex-direction:column;
         padding-left:60px;
         padding-right:60px;
-        // background-color:$background;
+        background-color:$background;
 
         h1{
             margin:0px;
