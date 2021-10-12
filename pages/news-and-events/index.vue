@@ -33,14 +33,6 @@ export default {
         }
       ]
     }
-  },
-  
-  computed: {
-    urlStyle () {
-      return {
-        '--banner-url': 'url('+this.banner.values.image.url+')'
-      }
-    }
   }
 }
 </script>

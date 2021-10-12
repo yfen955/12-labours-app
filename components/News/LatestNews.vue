@@ -1,5 +1,5 @@
 <template>
-    <div class="news-container">
+    <div class="news-container" :style="this.hideBgColor? bgStyle : ''">
         <div class="top-heading">
             <h1>
                 LATEST NEWS
@@ -28,8 +28,20 @@ export default {
     linkComponent: {
       type: String,
       default: 'nuxt-link'
+    },
+    hideBgColor:{
+        type:Boolean,
+        default:false
     }
-  }
+  },
+
+  computed: {
+        bgStyle () { 
+            return {              
+                'background-color': '#FFFFFF'               
+            }
+        }
+    }
 }
 </script>
 
