@@ -5,7 +5,7 @@
     <div class="news-container">
         <div class="top-heading">
             <h1>
-                NEWS <nuxt-link to="/site-feedback">site feed</nuxt-link>
+                NEWS
             </h1>
         </div> 
         <div class="category-tab">
