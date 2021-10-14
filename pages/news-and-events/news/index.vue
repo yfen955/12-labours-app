@@ -5,7 +5,7 @@
     <div class="news-container">
         <div class="top-heading">
             <h1>
-                NEWS 
+                NEWS <nuxt-link to="/site-feedback">site feed</nuxt-link>
             </h1>
         </div> 
         <div class="category-tab">
@@ -86,7 +86,7 @@ export default {
     /* For enums, GraphCMS only allows underscore */
     /* Adding label field as well as replacing underscores with spaces */
 
-    catEnum.map(e => e.label = e.name.replace("_", " "));  
+    catEnum.map(e => e.label = e.name.replace(/_/g,' '));  
     this.tabs=catEnum
 
     if(this.tabs.length<=0)
