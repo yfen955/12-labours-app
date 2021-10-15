@@ -17,7 +17,7 @@
           :popper-append-to-body="false"
         >
           <el-option
-            v-for="title in form.titles"
+            v-for="title in titles"
             :key="title.value"
             :label="title.label"
             :value="title.value"
@@ -72,7 +72,7 @@
       >
         <label slot="label">Confirm email address <span style="color:#D11241">*</span></label>
           <el-input
-            v-model="form.cemail"
+            v-model="form.confirmEmail"
             placeholder="Please confirm your email address"
           />
       </el-form-item>
@@ -84,17 +84,35 @@
 
   export default {
     name:'ContactForm',
- 
+    // props:['formValue'],
     data() {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please double check your email address'));
+        } else if (value !== this.form.email) {
+          callback(new Error('Confirmed email address should be the same with the email above'));
+        } else {
+          callback();
+        }
+      };
+      var phoneValidateCheck = (rule, value, callback) => {
+        if (/^(\+?64|0)2\d{7,9}$/.test(value) == false) {
+          callback(new Error("Please enter a valid phone number"));
+        } else {
+          callback();
+        }
+      };
       return {
+
         form: {
           firstName: '',
           lastName: '',
           phone: '',
           email: '',
-          cemail: '',
+          confirmEmail: '',
           title:'',   
-          titles: [
+        },
+         titles: [
           {
             label: 'Dr',
             value: 'Dr'
@@ -115,9 +133,7 @@
             label: 'Ms',
             value: 'Ms'  
           }
-
         ],
-        },
         formRules: {
           title: [
             {
@@ -145,17 +161,9 @@
           phone: [
             {
               required: false,
+              validator: phoneValidateCheck,
+              trigger: "blur"
             },
-            {
-              validator: function(rule, value, callback) {
-                if (/^(\+?64|0)2\d{7,9}$/.test(value) == false) {
-                  callback(new Error("Please enter a valid phone number"));
-                } else {
-                  callback();
-                }
-            },
-            trigger: "blur"
-            }
           ],
 
           email: [
@@ -170,13 +178,28 @@
           confirmEmail: [
             {
               required: true,
-              
-
-            }
+              validator:validatePass,
+              trigger: "blur"           
+            },                                      
           ]
         }
       }
     },
+    watch:{
+    		   
+            form:{
+              deep:true,
+              handler:function(val){
+                // console.log(newVal + '---' + oldVal)
+                if (val.firstName !== ''&& val.lastName !== ''&& val.title !=='' && val.email !=='' && val.confirmEmail !==''){
+                  this.$emit("update:getValue",val);
+                } 
+              }
+            }
+              
+            
+    		},
+
     methods: {
       
     }
