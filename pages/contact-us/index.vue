@@ -13,7 +13,7 @@
                 </p>
                 <p>
                 For feedback on the 12 labours Portal website please use the 
-                <nuxt-link to="/siteFeedback">Site Feedback</nuxt-link> form.
+                <nuxt-link to="/site-feedback">Site Feedback</nuxt-link> form.
                 </p>
               </div>
              </div>
