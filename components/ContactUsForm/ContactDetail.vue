@@ -30,12 +30,12 @@
           v-model="detailForm.textArea" 
           type="textarea"
           resize="none"
-          :maxlength="detailForm.maxLength"
+          :maxlength="maxLength"
           :rows="3"
         />
   
         <div class="field-info label mr-32">
-          Max length: {{detailForm.maxLength}} - Used: {{detailForm.textArea.length}} - Remaining: {{detailForm.maxLength-(detailForm.textArea.length)}}
+          Max length: {{maxLength}} - Used: {{detailForm.textArea.length}} - Remaining: {{maxLength-(detailForm.textArea.length)}}
         </div>
       </el-form-item>
     </el-form>
@@ -49,9 +49,9 @@
       return {
         detailForm: {
           textArea: '',
-          maxLength:250,
           value: '',
         },
+        maxLength:250,
           titles: [
           {
             label: 'Modelling',
@@ -93,9 +93,9 @@
             detailForm:{
               deep:true,
               handler:function(val){
-                if (val.textArea !== ''&& val.value !== ''){
+                // if (val.textArea !== ''&& val.value !== ''){
                   this.$emit("update:detailValue",val);
-                } 
+                // } 
               }
             }
               

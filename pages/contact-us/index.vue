@@ -47,7 +47,7 @@
                 </div>
               </div>
             </div>
-            
+          
             <div class="sub-container-2">
               <div class="subtitle2">Contact Information:</div>
               <div class="contactForm">
@@ -64,9 +64,9 @@
                 <contact-detail v-if="this.value!=''" :detail-value.sync="contactDetailValue"></contact-detail>
               </div>
               <div class="btn-container">
-                <div class="btn-c" @click="isSubmitted = true">
-                  <el-button v-if="this.value==''||this.formValue==''||this.contactDetailValue==''" disabled >CONTACT US</el-button>
-                  <el-button v-else>CONTACT US</el-button>
+                <div class="btn-c" >
+                  <el-button v-if=" this.value == '' || !formValue.firstName || !formValue.lastName || !formValue.email || !formValue.confirmEmail || !contactDetailValue.textArea || !contactDetailValue.value" disabled >CONTACT US</el-button>
+                  <el-button v-else @click="isSubmitted = true">CONTACT US</el-button>
                 </div>
               </div>
             </div>
@@ -147,19 +147,18 @@ export default {
         value: '',
         formValue: '',
         contactDetailValue: '',
-        isSubmitted: false
+        isSubmitted: false,
+        s:''
     }
   },
 
   methods: {
     	getValue(val){
 	      	this.formValue=val;
-	      	
 	    },
       detailValue(val){
         this.contactDetailValue=val;
-      }
-      
+      },
   }
 }
 </script>

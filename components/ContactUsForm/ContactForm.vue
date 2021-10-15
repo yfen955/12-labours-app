@@ -191,9 +191,9 @@
               deep:true,
               handler:function(val){
                 // console.log(newVal + '---' + oldVal)
-                if (val.firstName !== ''&& val.lastName !== ''&& val.title !=='' && val.email !=='' && val.confirmEmail !==''){
+                // if (val.firstName !== ''&& val.lastName !== '' && val.title !=='' && val.email !=='' && val.confirmEmail !==''){
                   this.$emit("update:getValue",val);
-                } 
+                // } 
               }
             }
               
