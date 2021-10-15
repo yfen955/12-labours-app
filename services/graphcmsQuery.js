@@ -36,6 +36,22 @@ async function multiContent(graphcms, name) {
     `
     return await graphcms.request(query1,  variables);
 }
+/*
+async function asset(graphcms, slug) {
+  const variables = {
+    "slug": slug
+  }
+
+    const query = gql`
+      query ($slug: String!) {
+        values: asset(where: {slug: $slug}) {
+          id
+          fileName
+        }
+      }
+    `
+    return await graphcms.request(query,  variables);
+}*/
 
 
 async function projectInformation(graphcms, name) {
@@ -200,6 +216,20 @@ async function eventsCategory(graphcms) {
   return await graphcms.request(query);
 }
 
+async function feedbackReason(graphcms) {
+
+  const query = gql`
+    query introspectFeedbackReasonType {
+      __type(name: "FeedbackReason") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 export default {
   content,
   multiContent,
@@ -210,5 +240,6 @@ export default {
   newsCategory,
   topEvents,
   eventsCategory,
-  banner
+  banner,
+  feedbackReason
 }

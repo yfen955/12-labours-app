@@ -76,7 +76,7 @@
 }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .contactDetail{
   margin-top: 16px;
   margin-left: 16px;
