@@ -36,23 +36,6 @@ async function multiContent(graphcms, name) {
     `
     return await graphcms.request(query1,  variables);
 }
-/*
-async function asset(graphcms, slug) {
-  const variables = {
-    "slug": slug
-  }
-
-    const query = gql`
-      query ($slug: String!) {
-        values: asset(where: {slug: $slug}) {
-          id
-          fileName
-        }
-      }
-    `
-    return await graphcms.request(query,  variables);
-}*/
-
 
 async function projectInformation(graphcms, name) {
   const variables = {
