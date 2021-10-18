@@ -1,15 +1,8 @@
 <template>
   <div class="news-and-events-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
-    <div :style="urlStyle" class="news-events-banner">
-      <div class="banner__title-box">
-        <span>{{banner.values.title}}</span>
-      </div>
-    </div>
-    <div class="news-container">
-       <latest-news :newsList="topNews.newsList"/>
-    </div>
-   
+    <banner :banner-data="banner.values"/>
+    <latest-news :newsList="topNews.newsList"/>  
     <latest-events :eventsList="topEvents.eventsList"/>
   </div>
 </template>
@@ -40,53 +33,14 @@ export default {
         }
       ]
     }
-  },
-  
-  computed: {
-    urlStyle () {
-      return {
-        '--banner-url': 'url('+this.banner.values.image.url+')'
-      }
-    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-  .news-container{
-    background: #F8F8F8;
-  }
 
   .news-and-events-page{
     width:100%;
   }
-
-  .news-events-banner{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;    
-    height:300px;
-    background-image:var(--banner-url);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-  }
-
-  .banner__title-box{
-    height:108px;
-    width:340px;
-    margin-right:60px;
-    border-radius:20px;
-    background-color: $blue;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    span{
-      font-weight:bold;
-      font-size: 40px;
-      line-height: 44px;
-      color:$cochlear;
-    }
-  }
+  
 </style>

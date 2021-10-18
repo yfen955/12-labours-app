@@ -1,5 +1,5 @@
 <template>
-    <div class="news-container">
+    <div class="news-container" :style="this.hideBgColor? bgStyle : ''">
         <div class="top-heading">
             <h1>
                 LATEST NEWS
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="view-all">
-            <nuxt-link to="news-and-events/news/">VIEW ALL</nuxt-link>        
+            <nuxt-link to="/news-and-events/news/">VIEW ALL NEWS</nuxt-link>        
         </div>
     </div>
 </template>
@@ -28,8 +28,20 @@ export default {
     linkComponent: {
       type: String,
       default: 'nuxt-link'
+    },
+    hideBgColor:{
+        type:Boolean,
+        default:false
     }
-  }
+  },
+
+  computed: {
+        bgStyle () { 
+            return {              
+                'background-color': '#FFFFFF'               
+            }
+        }
+    }
 }
 </script>
 
@@ -41,7 +53,7 @@ export default {
         flex-direction:column;
         padding-left:60px;
         padding-right:60px;
-        // background-color:$background;
+        background-color:$background;
 
         h1{
             margin:0px;
