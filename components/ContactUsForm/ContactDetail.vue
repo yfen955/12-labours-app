@@ -4,6 +4,7 @@
       label-position="top"
       :model="detailForm"
       :hide-required-asterisk="false"
+      :rules="detailFormRules"
     >
       <el-form-item>
         <label slot="label">What area would you like to know more information about&nbsp;<span style="color:#D11241">*</span></label>
@@ -13,7 +14,7 @@
           :popper-append-to-body="false"
         >
           <el-option
-            v-for="title in detailForm.titles"
+            v-for="title in titles"
             :key="title.value"
             :label="title.label"
             :value="title.value"
@@ -21,18 +22,20 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item
+        prop="textArea"
+      >
         <label slot="label">Tell us details on how we can help provide this information&nbsp;<span style="color:#D11241">*</span></label>
         <el-input 
           v-model="detailForm.textArea" 
           type="textarea"
           resize="none"
-          :maxlength="detailForm.maxLength"
+          :maxlength="maxLength"
           :rows="3"
         />
   
         <div class="field-info label mr-32">
-          Max length: {{detailForm.maxLength}} - Used: {{detailForm.textArea.length}} - Remaining: {{detailForm.maxLength-(detailForm.textArea.length)}}
+          Max length: {{maxLength}} - Used: {{detailForm.textArea.length}} - Remaining: {{maxLength-(detailForm.textArea.length)}}
         </div>
       </el-form-item>
     </el-form>
@@ -46,8 +49,9 @@
       return {
         detailForm: {
           textArea: '',
-          maxLength:250,
           value: '',
+        },
+        maxLength:250,
           titles: [
           {
             label: 'Modelling',
@@ -70,9 +74,33 @@
             value: 'ddd'
           }
         ],
-      }
+    
+        detailFormRules: {
+          textArea: [
+            {
+              required: true,
+              message: 'Please provide some useful information',
+              trigger: 'blur'
+            }
+          ]
+      },
+       
     }
-  }
+    
+  },
+  watch:{
+    		   
+            detailForm:{
+              deep:true,
+              handler:function(val){
+                // if (val.textArea !== ''&& val.value !== ''){
+                  this.$emit("update:detailValue",val);
+                // } 
+              }
+            }
+              
+            
+    		},
 }
 </script>
 
