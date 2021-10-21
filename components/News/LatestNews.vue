@@ -1,17 +1,17 @@
 <template>
-    <div class="news-container">
+    <div class="news-container" :style="this.hideBgColor? bgStyle : ''">
         <div class="top-heading">
             <h1>
                 LATEST NEWS
             </h1>
         </div>       
         <div class="news-items">
-            <div v-for="newsItem in newsList"  class="news-items__item">
+            <div v-for="newsItem in newsList" :key="newsItem.index" class="news-items__item">
                 <news-card :newsItem="newsItem"/>
             </div>
         </div>
         <div class="view-all">
-            <nuxt-link to="news-and-events/news/">VIEW ALL</nuxt-link>        
+            <nuxt-link to="/news-and-events/news/">VIEW ALL NEWS</nuxt-link>        
         </div>
     </div>
 </template>
@@ -28,8 +28,20 @@ export default {
     linkComponent: {
       type: String,
       default: 'nuxt-link'
+    },
+    hideBgColor:{
+        type:Boolean,
+        default:false
     }
-  }
+  },
+
+  computed: {
+        bgStyle () { 
+            return {              
+                'background-color': '#FFFFFF'               
+            }
+        }
+    }
 }
 </script>
 

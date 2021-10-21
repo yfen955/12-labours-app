@@ -10,19 +10,21 @@
             <div class="main-box-container">
                 <div class="main-box">
                     <div class="main-box__image-box">
-                        <img :src="eventsList[0].image===null?'':eventsList[0].image.url"></img>
+                        <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
                     </div>
                     <div class="main-box__title">
-                        <h4>{{eventsList[0].title}}</h4>
+                        <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: specialEvent.slug, item:specialEvent}}">
+                            <h4>{{specialEvent.title}}</h4>
+                        </nuxt-link>                     
                     </div>
                     <div class="main-box__dates">
                         <span>
-                            {{formatDate(eventsList[0].startDate)}} - {{formatDate(eventsList[0].endDate)}}
+                            {{this.$formatMonDDYear(specialEvent.startDate)}} - {{this.$formatMonDDYear(specialEvent.endDate)}}
                         </span>
                     </div>
                     <div class="main-box__blurb">
                         <span>
-                            {{eventsList[0].blurb}}
+                            {{specialEvent.blurb}}
                         </span>
                     </div>
                 </div>
@@ -31,7 +33,7 @@
         <div class= "latest-events__upcoming">
             <div class="upcoming-box">
                 <h2>UPCOMING EVENTS</h2>
-                <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList">
+                <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList" :key="eventsItem.index">
                     <div :style="index === 0? itemStyle : '' " class="grid-item">
                         <span>{{formatMonth(eventsItem.startDate).toUpperCase()}}</span>
                         <span class="day">{{formatDay(eventsItem.startDate)}}</span>
@@ -43,7 +45,7 @@
                     </div>               
                 </div>
                 <div class="view-all">
-                    <nuxt-link to="news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
+                    <nuxt-link to="/news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
                 </div>
             </div>
           </div>
@@ -74,11 +76,6 @@ export default {
         formatDay: function(strDate) {
             var dt=new Date(strDate)
             return dt.getDate()
-        },
-        formatDate:function(strDate)
-        {
-            var dt=new Date(strDate)
-            return  dt.toLocaleString('default', { month: 'short' }) + " " + dt.getDate() + ", " + dt.getFullYear()
         }
     },
     
@@ -88,6 +85,12 @@ export default {
                 'border-top': 'none'
             }
         }
+    },
+
+    created(){
+        //TBD: Event with latest event date may not be the special event, need to check this
+
+        this.specialEvent=this.eventsList[0]
     }
 }
 
@@ -125,8 +128,6 @@ export default {
 
     .latest-events__main{
         width: 50%;
-        //display:flex;
-        //justify-content: flex-start;
     }
 
     .main-box{     
@@ -160,6 +161,9 @@ export default {
                 height:59px;
                 overflow: hidden;
                 text-overflow: ellipsis; 
+                a{
+                    text-decoration:none !important;
+                }
             }
 
             &__dates{   
