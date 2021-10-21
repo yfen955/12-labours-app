@@ -1,210 +1,144 @@
 <template>
-  <div id="app">
+  <div class="home-page">
     <div class="content-body">
-      <el-button>hi</el-button>
-
-      <el-date-picker
-        v-model="value1"
-        type="date"
-        placeholder="Pick a day">
-      </el-date-picker>
-
-      <el-select v-model="value" placeholder="Select">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-
-      <pagination
-        :total-count="pageCount"
-        :selected="3"
-        @select-page="onPaginationChange"
-      />
-      <pagination-menu 
-        :page-size="pageSize"
-        @update-page-size="updatePageSize"
-      />
-      <div class="radio-group">
-        <el-radio-group v-model="radioVal">
-          <el-radio
-            v-for="item in radioData"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.disabled || false"
-            :display="item.display"
-          >
-            {{item.label}}
-          </el-radio>
-        </el-radio-group>
+      <div class="first-containerbox">
+        <div class="firstbox">
+          <div class="box-title">
+            Welcome to the <br /> 12 Labours Portal, the gateway to predictive <br />medical modelling
+          </div>
+        </div>
       </div>
 
-      <el-row type="flex" justify="center">
-        <el-select
-          v-model="selectVal"
-          placeholder="Select"
-        >
-          <el-option-group
-            v-for="group in selectOpts"
-            :key="group.label"
-            :label="group.label"
-          >
-            <el-option
-              v-for="item in group.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-option-group>
-        </el-select>
-      </el-row>
-
-      <div>
-        <h4>
-          {{ values.title}}
-        </h4>
-        <div v-html="values.content.html" />
+      <div class="second-containerbox">
+        <portal-help :multiContent="portalHelp.values"></portal-help>
       </div>
+      
+      <div class="third-containerbox">
+        <div class="t-title">
+          {{ content.values.title}}
+        </div>
+        <div class="t-content" v-html="content.values.content.html" />
+        <div class="hyperlink">
+          <a href="" target="_blank">
+            FIND OUT MORE ABOUT THE 12 LABOURS PROJECT
+          </a>
+        </div>
+      </div>
+      <div class="fourth-containerbox">
+        <latest-news :news-list="topNews.newsList" hide-bg-color/>
+     </div>      
+       
     </div>
   </div>
 </template>
 
 <script>
 import graphcmsQuery from '@/services/graphcmsQuery'
+import PotalHelp from '@/components/PortalHelp/PortalHelp.vue'
+// import LatestNews from '@/components/LatestNews.vue'
 
 export default {
   name: 'App',
-
-  async asyncData({$graphcms}) {
-    return await graphcmsQuery.content($graphcms, 'about');
+  components: {
+    PotalHelp,
+    // LatestNews
+  },
+   async asyncData({$graphcms}) {
+    const content= await graphcmsQuery.content($graphcms, 'about');    
+    const portalHelp= await graphcmsQuery.portalHelp($graphcms, 'portal_help'); 
+    const topNews= await graphcmsQuery.topNews($graphcms, 3);    
+    return {content,portalHelp,topNews}
   },
 
   data() {
     return {
-      value1: '',
-      options: [{
-        value: 'Option1',
-        label: 'Option1'
-      }, {
-        value: 'Option2',
-        label: 'Option2'
-      }, {
-        value: 'Option3',
-        label: 'Option3'
-      }, {
-        value: 'Option4',
-        label: 'Option4'
-      }, {
-        value: 'Option5',
-        label: 'Option5'
-      }],
-      value: '',
-      activeTab: 'upcoming',
-      tabs: [
-        {
-          label: 'Upcoming',
-          type: 'upcoming'
-        },
-        {
-          label: 'Past',
-          type: 'past'
-        }
-      ],
-      pageSize: 10,
-      pageCount: 100,
-      radioData: [
-        {
-          label: 1,
-          display: "one"
-        },
-        {
-          label: 2,
-          display: "two",
-          disabled: true
-        },
-        {
-          label: 3,
-          display: "three"
-        },
-        {
-          label: 4,
-          display: "four"
-        },
-        {
-          label: 5,
-          display: "five"
-        }
-      ],
-      radioVal: '',
-      tooltipDirs: [
-        'top-left',
-        'top-center',
-        'top-right',
-        'left-top',
-        'left-center',
-        'left-bottom',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right',
-        'right-top',
-        'right-center',
-        'right-bottom'
-      ],
-      selectVal: [],
-      selectOpts: [
-        {
-          label: 'Group 1',
-          options: [
-            {
-              value: 'Option1',
-              label: 'Option 1'
-            },
-            {
-              value: 'Option2',
-              label: 'Option 2'
-            },
-          ]
-        },
-        {
-          label: 'Group 2',
-          options: [
-            {
-              value: 'Option3',
-              label: 'Option 3'
-            },
-            {
-              value: 'Option4',
-              label: 'Option 4'
-            },
-          ]
-        },
-      ]
+
     }
-  },
-  methods: {
-    onPaginationChange: function(page) {
-      console.log("page: " + page)
-    },
-    updatePageSize: function(limit) {
-      this.pageSize = limit === 'View All' ?  100 : limit
-      this.pageCount = limit === 'View All' ?  100 : limit
-    }
+    
   }
 }
 </script>
 
 <style lang="scss">
-.content-body {
-  padding-top: 1em;
+
+.first-containerbox{
+  display: flex;
+  flex-direction: row;
+  height: 806px;
+  justify-content:flex-end;
+  background: #F8F8F8 0% 0% no-repeat padding-box;
+  .firstbox{
+    margin-top:205px;
+    margin-right:13.6%;
+    width: 710px;
+    height: 243px;
+    background: #00467F 0% 0% no-repeat padding-box;
+    border-radius: 20px;
+    opacity: 1;
+    .box-title{
+      margin: 32px 36px 35px 40px;
+      align-self: center;
+      width: 634px;
+      height: 176px;
+      text-align: left;
+      font: normal normal bold 40px/44px Arimo;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      opacity: 1;
+    }
+  }
 }
-.radio-group {
+
+.third-containerbox{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin-left: 10px;
-  margin-top: 10px;
+  align-items: center;
+  background: #F8F8F8 0% 0% no-repeat padding-box;
+  height: 293px;
+  .t-title{
+    align-self: center;
+    margin-top: 40px;
+    width: 543px;
+    height: 33px;
+    text-align: center;
+    font: normal normal bold 30px/34px Arimo;
+    letter-spacing: 0px;
+    color: #00467F;
+    opacity: 1;
+  }
+  .t-content{
+    align-self: center;
+    margin-top:32px;
+    width: 1240px;
+    height: 116px;
+    text-align: left;
+    font: normal normal normal 18px/24px Arimo;
+    letter-spacing: 0px;
+    color: #262626;
+    opacity: 1;
+      p{
+      margin: 0 0 1rem !important;
+    }
+  }
+  .hyperlink{
+    margin-top: 16px;
+    margin-bottom: 40px;
+    width: 1240px;
+    height: 16px;
+    text-align: right;
+    text-decoration: underline;
+    font: normal normal 600 14px/24px Arimo;
+    letter-spacing: 0px;
+    color: #D11241;
+    opacity: 1;
+    }
 }
+// .fourth-containerbox{
+//   background: red 0% 0% no-repeat padding-box !important;
+//   opacity: 1;
+// }
+
+
+      
 
 </style>

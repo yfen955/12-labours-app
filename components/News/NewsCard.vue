@@ -2,7 +2,7 @@
     <div class="news-item-container">
         <div class="news-item-card">
             <div class="news-item-card__image">
-                <img :src="newsItem.image.url"></img>
+                <img :src="newsItem.image.url" />
             </div>
             <div class="news-item-card__title">
                 <h3>{{newsItem.title}}</h3>
@@ -13,7 +13,11 @@
                 </span>
             </div>
             <div class="news-item-card__button">
-                <el-button>READ MORE</el-button>
+                <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug, item:newsItem}}">
+                    <el-button>
+                        READ MORE
+                    </el-button>
+                </nuxt-link>
             </div>
         </div>
     </div>

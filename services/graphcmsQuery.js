@@ -15,8 +15,81 @@ async function content(graphcms, name) {
       }
     }
   ` 
+  return await graphcms.request(query,  variables);
+}
 
-  return await graphcms.request(query, variables);
+
+async function multiContent(graphcms, name) {
+  const variables = {
+    "name": name
+  }
+
+    const query1 = gql`
+      query ($name: String!) {
+        values: multiContent(where: {name: $name}) {
+          contents {
+            html
+          }
+          title
+        }
+      }
+    `
+    return await graphcms.request(query1,  variables);
+}
+
+async function projectInformation(graphcms, name) {
+  const variables = {
+    "name": name
+  }
+
+    const query2 = gql`
+      query ($name: String!) {
+        values: projectInformation(where: {name: $name}) {
+          content {
+            html
+          }
+          title,
+          button
+        }
+      }
+    `
+    return await graphcms.request(query2,  variables);
+}
+
+async function partnerShips(graphcms, name) {
+  const variables = {
+    "name": name
+  }
+
+    const query3 = gql`
+      query ($name: String!) {
+        values: multiContent(where: {name: $name}) {
+          contents {
+            html
+          }
+          title
+        }
+      }
+    `
+    return await graphcms.request(query3,  variables);
+}
+
+async function portalHelp(graphcms, name) {
+  const variables = {
+    "name": name
+  }
+
+    const query4 = gql`
+      query ($name: String!) {
+        values: multiContent(where: {name: $name}) {
+          contents {
+            html
+          }
+          title
+        }
+      }
+    `
+    return await graphcms.request(query4,  variables);
 }
 
 
@@ -40,14 +113,15 @@ async function banner(graphcms, name) {
 
 async function topNews(graphcms, fetchCount) {
   const variables = {
-    "fetchCount": fetchCount
+    "fetchCount":  fetchCount
   }
   const query = gql`
-    query ($fetchCount: Int!) {
+    query ($fetchCount: Int) {
       newsList:  newsItems(
-        orderBy: publishedDate_DESC
         first: $fetchCount
-      ) {
+        orderBy: publishedDate_DESC
+      ) 
+      {
         publishedDate
         title
         image{
@@ -64,6 +138,21 @@ async function topNews(graphcms, fetchCount) {
   ` 
   return await graphcms.request(query, variables);
 }
+
+async function newsCategory(graphcms) {
+
+  const query = gql`
+    query introspectNewsCategoryType {
+      __type(name: "NewsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 
 async function topEvents(graphcms, fetchCount) {
   const variables = {
@@ -95,9 +184,45 @@ async function topEvents(graphcms, fetchCount) {
   return await graphcms.request(query, variables);
 }
 
+
+async function eventsCategory(graphcms) {
+
+  const query = gql`
+    query introspectEventsCategoryType {
+      __type(name: "EventsCategory") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
+async function feedbackReason(graphcms) {
+
+  const query = gql`
+    query introspectFeedbackReasonType {
+      __type(name: "FeedbackReason") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
 export default {
   content,
+  multiContent,
+  projectInformation,
+  partnerShips,
+  portalHelp,
   topNews,
+  newsCategory,
   topEvents,
-  banner
+  eventsCategory,
+  banner,
+  feedbackReason
 }
