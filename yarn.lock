@@ -10744,8 +10744,10 @@ vue-server-renderer@^2.6.12:
     serialize-javascript "^3.1.0"
     source-map "0.5.6"
 
-"vue-sphinx-xml@file:../../../cellml/website/vue-sphinx-xml":
-  version "0.4.1"
+vue-sphinx-xml@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/vue-sphinx-xml/-/vue-sphinx-xml-0.4.2.tgz#90e4cd9aa5a3ba185d49a57d0888e56a302cf205"
+  integrity sha512-1VlbfGFXGzZqiI4isKGu/u8CR31lhPqhG2pdtcPXo6jX3JuoN1vd7mdtBzPCDBeGYrlyqZE+v3z+ZHvRLTCrIg==
   dependencies:
     axios "^0.21.4"
     core-js "^3.6.5"
@@ -10777,7 +10779,7 @@ vue-svgicon@^3.2.9:
     tslib "^1.9.3"
     yargs "^12.0.1"
 
-vue-template-compiler@^2.6.12, vue-template-compiler@^2.6.14, vue-template-compiler@^2.x:
+vue-template-compiler@^2.6.12, vue-template-compiler@^2.6.14:
   version "2.6.14"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.14.tgz#a2f0e7d985670d42c9c9ee0d044fed7690f4f763"
   integrity sha512-ODQS1SyMbjKoO1JBJZojSw6FE4qnh9rIpUZn2EUT86FKizx9uH5z6uXiIrm4/Nb/gwxTi/o17ZDEGWAXHvtC7g==
