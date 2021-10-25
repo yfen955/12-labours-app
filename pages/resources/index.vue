@@ -7,7 +7,7 @@
     <div class="page-wrap">
       <div class="container">
         <client-only>
-          <sphinx-page baseURL="/docs" />
+          <sphinx-page :baseURL="xmlURL" />
         </client-only>
       </div>
     </div>
@@ -31,6 +31,7 @@ export default {
           label: "HOME",
         },
       ],
+      xmlURL: process.env.twelve_labours_xml
     };
   },
 };
