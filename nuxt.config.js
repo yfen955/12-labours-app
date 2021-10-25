@@ -23,6 +23,8 @@ export default {
       process.env.SOCIAL_LINKEDIN || "https://www.linkedin.com/12-labours",
     social_youYube:
       process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours",
+    twelve_labours_xml:
+      process.env.TWELVE_LABOURS_XML,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

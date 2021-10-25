@@ -4,9 +4,13 @@
       :breadcrumb="breadcrumb"
       :title="pageTitle.toUpperCase()"
     />
-    <client-only>
-      <sphinx-page baseURL="/docs" />
-    </client-only>
+    <div class="page-wrap">
+      <div class="container">
+        <client-only>
+          <sphinx-page :baseURL="xmlURL" />
+        </client-only>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,9 +31,12 @@ export default {
           label: "HOME",
         },
       ],
+      xmlURL: process.env.twelve_labours_xml
     };
   },
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@import '@/assets/_layout.scss';
+</style>
