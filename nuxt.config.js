@@ -55,11 +55,24 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [],
 
+  //Replace the route path for resources to work with vue-sphinx-xml.
+  router: {
+    extendRoutes(routes, resolve) {
+      for (let i = 0; i < routes.length; i++) {
+        if (routes[i].name === "resources") {
+          routes[i].path = "/resources/:pageName*"
+          return
+        }
+      }
+    }
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources", "~/modules/routes.js"],
+  modules: ["@nuxtjs/style-resources"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
   },
 };
+
