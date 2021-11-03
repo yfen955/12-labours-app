@@ -381,21 +381,6 @@ export default {
         }
     }
 
-    .top-heading{ 
-        padding-top:40px;
-        padding-bottom:32px;   
-        text-align: center; 
-        h1{
-            margin:0px;
-        }
-    }
-   
-   /*
-    ::v-deep .el-select .el-input__inner{
-        width: 600px;
-       
-    }*/
-    
     ::v-deep .el-input__inner {
         width: 320px;   
     }

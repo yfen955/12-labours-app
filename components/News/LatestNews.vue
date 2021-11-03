@@ -54,18 +54,6 @@ export default {
         padding-left:60px;
         padding-right:60px;
         background-color:$background;
-
-        h1{
-            margin:0px;
-            line-height:34px;
-        }
-    }
-
-    .top-heading{ 
-        width:100%;
-        padding-top:40px;
-        padding-bottom:32px;
-        text-align: center; 
     }
 
     .news-items{

@@ -96,17 +96,8 @@ export default {
 
     .transparent{
       background-color:$cochlear;
-       padding-left:60px;
+      padding-left:60px;
       padding-right:60px;
-    }
-
-    .top-heading{ 
-      padding-top:40px;
-      padding-bottom:32px;   
-      text-align: center; 
-      h1{
-          margin:0px;
-      }
     }
 
     .terms-text{

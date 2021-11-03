@@ -124,17 +124,6 @@ export default {
     padding-right:60px;
   }
 
-  .top-heading{ 
-    width:100%;
-    padding-top:40px;
-    padding-bottom:32px;    //TBC  - 40
-    text-align: center; 
-    h1{
-        margin:0px;
-        line-height:34px;
-      }
-    }
-
   .category-tab{
       margin-top:12px;    
       padding-left:32px;   
