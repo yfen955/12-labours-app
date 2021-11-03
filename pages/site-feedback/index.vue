@@ -1,13 +1,13 @@
 <template>
-  <div class="site-feedback-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-            <div class="feedback-description">
+            <div class="feedback-description container-default">
                 <div class="top-heading">
                     <h1>
                         SITE FEEDBACK
                     </h1>
                 </div> 
-                <div class="feedback-text">                 
+                <div class="feedback-text  container-default">                 
                     Use the form below to submit your feedback.<br/><br/>                    
                     Site feedback includes: Reporting bug, missing information, incorrect information or feature requests.<br/><br/>
                     For all other queries about the 12 Labours Portal please use the <nuxt-link to="/contact-us">Contact us</nuxt-link> form.
@@ -299,14 +299,8 @@ export default {
 
 <style scoped lang="scss">
 
-    .site-feedback-page{
-        width:100%;
-    }
-
     .feedback-description{
-        background-color:$background;
-        padding-right:60px;
-        padding-left:60px;  
+        background-color:$background; 
         background-image: url("~static/img/researcher-doctor.png");
         background-repeat: no-repeat;
         background-position:right 124px top 50px;
@@ -324,9 +318,6 @@ export default {
     }
 
     .feedback-form{
-        padding-right:60px;
-        padding-left:60px;  
-
         .form-container{
             padding-left:32px;
             padding-right:16px;

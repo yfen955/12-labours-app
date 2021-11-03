@@ -1,8 +1,8 @@
 <template>
-  <div class="news-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values"/>
-    <div class="news-container">
+    <div class="news-container container-default">
         <div class="top-heading">
             <h1>
                 NEWS
@@ -113,15 +113,9 @@ export default {
 
 <style scoped lang="scss">
 
-  .news-page{
-    width:100%;
-  }
-  
   .news-container{
     display:flex;
     flex-direction:column;
-    padding-left:60px;
-    padding-right:60px;
   }
 
   .category-tab{
@@ -141,7 +135,7 @@ export default {
   }
 
   .paginator{
-    margin-top:24px;   //TBC  //7
+    margin-top:24px;   
     margin-bottom:40px;
     display:flex;
     justify-content:center;

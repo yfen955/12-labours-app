@@ -1,5 +1,5 @@
 <template>
-    <div class="news-container" :style="this.hideBgColor? bgStyle : ''">
+    <div class="news-container container-default" :style="this.hideBgColor? bgStyle : ''">
         <div class="top-heading">
             <h1>
                 LATEST NEWS
@@ -51,8 +51,6 @@ export default {
     .news-container{
         display:flex;
         flex-direction:column;
-        padding-left:60px;
-        padding-right:60px;
         background-color:$background;
     }
 

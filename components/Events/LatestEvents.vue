@@ -1,5 +1,5 @@
 <template>
-    <div class="events-container">
+    <div class="events-container container-default">
         <div class="top-heading">
             <h1>
                 LATEST EVENTS
@@ -102,20 +102,6 @@ export default {
     .events-container{
         display:flex;
         flex-direction:column;
-        padding-left:60px;
-        padding-right:60px;
-
-        h1,h2,h4{
-        margin:0px;
-        line-height:34px
-        }
-    }
-
-    .top-heading{   
-        width:100%;
-        padding-top:40px;
-        padding-bottom:32px;
-        text-align: center; 
     }
 
     .latest-events{

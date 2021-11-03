@@ -3,7 +3,7 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values" height="480px"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
-      <div class="default-inner">                 
+      <div class="inner-with-gap">                 
         There are two ways to discover data and models within the 12 Labours portal.
         <ul>  
           <li>Interactive viewer - allows you to traverse a 3D scaffold of the human body and drill down across the multiple levels of physiological modelling.</li>
