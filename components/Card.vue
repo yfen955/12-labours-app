@@ -1,0 +1,81 @@
+<template>
+    <div class="card-container curved-box">
+        <div class="card">          
+            <h2>{{specs.title.toUpperCase()}}</h2>
+            <div class="image-frame">
+                <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
+            </div>           
+            <div class="detail">
+                <span>
+                    {{specs.detail}}
+                </span>
+            </div>
+            <div class="nav-button">
+                <a v-if="specs.btnLink.external" :href="specs.btnLink.to" target="_blank">
+                    <el-button>
+                        {{specs.btnLink.caption.toUpperCase()}}
+                    </el-button>
+                </a>
+                <nuxt-link v-else :to="specs.btnLink.to">
+                    <el-button>
+                        {{specs.btnLink.caption.toUpperCase()}}
+                    </el-button>
+                </nuxt-link>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script>
+
+  export default {
+    name: 'Card',
+
+    props: {
+        specs: {
+            default: () => {},
+            required: true
+        }
+   }
+}
+</script>
+
+<style scoped lang="scss">
+    .card-container{
+        display:flex;
+        width: 346px;
+        height: 524px;
+    }
+
+    .card{
+        display:flex;
+        flex-direction:column;
+        align-items:center;       
+        margin:20px 18px;
+        width:100%;
+    }
+
+    .image-frame{
+        padding-top:22px;
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
+    #img-user{
+        width:190px;
+        height:240px;
+        display: block;
+    }
+
+    .detail{
+        padding:18px 4px;
+        width:100%;
+    }
+
+    .nav-button{
+        margin-top:auto;
+    }
+
+</style>
+
