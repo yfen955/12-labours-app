@@ -36,6 +36,7 @@ export default {
   styleResources: {
     scss: [
       "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss",
+      "@/assets/_common.scss",
     ],
   },
 
@@ -49,7 +50,7 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: {
-    dirs: ["~/components", "~/components/News", "~/components/Events"],
+    dirs: ["~/components", "~/components/News", "~/components/Events","~/components/Data"],
   },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
