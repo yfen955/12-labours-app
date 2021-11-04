@@ -1,5 +1,5 @@
 <template>
-    <div class="news-item-container">
+    <div class="news-item-container curved-box">
         <div class="news-item-card">
             <div class="news-item-card__image">
                 <img :src="newsItem.image.url" />
@@ -42,10 +42,6 @@ export default {
     .news-item-container{
         width: 367px;
         height: 530px;
-        background: #FFFFFF 0% 0% no-repeat padding-box;
-        box-shadow: 0px 2px 5px #0000001A;
-        border: 1px solid $lineColor1;
-        border-radius: 20px;
         display:flex;
 
         h3{
