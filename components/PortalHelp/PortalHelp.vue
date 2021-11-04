@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'Portalhelp',
+  name: 'PortalHelp',
 
   props: {
     hideBgColor:{
