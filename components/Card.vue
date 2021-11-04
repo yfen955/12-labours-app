@@ -26,7 +26,6 @@
     </div>
 </template>
 
-
 <script>
 
   export default {
@@ -51,9 +50,11 @@
     .card{
         display:flex;
         flex-direction:column;
-        align-items:center;       
-        margin:20px 18px;
-        width:100%;
+        align-items:center;      
+        padding-top:20px;
+        padding-bottom:30px;
+        padding-left: 18px;
+        padding-right:18px;
     }
 
     .image-frame{
@@ -69,8 +70,8 @@
     }
 
     .detail{
-        padding:18px 4px;
-        width:100%;
+        padding-top:12px;
+        padding-bottom: 20px;
     }
 
     .nav-button{
