@@ -11,10 +11,10 @@
         </ul>
         <div class="data-explorer">
           <div class="item">
-            <interactive-viewer/>
+            <card-small :specs="interactiveViewerSpecs"/>
           </div>
           <div class="item">
-            <data-browser/>
+            <card-small :specs="dataBrowserSpecs"/>
           </div>
         </div>
       </div>           
@@ -44,7 +44,19 @@ export default {
           },
           label: "HOME",
         }
-      ]
+      ],
+      interactiveViewerSpecs:{
+        title:'Interactive Viewer',
+        imgFile:'patient-in-frame.png',
+        detail:'  View the interactive 3D scaffold',
+        btnLink:{caption:'Launch Interactive Viewer', to:'https://sparc.science/maps', external:true}
+      },
+      dataBrowserSpecs:{
+        title:'data browser',
+        imgFile:'researcher-in-frame.png',
+        detail:'Browse data and models.',
+        btnLink:{caption:'View Data Browser', to:'/'}
+      }
     }
   }
 }
