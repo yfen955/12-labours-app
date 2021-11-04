@@ -1,5 +1,5 @@
 <template>
-  <div class="terms-of-service-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
       <div class="shaded with-background-image">
         <div class="top-heading">
@@ -54,15 +54,15 @@ export default {
     },
 
     data: () => {
-        return {      
-            pageTitle: 'TERMS OF SERVICE',
-            breadcrumb: [
-                {
-                    to: { name: 'index'},
-                    label: 'HOME'
-                }
-            ]
-        }
+      return {      
+        pageTitle: 'TERMS OF SERVICE',
+        breadcrumb: [
+            {
+            to: { name: 'index'},
+            label: 'HOME'
+            }
+        ]
+      }
     },
 
     created(){
@@ -78,13 +78,9 @@ export default {
 
 <style scoped lang="scss">
 
-    .terms-of-service-page{
-      width:100%;
-    }
     .shaded{
+      @extend .container-default;
       background-color:$background;
-      padding-left:60px;
-      padding-right:60px;
 
       &.with-background-image{
         background-image: url("~static/img/researcher-doctor.png");
@@ -95,18 +91,8 @@ export default {
     }
 
     .transparent{
+      @extend .container-default;
       background-color:$cochlear;
-       padding-left:60px;
-      padding-right:60px;
-    }
-
-    .top-heading{ 
-      padding-top:40px;
-      padding-bottom:32px;   
-      text-align: center; 
-      h1{
-          margin:0px;
-      }
     }
 
     .terms-text{

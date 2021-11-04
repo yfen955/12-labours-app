@@ -43,17 +43,12 @@ export default {
         width: 367px;
         height: 530px;
         display:flex;
-
-        h3{
-        margin:0px;
-        }
     }
 
     .news-item-card{
         display:flex;
         flex-direction:column;
-        align-items:center;
-        justify-content:flex-start;      
+        align-items:center;   
         margin:24px 35px;
         width:100%;
         text-align:center;

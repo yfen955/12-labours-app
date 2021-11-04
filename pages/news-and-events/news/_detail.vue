@@ -1,5 +1,5 @@
 <template>
-    <div class="news-detail-page">
+    <div class="page-outer">
         <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()"/>
          <div class="detail-container">          
             <img :src="newsItem.image.url" class="news-image"></img>         
@@ -67,10 +67,6 @@ export default {
 
 <style scoped lang="scss">
 
-    .news-detail-page{
-        width:100%;   
-    }
-
     .detail-container{
         display:flex;
         flex-direction:column;
@@ -86,9 +82,6 @@ export default {
     .news-title{
         margin-top:25px;
         margin-bottom:10px;
-        h1{
-            margin:0px;
-        }
     }
 
     .date-social{

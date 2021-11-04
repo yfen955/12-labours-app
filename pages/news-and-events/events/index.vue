@@ -1,8 +1,8 @@
 <template>
-  <div class="events-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values"/>
-    <div class="event-container">
+    <div class="event-container container-default">
         <div class="top-heading">
             <h1>
                 EVENTS 
@@ -113,27 +113,10 @@ export default {
 
 <style scoped lang="scss">
 
-  .events-page{
-    width:100%;
-  }
-  
   .event-container{
     display:flex;
     flex-direction:column;
-    padding-left:60px;
-    padding-right:60px;
   }
-
-  .top-heading{ 
-    width:100%;
-    padding-top:40px;
-    padding-bottom:32px;    
-    text-align: center; 
-    h1{
-        margin:0px;
-        line-height:34px;
-      }
-    }
 
   .category-tab{
       margin-top:12px;    

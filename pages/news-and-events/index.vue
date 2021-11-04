@@ -1,5 +1,5 @@
 <template>
-  <div class="news-and-events-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values"/>
     <latest-news :newsList="topNews.newsList"/>  
@@ -36,11 +36,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-  .news-and-events-page{
-    width:100%;
-  }
-  
-</style>

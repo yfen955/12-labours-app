@@ -1,5 +1,5 @@
 <template>
-    <div class="event-detail-page">
+    <div class="page-outer">
         <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()"/>
          <div class="detail-container">          
             <img :src="eventItem.image.url" class="event-image"></img>         
@@ -79,10 +79,6 @@ export default {
 
 <style scoped lang="scss">
 
-    .event-detail-page{
-        width:100%;   
-    }
-
     .detail-container{
         display:flex;
         flex-direction:column;
@@ -98,9 +94,6 @@ export default {
     .event-title{
         margin-top:25px;
         margin-bottom:10px;
-        h1{
-            margin:0px;
-        }
     }
 
     .date-social{
