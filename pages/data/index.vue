@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values" height="480px"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
