@@ -1,6 +1,6 @@
 <template>
-    <div class="card-container curved-box">
-        <div class="card">   
+    <div class="card-container flex-box curved-box">
+        <div class="card flex-box">   
             <div class="image-frame">
                 <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
             </div>   
@@ -44,13 +44,12 @@
   </script>
   
   <style scoped lang="scss">
-      .card-container{
-        display:flex;       
+
+    .card-container{    
         height: 215px;
     }
   
     .card{
-        display:flex;
         align-items:center;       
         margin:24px 32px;
         width:100%;

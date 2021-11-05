@@ -1,14 +1,14 @@
 <template>
-    <div class="events-container container-default">
+    <div class="container-default vertical-flex">
         <div class="top-heading">
             <h1>
                 LATEST EVENTS
             </h1>
         </div>
-        <div class="latest-events">
+        <div class="default-inner flex-box">
           <div class= "latest-events__main">
             <div class="main-box-container">
-                <div class="main-box">
+                <div class="main-box vertical-flex curved-box">
                     <div class="main-box__image-box">
                         <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
                     </div>
@@ -30,8 +30,8 @@
                 </div>
             </div>
         </div>
-        <div class= "latest-events__upcoming">
-            <div class="upcoming-box">
+        <div class= "latest-events__upcoming flex-box">
+            <div class="upcoming-box vertical-flex">
                 <h2>UPCOMING EVENTS</h2>
                 <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList" :key="eventsItem.index">
                     <div :style="index === 0? itemStyle : '' " class="grid-item">
@@ -99,32 +99,11 @@ export default {
 
 <style scoped lang="scss">
 
-    .events-container{
-        display:flex;
-        flex-direction:column;
-    }
-
-    .latest-events{
-        display:flex;
-        justify-content:flex-start;       
-        padding-left:32px;
-        padding-right:32px;
-        margin-bottom:32px;
-    }
-
     .latest-events__main{
         width: 50%;
     }
 
     .main-box{     
-            background: #FFFFFF 0% 0% no-repeat padding-box;
-            box-shadow: 0px 2px 5px #0000001A;
-            border: 1px solid $lineColor1;
-            display:flex;    
-            flex-direction:column;
-            justify-content:flex-start;
-            border-radius: 20px; 
-
             padding-top:24px;            
             padding-left:36px;    
             padding-right:36px;    
@@ -135,11 +114,11 @@ export default {
             &__image-box{   
                 display:flex;    
                 justify-content:center; 
-                margin-bottom:16px;  //TBC
+                margin-bottom:16px;  
 
                 img{
                     width:292px;
-                    height:170px;    //TDC, given is 262 
+                    height:170px;   
                 }
             }
 
@@ -173,19 +152,13 @@ export default {
 
     .latest-events__upcoming{
         width:50%;
-        display:flex;
-        justify-content: flex-start;
     }
 
     .upcoming-box{           
-        display:flex;  
-        width:100%;  
-        flex-direction:column;
-        justify-content:flex-start;    
-        margin-top:16px;
 
-        margin-left:32px;  //TBC
-        margin-right:16px; //TBC
+        margin-top:16px;
+        margin-left:32px;  
+        margin-right:16px; 
        
         &__grid{
             display: grid;

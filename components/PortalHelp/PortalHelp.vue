@@ -5,7 +5,7 @@
         HOW CAN THE PORTAL HELP?
       </h1>
     </div>       
-    <div class="helper cards-in-row">
+    <div class="cards-in-row">
       <card class="item" :specs="helpResearchers"/>
       <card class="item" :specs="helpClinicians"/>
       <card class="item" :specs="helpPatients"/>
@@ -56,9 +56,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-  .helper{
-    padding-bottom:40px;
-  }
-</style>

@@ -2,7 +2,7 @@
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values"/>
-    <div class="event-container container-default">
+    <div class="container-default vertical-flex">
         <div class="top-heading">
             <h1>
                 EVENTS 
@@ -15,7 +15,7 @@
           @tabClick="onTabClick($event)"
         />
         </div>      
-        <div class="event-items">
+        <div class="event-items vertical-flex">
             <div v-for="eventItem in pagedEvents"  class="event-items__item">
               <event-item :event-item="eventItem"/>
             </div>
@@ -113,11 +113,6 @@ export default {
 
 <style scoped lang="scss">
 
-  .event-container{
-    display:flex;
-    flex-direction:column;
-  }
-
   .category-tab{
       margin-top:12px;    
       padding-left:32px;
@@ -125,8 +120,6 @@ export default {
 
   .event-items{
     width:100%;
-    display:flex;   
-    flex-direction:column;   
 
     .event-items__item{
       padding-left:32px;
@@ -135,8 +128,7 @@ export default {
   }
 
   .paginator{
-    margin-top:24px;   //TBC  //7
-    margin-bottom:40px;
+    margin-top:24px;  
     display:flex;
     justify-content:center;
   }

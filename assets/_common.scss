@@ -3,8 +3,9 @@
 }
 
 .container-default{
-  padding:0px 60px;
+  padding:40px 60px;
 }
+
 
 .default-inner{
   padding: 0px 32px;
@@ -31,7 +32,7 @@ h1,h2,h4{
 }
 
 .top-heading{ 
-  padding-top:40px;
+  //padding-top:40px;
   padding-bottom:32px;
   text-align: center; 
 }
@@ -40,18 +41,21 @@ h1,h2,h4{
   background-color:$background;
 }
 
+.flex-box{
+  display: flex;
+}
+
 .vertical-flex{
   display:flex;
   flex-direction:column;
 }
 
 .cards-in-row{
-  width:100%;
   display:flex;      
   justify-content:space-between;      
   align-items: center;
   .item{
-    padding-left:19px;
-    padding-right:19px;
+    padding-left:18px;
+    padding-right:18px;
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="page-outer">
         <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()"/>
-         <div class="detail-container">          
+         <div class="detail-container vertical-flex">          
             <img :src="newsItem.image.url" class="news-image"></img>         
              <div class="news-title">
                 <h1>{{newsItem.title}}</h1>
@@ -68,8 +68,6 @@ export default {
 <style scoped lang="scss">
 
     .detail-container{
-        display:flex;
-        flex-direction:column;
         margin:32px 310px;       
     }
 
@@ -99,10 +97,10 @@ export default {
 
     .news-detail{
         padding-top:32px;
-        padding-bottom:25px;        //TBC
+        padding-bottom:25px;        
         border-top: 1px solid $lineColor1;
         border-bottom: 1px solid $lineColor1;
-        margin-bottom:20px;     //TBC
+        margin-bottom:20px;     
     }
 
     .back-to-news{

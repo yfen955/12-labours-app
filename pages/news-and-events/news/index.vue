@@ -2,7 +2,7 @@
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
     <banner :banner-data="banner.values"/>
-    <div class="news-container container-default">
+    <div class="container-default vertical-flex">
         <div class="top-heading">
             <h1>
                 NEWS
@@ -15,7 +15,7 @@
           @tabClick="onTabClick($event)"
         />
         </div>      
-        <div class="news-items">
+        <div class="news-items vertical-flex">
             <div v-for="newsItem in pagedNews"  class="news-items__item">
               <news-item :news-item="newsItem"/>
             </div>
@@ -113,11 +113,6 @@ export default {
 
 <style scoped lang="scss">
 
-  .news-container{
-    display:flex;
-    flex-direction:column;
-  }
-
   .category-tab{
       margin-top:12px;    
       padding-left:32px;   
@@ -125,8 +120,6 @@ export default {
 
   .news-items{
     width:100%;
-    display:flex;   
-    flex-direction:column;   
 
     .news-items__item{
       padding-left:32px;
@@ -136,7 +129,6 @@ export default {
 
   .paginator{
     margin-top:24px;   
-    margin-bottom:40px;
     display:flex;
     justify-content:center;
   }

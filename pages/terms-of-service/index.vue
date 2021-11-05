@@ -1,16 +1,15 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-      <div class="shaded with-background-image">
+      <div class="container-default shaded with-background-image">
         <div class="top-heading">
           <h1>
             TERMS OF SERVICE
           </h1>
         </div>
-        <div class="terms-text with-bg-image" v-html="termsOfService">                             
-        </div> 
+        <div class="terms-text--with-bg-image" v-html="termsOfService"/>
       </div>  
-      <div class="transparent">
+      <div class="container-default">
         <div class="top-heading">
           <h1>
             DEFINITIONS
@@ -19,7 +18,7 @@
         <div class="terms-text" v-html="definitions">                  
         </div> 
       </div>
-      <div class="shaded">
+      <div class="container-default shaded">
         <div class="top-heading">
           <h1>
             ACCOUNT TERMS
@@ -30,14 +29,13 @@
             <span v-html="accountTerms2"></span>
         </div> 
       </div>
-      <div class="transparent">
+      <div class="container-default">
         <div class="top-heading">
           <h1>
             USER CODE OF CONDUCT
           </h1>
         </div>
-        <div class="terms-text" v-html="codeOfConduct">                                    
-        </div> 
+        <div class="terms-text" v-html="codeOfConduct"/>                                    
       </div>                          
   </div>
 </template>          
@@ -78,30 +76,19 @@ export default {
 
 <style scoped lang="scss">
 
-    .shaded{
-      @extend .container-default;
-      background-color:$background;
+  .with-background-image{
+    background-image: url("~static/img/researcher-doctor.png");
+    background-repeat: no-repeat;
+    background-position:right 124px top 50px;
+    background-size: 224px 330px;
+  }
 
-      &.with-background-image{
-        background-image: url("~static/img/researcher-doctor.png");
-        background-repeat: no-repeat;
-        background-position:right 124px top 50px;
-        background-size: 224px 330px;
-      }
-    }
-
-    .transparent{
-      @extend .container-default;
-      background-color:$cochlear;
-    }
-
-    .terms-text{
-      padding-left:32px;
-      padding-bottom:40px;
-
-      &.with-bg-image{
+ .terms-text{
+    padding-left:32px;
+      &--with-bg-image{
+        @extend .terms-text;
         padding-right:300px;
-        padding-bottom:160px; 
+        padding-bottom:100px; 
       }
     }
 </style>

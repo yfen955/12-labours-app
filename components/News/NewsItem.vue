@@ -87,7 +87,7 @@ export default {
                 -webkit-box-orient: vertical; 
                 text-overflow: ellipsis;             
                 overflow: hidden;   
-                background-color: white;    
+                background-color: $cochlear;    
             }   
         }      
     }

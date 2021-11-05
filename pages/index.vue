@@ -73,7 +73,6 @@ export default {
 
  .nav-about{
    padding-top:16px;
-   padding-bottom:40px;
    text-align: right; 
    a{font-weight:600}
  }
