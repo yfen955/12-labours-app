@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <portal-help hide-bg-color/> 
+    <portal-help/> 
   </div>
 </template>
 

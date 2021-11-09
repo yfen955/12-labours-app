@@ -21,15 +21,14 @@
   border-radius: 20px;
 }
 
+.top-heading{ 
+  padding-bottom:32px;
+  text-align: center; 
+}
 
 h1,h2,h3,h4{
   margin:0px;
   line-height:34px;
-}
-
-.top-heading{ 
-  padding-bottom:32px;
-  text-align: center; 
 }
 
 .shaded{
@@ -50,14 +49,12 @@ h1,h2,h3,h4{
   justify-content:center;   
   align-items: center;
   column-gap: 32px;
-  .item{
-    min-width: 0;
-  }
 }
 
 //** Must go to DSC **//
 
 ::v-deep .el-collapse{
+
   border-top: 2px solid $lineColor1;
   &:last-child {
     border-bottom: 2px solid $lineColor1;

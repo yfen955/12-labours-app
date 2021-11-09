@@ -1,6 +1,6 @@
 <template>
-    <div class="news-item-container curved-box">
-        <div class="news-item-card">
+    <div class="news-item-container flex-box curved-box">
+        <div class="news-item-card vertical-flex">
             <div class="news-item-card__image">
                 <img :src="newsItem.image.url" />
             </div>
@@ -40,14 +40,11 @@ export default {
 <style scoped lang="scss">
 
     .news-item-container{
-        width: 367px;
+        max-width: 367px;
         height: 530px;
-        display:flex;
     }
 
     .news-item-card{
-        display:flex;
-        flex-direction:column;
         align-items:center;   
         margin:24px 35px;
         width:100%;
