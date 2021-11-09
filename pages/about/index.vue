@@ -49,9 +49,14 @@
       <h1 class="top-heading">
         {{partners.title.toUpperCase()}}
       </h1>
-      <div class="default-inner shaded vertical-flex">
-        <span v-html="partners.contents[0].html"/>
-        <span v-html="partners.contents[1].html"/>
+      <div class="flex-box">
+        <div class="default-inner shaded vertical-flex">
+          <span v-html="partners.contents[0].html"/>
+          <span v-html="partners.contents[1].html"/>
+        </div>
+        <div class="partners-img">
+          <img src="~static/img/researcher-doctor.png"/>
+        </div>
       </div>
     </div>
   </div>
@@ -131,5 +136,13 @@ export default {
   .nav-button{
     padding-left:12px;
     padding-top:16px;
+  }
+
+  .partners-img{
+    padding:0px 54px;
+    img{
+      height:322px;
+      width:245px;
+    }
   }
 </style>
