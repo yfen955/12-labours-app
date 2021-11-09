@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .test{    ////???????
-  
-  }
+
+  .test{}    /*** Empty CSS to handle bug on dependency: 'Some styles used above won't work without this empty CSS'  ***/
+
 </style>
