@@ -32,7 +32,7 @@
 <script>
 
     export default {
-      name: 'Card',
+      name: 'CardSmall',
   
       props: {
           specs: {
