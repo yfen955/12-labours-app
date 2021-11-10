@@ -1,7 +1,7 @@
 <template>
     <div class="page-outer">
         <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()"/>
-         <div class="detail-container">          
+        <div class="detail-container vertical-flex">          
             <img :src="eventItem.image.url" class="event-image"></img>         
              <div class="event-title">
                 <h1>{{eventItem.title}}</h1>
@@ -80,8 +80,6 @@ export default {
 <style scoped lang="scss">
 
     .detail-container{
-        display:flex;
-        flex-direction:column;
         margin:32px 310px;       
     }
 

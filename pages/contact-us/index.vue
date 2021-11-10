@@ -94,7 +94,7 @@
           </div>
         </div>
         <div>
-          <portal-help :multiContent="portalHelp.values"></portal-help>
+          <portal-help hide-bg-color/> 
         </div>
       </div>
   </div>
@@ -104,18 +104,12 @@
 import graphcmsQuery from '@/services/graphcmsQuery'
 import ContactForm from "@/components/ContactUsForm/ContactForm.vue";
 import ContactDetail from '@/components/ContactUsForm/ContactDetail.vue';
-import PortalHelp from '@/components/PortalHelp/PortalHelp.vue'
+
 export default {
   name: 'ContactPage',
   components: {
     ContactForm,
     ContactDetail,
-    PortalHelp
-
-  },
-   async asyncData({$graphcms}) {
-    const portalHelp= await graphcmsQuery.portalHelp($graphcms, 'portal_help');
-    return {portalHelp}
   },
 
   data: () => {

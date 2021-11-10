@@ -1,6 +1,6 @@
 <template>
-    <div class="card-container curved-box">
-        <div class="card">          
+    <div class="card-container flex-box curved-box">
+        <div class="card vertical-flex">          
             <h2>{{specs.title.toUpperCase()}}</h2>
             <div class="image-frame">
                 <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
@@ -42,19 +42,17 @@
 
 <style scoped lang="scss">
     .card-container{
-        display:flex;
-        width: 346px;
-        height: 524px;
+        max-width: 346px;
+        height: 530px;
     }
 
     .card{
-        display:flex;
-        flex-direction:column;
         align-items:center;      
         padding-top:20px;
         padding-bottom:30px;
         padding-left: 18px;
         padding-right:18px;
+        width:100%;
     }
 
     .image-frame{
@@ -72,10 +70,15 @@
     .detail{
         padding-top:12px;
         padding-bottom: 20px;
+        width:fit-content;
+        height:116px;
+        width:100%;
+        overflow: hidden;
+        text-overflow: ellipsis; 
     }
 
     .nav-button{
-        margin-top:auto;
+        margin:auto;
     }
 
 </style>

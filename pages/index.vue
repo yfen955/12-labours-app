@@ -7,7 +7,7 @@
         </span>
       </div>
     </div>
-    <portal-help hide-bg-color/> 
+    <portal-help/> 
     <div class="container-default shaded">
       <div class="top-heading">
         <h1>{{content.values.title}}</h1>
@@ -73,7 +73,6 @@ export default {
 
  .nav-about{
    padding-top:16px;
-   padding-bottom:40px;
    text-align: right; 
    a{font-weight:600}
  }

@@ -6,7 +6,7 @@
             </h1>
         </div>       
         <div class="cards-in-row">
-            <div v-for="newsItem in newsList" :key="newsItem.index" class="news-items__item">
+            <div v-for="newsItem in newsList" :key="newsItem.index">
                 <news-card  :newsItem="newsItem"/>
             </div>
         </div>
@@ -48,21 +48,8 @@ export default {
 
 <style scoped lang="scss">
 
-    .news-items{
-        width:100%;
-        display:flex;      
-        justify-content:center;      
-        align-items: center;
-        .news-items__item{
-            padding-left:19px;
-            padding-right:19px;
-        }
-    }
-
     .view-all{
-        width:100%;
         padding-top:38px;
-        padding-bottom:40px;
         text-align: center; 
         a{
             font-weight:600;

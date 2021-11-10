@@ -1,14 +1,14 @@
 <template>
-  <div class="container-default shaded vertical-flex" :style="this.hideBgColor? bgStyle : ''">
+  <div class="container-default">
     <div class="top-heading">
       <h1>
         HOW CAN THE PORTAL HELP?
       </h1>
-    </div>       
-    <div class="helper cards-in-row">
-      <card class="item" :specs="helpResearchers"/>
-      <card class="item" :specs="helpClinicians"/>
-      <card class="item" :specs="helpPatients"/>
+    </div>    
+    <div class="cards-in-row">
+      <card :specs="helpResearchers"/>
+      <card :specs="helpClinicians"/>
+      <card :specs="helpPatients"/>
     </div>
   </div>
 </template>
@@ -16,13 +16,6 @@
 <script>
 export default {
   name: 'PortalHelp',
-
-  props: {
-    hideBgColor:{
-      type:Boolean,
-      default:false
-    }
-  },
 
   data: ()=>{
     return {
@@ -36,7 +29,7 @@ export default {
         title:'Clinicians',
         imgFile:'doctor-in-frame.png',
         detail:'The 12 Labours Portal allows you to access and upload data to visualise results that may aid prognosis and help you to develop your treatment plans.',
-        btnLink:{caption:'Learn about Workflows', to:'/'}
+        btnLink:{caption:'Learn Workflows', to:'/'}
       },
       helpPatients:{
         title:'Patients',
@@ -45,20 +38,12 @@ export default {
         btnLink:{caption:'Learn Health Tracking', to:'/'}
       }
     }
-  },
-
-  computed: {
-    bgStyle () { 
-      return {              
-          'background-color': '#FFFFFF'               
-      }
-    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-  .helper{
-    padding-bottom:40px;
-  }
+
+  .test{}    /*** Empty CSS to handle bug on dependency: 'Some styles used above won't work without this empty CSS'  ***/
+
 </style>
