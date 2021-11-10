@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container flex-box curved-box">
+    <div class="card-container curved-box">
         <div class="card vertical-flex">          
             <h2>{{specs.title.toUpperCase()}}</h2>
             <div class="image-frame">
@@ -52,7 +52,7 @@
         padding-bottom:30px;
         padding-left: 18px;
         padding-right:18px;
-        width:100%;
+        max-width: 346px;
     }
 
     .image-frame{
@@ -70,15 +70,18 @@
     .detail{
         padding-top:12px;
         padding-bottom: 20px;
-        width:fit-content;
+       // width:fit-content;
+        max-width:302px;
         height:116px;
-        width:100%;
         overflow: hidden;
         text-overflow: ellipsis; 
     }
 
     .nav-button{
         margin:auto;
+        .el-button{    
+            padding:6px 10px;        /* Overwrite existing padding to accomodate bigger text */
+        }
     }
 
 </style>

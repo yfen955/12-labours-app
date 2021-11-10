@@ -46,6 +46,7 @@
   <style scoped lang="scss">
 
     .card-container{    
+        max-width:590px;
         height: 215px;
     }
   

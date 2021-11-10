@@ -29,13 +29,13 @@ export default {
         title:'Clinicians',
         imgFile:'doctor-in-frame.png',
         detail:'The 12 Labours Portal allows you to access and upload data to visualise results that may aid prognosis and help you to develop your treatment plans.',
-        btnLink:{caption:'Learn Workflows', to:'/'}
+        btnLink:{caption:'Learn about Workflows', to:'/'}
       },
       helpPatients:{
         title:'Patients',
         imgFile:'patient-in-frame.png',
         detail:'Want to track your health status or set personal health improvement goals? The portal allows you to link your health records with your health devices.',
-        btnLink:{caption:'Learn Health Tracking', to:'/'}
+        btnLink:{caption:'More about Health Tracking', to:'/'}
       }
     }
   }
