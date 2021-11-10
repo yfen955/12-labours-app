@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container flex-box curved-box">
+    <div class="card-container curved-box">
         <div class="card flex-box">   
             <div class="image-frame">
                 <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
@@ -30,9 +30,8 @@
 
 
 <script>
-
     export default {
-      name: 'Card',
+      name: 'CardSmall',
   
       props: {
           specs: {
@@ -46,35 +45,39 @@
   <style scoped lang="scss">
 
     .card-container{    
-        height: 215px;
+        max-width:36.8rem;
+        height: 13rem;
     }
   
     .card{
         align-items:center;       
-        margin:24px 32px;
+        margin:1.5rem 2rem;
         width:100%;
     }
   
     .other-specs{
-        padding-left:32px;
+        padding-left:2rem;
     }
 
     .image-frame{
-        padding:2px;
+        padding:0.125rem;
     }
   
     #img-user{
         display: block;
-        height:156px;
-        width:125px;
+        height:9.75rem;
+        width:7.8rem;
     }
   
     .detail{
-        padding:24px 0px;      
+        padding:1.5rem 0rem;      
     }
   
     .nav-button{
         margin-top:auto;
+        .el-button{    
+            padding:0.375rem 1.25rem;        
+        }
     }
   
   </style>
