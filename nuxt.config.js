@@ -60,8 +60,8 @@ export default {
   router: {
     extendRoutes(routes, resolve) {
       for (let i = 0; i < routes.length; i++) {
-        if (routes[i].name === "resources") {
-          routes[i].path = "/resources/:pageName*"
+        if (routes[i].name === "resources-educational") {
+          routes[i].path = "/resources/educational/:pageName*"
           return
         }
       }

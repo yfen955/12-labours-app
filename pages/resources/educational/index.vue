@@ -22,13 +22,19 @@ export default {
   components: { SphinxPage },
   data: () => {
     return {
-      pageTitle: "Resources",
+      pageTitle: "Educational Resources",
       breadcrumb: [
         {
           to: {
             name: "index",
           },
           label: "HOME",
+        },
+        {
+          to: {
+            name: "resources",
+          },
+          label: "RESOURCES",
         },
       ],
       xmlURL: process.env.twelve_labours_xml

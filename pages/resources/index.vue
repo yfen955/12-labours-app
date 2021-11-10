@@ -70,7 +70,7 @@ export default {
         title:'Educational Resources',
         imgFile:'doctor-in-frame.png',
         detail:'Learn all about the educational benefits the 12 Labours portal could help.',
-        btnLink:{caption:'View Educational Resources', to:'/'}
+        btnLink:{caption:'View Educational Resources', to:'/resources/educational'}
       },
       medicalResources:{
         title:'Medical Resources',
