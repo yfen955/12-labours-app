@@ -1,7 +1,7 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
-    <banner :banner-data="banner.values" height="480px"/>   <!-- Optional height attribute to display varying heights-->
+    <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
       <div class="default-inner">                 
         There are two ways to discover data and models within the 12 Labours portal.
@@ -9,7 +9,7 @@
           <li>Interactive viewer - allows you to traverse a 3D scaffold of the human body and drill down across the multiple levels of physiological modelling.</li>
           <li>Data browser - allows you to search for data & models using filters and tags.</li>
         </ul>
-        <div class="data-explorer">
+        <div class="data-explorer flex-box --space-between">
           <div class="item">
             <card-small :specs="interactiveViewerSpecs"/>
           </div>
@@ -66,8 +66,6 @@ export default {
 <style scoped lang="scss">
 
 .data-explorer{
-  display:flex;
-  justify-content: space-between;
   padding-top:2.5rem; 
 }
 

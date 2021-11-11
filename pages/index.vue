@@ -50,31 +50,31 @@ export default {
   background-size: cover;
   background-position: center;
   overflow: hidden;
-  height:960px;
+  height:60rem;
 }
   
  .title-box{
-    height:243px;
-    width:710px;
-    margin-top:205px;
-    margin-right:60px;
-    border-radius:20px;
+    height:15rem;
+    width:44.38rem;
+    margin-top:12.81rem;
+    margin-right:3.75rem;
+    border-radius:1.25rem;
     background-color: $blue;
     display:flex;
     align-items:center;
     justify-content:center;
     span{
-        font-weight:bold;
-        font-size: 40px;
-        line-height: 44px;
-        color:$cochlear;
+      font-weight:bold;
+      font-size: 2.5rem;
+      line-height: 2.75rem;
+      color:$cochlear;
     }
   }
 
  .nav-about{
-   padding-top:16px;
-   text-align: right; 
-   a{font-weight:600}
+    padding-top:1rem;
+    text-align: right; 
+    a{font-weight:600}
  }
 
 </style>

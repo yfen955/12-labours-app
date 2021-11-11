@@ -1,34 +1,35 @@
+
 .page-outer{
   width:100%;
 }
 
 .container-default{
-  padding:40px 60px;
+  padding:2.5rem 3.75rem;
 }
 
 .default-inner{
-  padding: 0px 32px;
+  padding: 0rem 2rem;
 }
 
 .inner-with-gap{
-  padding: 40px 32px;
+  padding: 2.5rem 2rem;
 }
 
 .curved-box{
   background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 2px 5px #0000001A;
-  border: 1px solid $lineColor1;
-  border-radius: 20px;
+  box-shadow: 0rem 0.13rem 0.31rem #0000001A;
+  border: 0.06rem solid $lineColor1;
+  border-radius: 1.25rem;
 }
 
 .top-heading{ 
-  padding-bottom:32px;
+  padding-bottom:2rem;
   text-align: center; 
 }
 
 h1,h2,h3,h4{
   margin:0px;
-  line-height:34px;
+  line-height:2.13rem;
 }
 
 .shaded{
@@ -43,9 +44,10 @@ h1,h2,h3,h4{
   &.--wrap{
     flex-wrap: wrap;
   }
+  &.--vertical-bottom{
+    align-items:flex-end;
+  }
 }
-
-
 
 .vertical-flex{
   display:flex;
@@ -56,37 +58,37 @@ h1,h2,h3,h4{
   display:flex;   
   justify-content:center;   
   align-items: center;
-  column-gap: 32px;
+  column-gap: 2rem;
 }
 
 //** Must go to DSC **//
 
 ::v-deep .el-collapse{
 
-  border-top: 2px solid $lineColor1;
+  border-top: 0.125rem solid $lineColor1;
   &:last-child {
-    border-bottom: 2px solid $lineColor1;
+    border-bottom: 0.125rem solid $lineColor1;
   }
 }
 
 ::v-deep .el-collapse-item{
  
   &__header{
-    font: normal normal 600 18px/24px $font-family; 
-    padding-left:16px;
+    font: normal normal 600 1.13rem/1.5rem $font-family; 
+    padding-left:1rem;
     color: $blue;
   }
 
   &__content{
-    font: normal normal 400 18px/24px $font-family;     // need to re-write 'body' styles here
+    font: normal normal 400 1.13rem/1.5rem $font-family;     // need to re-write 'body' styles here
     color:$text-color;
-    padding:16px;           //to overwrite default bottom padding of 25px
-    border-top:2px solid $lineColor1;
+    padding:1rem;           //to overwrite default bottom padding of 25px
+    border-top: 0.125rem solid $lineColor1;
     background-color:$background;
   }
 
   &__arrow{
-    font-size: 34px;
+    font-size: 2.13rem;
     font-weight: 700;
     color:$blue;
   }

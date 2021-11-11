@@ -3,7 +3,8 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <section-with-image
       :title="pageTitle""
-      :contents="termsOfService"/> 
+      :contents="termsOfService"
+    /> 
     <div class="container-default">
       <div class="top-heading">
         <h1>
@@ -71,19 +72,8 @@ export default {
 
 <style scoped lang="scss">
 
-  .with-background-image{
-    background-image: url("~static/img/researcher-doctor.png");
-    background-repeat: no-repeat;
-    background-position:right 124px top 50px;
-    background-size: 224px 330px;
+ .terms-text{
+    padding-left:2rem;
   }
 
- .terms-text{
-    padding-left:32px;
-      &--with-bg-image{
-        @extend .terms-text;
-        padding-right:300px;
-        padding-bottom:100px; 
-      }
-    }
 </style>

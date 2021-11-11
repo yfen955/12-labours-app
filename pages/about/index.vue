@@ -97,12 +97,12 @@ export default {
 <style scoped lang="scss">
 
   .tohu-image{
-    padding:1px 95px;
+    padding:0.06rem 6rem;
 
     img{
       display:block;
-      height:460px;
-      width:240px;
+      height:28.75rem;
+      width:15rem;
     }
   }
 
@@ -111,10 +111,10 @@ export default {
 
     &__num{
       color:$mildBlue;
-      font-size:150px;
-      line-height:110px;
+      font-size:9.38rem;
+      line-height:6.88rem;
       opacity: 0.1;
-      padding-bottom:40px;
+      padding-bottom:2.5rem;
     }
   }
 
@@ -123,8 +123,8 @@ export default {
   }
 
   .nav-button{
-    padding-left:12px;
-    padding-top:16px;
+    padding-left:0.75rem;
+    padding-top:1rem;
   }
 
 </style>
