@@ -37,7 +37,15 @@ h1,h2,h3,h4{
 
 .flex-box{
   display: flex;
+  &.--space-between{
+    justify-content:space-between;
+  }
+  &.--wrap{
+    flex-wrap: wrap;
+  }
 }
+
+
 
 .vertical-flex{
   display:flex;
