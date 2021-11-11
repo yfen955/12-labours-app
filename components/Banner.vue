@@ -19,7 +19,7 @@ export default {
         },
         height:{
             type: String,
-            default: '300px',
+            default: '18.75rem',
             validator: propValue => {
                 const listOfAvailableExt = ["px", "rem"];
                 const isValidExt = listOfAvailableExt.some(ext =>
@@ -59,19 +59,19 @@ export default {
     height: var(--height);
 
     &__title-box{
-        height:108px;
-        width:340px;
-        margin-top:40px;
-        margin-right:60px;
-        border-radius:20px;
+        height:6.75rem;
+        width:21.25rem;
+        margin-top:2.5rem;
+        margin-right:3.75rem;
+        border-radius:1.25rem;
         background-color: $blue;
         display:flex;
         align-items:center;
         justify-content:center;
         span{
             font-weight:bold;
-            font-size: 40px;
-            line-height: 44px;
+            font-size: 2.5rem;
+            line-height: 2.75rem;
             color:$cochlear;
         }
     }

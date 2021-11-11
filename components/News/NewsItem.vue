@@ -42,7 +42,7 @@ export default {
 <style scoped lang="scss">
 
     .news-item-container{
-        height: 138px;
+        height: 8.63rem;
         display:flex;  
     }
 
@@ -51,37 +51,33 @@ export default {
 
         &__image{
             img{
-                width: 246px;
-                height: 138px;
-                border-radius:12px;
+                width: 15.38rem;
+                height: 8.63rem;
+                border-radius:0.75rem;
             }
         }
 
         &__info{
-            padding-left:24px;
+            padding-left:1.5rem;
             .item-title{  
                 text-overflow: ellipsis; 
                 overflow: hidden;
                 a{
                     text-decoration:none !important;
                 }
-
-                h4{
-                    margin:0px;
-                }
             }
 
             .item-date{
-                padding-top:6px;
-                padding-bottom:12px;    
+                padding-top:0.38rem;
+                padding-bottom:1.5rem;    
                 span{
-                    font-size:14px;
-                    line-height:20px;
+                    font-size:0.88rem;
+                    line-height:1.25rem;
                 }
             }
             
             .item-detail{
-                height:78px;
+                height:4.88rem;
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical; 

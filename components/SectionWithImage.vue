@@ -68,17 +68,17 @@ export default {
 <style scoped lang="scss">
 
 .side-img{
-  padding-right:54px;
-  padding-left:32px;
+  padding-right:3.38rem;
+  padding-left:2rem;
   img{
-    height:322px;
-    width:245px;
+    height:20.13rem;
+    width:15.31rem;
     display:block;
   }
 }
 
 .nav-button{
-  padding-top:36px;
-  padding-right:32px;
+  padding-top:2.25rem;
+  padding-right:2rem;
 }
 </style>
