@@ -1,10 +1,10 @@
 <template>
   <div class="page-outer vertical-flex">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
-    <banner :banner-data="banner.values" height="480px"/>   <!-- Optional height attribute to display varying heights-->
+    <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
       <div class="default-inner">                 
-        <div class="explorer">
+        <div class="flex-box --space-between"">
           <card-small class="item" :specs="dataAndModels"/>
           <card-small class="item" :specs="tools"/>
         </div>
@@ -86,13 +86,8 @@ export default {
 
 <style scoped lang="scss">
 
-.explorer{
-  display:flex;
-  justify-content: space-between;
-
   .item{
     width:48%;
   }
-}
 
 </style>

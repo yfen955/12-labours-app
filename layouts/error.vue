@@ -1,24 +1,10 @@
 <template>      
   <div class="outer-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <div class="container-default shaded">
-      <h1 class="top-heading">
-        PAGE NOT FOUND
-      </h1>
-      <div class="default-inner">
-        <span>
-          I’m sorry but we can’t find what you have been looking for.<br/><br/>
-          Maybe the page has moved - we suggest visiting the homepage to help you discover what you are looking for.
-        </span>
-        <div class="nav-button">
-          <nuxt-link to="/">
-            <el-button>
-              VISIT THE HOMEPAGE
-            </el-button>
-          </nuxt-link>
-        </div>
-      </div>
-    </div>
+    <section-with-image
+      :title="pageTitle"
+      :contents="pageContent"
+      :navigation-buttons="navigation"/>
     <portal-help/> 
   </div>
 </template>
@@ -39,6 +25,13 @@ export default {
           label: 'HOME'
         }
       ],
+      pageContent:[{
+        html:`I’m sorry but we can’t find what you have been looking for.<br/><br/>
+        Maybe the page has moved - we suggest visiting the homepage to help you discover what you are looking for.`
+      }],
+      navigation:[
+        {linkCaption:'Visit the HomePage',linkTo:'/'}
+      ]
     }
   }
 }

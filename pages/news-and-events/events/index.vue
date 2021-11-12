@@ -114,21 +114,21 @@ export default {
 <style scoped lang="scss">
 
   .category-tab{
-      margin-top:12px;    
-      padding-left:32px;
+      margin-top:0.75rem;    
+      padding-left:2rem;
     }
 
   .event-items{
     width:100%;
 
     .event-items__item{
-      padding-left:32px;
-      padding-top:40px;
+      padding-left:2rem;
+      padding-top:2.5rem;
     }   
   }
 
   .paginator{
-    margin-top:24px;  
+    margin-top:1.5rem;  
     display:flex;
     justify-content:center;
   }

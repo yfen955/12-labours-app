@@ -40,19 +40,19 @@ export default {
 <style scoped lang="scss">
 
     .news-item-container{
-        max-width: 367px;
-        height: 530px;
+        max-width: 22rem;
+        height: 33rem;
     }
 
     .news-item-card{
         align-items:center;   
-        margin:24px 35px;
+        margin:1.5rem 2.24rem;
         width:100%;
         text-align:center;
 
         &__image{
-            width:296px;
-            height:212px;
+            width:18.5rem;
+            height:13.25rem;
             img{
                 width:100%;
                 height:100%;
@@ -60,29 +60,29 @@ export default {
         }
 
         &__title{
-            padding-left:29px;
-            padding-right:29px;
-            padding-top:22px;
-            padding-bottom:8px;
-            height:56px;
+            padding-left:1.8rem;
+            padding-right:1.8rem;
+            padding-top:1.38rem;
+            padding-bottom:0.5rem;
+            height:3.5rem;
             width:100%;
             overflow: hidden;
             text-overflow: ellipsis; 
         }
     
         &__detail{
-            padding-left:3px;
-            padding-right:3px;
+            padding-left:0.19rem;
+            padding-right:0.19rem;
             width:fit-content;
-            height:116px;
+            height:7.25rem;
             width:100%;
             overflow: hidden;
             text-overflow: ellipsis; 
         }
 
         &__button{
-            padding-top:22px;
-            padding-bottom:15px;
+            padding-top:1.38rem;
+            padding-bottom:0.94rem;
         }
     }
 </style>

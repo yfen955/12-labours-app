@@ -37,17 +37,17 @@ export default {
 <style scoped lang="scss">
   .navigation-social{
       display: flex; 
-      column-gap: 6px;   
+      column-gap: 0.38rem;   
   }
 
   .svg-fill{
     color: $app-primary-color;
-    height:28px;
-    width:28px;
-    padding:6px;    //TBC
+    height:1.75rem;
+    width:1.75rem;
+    padding:0.38rem;    
     
     border-radius:50%;
-    border:1.5px solid $app-primary-color;
+    border:1px solid $app-primary-color;
     background-color:$cochlear;
   }
 

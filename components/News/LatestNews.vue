@@ -38,7 +38,7 @@ export default {
   computed: {
         bgStyle () { 
             return {              
-                'background-color': '#FFFFFF'               
+                'background-color': 'transparent'               
             }
         }
     }
@@ -49,7 +49,7 @@ export default {
 <style scoped lang="scss">
 
     .view-all{
-        padding-top:38px;
+        padding-top:2.38rem;
         text-align: center; 
         a{
             font-weight:600;

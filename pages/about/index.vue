@@ -45,20 +45,9 @@
     <latest-news :newsList="topNews.newsList"/>
     <latest-events :eventsList="topEvents.eventsList"/>
     <!-- Partners -->
-    <div class="container-default shaded">
-      <h1 class="top-heading">
-        {{partners.title.toUpperCase()}}
-      </h1>
-      <div class="flex-box">
-        <div class="default-inner shaded vertical-flex">
-          <span v-html="partners.contents[0].html"/>
-          <span v-html="partners.contents[1].html"/>
-        </div>
-        <div class="partners-img">
-          <img src="~static/img/researcher-doctor.png"/>
-        </div>
-      </div>
-    </div>
+    <section-with-image
+      :title="partners.title"
+      :contents="partners.contents"/>
   </div>
 </template>
 
@@ -99,7 +88,7 @@ export default {
           },
           label: 'HOME'
         }
-      ],
+      ]
     }
   }
 }
@@ -108,12 +97,12 @@ export default {
 <style scoped lang="scss">
 
   .tohu-image{
-    padding:1px 95px;
+    padding:0.06rem 6rem;
 
     img{
       display:block;
-      height:460px;
-      width:240px;
+      height:28.75rem;
+      width:15rem;
     }
   }
 
@@ -122,10 +111,10 @@ export default {
 
     &__num{
       color:$mildBlue;
-      font-size:150px;
-      line-height:110px;
+      font-size:9.38rem;
+      line-height:6.88rem;
       opacity: 0.1;
-      padding-bottom:40px;
+      padding-bottom:2.5rem;
     }
   }
 
@@ -134,15 +123,8 @@ export default {
   }
 
   .nav-button{
-    padding-left:12px;
-    padding-top:16px;
+    padding-left:0.75rem;
+    padding-top:1rem;
   }
 
-  .partners-img{
-    padding:0px 54px;
-    img{
-      height:322px;
-      width:245px;
-    }
-  }
 </style>

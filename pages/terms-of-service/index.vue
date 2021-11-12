@@ -1,42 +1,38 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-      <div class="container-default shaded with-background-image">
-        <div class="top-heading">
-          <h1>
-            TERMS OF SERVICE
-          </h1>
-        </div>
-        <div class="terms-text--with-bg-image" v-html="termsOfService"/>
-      </div>  
-      <div class="container-default">
-        <div class="top-heading">
-          <h1>
-            DEFINITIONS
-          </h1>
-        </div>
-        <div class="terms-text" v-html="definitions">                  
-        </div> 
+    <section-with-image
+      :title="pageTitle""
+      :contents="termsOfService"
+    /> 
+    <div class="container-default">
+      <div class="top-heading">
+        <h1>
+          DEFINITIONS
+        </h1>
       </div>
-      <div class="container-default shaded">
-        <div class="top-heading">
-          <h1>
-            ACCOUNT TERMS
-          </h1>
-        </div>
-        <div class="terms-text">                 
-            <span v-html="accountTerms1"></span><br/><br/>
-            <span v-html="accountTerms2"></span>
-        </div> 
+      <div class="terms-text" v-html="definitions">                  
+      </div> 
+    </div>
+    <div class="container-default shaded">
+      <div class="top-heading">
+        <h1>
+          ACCOUNT TERMS
+        </h1>
       </div>
-      <div class="container-default">
-        <div class="top-heading">
-          <h1>
-            USER CODE OF CONDUCT
-          </h1>
-        </div>
-        <div class="terms-text" v-html="codeOfConduct"/>                                    
-      </div>                          
+      <div class="terms-text">                 
+          <span v-html="accountTerms1"></span><br/><br/>
+          <span v-html="accountTerms2"></span>
+      </div> 
+    </div>
+    <div class="container-default">
+      <div class="top-heading">
+        <h1>
+          USER CODE OF CONDUCT
+        </h1>
+      </div>
+      <div class="terms-text" v-html="codeOfConduct"/>                                    
+    </div>                          
   </div>
 </template>          
 
@@ -64,7 +60,7 @@ export default {
     },
 
     created(){
-      this.termsOfService=this.values.contents[0].html
+      this.termsOfService=[this.values.contents[0]]
       this.definitions=this.values.contents[1].html
       this.accountTerms1=this.values.contents[2].html
       this.accountTerms2=this.values.contents[3].html
@@ -76,19 +72,8 @@ export default {
 
 <style scoped lang="scss">
 
-  .with-background-image{
-    background-image: url("~static/img/researcher-doctor.png");
-    background-repeat: no-repeat;
-    background-position:right 124px top 50px;
-    background-size: 224px 330px;
+ .terms-text{
+    padding-left:2rem;
   }
 
- .terms-text{
-    padding-left:32px;
-      &--with-bg-image{
-        @extend .terms-text;
-        padding-right:300px;
-        padding-bottom:100px; 
-      }
-    }
 </style>
