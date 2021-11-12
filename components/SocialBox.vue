@@ -47,7 +47,7 @@ export default {
     padding:0.38rem;    
     
     border-radius:50%;
-    border:0.1rem solid $app-primary-color;
+    border:1px solid $app-primary-color;
     background-color:$cochlear;
   }
 

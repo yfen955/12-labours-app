@@ -95,8 +95,8 @@ export default {
     .news-detail{
         padding-top:2rem;
         padding-bottom:1.56rem;        
-        border-top:0.06rem solid $lineColor1;
-        border-bottom: 0.06rem solid $lineColor1;
+        border-top:1px solid $lineColor1;
+        border-bottom:1px solid $lineColor1;
         margin-bottom:1.25rem;     
     }
 

@@ -161,8 +161,8 @@ export default {
             grid-gap: 0rem;
             .grid-item {
                 padding: 0.75rem;                            
-                border-top: 0.06rem solid #DFDFDF;
-                border-left: 0.06rem solid #DFDFDF;
+                border-top: 1px solid #DFDFDF;
+                border-left: 1px solid #DFDFDF;
                 font-size:1rem;
                 line-height:1.13rem;
                 display:flex;

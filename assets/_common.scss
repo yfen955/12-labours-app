@@ -18,7 +18,7 @@
 .curved-box{
   background: #FFFFFF 0% 0% no-repeat padding-box;
   box-shadow: 0rem 0.13rem 0.31rem #0000001A;
-  border: 0.06rem solid $lineColor1;
+  border: 1px solid $lineColor1;
   border-radius: 1.25rem;
 }
 
@@ -64,9 +64,9 @@ h1,h2,h3,h4{
 
 ::v-deep .el-collapse{
 
-  border-top: 0.125rem solid $lineColor1;
+  border-top: 2px solid $lineColor1;
   &:last-child {
-    border-bottom: 0.125rem solid $lineColor1;
+    border-bottom: 2px solid $lineColor1;
   }
 }
 
@@ -82,7 +82,7 @@ h1,h2,h3,h4{
     font: normal normal 400 1.13rem/1.5rem $font-family;     // need to re-write 'body' styles here
     color:$text-color;
     padding:1rem;           //to overwrite default bottom padding of 25px
-    border-top: 0.125rem solid $lineColor1;
+    border-top: 2px solid $lineColor1;
     background-color:$background;
   }
 
