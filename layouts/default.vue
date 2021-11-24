@@ -1,16 +1,16 @@
 <template>
   <div>
-    <twelve-labours-header>
+    <header2>
       <template v-slot:logo>
         <img class="header-logo" src="img/12-labours-logo-black.png" alt="Logo for 12 Labours">
       </template>
-    </twelve-labours-header>
+    </header2>
     <nuxt />
-    <twelve-labours-footer :footerLinks="footerLinks">
+    <footer2 :footerLinks="footerLinks">
       <template v-slot:logo>
         <img class="footer-logo" src="img/12-labours-logo-primary.png" alt="Logo for 12 Labours">
       </template>
-    </twelve-labours-footer>
+    </footer2>
   </div>
 </template>
 
@@ -53,8 +53,8 @@ export default {
 }
 .footer-logo
 {
-  height: 200px;   
-  width: 233px;  
+  height: 12.5rem;   
+  width:14.56rem;  
   white-space: nowrap;
 }
 

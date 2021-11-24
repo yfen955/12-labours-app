@@ -2,8 +2,8 @@
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <!-- About 12 Labours -->
-    <div class="container-default shaded flex-box">
-      <div class="tohu-image"">
+    <div class="about container-default shaded flex-box">
+      <div class="tohu-image flex-box"">
         <img src="~/static/img/tohu.png">
       </div>
       <div class="vertical-flex">
@@ -14,17 +14,17 @@
       </div>
     </div>
     <!-- Project Aims & Information -->
-    <div class="container-default flex-box">
-      <div class="project-aims default-inner">
+    <div class="project container-default flex-box">
+      <div class="project__item default-inner">
         <h1 class="top-heading">
           {{projectAims.title.toUpperCase()}}
         </h1>
         <div class="flex-box"  v-for="(content,index) in projectAims.contents" :key="index">
-          <div class="project-aims__num vertical-flex">{{ index+1 }}</div> 
+          <div class="num vertical-flex">{{ index+1 }}</div> 
           <div v-html="content.html"></div>
         </div>
       </div>
-      <div class="project-information default-inner ">
+      <div class="project__item default-inner ">
         <h1 class="top-heading">
           PROJECT INFORMATION
         </h1>
@@ -80,13 +80,13 @@ export default {
 
   data: () => {
     return {
-      pageTitle: 'ABOUT',
+      pageTitle: 'About',
       breadcrumb: [
         {
           to: {
             name: 'index'
           },
-          label: 'HOME'
+          label: 'Home'
         }
       ]
     }
@@ -96,30 +96,47 @@ export default {
 
 <style scoped lang="scss">
 
+  .about{
+    @media only screen and (max-width: $viewport-md){    
+      flex-direction:column;
+      row-gap:2rem;
+    }
+  }
+
   .tohu-image{
     padding:0.06rem 6rem;
-
+    justify-content:center;
     img{
       display:block;
       height:28.75rem;
       width:15rem;
+      @media only screen and (max-width: $viewport-md){    
+        height:14rem;
+        width:7.5rem;
+      }
     }
   }
 
-  .project-aims{
-    width:50%;
-
-    &__num{
-      color:$mildBlue;
-      font-size:9.38rem;
-      line-height:6.88rem;
-      opacity: 0.1;
-      padding-bottom:2.5rem;
+  .project{
+    &__item{
+      width:50%;
+    }
+    
+    @media only screen and (max-width: $viewport-sm){    
+      flex-direction:column;
+      row-gap:2rem;
+      &__item{
+        width:100%;
+      }
     }
   }
 
-  .project-information{
-    width:50%;
+  .num{
+    color:$mildBlue;
+    font-size:9.38rem;
+    line-height:6.88rem;
+    opacity: 0.1;
+    padding-bottom:2.5rem;
   }
 
   .nav-button{

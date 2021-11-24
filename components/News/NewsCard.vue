@@ -4,10 +4,10 @@
             <div class="news-item-card__image">
                 <img :src="newsItem.image.url" />
             </div>
-            <div class="news-item-card__title">
+            <div class="news-item-card__title display-ellipsis --2">
                 <h3>{{newsItem.title}}</h3>
             </div>
-            <div class="news-item-card__detail">
+            <div class="news-item-card__detail display-ellipsis --5">
                 <span>
                     {{newsItem.blurb}}
                 </span>
@@ -40,49 +40,63 @@ export default {
 <style scoped lang="scss">
 
     .news-item-container{
-        max-width: 22rem;
-        height: 33rem;
+        max-width: 20rem;
+        height: 32rem;
+        @media only screen and (min-width:$md-start) and (max-width: $md-end) {
+            max-width: 14rem;
+            height: 26rem;
+        }
+        @media only screen and (min-width: $viewport-lg) {
+            max-width: 22rem;
+            height: 33rem;
+        }
     }
 
     .news-item-card{
-        align-items:center;   
-        margin:1.5rem 2.24rem;
-        width:100%;
-        text-align:center;
+        align-items:center;
+        padding:1.25rem 1.13rem 1.88rem 1.13rem;
+        @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+            padding:1rem;
+        }
 
         &__image{
-            width:18.5rem;
-            height:13.25rem;
-            img{
-                width:100%;
-                height:100%;
+            display:block;     
+            img{  
+                width:18rem;
+                height:13rem;          
+                @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+                    width:12rem;
+                    height:10rem;
+                }
             }
         }
 
         &__title{
-            padding-left:1.8rem;
-            padding-right:1.8rem;
-            padding-top:1.38rem;
-            padding-bottom:0.5rem;
-            height:3.5rem;
-            width:100%;
-            overflow: hidden;
-            text-overflow: ellipsis; 
+            text-align:center;
+            padding:0.5rem 1.8rem;
+            height:2.8rem;
+            margin-bottom:0.5rem;
+            @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+                font-size:1.2rem;
+            }
         }
     
         &__detail{
-            padding-left:0.19rem;
-            padding-right:0.19rem;
-            width:fit-content;
-            height:7.25rem;
-            width:100%;
-            overflow: hidden;
-            text-overflow: ellipsis; 
+            text-align:center;
+            padding: 0rem 0.19rem;
+            max-width:18.88rem;
+            height:7.5rem;
+
+            @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+                font-size:1rem;
+                line-height:1.25rem;
+                max-width:11.5rem;
+                height:6.2rem;
+            }
         }
 
         &__button{
-            padding-top:1.38rem;
-            padding-bottom:0.94rem;
+            margin-top:auto;
         }
     }
 </style>
