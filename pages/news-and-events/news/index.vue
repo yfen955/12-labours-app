@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values"/>
     <div class="container-default vertical-flex">
         <div class="top-heading">
@@ -56,11 +56,11 @@ export default {
       breadcrumb: [
         {
           to: { name: 'index'},
-          label: 'HOME'
+          label: 'Home'
         },
         {
           to: {name: 'news-and-events'},
-          label: 'NEWS & EVENTS'
+          label: 'News & Events'
         }
       ],
       activeTab: '',            

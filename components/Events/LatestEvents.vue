@@ -116,7 +116,7 @@ export default {
         margin-right:2rem;
 
         @media only screen and (max-width: $viewport-sm){    
-            padding: 1rem 1rem;
+            padding: 1rem;
             margin: 0rem;
         }
 
@@ -128,6 +128,10 @@ export default {
                 width:18rem;
                 height:11rem; 
                 display:block;
+                @media only screen and (max-width: $viewport-sm){    
+                    width: 90%;
+                    height:auto;
+                }
             }
         }
 
@@ -144,9 +148,9 @@ export default {
         }
 
         &__dates{   
-            height:1.25rem;        
-            margin-top:0.75rem;
-            margin-bottom:0.75rem;              
+            //height:1.25rem;        
+            margin-top:0.5rem;
+            margin-bottom:0.5rem;              
             span{
                 font-weight:700;
                 line-height: 1.63rem;   
@@ -158,7 +162,7 @@ export default {
         }
 
         &__blurb{
-            height:4.25rem;
+            //height:4.25rem;
         }
     }
 

@@ -1,36 +1,52 @@
 <template>
     <div class="page-outer">
-        <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()"/>
-        <div class="detail-container vertical-flex">          
-            <img :src="eventItem.image.url" class="event-image"></img>         
-             <div class="event-title">
-                <h1>{{eventItem.title}}</h1>
-            </div>
-            <div class="date-social flex-box --space-between --vertical-bottom">
-                <div class="date-social__extras vertical-flex">
-                    <span>
-                        EVENT DATE(s): 
-                        {{this.$formatDDMonthYear(eventItem.startDate)}}
-                        {{eventItem.endDate? " - " + this.$formatDDMonthYear(eventItem.endDate) : ""}}
+        <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle"/>
+        <div class="detail-container">
+            <div class="vertical-flex"> 
+                <div class="image-frame">         
+                    <img :src="eventItem.image.url" class="event-image"></img>  
+                </div>       
+                <div class="event-title">
+                    <h1>{{eventItem.title}}</h1>
+                </div>
+                <div class="date-social flex-box --space-between --vertical-bottom">
+                    <div class="date-social__extras vertical-flex">
+                        <div class="flex-box --wrap">
+                            <span>
+                                EVENT DATE(s): 
+                            </span> 
+                            <span>
+                                {{this.$formatDDMonthYear(eventItem.startDate)}}
+                                {{eventItem.endDate? " - " + this.$formatDDMonthYear(eventItem.endDate) : ""}}
+                            </span>
+                        </div>
+                        <div class="flex-box --wrap">
+                            <span>
+                                LOCATION:
+                            </span> 
+                            <span>
+                                {{eventItem.location}}
+                            </span>
+                        </div>
+                        <div class="flex-box --wrap">
+                            <span>
+                                EXTERNAL LINK:
+                            </span>
+                            <span>
+                                <a :href="eventItem.externalLink" target="_blank">{{eventItem.externalLink}}</a>
+                            </span>
+                        </div>
+                    </div>               
+                    <social-box class="check-display"/>                  
+                </div>            
+                <div class="event-detail">
+                    <span v-html="eventItem.detail.html">                      
                     </span>
-                    <span>
-                        LOCATION:
-                        {{eventItem.location}}
-                    </span>
-                    <span>
-                        EXTERNAL LINK:
-                        <a :href="eventItem.externalLink" target="_blank">{{eventItem.externalLink}}</a>
-                    </span>
-                </div>               
-                <social-box/>                  
-            </div>            
-            <div class="event-detail">
-                <span v-html="eventItem.detail.html">                      
-                </span>
-            </div>         
-            <social-box/>    
-            <div class="back-to-event">
-                <nuxt-link to="/news-and-events/events/">&lt; Back to Events</nuxt-link>
+                </div>         
+                <social-box/>    
+                <div class="back-to-event">
+                    <nuxt-link to="/news-and-events/events/">&lt; Back to Events</nuxt-link>
+                </div>
             </div>
         </div>
     </div>
@@ -54,15 +70,15 @@ export default {
             breadcrumb: [
                 {
                 to: { name: 'index'},
-                label: 'HOME'
+                label: 'Home'
                 },
                 {
                 to: {name: 'news-and-events'},
-                label: 'NEWS & EVENTS'
+                label: 'News & Events'
                 },
                 {
                 to: {name: 'news-and-events-events'},
-                label: 'EVENTS'
+                label: 'Events'
                 }
             ] 
         }
@@ -80,13 +96,27 @@ export default {
 <style scoped lang="scss">
 
     .detail-container{
-        margin:2rem 19.38rem;       
+        padding:2rem 20%;    
+        @media only screen and (max-width: $viewport-sm){   
+            padding:2rem 4%;     
+        } 
+        @media only screen and (min-width: $viewport-lg){   
+            padding:2rem 19.38rem;   
+        }            
+    }
+
+    .image-frame{           
+        display:flex;       
+        justify-content:center;
     }
 
     .event-image{
         width: 100%;
-        height: 21.88rem;
+        height:auto;
+        max-width:51rem;
+        max-height: 21.88rem;
         object-fit:cover;
+        display:block;
     }
 
     .event-title{
@@ -109,7 +139,7 @@ export default {
         padding-bottom:1.56rem;    
         border-top: 1px solid $lineColor1;
         border-bottom: 1px solid $lineColor1;
-        margin-bottom:1.25rem;     
+        margin-bottom:1.25rem;   
     }
 
     .back-to-event{
@@ -118,5 +148,11 @@ export default {
         a{
             line-height:1.25rem;
         }
+    }
+
+    .check-display{
+        @media only screen and (max-width: $viewport-sm){   
+            display:none;  
+        } 
     }
 </style>
