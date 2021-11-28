@@ -1,7 +1,7 @@
 <template>
     <div class="card-container curved-box">
         <div class="card vertical-flex">          
-            <h2>{{specs.title.toUpperCase()}}</h2>
+            <h2 class="heading">{{specs.title.toUpperCase()}}</h2>
             <div class="image-frame">
                 <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
             </div>           
@@ -43,6 +43,7 @@
 <style scoped lang="scss">
     .card-container{
         max-width: 20rem;
+        width:100%;
         height: 32rem;
         @media only screen and (min-width:$md-start) and (max-width: $md-end) {
             max-width: 14rem;
@@ -55,11 +56,17 @@
     }
 
     .card{
+        height:100%;
+        box-sizing: border-box;
         align-items:center;
         padding:1.25rem 1.13rem 1.88rem 1.13rem;
         @media only screen and (min-width:$md-start) and (max-width:$md-end) {
           padding:1rem;
         }
+    }
+
+    .heading{
+        text-align:center;
     }
 
     .image-frame{
@@ -78,26 +85,26 @@
 
     .detail{      
         padding-top:0.75rem;
-        max-width:18.88rem;
-        height:7.25rem;
+        max-width:100%;
+        //height:7.25rem;
         margin-bottom:1.5rem;
 
         @media only screen and (min-width:$md-start) and (max-width:$md-end) {
             font-size:1rem;
             line-height:1.25rem;
-            max-width:11.5rem;
-            height:8.8rem;
+            //height:8.8rem;
         }
     }
 
     .nav-button{
         margin-top:auto;
-        /*       
+             
         .el-button{    
+            max-width:100%;
             @media only screen and (max-width: $viewport-md){
                 padding:0.375rem 0.625rem;
             }       
-        }*/
+        }
     }
 
 </style>

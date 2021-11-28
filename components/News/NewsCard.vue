@@ -41,6 +41,7 @@ export default {
 
     .news-item-container{
         max-width: 20rem;
+        width:100%;
         height: 32rem;
         @media only screen and (min-width:$md-start) and (max-width: $md-end) {
             max-width: 14rem;
@@ -53,6 +54,8 @@ export default {
     }
 
     .news-item-card{
+        height:100%;
+        box-sizing: border-box;
         align-items:center;
         padding:1.25rem 1.13rem 1.88rem 1.13rem;
         @media only screen and (min-width:$md-start) and (max-width:$md-end) {
@@ -84,14 +87,13 @@ export default {
         &__detail{
             text-align:center;
             padding: 0rem 0.19rem;
-            max-width:18.88rem;
-            height:7.5rem;
+            max-width:100%;
+            //height:7.5rem;
 
             @media only screen and (min-width:$md-start) and (max-width:$md-end) {
                 font-size:1rem;
                 line-height:1.25rem;
-                max-width:11.5rem;
-                height:6.2rem;
+                //height:6.2rem;
             }
         }
 

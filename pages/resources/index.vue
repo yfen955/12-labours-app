@@ -2,13 +2,11 @@
   <div class="page-outer vertical-flex">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
-    <div class="container-default">
-      <div class="default-inner">                 
-        <div class="flex-box --space-between"">
-          <card-small class="item" :specs="dataAndModels"/>
-          <card-small class="item" :specs="tools"/>
-        </div>
-      </div>           
+    <div class="container-default">                
+      <div class="wide-cards">
+        <card-small class="item" :specs="dataAndModels"/>
+        <card-small class="item" :specs="tools"/>
+      </div>          
     </div>
     <div class="container-default shaded">
        <div class="top-heading">
@@ -88,9 +86,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-  .item{
-    width:48%;
-  }
-
+  .must-have-css{}
 </style>
