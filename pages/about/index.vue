@@ -28,8 +28,8 @@
         <h1 class="top-heading">
           PROJECT INFORMATION
         </h1>
-       <el-collapse accordion  v-for="(item,index) in projectInfo.title"  :key="index">
-          <el-collapse-item :title="item.toUpperCase()" :name="index">
+       <el-collapse>
+          <el-collapse-item  v-for="(item,index) in projectInfo.title"  :key="index" :title="item.toUpperCase()" :name="index">
             <div v-html="projectInfo.content[index].html"></div>
             <div class="nav-button">
               <nuxt-link :to="projectInfo.link[index]">
