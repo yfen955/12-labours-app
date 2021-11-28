@@ -38,7 +38,7 @@
               >{{ link.displayTitle.toUpperCase() }}</component>
             </li>
           </ul>
-          <div v-if="menuOpen" class="menu-footer">
+          <div class="menu-footer">
             <footer-links menuOnly/>
           </div>
         </div>
@@ -283,27 +283,24 @@ export default {
 }
 
 .navigation {
-  position:relative;
   
   ul {
     padding: 0rem;
     display: flex;
     align-items:center;
     column-gap:3rem;
-    @media only screen and (max-width: $viewport-md){
-      column-gap:2rem;
-    } 
+
     li {
       display: inline;
       a {
         text-decoration: none  !important;
-        font: normal normal normal 1rem/1.13rem $font-family;   
-        color:$cochlear !important;
-        @media only screen and (min-width: $viewport-md){
-          color:$app-primary-color !important;
-          &.active,&:hover,&:focus {
-            color: $app-primary-color;
-          }
+        font: normal normal normal 1rem/1.13rem $font-family;
+        color:$app-primary-color !important; 
+        &.active,&:hover,&:focus {
+          color: $app-primary-color;
+        }  
+        @media only screen and (max-width: $viewport-md){
+          color:$cochlear !important;
         } 
       }
     }
@@ -319,7 +316,7 @@ export default {
       top:0;
       position: fixed;
       z-index: 9998;
-      
+
       &.open {
         display: flex;
         width: 15rem;
@@ -346,7 +343,7 @@ export default {
   //transform: translate(0.75rem, -0.5rem);
   -webkit-appearance: none;
   position:fixed;
-  @media screen and (max-width: $viewport-md) {
+  @media only screen and (max-width: $viewport-md) {
     & {
       display: block;
     }
@@ -355,7 +352,7 @@ export default {
 
 .menu-close{
   display:none;
-  @media screen and (max-width: $viewport-md) {
+  @media only screen and (max-width: $viewport-md) {
     display:flex;
     justify-content:space-between;
   }
@@ -364,7 +361,7 @@ export default {
 .logo-sm
 {
   display:none;
-  @media only screen and (max-width: $md-end){
+  @media only screen and (max-width:$viewport-md){
     display:flex;
     align-items:center;
     height: 3rem;   
@@ -375,10 +372,14 @@ export default {
 }
 
 .menu-footer{
-  width:100%;
-  position:absolute;
-  bottom:0;
-  z-index: 9999;
+  display:none;
+  @media only screen and (max-width: $viewport-md) {
+    display:block;
+    width:100%;
+    position:absolute;
+    bottom:0;
+    z-index: 9999;
+  }
 }
 </style>
 

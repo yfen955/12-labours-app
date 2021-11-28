@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values"/>
     <latest-news :newsList="topNews.newsList"/>  
     <latest-events :eventsList="topEvents.eventsList"/>
@@ -29,7 +29,7 @@ export default {
           to: {
             name: 'index'
           },
-          label: 'HOME'
+          label: 'Home'
         }
       ]
     }

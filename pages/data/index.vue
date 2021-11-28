@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
       <div class="default-inner">                 
@@ -38,7 +38,7 @@ export default {
           to: {
             name: "index",
           },
-          label: "HOME",
+          label: "Home",
         }
       ],
       interactiveViewerSpecs:{

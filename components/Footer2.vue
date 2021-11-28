@@ -65,7 +65,7 @@ export default {
 
 .footer {
   display: flex;
-  @media only screen and (max-width: 1023px) {
+  @media only screen and (max-width:  $viewport-md) {
     display:none;
   }
 }

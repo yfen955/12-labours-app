@@ -11,7 +11,7 @@
                     <div class="main-box__image-box">
                         <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
                     </div>
-                    <div class="main-box__title  display-ellipsis --2">
+                    <div class="main-box__title">
                         <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: specialEvent.slug, item:specialEvent}}">
                             <h4>{{specialEvent.title}}</h4>
                         </nuxt-link>                     
@@ -21,7 +21,7 @@
                             {{this.$formatMonDDYear(specialEvent.startDate)}} - {{this.$formatMonDDYear(specialEvent.endDate)}}
                         </span>
                     </div>
-                    <div class="main-box__blurb display-ellipsis --3">
+                    <div>
                         <span>
                             {{specialEvent.blurb}}
                         </span>
@@ -139,16 +139,9 @@ export default {
             a{
                 text-decoration:none !important;
             }    
-            @media only screen and (max-width: $viewport-md){   
-                h4{
-                    font-weight:600;
-                    font-size: 1.3rem;
-                }
-            }
         }
 
-        &__dates{   
-            //height:1.25rem;        
+        &__dates{        
             margin-top:0.5rem;
             margin-bottom:0.5rem;              
             span{
@@ -159,10 +152,6 @@ export default {
                     line-height: 1rem; 
                 }                
             }
-        }
-
-        &__blurb{
-            //height:4.25rem;
         }
     }
 

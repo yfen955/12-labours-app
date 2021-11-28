@@ -80,6 +80,7 @@ export default {
             font-size: 2.5rem;
             line-height: 2.75rem;
             color:$cochlear;
+            text-align:center;
         }
     }
   }

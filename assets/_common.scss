@@ -1,4 +1,4 @@
-/* DSC Content start*/
+/* DSC Content begins*/
 
 $viewport-sm:768px;
 $viewport-md:1024px;
@@ -7,14 +7,20 @@ $viewport-lg:1900px;
 $md-start:calc($viewport-sm + 1px);  //769
 $md-end:calc($viewport-md - 1px);   //1023
 
-h1{
-  @media only screen and (max-width:  $viewport-md) {
+
+@media only screen and (max-width:  $viewport-md) {
+  h1{
     font-size: 1.5rem;
     line-height:1.5rem;
+  }
+  h4{
+    font-weight:600;
+    font-size: 1.3rem;
   }
 }
 
 /* DSC Content ends */
+
 
 .page-outer{
   width:100%;

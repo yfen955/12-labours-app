@@ -5,7 +5,7 @@
                 <img :src="eventItem.image.url"></img>
             </div>
             <div class=event-item__info>
-                <div class="item-title display-ellipsis --2">     
+                <div class="item-title">     
                     <nuxt-link :to="{ name: 'news-and-events-events-detail', params: { detail: eventItem.slug, item:eventItem}}">
                         <h4>{{eventItem.title}}</h4>
                     </nuxt-link>
