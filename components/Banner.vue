@@ -50,7 +50,10 @@ export default {
 
 .banner{
     display:flex;
-    justify-content:flex-end;    
+    justify-content:flex-end; 
+    padding-top:2.5rem;
+    padding-right:3.75rem;
+
     background-image:var(--banner-url);
     background-repeat: no-repeat;
     background-size: cover;
@@ -58,11 +61,15 @@ export default {
     overflow: hidden;
     height: var(--height);
 
+    @media only screen and (max-width: $viewport-sm){    
+        justify-content:center;  
+        padding:2rem .5rem;
+        height:fit-content;     
+    }
+
     &__title-box{
         height:6.75rem;
         width:21.25rem;
-        margin-top:2.5rem;
-        margin-right:3.75rem;
         border-radius:1.25rem;
         background-color: $blue;
         display:flex;
@@ -73,6 +80,7 @@ export default {
             font-size: 2.5rem;
             line-height: 2.75rem;
             color:$cochlear;
+            text-align:center;
         }
     }
   }

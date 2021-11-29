@@ -43,26 +43,35 @@ export default {
 <style scoped lang="scss">
 
     .event-item-container{
-        height: 8.63rem;
         display:flex;  
     }
 
     .event-item{      
         display:flex;   
+        column-gap:1.5rem;
 
-        &__image{
+        @media only screen and (max-width:  $viewport-sm){
+            flex-direction:column;
+            row-gap:1.5rem;       
+        }
+
+        &__image{                       
             img{
-                width: 15.38rem;
-                height: 8.63rem;
                 border-radius:0.75rem;
+                display:block;
+                width: 15.5rem;
+                height: 8.63rem; 
+                object-fit:cover;
+
+                @media only screen and (max-width:  $viewport-sm){   
+                    width:70%; 
+                    height: auto;     
+                } 
             }
         }
 
         &__info{
-            padding-left:1.5rem;
             .item-title{  
-                text-overflow: ellipsis; 
-                overflow: hidden;
                 a{
                     text-decoration:none !important;
                 }
@@ -78,13 +87,8 @@ export default {
             }
             
             .item-detail{
-                height:4.88rem;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical; 
-                text-overflow: ellipsis;             
-                overflow: hidden;   
-                background-color: $cochlear;    
+                text-align:justify;             
+                background-color: $cochlear;     
             }   
         }      
     }

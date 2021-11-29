@@ -43,31 +43,43 @@ export default {
 <style scoped lang="scss">
 
 .banner-home{
-  display:flex;
-  justify-content:flex-end;    
-  background-image:url("~static/img/virtual-screen.png");
-  background-repeat: no-repeat;
+  display:flex; 
+      
+  background:url("~static/img/virtual-screen.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  background-position: center;
-  overflow: hidden;
-  height:60rem;
+  overflow:hidden;
+
+  justify-content:flex-end; 
+  padding-right:3.75rem;
+  padding-top:12.81rem;
+  height:60rem; 
+  box-sizing:border-box;
+  
+  @media only screen and (max-width: $viewport-md){    
+    justify-content:center;  
+    padding:6rem 1rem;
+    height:fit-content;
+  }
 }
   
  .title-box{
-    height:15rem;
-    width:44.38rem;
-    margin-top:12.81rem;
-    margin-right:3.75rem;
+    height:fit-content;
     border-radius:1.25rem;
     background-color: $blue;
     display:flex;
-    align-items:center;
-    justify-content:center;
+    padding:2.25rem;
     span{
       font-weight:bold;
       font-size: 2.5rem;
       line-height: 2.75rem;
       color:$cochlear;
+      @media only screen and (max-width: $viewport-sm){    
+        font-size: 2rem;
+        line-height: 2rem;
+      }
     }
   }
 

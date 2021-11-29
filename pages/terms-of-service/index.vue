@@ -49,11 +49,11 @@ export default {
 
     data: () => {
       return {      
-        pageTitle: 'TERMS OF SERVICE',
+        pageTitle: 'Terms of Service',
         breadcrumb: [
             {
             to: { name: 'index'},
-            label: 'HOME'
+            label: 'Home'
             }
         ]
       }

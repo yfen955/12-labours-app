@@ -75,6 +75,10 @@ export default {
     width:15.31rem;
     display:block;
   }
+
+  @media only screen and (max-width: $viewport-md){    
+    display:none;
+  }
 }
 
 .nav-button{

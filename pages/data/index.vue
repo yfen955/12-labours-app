@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
     <div class="container-default">
       <div class="default-inner">                 
@@ -9,15 +9,11 @@
           <li>Interactive viewer - allows you to traverse a 3D scaffold of the human body and drill down across the multiple levels of physiological modelling.</li>
           <li>Data browser - allows you to search for data & models using filters and tags.</li>
         </ul>
-        <div class="data-explorer flex-box --space-between">
-          <div class="item">
-            <card-small :specs="interactiveViewerSpecs"/>
-          </div>
-          <div class="item">
-            <card-small :specs="dataBrowserSpecs"/>
-          </div>
-        </div>
-      </div>           
+      </div> 
+      <div class="wide-cards">
+        <card-small class="item" :specs="interactiveViewerSpecs"/>
+        <card-small class="item" :specs="dataBrowserSpecs"/>
+      </div>          
     </div>
   </div>
 </template>
@@ -42,7 +38,7 @@ export default {
           to: {
             name: "index",
           },
-          label: "HOME",
+          label: "Home",
         }
       ],
       interactiveViewerSpecs:{
@@ -64,13 +60,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-.data-explorer{
-  padding-top:2.5rem; 
-}
-
-.item{
-  width: 48%;
-}
-
+  ul{
+    padding-bottom:1rem;
+  }
 </style>

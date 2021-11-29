@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle.toUpperCase()" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values"/>
     <div class="container-default vertical-flex">
         <div class="top-heading">
@@ -8,28 +8,30 @@
                 NEWS
             </h1>
         </div> 
-        <div class="category-tab">
-          <tab-nav
-          :tabs="tabs"
-          :active-tab="activeTab"
-          @tabClick="onTabClick($event)"
-        />
-        </div>      
-        <div class="news-items vertical-flex">
-            <div v-for="newsItem in pagedNews"  class="news-items__item">
-              <news-item :news-item="newsItem"/>
-            </div>
-        </div> 
-        <div class="not-found"  :style="this.newsList.length>0? 'display:none' : ''">
-          <h2>No records found for this category</h2>
-        </div>      
-        <div class="paginator" :style="this.newsList.length==0? 'display:none' : ''">     
-          <pagination
-            :total-count="totalCount"
-            :page-size="pageSize"          
-            @select-page="onPaginationChange"
-          />       
-        </div>      
+        <div class="default-inner">
+          <div class="category-tab">
+            <tab-nav
+            :tabs="tabs"
+            :active-tab="activeTab"
+            @tabClick="onTabClick($event)"
+          />
+          </div>      
+          <div class="news-items vertical-flex">
+              <div v-for="newsItem in pagedNews"  class="news-items__item">
+                <news-item :news-item="newsItem"/>
+              </div>
+          </div> 
+          <div class="not-found"  :style="this.newsList.length>0? 'display:none' : ''">
+            <h2>No records found for this category</h2>
+          </div>      
+          <div class="paginator" :style="this.newsList.length==0? 'display:none' : ''">     
+            <pagination
+              :total-count="totalCount"
+              :page-size="pageSize"          
+              @select-page="onPaginationChange"
+            />       
+          </div> 
+        </div>     
     </div>
   </div>
 </template>
@@ -54,11 +56,11 @@ export default {
       breadcrumb: [
         {
           to: { name: 'index'},
-          label: 'HOME'
+          label: 'Home'
         },
         {
           to: {name: 'news-and-events'},
-          label: 'NEWS & EVENTS'
+          label: 'News & Events'
         }
       ],
       activeTab: '',            
@@ -114,15 +116,13 @@ export default {
 <style scoped lang="scss">
 
   .category-tab{
-      margin-top:0.75rem;    
-      padding-left:2rem;
-    }
+    margin-top:0.75rem;    
+  }
 
   .news-items{
     width:100%;
 
     .news-items__item{
-      padding-left:2rem;
       padding-top:2.5rem;
     }   
   }
@@ -134,6 +134,6 @@ export default {
   }
 
   .not-found{
-    text-align:center;
+    padding:2rem 0;
   }
 </style>

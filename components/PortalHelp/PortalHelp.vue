@@ -23,19 +23,22 @@ export default {
         title:'Researchers',
         imgFile:'researcher-in-frame.png',
         detail:' Want access to the latest data, or share your research with others? Then the 12 Labours Portal is the place to be.',
-        btnLink:{caption:'Find Research Data', to:'/'}
+        //btnLink:{caption:'Find Research Data', to:'/'}
+        btnLink:{caption:'Learn More', to:'/'}
       },
       helpClinicians:{
         title:'Clinicians',
         imgFile:'doctor-in-frame.png',
         detail:'The 12 Labours Portal allows you to access and upload data to visualise results that may aid prognosis and help you to develop your treatment plans.',
-        btnLink:{caption:'Learn about Workflows', to:'/'}
+        //btnLink:{caption:'Learn about Workflows', to:'/'}
+        btnLink:{caption:'Learn More', to:'/'}
       },
       helpPatients:{
         title:'Patients',
         imgFile:'patient-in-frame.png',
         detail:'Want to track your health status or set personal health improvement goals? The portal allows you to link your health records with your health devices.',
-        btnLink:{caption:'More about Health Tracking', to:'/'}
+        //btnLink:{caption:'More about Health Tracking', to:'/'}
+        btnLink:{caption:'Learn More', to:'/'}
       }
     }
   }

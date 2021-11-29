@@ -6,7 +6,7 @@
             </h1>
         </div>
         <div class="latest-events default-inner">
-            <div class= "latest-events__main">
+            <div class= "latest-events__item">
                 <div class="main-box vertical-flex curved-box">
                     <div class="main-box__image-box">
                         <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
@@ -21,14 +21,14 @@
                             {{this.$formatMonDDYear(specialEvent.startDate)}} - {{this.$formatMonDDYear(specialEvent.endDate)}}
                         </span>
                     </div>
-                    <div class="main-box__blurb">
+                    <div>
                         <span>
                             {{specialEvent.blurb}}
                         </span>
                     </div>
                 </div>
             </div>
-            <div class= "latest-events__upcoming">
+            <div class= "latest-events__item">
                 <div class="upcoming-box vertical-flex">
                     <h2>UPCOMING EVENTS</h2>
                     <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList" :key="eventsItem.index">
@@ -36,9 +36,9 @@
                             <span>{{formatMonth(eventsItem.startDate).toUpperCase()}}</span>
                             <span class="day">{{formatDay(eventsItem.startDate)}}</span>
                         </div>   
-                        <div :style="index === 0? itemStyle : '' " class="grid-item">                       
+                        <div :style="index === 0? itemStyle : ''" class="grid-item">                       
                             <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: eventsItem.slug, item:eventsItem}}">
-                                {{eventsItem.title}}
+                                <span class="display-ellipsis --2">{{eventsItem.title}}</span>
                             </nuxt-link>         
                         </div>               
                     </div>
@@ -98,71 +98,78 @@ export default {
 
     .latest-events{
         display:flex;
-        &__main{
-            width: 50%;
-        }
-        &__upcoming{
+        &__item{
             width:50%;
+        }
+        
+        @media only screen and (max-width: $viewport-md){    
+            flex-direction:column;
+            row-gap:2rem;
+            &__item{
+                width:100%;
+            }
         }
     }
 
-    .main-box{     
-            padding-top:1.5rem;            
-            padding-left:2.25rem;    
-            padding-right:2.25rem;    
-            margin-right:2rem;
- 
-            &__image-box{   
-                display:flex;    
-                justify-content:center; 
-                margin-bottom:1rem;  
+    .main-box{   
+        padding: 1.5rem 2.25rem;  
+        margin-right:2rem;
 
-                img{
-                    width:18.25rem;
-                    height:10.63rem;   
+        @media only screen and (max-width: $viewport-sm){    
+            padding: 1rem;
+            margin: 0rem;
+        }
+
+        &__image-box{   
+            display:flex;   
+            justify-content:center; 
+            margin-bottom:0.5rem;            
+            img{
+                width:18rem;
+                height:11rem; 
+                display:block;
+                @media only screen and (max-width: $viewport-sm){    
+                    width: 90%;
+                    height:auto;
                 }
-            }
-
-            &__title{
-                height:3.75rem;
-                overflow: hidden;
-                text-overflow: ellipsis; 
-                a{
-                    text-decoration:none !important;
-                }
-            }
-
-            &__dates{   
-                height:1.25rem;        
-                margin-top:0.75rem;
-                margin-bottom:0.75rem;              
-                span{
-                    font-weight:700;
-                    line-height: 1.63rem;                   
-                }
-            }
-
-            &__blurb{
-                height:4.25rem;
-                overflow: hidden;
-                text-overflow: ellipsis; 
-                margin-bottom:2rem; 
             }
         }
 
-    .upcoming-box{           
-        margin-top:1rem;
-        margin-left:2rem;  
-        margin-right:1rem; 
-       
+        &__title{
+            a{
+                text-decoration:none !important;
+            }    
+        }
+
+        &__dates{        
+            margin-top:0.5rem;
+            margin-bottom:0.5rem;              
+            span{
+                font-weight:700;
+                line-height: 1.63rem;   
+                @media only screen and (max-width: $viewport-md){    
+                    font-size:1rem;
+                    line-height: 1rem; 
+                }                
+            }
+        }
+    }
+
+    .upcoming-box{
+        margin: 1rem 1rem 0rem 2rem;
+
+        @media only screen and (max-width: $viewport-sm){    
+            margin: 0rem;
+        }
+
         &__grid{
             display: grid;
             grid-template-columns: 20% 80% ;
             grid-gap: 0rem;
             .grid-item {
                 padding: 0.75rem;                            
-                border-top: 1px solid #DFDFDF;
-                border-left: 1px solid #DFDFDF;
+                border-top: 1px solid $lineColor2;
+                border-left: 1px solid $lineColor2;
                 font-size:1rem;
                 line-height:1.13rem;
                 display:flex;
