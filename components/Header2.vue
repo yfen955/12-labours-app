@@ -285,7 +285,8 @@ export default {
 .navigation {
   
   ul {
-    padding: 0rem;
+    padding:0;
+    margin:0 0 0.5rem 0;
     display: flex;
     align-items:center;
     column-gap:3rem;
@@ -326,6 +327,8 @@ export default {
     ul {
       flex-direction: column;
       row-gap:0.5rem;
+      height: calc(100% - 242px);
+      overflow-y: auto;
     }
   }
 }  
