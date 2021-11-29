@@ -137,3 +137,18 @@ h1,h2,h3,h4{
     -webkit-line-clamp: 7;
   }
 }
+
+//For Webkit browsers
+::-webkit-scrollbar {
+  width: 10px;               /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: $mildBlue;        /* color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color:$blue;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  //border: 1px solid transparent;  /* creates padding around scroll thumb */
+}

@@ -327,8 +327,12 @@ export default {
     ul {
       flex-direction: column;
       row-gap:0.5rem;
-      height: calc(100% - 242px);
+      height: calc(100% - 210px);
       overflow-y: auto;
+
+      //For Firefox
+      /*scrollbar-width: thin;
+      scrollbar-color: $mildBlue $cochlear;*/
     }
   }
 }  
@@ -365,12 +369,11 @@ export default {
 {
   display:none;
   @media only screen and (max-width:$viewport-md){
-    display:flex;
-    align-items:center;
+    display:block;
     height: 3rem;   
     width: 3rem;  
     white-space: nowrap;
-    padding:0.5rem
+    padding:0.25rem
   }
 }
 
@@ -384,5 +387,6 @@ export default {
     z-index: 9999;
   }
 }
+
 </style>
 

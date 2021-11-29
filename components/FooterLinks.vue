@@ -89,6 +89,7 @@ export default {
       return {
           '--main-align': this.menuOnly ? 'center' : 'flex-end',
           '--list-item-align': this.menuOnly ? 'center' : 'right',
+          '--list-item-margin':this.menuOnly ? '0.125rem' : '0.5rem',
           '--list-item-font-size': this.menuOnly ? '0.875rem' : '1rem',
           '--list-item-font-weight': this.menuOnly ? '400' : '600',
           '--list-item-line-height': this.menuOnly ? '0.75rem' : '1.125rem',
@@ -119,7 +120,7 @@ export default {
       margin:0rem;
       padding:0rem;
       li {
-        margin-bottom:0.5rem;
+        margin-bottom:var(--list-item-margin);
         a {
           text-decoration: none  !important;
           font-weight:var(--list-item-font-weight);
