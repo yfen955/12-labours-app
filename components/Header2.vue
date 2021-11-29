@@ -285,7 +285,8 @@ export default {
 .navigation {
   
   ul {
-    padding: 0rem;
+    padding:0;
+    margin:0 0 0.5rem 0;
     display: flex;
     align-items:center;
     column-gap:3rem;
@@ -326,6 +327,12 @@ export default {
     ul {
       flex-direction: column;
       row-gap:0.5rem;
+      height: calc(100% - 210px);
+      overflow-y: auto;
+
+      //For Firefox
+      /*scrollbar-width: thin;
+      scrollbar-color: $mildBlue $cochlear;*/
     }
   }
 }  
@@ -362,12 +369,11 @@ export default {
 {
   display:none;
   @media only screen and (max-width:$viewport-md){
-    display:flex;
-    align-items:center;
+    display:block;
     height: 3rem;   
     width: 3rem;  
     white-space: nowrap;
-    padding:0.5rem
+    padding:0.25rem
   }
 }
 
@@ -381,5 +387,6 @@ export default {
     z-index: 9999;
   }
 }
+
 </style>
 
