@@ -1,10 +1,19 @@
 <template>      
   <div class="outer-page">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <section-with-image
-      :title="pageTitle"
-      :contents="pageContent"
-      :navigation-buttons="navigation"/>
+    <section-with-image :title="pageTitle">
+      <div>
+        <p>
+          I’m sorry but we can’t find what you have been looking for. 
+        </p>
+        <p>
+         Maybe the page has moved - we suggest visiting the homepage to help you discover what you are looking for.
+        </p>
+        <nuxt-link to="/">
+          <el-button>Visit the Home Page</el-button>
+        </nuxt-link>     
+      </div>
+    </section-with-image>
     <portal-help/> 
   </div>
 </template>
@@ -16,21 +25,14 @@ export default {
 
   data: () => {
     return {
-      pageTitle: 'PAGE NOT FOUND',
+      pageTitle: 'Page Not Found',
       breadcrumb: [
         {
           to: {
             name: 'index'
           },
-          label: 'HOME'
+          label: 'Home'
         }
-      ],
-      pageContent:[{
-        html:`I’m sorry but we can’t find what you have been looking for.<br/><br/>
-        Maybe the page has moved - we suggest visiting the homepage to help you discover what you are looking for.`
-      }],
-      navigation:[
-        {linkCaption:'Visit the HomePage',linkTo:'/'}
       ]
     }
   }
@@ -38,10 +40,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.nav-button{
-  padding-top:32px;
-  padding-bottom:140px;
-}
 
 </style>

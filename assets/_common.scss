@@ -19,6 +19,10 @@ $md-end:calc($viewport-md - 1px);   //1023
   }
 }
 
+p a{
+  font-size:inherit;    //To overwrite the default font size of link, which is much smaller than font size of body
+}
+
 /* DSC Content ends */
 
 

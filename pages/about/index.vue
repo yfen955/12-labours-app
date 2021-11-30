@@ -34,7 +34,7 @@
             <div class="nav-button">
               <nuxt-link :to="projectInfo.link[index]">
                 <el-button>
-                  {{projectInfo.linkCaption[index].toUpperCase()}}
+                  {{projectInfo.linkCaption[index]}}
                 </el-button>
               </nuxt-link>
             </div>
@@ -45,9 +45,9 @@
     <latest-news :newsList="topNews.newsList"/>
     <latest-events :eventsList="topEvents.eventsList"/>
     <!-- Partners -->
-    <section-with-image
-      :title="partners.title"
-      :contents="partners.contents"/>
+    <section-with-image :title="partners.title">
+      <div v-for="(item,index) in partners.contents" :key="index" v-html="item.html"/>
+    </section-with-image>
   </div>
 </template>
 

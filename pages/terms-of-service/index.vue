@@ -1,10 +1,9 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <section-with-image
-      :title="pageTitle""
-      :contents="termsOfService"
-    /> 
+    <section-with-image :title="pageTitle"> 
+      <div v-html="termsOfService"/>
+    </section-with-image>
     <div class="container-default">
       <div class="top-heading">
         <h1>
@@ -60,7 +59,7 @@ export default {
     },
 
     created(){
-      this.termsOfService=[this.values.contents[0]]
+      this.termsOfService=this.values.contents[0].html
       this.definitions=this.values.contents[1].html
       this.accountTerms1=this.values.contents[2].html
       this.accountTerms2=this.values.contents[3].html
@@ -75,5 +74,5 @@ export default {
  .terms-text{
     padding-left:2rem;
   }
-
+  
 </style>

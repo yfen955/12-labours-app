@@ -5,20 +5,7 @@
     </h1>
     <div class="flex-box --space-between">
       <div class="default-inner">
-        <div v-for="item in contents" :key="item.index">
-          <div v-html="item.html"/>
-        </div>
-        <div class="flex-box --wrap">
-          <div v-for="item in navigationButtons" :key="item.index">
-            <div class="nav-button">
-              <nuxt-link :to="item.linkTo">
-                <el-button>
-                  {{item.linkCaption.toUpperCase()}}
-                </el-button>
-              </nuxt-link>
-            </div>
-          </div>
-        </div>
+        <slot></slot>
       </div>
       <div class="side-img">
         <img :src="require(`~/static/img/${sideImage}`)"/>
@@ -36,13 +23,6 @@ export default {
     title: {
       type: String,
       required: true
-    },
-    contents: {
-      default: () => [],
-      required: true
-    },
-    navigationButtons:{
-       default: () => []
     },
     hideBgColor:{
       type:Boolean,
@@ -81,8 +61,7 @@ export default {
   }
 }
 
-.nav-button{
-  padding-top:2.25rem;
-  padding-right:2rem;
+p{
+  margin-bottom:1.5rem;
 }
 </style>
