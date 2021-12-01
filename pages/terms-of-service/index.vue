@@ -73,6 +73,9 @@ export default {
 
  .terms-text{
     padding-left:2rem;
+    @media only screen and (max-width:  $viewport-sm) {
+      padding:0;
+    }
   }
   
 </style>
