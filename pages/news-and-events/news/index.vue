@@ -3,35 +3,35 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values"/>
     <div class="container-default vertical-flex">
-        <div class="top-heading">
-            <h1>
-                NEWS
-            </h1>
+      <div class="top-heading">
+        <h1>
+          NEWS
+        </h1>
+      </div> 
+      <div class="default-inner">
+        <div class="category-tab">
+          <tab-nav
+          :tabs="tabs"
+          :active-tab="activeTab"
+          @tabClick="onTabClick($event)"
+        />
+        </div>      
+        <div class="news-items vertical-flex">
+            <div v-for="newsItem in pagedNews"  class="news-items__item">
+              <news-item :news-item="newsItem"/>
+            </div>
         </div> 
-        <div class="default-inner">
-          <div class="category-tab">
-            <tab-nav
-            :tabs="tabs"
-            :active-tab="activeTab"
-            @tabClick="onTabClick($event)"
-          />
-          </div>      
-          <div class="news-items vertical-flex">
-              <div v-for="newsItem in pagedNews"  class="news-items__item">
-                <news-item :news-item="newsItem"/>
-              </div>
-          </div> 
-          <div class="not-found"  :style="this.newsList.length>0? 'display:none' : ''">
-            <h2>No records found for this category</h2>
-          </div>      
-          <div class="paginator" :style="this.newsList.length==0? 'display:none' : ''">     
-            <pagination
-              :total-count="totalCount"
-              :page-size="pageSize"          
-              @select-page="onPaginationChange"
-            />       
-          </div> 
-        </div>     
+        <div class="not-found"  :style="this.newsList.length>0? 'display:none' : ''">
+          <h2>No records found for this category</h2>
+        </div>      
+        <div class="paginator" :style="this.newsList.length==0? 'display:none' : ''">     
+          <pagination
+            :total-count="totalCount"
+            :page-size="pageSize"          
+            @select-page="onPaginationChange"
+          />       
+        </div> 
+      </div>     
     </div>
   </div>
 </template>
