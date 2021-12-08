@@ -1,26 +1,26 @@
 <template>
-    <div class="news-item-container flex-box curved-box">
-        <div class="news-item-card vertical-flex">
-            <div class="news-item-card__image">
-                <img :src="newsItem.image.url" />
-            </div>
-            <div class="news-item-card__title display-ellipsis --2">
-                <h3>{{newsItem.title}}</h3>
-            </div>
-            <div class="news-item-card__detail display-ellipsis --5">
-                <span>
-                    {{newsItem.blurb}}
-                </span>
-            </div>
-            <div class="news-item-card__button">
-                <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug, item:newsItem}}">
-                    <el-button>
-                        READ MORE
-                    </el-button>
-                </nuxt-link>
-            </div>
-        </div>
+  <div class="news-item-container flex-box curved-box">
+    <div class="news-item-card vertical-flex">
+      <div class="news-item-card__image">
+        <img :src="newsItem.image.url" />
+      </div>
+      <div class="news-item-card__title display-ellipsis --2">
+        <h3>{{newsItem.title}}</h3>
+      </div>
+      <div class="news-item-card__detail display-ellipsis --5">
+        <span>
+          {{newsItem.blurb}}
+        </span>
+      </div>
+      <div class="news-item-card__button">
+        <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug}}">
+          <el-button>
+              READ MORE
+          </el-button>
+        </nuxt-link>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>

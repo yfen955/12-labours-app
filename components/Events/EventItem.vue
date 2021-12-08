@@ -1,29 +1,29 @@
 <template>
-    <div class="event-item-container">
-        <div class="event-item">
-            <div class="event-item__image">
-                <img :src="eventItem.image.url"></img>
-            </div>
-            <div class=event-item__info>
-                <div class="item-title">     
-                    <nuxt-link :to="{ name: 'news-and-events-events-detail', params: { detail: eventItem.slug, item:eventItem}}">
-                        <h4>{{eventItem.title}}</h4>
-                    </nuxt-link>
-                </div>
-                <div class="item-date">
-                    <span>
-                        {{this.$formatDDMonthYear(eventItem.startDate)}}
-                        {{eventItem.endDate? " - " + this.$formatDDMonthYear(eventItem.endDate) : ""}}
-                    </span> 
-                </div>
-                <div class="item-detail">
-                    <span> 
-                        {{eventItem.blurb}}                    
-                    </span>
-                </div>
-            </div>
+  <div class="event-item-container">
+    <div class="event-item">
+      <div class="event-item__image">
+        <img :src="eventItem.image.url"></img>
+      </div>
+      <div class=event-item__info>
+        <div class="item-title">     
+          <nuxt-link :to="{ name: 'news-and-events-events-detail', params: { detail: eventItem.slug}}">
+            <h4>{{eventItem.title}}</h4>
+          </nuxt-link>
         </div>
+        <div class="item-date">
+          <span>
+            {{this.$formatDDMonthYear(eventItem.startDate)}}
+            {{eventItem.endDate? " - " + this.$formatDDMonthYear(eventItem.endDate) : ""}}
+          </span> 
+        </div>
+        <div class="item-detail">
+          <span> 
+            {{eventItem.blurb}}                    
+          </span>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
