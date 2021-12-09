@@ -1,31 +1,34 @@
 <template>
-  <div class="form-section">  
-  <el-form-item required label="What area would you like to know more information about?">
-      <el-select v-model="title" placeholder="Select title" @change="fieldChange('title',title)">
+  <div class="form-section"> 
+  <el-form-item :required="title.required" :label="title.display">
+      <el-select class="--sm" v-model="title.value" placeholder="Select title" @change="selectChange('title')">
         <el-option label="Dr" value="Dr"></el-option>
         <el-option label="Mr" value="Mr"></el-option>
+        <el-option label="Miss" value="Miss"></el-option>
         <el-option label="Mrs" value="Mrs"></el-option>
+        <el-option label="Ms" value="Ms"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item :required="firstName.required" :label="firstName.display">
-      <el-input v-model="firstName.value" @blur="fieldChange('firstName',firstName.value)"></el-input>
-      <span v-if="firstName.message!='none'">{{firstName.message}}</span>
+      <el-input v-model="firstName.value" @blur="fieldChange('firstName')" :maxlength="firstName.maxLength"></el-input>
+      <span class="error">{{firstName.message}}</span>
     </el-form-item>
     <el-form-item :required="lastName.required" :label="lastName.display">
-      <el-input v-model="lastName.value" @blur="fieldChange('lastName', lastName.value)" :maxlength="lastName.max"></el-input>
-      <span v-if="lastName.message!='none'">{{lastName.message}}</span>
+      <el-input v-model="lastName.value" @blur="fieldChange('lastName')" :maxlength="lastName.maxLength"></el-input>
+      <span class="error">{{lastName.message}}</span>
     </el-form-item>
     <el-form-item :required="phone.required" :label="phone.display">
-      <el-input v-model="phone.value" @blur="fieldChange('phone',phone.value)"></el-input>
-      <span v-if="phone.message!='none'">{{phone.message}}</span>
+      <el-input v-model="phone.value" @blur="fieldChange('phone')" :maxlength="phone.maxLength"></el-input>
+      <span class="error">{{phone.message}}</span>
     </el-form-item>
     <el-form-item :required="email.required" :label="email.display">
-      <el-input v-model="email.value" @blur="fieldChange('email',email.value)"></el-input>
-      <span v-if="email.message!='none'">{{email.message}}</span>
+      <el-input v-model="email.value" @blur="fieldChange('email')" :maxlength="email.maxLength"></el-input>
+      <span class="error">{{email.message}}</span>
+      <span class="error">{{email.matchMessage}}</span>
     </el-form-item> 
     <el-form-item :required="confirmEmail.required" :label="confirmEmail.display">
-      <el-input v-model="confirmEmail.value" @blur="fieldChange('confirmEmail',confirmEmail.value)"></el-input>
-      <span v-if="confirmEmail.message!='none'">{{confirmEmail.message}}</span>
+      <el-input v-model="confirmEmail.value" @blur="fieldChange('confirmEmail')" :maxlength="confirmEmail.maxLength"></el-input>
+      <span class="error">{{confirmEmail.message}}</span>
     </el-form-item>   
   </div>
 </template>
@@ -33,28 +36,47 @@
 <script>
 
 export default {
-  name: 'ContactPage',
+  name: 'ContactInformation',
 
   data: () => {
     return {
-      title:'',
+      title: {
+        display:'Title', value:null,required:true
+      },
+      firstName:{
+        display:'First Name', value:null,message:'',required:true,maxLength:100
+      },
+      lastName:{
+        display:'Last Name', value:null,message:'',required:true,maxLength:100
+      },
+      phone:{
+        display:'Phone', value:null,message:'',format:'phone',maxLength:50
+      },
+      email:{
+        display:'Email', value:null,message:'',required:true,format:'email',match:'confirmEmail',matchMessage:'',minLength:10,maxLength:100
+      },
+      confirmEmail:{
+        display:'Confirm Email', value:null,message:'',required:true,format:'email',match:'email',maxLength:100
+      }
     }
-  },
-  props: {
-    //title: {},
-    firstName:{},
-    lastName:{},
-    phone:{},
-    email:{},
-    confirmEmail:{}
   },
   methods: {
-    fieldChange: function(name,value) {
-      this.$emit('field-change', {fieldName:name,fieldValue:value})
-    }
-  },
-  watch:{
+    fieldChange: function(name) {
+      let field=this[name]
+      let fieldToMatch=this[field.match] 
+      let result=this.$validateElement(field,fieldToMatch)
+      field.message=result.strMessage
+      if(result.matchFlag){
+        fieldToMatch.message=null
+        this.$emit('field-change', {fieldName:field.match,fieldValue:fieldToMatch.value,invalid:false})
+      }     
 
+      this.$emit('field-change', {fieldName:name,fieldValue:field.value,invalid:Boolean(field.message)})
+    },
+    selectChange:function(name){
+      let field=this[name]
+      this.$emit('field-change', {fieldName:name,fieldValue:field.value,invalid:false})
+    }
   }
 }
 </script>
