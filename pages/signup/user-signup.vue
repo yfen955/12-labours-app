@@ -5,24 +5,6 @@
         <div class="signup__title top-heading">
           <h1>SIGN UP</h1>
         </div>
-        <div class="signup__text">
-          I'm signing up as a
-        </div>
-        <div class="signup__user">
-          <el-select class="--sm" v-model="userType">
-            <el-option label="Researcher" value="researcher"></el-option>
-            <el-option label="Clinician" value="clinician"></el-option>
-            <el-option label="Patient" value="patient"></el-option>
-          </el-select>
-        </div>
-        <div class="signup__image">
-          <img :src="require(`~/static/img/${imgFile}`)"/>
-        </div>
-        <div class="signup__nav-button">
-          <el-button @change="selectChange('signup')">
-            Sign up
-          </el-button>  
-        </div>
       </div>
       <div class="picture">
       </div>
@@ -37,9 +19,12 @@ export default {
 
   data: () => {
     return {      
-      userType:'researcher',
-      imgFile:'researcher-in-frame.png'
+      
     }
+  },
+
+  props: {
+    
   },
 
   watch:{
@@ -72,27 +57,7 @@ export default {
     &__title{
       padding-top:6.25rem;
     }
-    &__text{
-      padding:1rem;
-      font-size:1.5rem;
-      font-weight:bold;
-      line-height:2.25rem;
-    }
-    &__user{
-      padding:1rem;
-    }
-    &__image{
-      padding:1rem 1rem 3.3rem 1rem;
-      display: block;
-      img{
-        width:11.5rem;
-        height:15.5rem;
-        @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-          width:6rem;
-          height:8rem;
-        }
-      }
-    }
+   
     &__nav-button{
       padding:1rem;
     }
