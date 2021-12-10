@@ -46,6 +46,7 @@ export default {
     "@/plugins/graphcms.js",
     "@/plugins/helpers",
     "@/plugins/vue-sphinx-xml.js",
+    "@/plugins/validators.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -54,7 +55,8 @@ export default {
       "~/components",
       "~/components/News",
       "~/components/Events",
-      "~/components/PortalHelp"
+      "~/components/PortalHelp",
+      "~/components/Contact"
     ],
   },
 

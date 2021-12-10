@@ -23,18 +23,17 @@ async function multiContent(graphcms, name) {
   const variables = {
     "name": name
   }
-
-    const query1 = gql`
-      query ($name: String!) {
-        values: multiContent(where: {name: $name}) {
-          contents {
-            html
-          }
-          title
+  const query1 = gql`
+    query ($name: String!) {
+      values: multiContent(where: {name: $name}) {
+        contents {
+          html
         }
+        title
       }
-    `
-    return await graphcms.request(query1,  variables);
+    }
+  `
+  return await graphcms.request(query1,  variables);
 }
 
 async function projectInformation(graphcms, name) {
@@ -42,19 +41,19 @@ async function projectInformation(graphcms, name) {
     "name": name
   }
 
-    const query2 = gql`
-      query ($name: String!) {
-        values: projectInformation(where: {name: $name}) {
-          content {
-            html
-          }
-          title,
-          linkCaption,
-          link
+  const query2 = gql`
+    query ($name: String!) {
+      values: projectInformation(where: {name: $name}) {
+        content {
+          html
         }
+        title,
+        linkCaption,
+        link
       }
-    `
-    return await graphcms.request(query2,  variables);
+    }
+  `
+  return await graphcms.request(query2,  variables);
 }
 
 async function banner(graphcms, name) {
@@ -88,23 +87,36 @@ async function topNews(graphcms, fetchCount) {
       {
         publishedDate
         title
-        image{
-          url
-        }
+        image{url}
         category
         blurb
         slug
-        detail{
-          html
-        }
       }
     }
   ` 
   return await graphcms.request(query, variables);
 }
 
-async function newsCategory(graphcms) {
+async function news(graphcms,slug) {
+  const variables = {
+    "slug":slug
+  }
+  const query = gql`
+  query ($slug:String!) {
+    newsItem: newsItems(where: {slug:$slug})
+    {
+      publishedDate
+      title
+      image{url}
+      blurb
+      detail{html}
+    }
+  } 
+  ` 
+  return await graphcms.request(query, variables);   
+}
 
+async function newsCategory(graphcms) {
   const query = gql`
     query introspectNewsCategoryType {
       __type(name: "NewsCategory") {
@@ -125,32 +137,45 @@ async function topEvents(graphcms, fetchCount) {
   const query = gql`
     query ($fetchCount: Int) {
       eventsList:  eventsItems(
+        first: $fetchCount 
         orderBy: startDate_DESC
-        first: $fetchCount
       ) 
       {
         startDate
         endDate
         title
-        image{
-          url
-        }
+        image{url}
         category
         slug
-        detail{
-          html
-        }
         blurb
-        externalLink
       }
-    }
+    }    
   ` 
   return await graphcms.request(query, variables);
 }
 
+async function event(graphcms,slug) {
+  const variables = {
+    "slug":slug
+  }
+  const query = gql`
+  query ($slug:String!) {
+    eventItem: eventsItems(where: {slug:$slug})
+    {
+      startDate
+      endDate
+      title
+      image{url}
+      detail{html}
+      blurb
+      externalLink
+    }
+  } 
+  ` 
+  return await graphcms.request(query, variables);   
+}
 
 async function eventsCategory(graphcms) {
-
   const query = gql`
     query introspectEventsCategoryType {
       __type(name: "EventsCategory") {
@@ -163,11 +188,39 @@ async function eventsCategory(graphcms) {
   return await graphcms.request(query);
 }
 
-async function feedbackReason(graphcms) {
 
+async function feedbackReason(graphcms) {
   const query = gql`
     query introspectFeedbackReasonType {
       __type(name: "FeedbackReason") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
+
+async function contactReason(graphcms) {
+  const query = gql`
+    query introspectContactReasonType {
+      __type(name: "ContactReason") {
+        enumValues {
+          name
+        }
+      }
+    }
+  `
+  return await graphcms.request(query);
+}
+
+
+async function contactArea(graphcms) {
+  const query = gql`
+    query introspectContactAreaType {
+      __type(name: "ContactArea") {
         enumValues {
           name
         }
@@ -182,9 +235,13 @@ export default {
   multiContent,
   projectInformation,
   topNews,
+  news,
   newsCategory,
   topEvents,
+  event,
   eventsCategory,
   banner,
-  feedbackReason
+  feedbackReason,
+  contactReason,
+  contactArea
 }

@@ -1,54 +1,54 @@
 <template>
-    <div class="container-default vertical-flex">
-        <div class="top-heading">
-            <h1>
-                LATEST EVENTS
-            </h1>
-        </div>
-        <div class="latest-events default-inner">
-            <div class= "latest-events__item">
-                <div class="main-box vertical-flex curved-box">
-                    <div class="main-box__image-box">
-                        <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
-                    </div>
-                    <div class="main-box__title">
-                        <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: specialEvent.slug, item:specialEvent}}">
-                            <h4>{{specialEvent.title}}</h4>
-                        </nuxt-link>                     
-                    </div>
-                    <div class="main-box__dates">
-                        <span>
-                            {{this.$formatMonDDYear(specialEvent.startDate)}} - {{this.$formatMonDDYear(specialEvent.endDate)}}
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            {{specialEvent.blurb}}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class= "latest-events__item">
-                <div class="upcoming-box vertical-flex">
-                    <h2>UPCOMING EVENTS</h2>
-                    <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList" :key="eventsItem.index">
-                        <div :style="index === 0? itemStyle : '' " class="grid-item">
-                            <span>{{formatMonth(eventsItem.startDate).toUpperCase()}}</span>
-                            <span class="day">{{formatDay(eventsItem.startDate)}}</span>
-                        </div>   
-                        <div :style="index === 0? itemStyle : ''" class="grid-item">                       
-                            <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: eventsItem.slug, item:eventsItem}}">
-                                <span class="display-ellipsis --2">{{eventsItem.title}}</span>
-                            </nuxt-link>         
-                        </div>               
-                    </div>
-                    <div class="view-all">
-                        <nuxt-link to="/news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
-                    </div>
-                </div>
-            </div>
-        </div>     
+  <div class="container-default vertical-flex">
+    <div class="top-heading">
+      <h1>
+        LATEST EVENTS
+      </h1>
     </div>
+    <div class="latest-events default-inner">
+      <div class= "latest-events__item">
+        <div class="main-box vertical-flex curved-box">
+          <div class="main-box__image-box">
+            <img :src="specialEvent.image===null?'':specialEvent.image.url"></img>
+          </div>
+          <div class="main-box__title">
+            <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: specialEvent.slug}}">
+              <h4>{{specialEvent.title}}</h4>
+            </nuxt-link>                     
+          </div>
+          <div class="main-box__dates">
+            <span>
+              {{this.$formatMonDDYear(specialEvent.startDate)}} - {{this.$formatMonDDYear(specialEvent.endDate)}}
+            </span>
+          </div>
+          <div>
+            <span>
+              {{specialEvent.blurb}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class= "latest-events__item">
+        <div class="upcoming-box vertical-flex">
+          <h2>UPCOMING EVENTS</h2>
+          <div class="upcoming-box__grid" v-for="(eventsItem, index) in eventsList" :key="eventsItem.index">
+            <div :style="index === 0? itemStyle : '' " class="grid-item">
+              <span>{{formatMonth(eventsItem.startDate).toUpperCase()}}</span>
+              <span class="day">{{formatDay(eventsItem.startDate)}}</span>
+            </div>   
+            <div :style="index === 0? itemStyle : ''" class="grid-item">                       
+              <nuxt-link :to="{ name: 'news-and-events-events-detail', params: {detail: eventsItem.slug}}">
+                <span class="display-ellipsis --2">{{eventsItem.title}}</span>
+              </nuxt-link>         
+            </div>               
+          </div>
+          <div class="view-all">
+            <nuxt-link to="/news-and-events/events/">VIEW ALL EVENTS</nuxt-link>
+          </div>
+        </div>
+      </div>
+    </div>     
+  </div>
 </template>
 
 <script>
@@ -56,38 +56,38 @@ export default {
     name: 'LatestEvents',
 
     props: {
-        eventsList: {
-        type: Array,
-        default: () => []
-        },
-        linkComponent: {
-        type: String,
-        default: 'nuxt-link'
-        }
+      eventsList: {
+      type: Array,
+      default: () => []
+      },
+      linkComponent: {
+      type: String,
+      default: 'nuxt-link'
+      }
     },
 
     methods: {
-        formatMonth: function(strDate) {
-            var dt=new Date(strDate)
-            return dt.toLocaleString('default', { month: 'short' })
-        },
-        formatDay: function(strDate) {
-            var dt=new Date(strDate)
-            return dt.getDate()
-        }
+      formatMonth: function(strDate) {
+        var dt=new Date(strDate)
+        return dt.toLocaleString('default', { month: 'short' })
+      },
+      formatDay: function(strDate) {
+        var dt=new Date(strDate)
+        return dt.getDate()
+      }
     },
     
     computed: {
-        itemStyle () { 
-            return {              
-                'border-top': 'none'
-            }
+      itemStyle () { 
+        return {              
+          'border-top': 'none'
         }
+      }
     },
 
     created(){
-        //TBD: Event with latest event date may not be the special event, need to check this
-        this.specialEvent=this.eventsList[0]
+      //TBD: Event with latest event date may not be the special event, need to check this
+      this.specialEvent=this.eventsList[0]
     }
 }
 
