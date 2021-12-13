@@ -19,9 +19,11 @@
           <img :src="require(`~/static/img/${imgFile}`)"/>
         </div>
         <div class="signup__nav-button">
-          <el-button @change="selectChange('signup')">
-            Sign up
-          </el-button>  
+          <nuxt-link :to="{name: 'signup-user-detail', params: {user: userType}}">
+            <el-button @change="selectChange('signup')">
+              Sign up
+            </el-button>
+          </nuxt-link>  
         </div>
       </div>
       <div class="picture">
@@ -52,12 +54,6 @@ export default {
         else if(user=='patient')
           this.imgFile='patient-in-frame.png'
       }
-    }
-  },
-  
-  methods: {
-    signup:function(){
-      this.submitSuccess=true;
     }
   }
 }

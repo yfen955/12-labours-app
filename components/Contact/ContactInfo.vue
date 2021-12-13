@@ -1,5 +1,5 @@
 <template>
-  <div class="form-section"> 
+  <div :class="showBg?'form-section':''"> 
   <el-form-item :required="title.required" :label="title.display">
       <el-select class="--sm" v-model="title.value" placeholder="Select title" @change="selectChange('title')">
         <el-option label="Dr" value="Dr"></el-option>
@@ -17,7 +17,7 @@
       <el-input v-model="lastName.value" @blur="fieldChange('lastName')" :maxlength="lastName.maxLength"></el-input>
       <span class="error">{{lastName.message}}</span>
     </el-form-item>
-    <el-form-item :required="phone.required" :label="phone.display">
+    <el-form-item v-if="showPhone" :required="phone.required" :label="phone.display">
       <el-input v-model="phone.value" @blur="fieldChange('phone')" :maxlength="phone.maxLength"></el-input>
       <span class="error">{{phone.message}}</span>
     </el-form-item>
@@ -53,13 +53,25 @@ export default {
         display:'Phone', value:null,message:'',format:'phone',maxLength:50
       },
       email:{
-        display:'Email', value:null,message:'',required:true,format:'email',match:'confirmEmail',matchMessage:'',minLength:10,maxLength:100
+        display:'Email', value:null,message:'',required:true,format:'email',match:'confirmEmail',minLength:10,maxLength:100
       },
       confirmEmail:{
-        display:'Confirm Email', value:null,message:'',required:true,format:'email',match:'email',maxLength:100
+        display:'Confirm Email', value:null,message:'',required:true,format:'email',match:'email',minLength:10,maxLength:100
       }
     }
   },
+
+  props:{
+    showBg:{
+      type:Boolean,
+      default:true
+    },
+    showPhone:{
+      type:Boolean,
+      default:true
+    },
+  },
+
   methods: {
     fieldChange: function(name) {
       let field=this[name]

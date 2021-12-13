@@ -13,19 +13,28 @@ function validateElement(element,elementToMatch)
       strMessage=validateFormat(element.format,element.value)? null : element.display + " has invalid format"
       if(strMessage) return{strMessage,matchFlag}
     }
+
     if(element.minLength){
-      strMessage=element.value.length>element.minLength ? null: "Minimum length for " + element.display + " is " + element.minLength
+      strMessage=element.value.length>=element.minLength ? null: "Minimum length for " + element.display + " is " + element.minLength
       if(strMessage) return{strMessage,matchFlag}
     }
-
-    if(element.match && validateFormat(elementToMatch.format,elementToMatch.value)){
-      matchFlag=true
-      strMessage=element.value === elementToMatch.value? null: element.display + " and " + elementToMatch.display + " should match"
+ 
+    if(element.match){
+      if(elementToMatch.value==null
+          || (elementToMatch.minLength && (elementToMatch.value.length<elementToMatch.minLength))
+          || (elementToMatch.format && !validateFormat(element.format,element.value))
+        )
+        return {strMessage,matchFlag}
+      else{
+        matchFlag=true
+        strMessage=element.value === elementToMatch.value? null: element.display + " and " + elementToMatch.display + " should match"
+      }
     }
   }
 
   return {strMessage,matchFlag}
 }
+
 
 function validateFormat(format,value){
   switch(format){
