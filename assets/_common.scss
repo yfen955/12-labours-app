@@ -39,15 +39,15 @@ $md-end:calc($viewport-md - 1px);   //1023
     }
   }
   
-  span.error{
+  div.error{
     color:$app-secondary-color;
   }
 }
 
 ::v-deep .el-input {
   &__inner {
-    width:100%;
-    max-width:20rem;
+    max-width:100%;
+    width:20rem;
   }
 }
 
@@ -66,6 +66,12 @@ $md-end:calc($viewport-md - 1px);   //1023
 
 ::v-deep .el-select {
 
+  .el-input {
+      input{
+        width:20rem;
+      }
+  }
+
   &.--sm{
     .el-input {   
       input {
@@ -77,6 +83,7 @@ $md-end:calc($viewport-md - 1px);   //1023
   &.--lg{
     .el-input {   
       input {
+        width:100%;
         @media only screen and (min-width: $viewport-md) {
           min-width:30rem;        
         }

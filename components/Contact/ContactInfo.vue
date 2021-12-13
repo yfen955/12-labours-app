@@ -11,24 +11,23 @@
     </el-form-item>
     <el-form-item :required="firstName.required" :label="firstName.display">
       <el-input v-model="firstName.value" @blur="fieldChange('firstName')" :maxlength="firstName.maxLength"></el-input>
-      <span class="error">{{firstName.message}}</span>
+      <div class="error">{{firstName.message}}</div>
     </el-form-item>
     <el-form-item :required="lastName.required" :label="lastName.display">
       <el-input v-model="lastName.value" @blur="fieldChange('lastName')" :maxlength="lastName.maxLength"></el-input>
-      <span class="error">{{lastName.message}}</span>
+      <div class="error">{{lastName.message}}</div>
     </el-form-item>
     <el-form-item v-if="showPhone" :required="phone.required" :label="phone.display">
       <el-input v-model="phone.value" @blur="fieldChange('phone')" :maxlength="phone.maxLength"></el-input>
-      <span class="error">{{phone.message}}</span>
+      <div class="error">{{phone.message}}</div>
     </el-form-item>
     <el-form-item :required="email.required" :label="email.display">
       <el-input v-model="email.value" @blur="fieldChange('email')" :maxlength="email.maxLength"></el-input>
-      <span class="error">{{email.message}}</span>
-      <span class="error">{{email.matchMessage}}</span>
+      <div class="error">{{email.message}}</div>
     </el-form-item> 
     <el-form-item :required="confirmEmail.required" :label="confirmEmail.display">
       <el-input v-model="confirmEmail.value" @blur="fieldChange('confirmEmail')" :maxlength="confirmEmail.maxLength"></el-input>
-      <span class="error">{{confirmEmail.message}}</span>
+      <div class="error">{{confirmEmail.message}}</div>
     </el-form-item>   
   </div>
 </template>

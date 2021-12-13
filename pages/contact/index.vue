@@ -60,7 +60,7 @@
                       placeholder-text="Enter your details"
                       @text-change="multiChange"/>
                   </div>
-                  <span class="error">{{detail.message}}</span>
+                  <div class="error">{{detail.message}}</div>
                 </el-form-item>          
               </div>
             </div>
