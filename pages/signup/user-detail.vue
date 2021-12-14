@@ -5,7 +5,7 @@
         <div class="top-heading">
           <h1>SIGN UP</h1>
         </div>
-        <div class="fields">
+        <div class="fields flex-box">
           <el-form label-position="top">
             <contact-info :show-bg=false :show-phone=false @field-change="getField"/>
             <el-form-item :required="password.required" :label="password.display" >
@@ -13,85 +13,122 @@
                 v-model="password.value" 
                 @blur="fieldChange('password')" 
                 :maxlength="password.maxLength" 
+                :placeholder="password.placeholder"
                 autocomplete="off" 
                 type="password"></el-input>
-              <span class="error">{{password.message}}</span>
+              <div class="error">{{password.message}}</div>
             </el-form-item> 
             <el-form-item :required="confirmPassword.required" :label="confirmPassword.display">
               <el-input 
                 v-model="confirmPassword.value" 
                 @blur="fieldChange('confirmPassword')" 
                 :maxlength="confirmPassword.maxLength" 
+                :placeholder="confirmPassword.placeholder"
                 autocomplete="off" 
                 type="password">
               </el-input>
-              <span class="error">{{confirmPassword.message}}</span>
+              <div class="error">{{confirmPassword.message}}</div>
             </el-form-item> 
-            <div v-if="userType=='researcher'">
-              <el-form-item :required="profession.required" :label="profession.display">
-                <el-input 
-                  v-model="profession.value" 
-                  @blur="fieldChange('profession')" 
-                  :maxlength="profession.maxLength">
-                </el-input>
-                <span class="error">
-                  {{profession.message}}
-                </span>
-              </el-form-item>  
-              <el-form-item :required="institution.required" :label="institution.display">
-                <el-input 
-                  v-model="institution.value" 
-                  @blur="fieldChange('institution')" 
-                  :maxlength="institution.maxLength">
-                </el-input>
-                <span class="error">
-                  {{institution.message}}
-                </span>
-              </el-form-item>           
-            </div>
-            <div v-if="userType=='clinician'">
-              <el-form-item :required="hpi.required" :label="hpi.display">
-                <el-input 
-                  v-model="hpi.value" 
-                  @blur="fieldChange('hpi')" 
-                  :maxlength="hpi.maxLength">
-                </el-input>
-                <span class="error">
-                  {{hpi.message}}
-                </span>
-              </el-form-item> 
-              <el-form-item :required="hospital.required" label="Healthcare center/Hospital" >
-                <el-input 
-                  v-model="hospital.value" 
-                  @blur="fieldChange('hospital')" 
-                  :maxlength="hospital.maxLength">
-                </el-input>
-                <span class="error">
-                  {{hospital.message}}
-                </span>
+            <el-form-item :required="profession.required" :label="profession.display" v-if="userType=='researcher' || userType=='clinician'" >
+              <el-input 
+                v-model="profession.value" 
+                @blur="fieldChange('profession')" 
+                :placeholder="profession.placeholder"
+                :maxlength="profession.maxLength">
+              </el-input>
+              <div class="error">
+                {{profession.message}}
+              </div>
+            </el-form-item>  
+            <el-form-item :required="institution.required" :label="institution.display" v-if="userType=='researcher'" >
+               <el-autocomplete
+                v-model="institution.value"
+                :fetch-suggestions="searchInstitution"
+                :placeholder="institution.placeholder"
+                @blur="fieldChange('institution')" 
+                :maxlength="institution.maxLength"
+              >
+              </el-autocomplete>
+              <div class="error">
+                {{institution.message}}
+              </div>
+            </el-form-item>           
+            <el-form-item :required="hpi.required" :label="hpi.display" v-if="userType=='clinician'">
+              <el-input 
+                v-model="hpi.splitValues[0]" 
+                maxlength=3 
+                placeholder="XXX" 
+                class="short --3digits"
+                @blur="multiValueField('hpi')">
+              </el-input> &mdash;
+              <el-input 
+                v-model="hpi.splitValues[1]" 
+                maxlength=3 
+                placeholder="XXX" 
+                class="short --3digits" 
+                @blur="multiValueField('hpi')">
+              </el-input> &mdash;
+              <el-input 
+                v-model="hpi.splitValues[2]" 
+                maxlength=1 
+                placeholder="X" 
+                class="short --1digit" 
+                @blur="multiValueField('hpi')">
+              </el-input>
+              <div class="error">
+                {{hpi.message}}
+              </div>
+            </el-form-item> 
+            <el-form-item :required="hospital.required" :label="hospital.display" v-if="userType=='clinician'">
+              <el-autocomplete
+                v-model="hospital.value"
+                :fetch-suggestions="searchHospital"
+                :placeholder="hospital.placeholder"
+                @blur="fieldChange('hospital')" 
+                :maxlength="hospital.maxLength"
+              >
+              </el-autocomplete>
+              <div class="error">
+                {{hospital.message}}
+              </div>
             </el-form-item>                         
-            </div>
-            <div v-if="userType=='patient'">
-              <el-form-item :required="nhi.required" :label="nhi.display">
-                <el-input 
-                  v-model="nhi.value" 
-                  @blur="fieldChange('nhi')" 
-                  :maxlength="nhi.maxLength">
-                </el-input>
-                <span class="error">
-                  {{nhi.message}}
-                </span>
-              </el-form-item>
-              <el-form-item :required="dhb.required" :label="dhb.display">
-                <el-select v-model="dhb.value" placeholder="Select title" @change="selectChange('dhb')">
-                  <el-option v-for="item in dhbOptions"
-                    :key="item.name"
+            <el-form-item :required="nhi.required" :label="nhi.display" v-if="userType=='patient'">
+              <el-input 
+                v-model="nhi.splitValues[0]" 
+                maxlength=3 
+                placeholder="XXX" 
+                class="short --3digits" 
+                @blur="multiValueField('nhi')">
+              </el-input> &mdash;
+              <el-input 
+                v-model="nhi.splitValues[1]" 
+                maxlength=2 
+                placeholder="XX" 
+                class="short --2digits" 
+                @blur="multiValueField('nhi')">
+              </el-input> &mdash;
+              <el-input 
+                v-model="nhi.splitValues[2]" 
+                maxlength=2 
+                placeholder="XX" 
+                class="short --2digits" 
+                @blur="multiValueField('nhi')">
+              </el-input>
+              <div class="error">
+                {{nhi.message}}
+              </div>
+            </el-form-item>
+            <el-form-item :required="dhb.required" :label="dhb.display" v-if="userType=='patient' || userType=='clinician'">
+              <el-select v-model="dhb.value" placeholder="Select your DHB" @change="selectChange('dhb')">
+                <el-option-group v-for="group in dhbs" :key="group.label":label="group.label">
+                  <el-option v-for="item in group.options"
+                    :key="item.value"
                     :label="item.display"
-                    :value="item.name">
+                    :value="item.value">
                   </el-option>
-                </el-select>
-              </el-form-item>
-            </div>
+                </el-option-group>
+              </el-select>
+            </el-form-item>
           </el-form>
         </div>
         <div class="signup__nav-button">
@@ -100,7 +137,7 @@
           </el-button>  
         </div>
       </div>
-      <div class="picture">
+      <div class="signup-picture">
       </div>
     </div>
   </div>
@@ -108,53 +145,44 @@
 
 <script>
 
-import graphcmsQuery from '@/services/graphcmsQuery'
+import {dhbs,hospitals,institutions} from '~/static/data/data.json'
 export default { 
 
   name: 'SignupPage',
 
-  async asyncData({$graphcms}) {
-    const feedbackReason= await graphcmsQuery.feedbackReason($graphcms)
-    return {feedbackReason}
+  async asyncData() {
+    return{dhbs,hospitals,institutions}
   },
 
   data: () => {
     return {      
       userType:null,
-      submitDisabled:true,
-      dhbOptions: [,],
-      contactInfoValues:{title:'',firstName:'',lastName:'',email:'',confirmEmail:''},
-      password:{
-        display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:15
-      },
-      confirmPassword:{
-        display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:15
-      },
-      profession:{
-        display:'Profession', value:null, message:'', required:true
-      },
-      institution:{
-        display:'Institution', value:null, message:'', required:true
-      },
-      hpi:{
-        display:'HPI', value:null, message:'', required:true
-      },
-      nhi:{
-        display:'NHI', value:null,message:'', required:true
-      },
-      hospital:{
-        display:'Hospital', value:null, message:'', required:true
-      },
-      nhi:{
-        display:'NHI', value:null,message:'', required:true
-      },
-      dhb:{
-        display:'DHB', value:null,message:'', required:true
-      },
+      submitDisabled:true,     
+      contactInfoValues:
+        {title:'',firstName:'',lastName:'',email:'',confirmEmail:''},     
+      password:
+        {display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:15,placeholder:'Enter your password'},     
+      confirmPassword:
+        {display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:15,placeholder:'Please confirm your password'},
+      profession:
+        {display:'Profession', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your profession'},
+      institution:
+        {display:'Institution', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your institution'},
+      hpi:
+        {display:'HPI number', value:null, message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
+      nhi:{  
+        display:'NHI number', value:null,message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
+      hospital:
+        {display:'Healthcare center/Hospital', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your hospital'},
+      dhb:
+        {display:'DHB', value:null,message:'', required:true,placeholder:'Select your DHB'},
       invalidFields:[],
-      researcherFields:['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','institution'],
-      clinicianFields:['title','firstName','lastName','email','confirmEmail','password','confirmPassword','hpi','hospital'],
-      patientFields:['title','firstName','lastName','email','confirmEmail','password','confirmPassword','nhi','dhb']
+      researcherFields:
+        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','institution'],
+      clinicianFields:
+        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','hpi','hospital','dhb'],
+      patientFields:
+        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','nhi','dhb']
     }
   },
   
@@ -180,6 +208,15 @@ export default {
       this.updateValidity(fieldName,false)
     },
 
+    multiValueField:function(fieldName){
+      let field=this[fieldName] 
+      let [value1,value2,value3]=field.splitValues;
+      field.value=value1 +value2 +value3
+      let result=this.$validateElement(field,null)
+      field.message=result.strMessage
+      this.updateValidity(fieldName,Boolean(field.message)) 
+    },
+
     updateValidity:function(fieldName,invalid){
       const fieldIndex=this.invalidFields.indexOf(fieldName)
       if(invalid){
@@ -194,7 +231,29 @@ export default {
 
     onSubmit:function(){
       /*TBD: Code to submit form values */
-      //this.submitSuccess=true;
+    },
+
+    searchHospital(queryString, cb) {
+      var results = queryString ? this.hospitals.filter(this.createFilter(queryString)) : this.hospitals;
+      cb(results)
+    },
+    
+    searchInstitution(queryString, cb) {
+      var results = queryString ? this.institutions.filter(this.createFilter(queryString)) : this.institutions;
+      cb(results)
+    },
+    createFilter(queryString) {
+      return (row) => {
+        return (row.display.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      }
+    }
+  },
+
+  watch:{
+    invalidFields: {
+      handler: function(val) {
+        this.submitDisabled=val.length>0
+      }
     }
   },
 
@@ -216,15 +275,7 @@ export default {
     else{
       this.$router.replace({ path: '/signup' })
     }
-
-    this.dhbOptions= this.feedbackReason.__type.enumValues
-    this.dhbOptions.map(e => e.display = e.name.replace(/_/g,' '))  
-  },
-
-  /*
-  validate({ params}) {
-    return params.user
-  }*/
+  }
 }
 
 </script>
@@ -242,18 +293,21 @@ export default {
     }
   }
 
-  .picture{
-    width:50%;
-    border: 1px solid #707070;
-    height: 60rem;
-    background-image:
-    linear-gradient(217deg, #00467FE0 0%, #0080A7B0 53%, #0080A7B0 60%, #00467FDE 100%),
-    url("~static/img/virtual-screen.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+  .fields{
+    width:100%;
+    justify-content:center;
+  }
 
-    @media only screen and (max-width:  $viewport-sm) {
-      display:none;
+  .short{
+    .el-input__inner {text-transform:uppercase;}
+    &.--3digits{
+      width:4.5rem;
+    }
+    &.--2digits{
+      width:4rem;
+    }
+    &.--1digit{
+      width:3rem;
     }
   }
 </style>

@@ -1,0 +1,80 @@
+{
+  "dhbs": [
+    {
+    "label": "North Island",
+    "options":[
+      {"value":"Auckland", "display":"Auckland"},
+      {"value":"Bay of Plenty ", "display": "Bay of Plenty "},
+      {"value":"Capital & Coast ", "display": "Capital & Coast "},
+      {"value":"Counties Manukau ", "display": "Counties Manukau "},
+      {"value":"Hawkes Bay", "display": "Hawkes Bay"},
+      {"value":"Hutt Valley ", "display": "Hutt Valley "},
+      {"value":"Lakes", "display": "Lakes"},
+      {"value":"Mid Central ", "display": "Mid Central "},
+      {"value":"Northland", "display": "Northland"},
+      {"value":"Tairāwhiti", "display": "Tairāwhiti"},
+      {"value":"Taranaki", "display": "Taranaki"},
+      {"value":"Waikato", "display": "Waikato"},
+      {"value":"Wairarapa", "display": "Wairarapa"},
+      {"value":"Waitematā", "display": "Waitematā"},
+      {"value":"Whanganui", "display": "Whanganui"} 
+    ]},
+    {
+    "label": "South Island",
+    "options":[
+      {"value":"Canterbury", "display": "Canterbury"},
+      {"value":"Nelson-Marlborough", "display": "Nelson-Marlborough"},
+      {"value":"South Canterbury", "display": "South Canterbury"},
+      {"value":"Southern", "display": "Southern"},
+      {"value":"West Coast", "display": "West Coast"}
+    ]}
+  ],
+
+  "hospitals":[
+    {"value":"Murchison Hospital and Health Centre", "display":"Murchison Hospital and Health Centre"},
+    {"value":"Nelson Bays Maternity Unit (Te Whare Whanau)", "display":"Nelson Bays Maternity Unit (Te Whare Whanau)"},
+    {"value":"Nelson Hospital", "display":"Nelson Hospital"},
+    {"value":"Tipahi Street Mental Health", "display":"Tipahi Street Mental Health"},
+    {"value":"Wairau Hospital", "display":"Wairau Hospital"},
+    {"value":"Bay of Islands Hospital", "display":"Bay of Islands Hospital"},
+    {"value":"Dargaville Hospital", "display":"Dargaville Hospital"},
+    {"value":"Kaitaia Hospital", "display":"Kaitaia Hospital"},
+    {"value":"Timatanga Hou - Detox Unit", "display":"Timatanga Hou - Detox Unit"},
+    {"value":"Timaru Hospital", "display":"Timaru Hospital"},
+    {"value":"Dunedin Hospital", "display":"Dunedin Hospital"},
+    {"value":"Lakes District Hospital", "display":"Lakes District Hospital"},
+    {"value":"Southland Hospital", "display":"Southland Hospital"},
+    {"value":"Wakari Hospital", "display":"Wakari Hospital"},
+    {"value":"Gisborne Hospital", "display":"Gisborne Hospital"},
+    {"value":"Hawera Hospital", "display":"Hawera Hospital"},
+    {"value":"Taranaki Base Hospital", "display":"Taranaki Base Hospital"},
+    {"value":"Henry Rongomau Bennett Centre", "display":"Henry Rongomau Bennett Centre"},
+    {"value":"Matariki Hospital", "display":"Matariki Hospital"},
+    {"value":"Puna Whiti", "display":"Puna Whiti"},
+    {"value":"Rhoda Read Hospital", "display":"Rhoda Read Hospital"},
+    {"value":"Taumarunui Hospital and Family Health Team", "display":"Taumarunui Hospital and Family Health Team"},
+    {"value":"Te Kuiti Hospital", "display":"Te Kuiti Hospital"},
+    {"value":"Thames Hospital", "display":"Thames Hospital"},
+    {"value":"Tokoroa Hospital", "display":"Tokoroa Hospital"},
+    {"value":"Waikato Hospital", "display":"Waikato Hospital"},
+    {"value":"Ward OPR1", "display":"Ward OPR1"},
+    {"value":"Wairarapa Hospital", "display":"Wairarapa Hospital"},
+    {"value":"Elective Surgery Centre", "display":"Elective Surgery Centre"},
+    {"value":"He Puna Waiora", "display":"He Puna Waiora"},
+    {"value":"Inpatient Detoxification Unit", "display":"Inpatient Detoxification Unit"},
+    {"value":"Mason Clinic", "display":"Mason Clinic"},
+    {"value":"North Shore Hospital", "display":"North Shore Hospital"},
+    {"value":"Pitman House", "display":"Pitman House"},
+    {"value":"Waiatarau Inpatient Mental Health Unit", "display":"Waiatarau Inpatient Mental Health Unit"},
+    {"value":"Waitakere Hospital", "display":"Waitakere Hospital"},
+    {"value":"Wilson Centre", "display":"Wilson Centre"},
+    {"value":"Buller Health", "display":"Buller Health"},
+    {"value":"Grey Base Hospital", "display":"Grey Base Hospital"},
+    {"value":"Whanganui Hospital", "display":"Whanganui Hospital"}
+  ],
+
+  "institutions":[
+    {"value":"University of Auckland", "display":"University of Auckland"},
+    {"value":"AUT", "display":"Auckland University of Technology"}
+  ]
+}

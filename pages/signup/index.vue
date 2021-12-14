@@ -26,7 +26,7 @@
           </nuxt-link>  
         </div>
       </div>
-      <div class="picture">
+      <div class="signup-picture">
       </div>
     </div>
   </div>
@@ -63,6 +63,9 @@ export default {
 <style scoped lang="scss">
   .signup{
     width:50%;
+    @media only screen and (max-width:  $viewport-sm) {
+      width:100%;
+    }
     align-items:center;
     box-sizing:border-box;
     &__title{
@@ -83,29 +86,16 @@ export default {
       img{
         width:11.5rem;
         height:15.5rem;
-        @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-          width:6rem;
-          height:8rem;
-        }
       }
     }
     &__nav-button{
       padding:1rem;
+      margin-bottom:12rem;
+      
+      @media only screen and (max-width:  $viewport-sm) {
+        margin-bottom:3rem;
+      }
     }
   }
 
-  .picture{
-    width:50%;
-    border: 1px solid #707070;
-    height: 60rem;
-    background-image:
-    linear-gradient(217deg, #00467FE0 0%, #0080A7B0 53%, #0080A7B0 60%, #00467FDE 100%),
-    url("~static/img/virtual-screen.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    @media only screen and (max-width:  $viewport-sm) {
-      display:none;
-    }
-  }
 </style>
