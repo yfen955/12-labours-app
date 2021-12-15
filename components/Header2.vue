@@ -44,9 +44,11 @@
         </div>
       </div>
       <div class="login">
-        <el-button>
-            Login
-        </el-button >
+       <nuxt-link to="/login">
+          <el-button>
+              Login
+          </el-button >
+        </nuxt-link>
       </div>
     </div>
   </div>
