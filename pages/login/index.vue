@@ -1,7 +1,7 @@
 <template>
   <div class="page-outer">
     <div class="flex-box">
-      <div class="login container-default vertical-flex">
+      <div class="login container-default">
         <div class="login__title top-heading">
           <h1>LOGIN</h1>
         </div>
@@ -29,6 +29,12 @@
               <el-button native-type="submit" :disabled="submitDisabled" @click="onSubmit">
                 Login
               </el-button>
+              <div class="signup-link">
+                Do not have an account? 
+                <nuxt-link to="/signup">
+                  Sign up Here
+                </nuxt-link>
+              </div>
             </div>
           </el-form>
         </div>
@@ -97,7 +103,6 @@ export default {
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }
-    align-items:center;
     box-sizing:border-box;
     &__text{
       padding:1rem;
@@ -113,10 +118,14 @@ export default {
 
   .nav-button{
     padding-top:1rem;
-    padding-bottom:12rem;
+    padding-bottom:14rem;
     @media only screen and (max-width:  $viewport-sm) {
       padding-bottom:2rem;
     }
+  }
+
+  .signup-link{
+    font-size:0.75rem;
   }
 
 </style>
