@@ -60,7 +60,7 @@
                       placeholder-text="Enter your details"
                       @text-change="multiChange"/>
                   </div>
-                  <span class="error">{{detail.message}}</span>
+                  <div class="error">{{detail.message}}</div>
                 </el-form-item>          
               </div>
             </div>
@@ -150,12 +150,6 @@ export default {
         if(fieldIndex>-1)
           this.invalidFields.splice(fieldIndex, 1)
       }
-    },
-    updateSubmit:function(){        
-      const invalid=Object.values(this.form).find((obj) => {
-	      return obj.message != null
-      })
-      this.submitDisabled=Boolean(invalid)
     },
     onSubmit:function(){
       /*TBD: Code to submit form values */
