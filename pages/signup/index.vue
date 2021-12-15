@@ -20,7 +20,7 @@
         </div>
         <div class="signup__nav-button">
           <nuxt-link :to="{name: 'signup-user-detail', params: {user: userType}}">
-            <el-button @change="selectChange('signup')">
+            <el-button>
               Sign up
             </el-button>
           </nuxt-link>  
@@ -70,6 +70,9 @@ export default {
     box-sizing:border-box;
     &__title{
       padding-top:6.25rem;
+      @media only screen and (max-width:  $viewport-sm) {
+        padding-top:2rem;
+      }
     }
     &__text{
       padding:1rem;
