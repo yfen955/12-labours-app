@@ -44,10 +44,8 @@
         </div>
       </div>
       <div class="login">
-       <nuxt-link to="/login">
-          <el-button>
-              Login
-          </el-button >
+       <nuxt-link :to="navButtonPath">
+          <el-button>{{navButtonText}}</el-button >
         </nuxt-link>
       </div>
     </div>
@@ -133,8 +131,21 @@ export default {
     ]
   }),
 
-
   computed: {
+    navButtonText: function(){
+      if(this.$route.name=='login')
+        return 'Sign up'
+      else
+        return 'Login'
+    },
+
+    navButtonPath: function(){
+      if(this.$route.name=='login')
+        return '/signup'
+      else
+        return '/login'
+    },
+
     /**
      * Compute if search should be visible
      * @returns {Boolean}
@@ -247,7 +258,18 @@ export default {
       this.searchQuery = "";
       this.searchSelect = "data";
     }
-  }
+  },
+/*
+  created:{
+    if(context.route.name=='login'){
+      this.navButtonText="Sign Up"
+      this.navButtonPath="/signup"
+    }
+    else{
+      this.navButtonText="Login"
+      this.navButtonPath="/login"
+    }
+  }*/
 };
 </script>
 
