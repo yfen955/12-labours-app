@@ -151,12 +151,6 @@ export default {
           this.invalidFields.splice(fieldIndex, 1)
       }
     },
-    updateSubmit:function(){        
-      const invalid=Object.values(this.form).find((obj) => {
-	      return obj.message != null
-      })
-      this.submitDisabled=Boolean(invalid)
-    },
     onSubmit:function(){
       /*TBD: Code to submit form values */
       this.submitSuccess=true;
