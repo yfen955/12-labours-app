@@ -1,16 +1,16 @@
 <template>
   <div>
-    <header2>
+    <twelve-labours-header>
       <template v-slot:logo>
         <img class="header-logo" src="img/12-labours-logo-black.png" alt="Logo for 12 Labours">
       </template>
-    </header2>
+    </twelve-labours-header>
     <nuxt />
-    <footer2 :footerLinks="footerLinks">
+    <twelve-labours-footer :footerLinks="footerLinks">
       <template v-slot:logo>
         <img class="footer-logo" src="img/12-labours-logo-primary.png" alt="Logo for 12 Labours">
       </template>
-    </footer2>
+    </twelve-labours-footer>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
         {
           title: "contact",
           displayTitle: "Contact",
-          href: "/contact-us"
+          href: "/contact"
         }
       ]
     }
