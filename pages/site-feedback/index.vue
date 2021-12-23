@@ -10,7 +10,7 @@
       <div class="container-default">
         <div class="top-heading">
           <h1>
-            SITE FEEDBACK FORM 
+            SITE FEEDBACK FORM {{from}}
           </h1>
         </div>
         <div class="default-inner">
@@ -45,9 +45,10 @@
                   <el-radio-group v-model="feedbackOn">
                     <el-radio label="lastPage">
                       Last page visited - 
-                        <nuxt-link target="_blank" :to="lastVisitedPage" :event="triggerEvent">
+                        <!--<nuxt-link target="_blank" :to="lastVisitedPage" :event="triggerEvent">
                           {{linkLabel}}
-                        </nuxt-link>           
+                        </nuxt-link> -->
+                        <a @click="$router.go(-1)">Visit Again</a>         
                     </el-radio><br/>
                     <el-radio label="general">
                       General feedback
@@ -83,9 +84,13 @@
           <nuxt-link to="/">
             <el-button>Visit the Home Page</el-button>
           </nuxt-link>
+          <!--
           <nuxt-link :to="lastVisitedPage">
             <el-button>Return to Previous Page</el-button>
-          </nuxt-link>
+          </nuxt-link>-->
+          <a @click="$router.go(-1)">
+            <el-button>Return to Previous Page</el-button>
+          </a>   
         </div>
       </section-with-image>
       <portal-help/>
