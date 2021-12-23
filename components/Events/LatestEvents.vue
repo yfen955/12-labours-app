@@ -97,120 +97,118 @@ export default {
 <style scoped lang="scss">
 
     .latest-events{
-        display:flex;
+      display:flex;
+      column-gap:2rem;
+      &__item{
+        width:50%;
+      }
+      
+      @media only screen and (max-width: $viewport-md){    
+        flex-direction:column;
+        row-gap:2rem;
         &__item{
-            width:50%;
+          width:100%;
         }
-        
-        @media only screen and (max-width: $viewport-md){    
-            flex-direction:column;
-            row-gap:2rem;
-            &__item{
-                width:100%;
-            }
-        }
+      }
     }
 
     .main-box{   
         padding: 1.5rem 2.25rem;  
-        margin-right:2rem;
-
         @media only screen and (max-width: $viewport-sm){    
-            padding: 1rem;
-            margin: 0rem;
+          padding: 1rem;
+          margin: 0rem;
         }
 
         &__image-box{   
-            display:flex;   
-            justify-content:center; 
-            margin-bottom:0.5rem;            
-            img{
-                width:18rem;
-                height:11rem; 
-                display:block;
-                @media only screen and (max-width: $viewport-sm){    
-                    width: 90%;
-                    height:auto;
-                }
+          display:flex;   
+          justify-content:center; 
+          margin-bottom:0.5rem;            
+          img{
+            width:18rem;
+            height:11rem; 
+            display:block;
+            @media only screen and (max-width: $viewport-sm){    
+              width: 90%;
+              height:auto;
             }
+          }
         }
 
         &__title{
-            a{
-                text-decoration:none !important;
-            }    
+          a{
+            text-decoration:none !important;
+          }    
         }
 
         &__dates{        
-            margin-top:0.5rem;
-            margin-bottom:0.5rem;              
-            span{
-                font-weight:700;
-                line-height: 1.63rem;   
-                @media only screen and (max-width: $viewport-md){    
-                    font-size:1rem;
-                    line-height: 1rem; 
-                }                
-            }
+          margin-top:0.5rem;
+          margin-bottom:0.5rem;              
+          span{
+            font-weight:700;
+            line-height: 1.63rem;   
+            @media only screen and (max-width: $viewport-md){    
+              font-size:1rem;
+              line-height: 1rem; 
+            }                
+          }
         }
     }
 
     .upcoming-box{
-        margin: 1rem 1rem 0rem 2rem;
+      margin: 1rem 1rem 0rem 2rem;
 
-        @media only screen and (max-width: $viewport-sm){    
-            margin: 0rem;
-        }
+      @media only screen and (max-width: $viewport-sm){    
+          margin: 0rem;
+      }
 
-        &__grid{
-            display: grid;
-            grid-template-columns: 20% 80% ;
-            grid-gap: 0rem;
-            .grid-item {
-                padding: 0.75rem;                            
-                border-top: 1px solid $lineColor2;
-                border-left: 1px solid $lineColor2;
-                font-size:1rem;
-                line-height:1.13rem;
-                display:flex;
-                align-items:center;
-     
-                &:nth-child(odd) {
-                    display:flex;
-                    flex-direction:column;
-                    justify-content:center;
-                    border-left: none;
-                    color:#1B2224;  
-                    span.day{
-                        font-weight:700;
-                        font-size:1.5rem;
-                        margin-top:0.25rem;                                    
-                    }                            
-                }  
-                &:nth-child(even)
-                {
-                    color: $blue;
-                    font-weight:600;
-                    span{
-                        overflow: hidden;
-                        text-overflow: ellipsis; 
-                    }  
-                }  
-                a{
-                    text-decoration:none !important;
-                    font-size:1rem;
-                    color: $blue !important;
-                    line-height:1.13rem;
-                }            
-            }
+      &__grid{
+        display: grid;
+        grid-template-columns: 20% 80% ;
+        grid-gap: 0rem;
+        .grid-item {
+          padding: 0.75rem;                            
+          border-top: 1px solid $lineColor2;
+          border-left: 1px solid $lineColor2;
+          font-size:1rem;
+          line-height:1.13rem;
+          display:flex;
+          align-items:center;
+  
+          &:nth-child(odd) {
+              display:flex;
+              flex-direction:column;
+              justify-content:center;
+              border-left: none;
+              color:#1B2224;  
+              span.day{
+                  font-weight:700;
+                  font-size:1.5rem;
+                  margin-top:0.25rem;                                    
+              }                            
+          }  
+          &:nth-child(even){
+            color: $blue;
+            font-weight:600;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis; 
+            }  
+          }  
+          a{
+            text-decoration:none !important;
+            font-size:1rem;
+            color: $blue !important;
+            line-height:1.13rem;
+          }            
         }
+      }
     }
 
     .view-all{
-        text-align: right; 
-        a{
-            font-weight:600;
-        }
+      text-align: right; 
+      a{
+        font-weight:600;
+      }
     }
 
 </style>

@@ -15,7 +15,7 @@
       <div class="news-item-card__button">
         <nuxt-link :to="{ name: 'news-and-events-news-detail', params: { detail: newsItem.slug}}">
           <el-button>
-              READ MORE
+            READ MORE
           </el-button>
         </nuxt-link>
       </div>
@@ -38,67 +38,67 @@ export default {
 
 
 <style scoped lang="scss">
+  .news-item-container{
+    max-width: 20rem;
+    width:100%;
+    height: 32rem;
+    @media only screen and (min-width:$md-start) and (max-width: $md-end) {
+      max-width: 14rem;
+      height: 26rem;
+    }
+    @media only screen and (min-width: $viewport-lg) {
+      max-width: 22rem;
+      height: 33rem;
+    }
+  }
 
-    .news-item-container{
-        max-width: 20rem;
-        width:100%;
-        height: 32rem;
-        @media only screen and (min-width:$md-start) and (max-width: $md-end) {
-            max-width: 14rem;
-            height: 26rem;
-        }
-        @media only screen and (min-width: $viewport-lg) {
-            max-width: 22rem;
-            height: 33rem;
-        }
+  .news-item-card{
+    height:100%;
+    box-sizing: border-box;
+    align-items:center;
+    padding:1.25rem 1.13rem 1.88rem 1.13rem;
+    @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+      padding:1rem;
     }
 
-    .news-item-card{
-        height:100%;
-        box-sizing: border-box;
-        align-items:center;
-        padding:1.25rem 1.13rem 1.88rem 1.13rem;
+    &__image{
+      display:block;     
+      img{  
+        width:18rem;
+        height:13rem;          
         @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-            padding:1rem;
+          width:12rem;
+          height:10rem;
         }
-
-        &__image{
-            display:block;     
-            img{  
-                width:18rem;
-                height:13rem;          
-                @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-                    width:12rem;
-                    height:10rem;
-                }
-            }
-        }
-
-        &__title{
-            text-align:center;
-            padding:0.5rem 1.8rem;
-            height:2.8rem;
-            margin-bottom:0.5rem;
-            @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-                font-size:1.2rem;
-            }
-        }
-    
-        &__detail{
-            text-align:center;
-            padding: 0rem 0.19rem;
-            max-width:100%;
-            //height:7.5rem;
-
-            @media only screen and (min-width:$md-start) and (max-width:$md-end) {
-                font-size:1rem;
-                line-height:1.25rem;
-                //height:6.2rem;
-            }
-        }
-
-        &__button{
-            margin-top:auto;
-        }
+      }
     }
+
+    &__title{
+      text-align:center;
+      padding:0.5rem 1.8rem;
+      height:2.8rem;
+      margin-bottom:0.5rem;
+      @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+        font-size:1.2rem;
+      }
+    }
+
+    &__detail{
+      text-align:center;
+      padding: 0rem 0.19rem;
+      max-width:100%;
+      //height:7.5rem;
+
+      @media only screen and (min-width:$md-start) and (max-width:$md-end) {
+        font-size:1rem;
+        line-height:1.25rem;
+        //height:6.2rem;
+      }
+    }
+
+    &__button{
+      margin-top:auto;
+    }
+  }
+ 
 </style>

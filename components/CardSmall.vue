@@ -74,6 +74,9 @@
         box-sizing: border-box;
         @media only screen and (max-width: $viewport-md){
             align-items:center;
+            h1{
+                text-align:center;
+            }
         }
     }
 

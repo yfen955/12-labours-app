@@ -71,6 +71,7 @@
 
     .image-frame{
         padding:1.38rem 3.75rem 0rem 3.75rem;
+        //width:18rem;
     }
 
     #img-user{
