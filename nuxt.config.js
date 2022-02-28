@@ -46,7 +46,8 @@ export default {
     "@/plugins/graphcms.js",
     "@/plugins/helpers",
     "@/plugins/vue-sphinx-xml.js",
-    "@/plugins/validators.js"
+    "@/plugins/validators.js",
+    "@plugins/vue-gtag.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
