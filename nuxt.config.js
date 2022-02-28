@@ -15,6 +15,7 @@ export default {
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
+    google_analytics_ga4:process.env.GOOGLE_ANALYTICS_GA4,
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
@@ -46,7 +47,8 @@ export default {
     "@/plugins/graphcms.js",
     "@/plugins/helpers",
     "@/plugins/vue-sphinx-xml.js",
-    "@/plugins/validators.js"
+    "@/plugins/validators.js",
+    "@plugins/vue-gtag.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
