@@ -28,7 +28,7 @@ export default {
       },
       helpClinicians:{
         title:'Clinicians',
-        imgFile:'doctor-in-frame.png',
+        imgFile:'clinician-in-frame.png',
         detail:'The 12 Labours Portal allows you to access and upload data to visualise results that may aid prognosis and help you to develop your treatment plans.',
         //btnLink:{caption:'Learn about Workflows', to:'/'}
         btnLink:{caption:'Learn More', to:'/'}

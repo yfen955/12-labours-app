@@ -47,12 +47,7 @@ export default {
   watch:{
     userType: {
       handler: function(user) {
-        if(user=='researcher')
-          this.imgFile='researcher-in-frame.png'
-        else if(user=='clinician')
-          this.imgFile='doctor-in-frame.png'
-        else if(user=='patient')
-          this.imgFile='patient-in-frame.png'
+        this.imgFile=`${user}-in-frame.png`
       }
     }
   }
