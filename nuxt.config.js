@@ -12,10 +12,12 @@ export default {
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
     google_analytics_ga4:process.env.GOOGLE_ANALYTICS_GA4,
+    google_client_id:process.env.GOOGLE_CLIENT_ID,
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
@@ -48,7 +50,7 @@ export default {
     "@/plugins/helpers.js",
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
-    "@/plugins/vue-gtag.client.js"
+    "@/plugins/vue-gtag.client.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -78,8 +80,18 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources"],
+  modules: [
+    "@nuxtjs/style-resources",
+    "@nuxtjs/axios",
+    "@nuxtjs/auth-next",
+    "@nuxtjs/toast"
+  ],
+  
+  axios: {
+    baseURL: process.env.API_URL || "http://localhost:8080"
+  },
 
+ 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
