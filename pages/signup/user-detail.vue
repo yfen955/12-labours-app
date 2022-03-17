@@ -41,14 +41,13 @@
               </div>
             </el-form-item>  
             <el-form-item :required="institution.required" :label="institution.display" v-if="userType=='researcher'" >
-               <el-autocomplete
-                v-model="institution.value"
-                :fetch-suggestions="searchInstitution"
-                :placeholder="institution.placeholder"
-                @blur="fieldChange('institution')" 
-                :maxlength="institution.maxLength"
-              >
-              </el-autocomplete>
+              <el-select v-model="institution.value" :placeholder="institution.placeholder" @change="selectChange('institution')">
+                <el-option v-for="item in institutions"
+                  :key="item.value"
+                  :label="item.display"
+                  :value="item.value">
+                </el-option>
+              </el-select>
               <div class="error">
                 {{institution.message}}
               </div>
@@ -80,14 +79,13 @@
               </div>
             </el-form-item> 
             <el-form-item :required="hospital.required" :label="hospital.display" v-if="userType=='clinician'">
-              <el-autocomplete
-                v-model="hospital.value"
-                :fetch-suggestions="searchHospital"
-                :placeholder="hospital.placeholder"
-                @blur="fieldChange('hospital')" 
-                :maxlength="hospital.maxLength"
-              >
-              </el-autocomplete>
+              <el-select v-model="hospital.value" :placeholder="hospital.placeholder" @change="selectChange('hospital')">
+                <el-option v-for="item in hospitals"
+                  :key="item.value"
+                  :label="item.display"
+                  :value="item.value">
+                </el-option>
+              </el-select>
               <div class="error">
                 {{hospital.message}}
               </div>
@@ -119,7 +117,7 @@
               </div>
             </el-form-item>
             <el-form-item :required="dhb.required" :label="dhb.display" v-if="userType=='patient' || userType=='clinician'">
-              <el-select v-model="dhb.value" placeholder="Select your DHB" @change="selectChange('dhb')">
+              <el-select v-model="dhb.value" :placeholder="dhb.placeholder" @change="selectChange('dhb')">
                 <el-option-group v-for="group in dhbs" :key="group.label":label="group.label">
                   <el-option v-for="item in group.options"
                     :key="item.value"
@@ -145,12 +143,14 @@
 
 <script>
 
-import {dhbs,hospitals,institutions} from '~/static/data/data.json'
 export default { 
 
   name: 'SignupPage',
 
-  async asyncData() {
+  async asyncData({$axios}) {
+    const  hospitals  = await $axios.$get(`/hospitals`)
+    const institutions=await $axios.$get(`/institutions`)
+    const dhbs=await $axios.$get(`/dhbs`)
     return{dhbs,hospitals,institutions}
   },
 
@@ -167,13 +167,13 @@ export default {
       profession:
         {display:'Profession', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your profession'},
       institution:
-        {display:'Institution', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your institution'},
+        {display:'Institution', value:null, message:'', required:true,placeholder:'Select your institution'},
       hpi:
         {display:'HPI number', value:null, message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
       nhi:{  
         display:'NHI number', value:null,message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
       hospital:
-        {display:'Healthcare center/Hospital', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your hospital'},
+        {display:'Healthcare center/Hospital', value:null, message:'', required:true,placeholder:'Select your hospital'},
       dhb:
         {display:'DHB', value:null,message:'', required:true,placeholder:'Select your DHB'},
       invalidFields:[],
@@ -231,21 +231,6 @@ export default {
 
     onSubmit:function(){
       /*TBD: Code to submit form values */
-    },
-
-    searchHospital(queryString, cb) {
-      var results = queryString ? this.hospitals.filter(this.createFilter(queryString)) : this.hospitals;
-      cb(results)
-    },
-    
-    searchInstitution(queryString, cb) {
-      var results = queryString ? this.institutions.filter(this.createFilter(queryString)) : this.institutions;
-      cb(results)
-    },
-    createFilter(queryString) {
-      return (row) => {
-        return (row.display.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      }
     }
   },
 
