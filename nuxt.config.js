@@ -91,7 +91,50 @@ export default {
     baseURL: process.env.API_URL || "http://localhost:8080"
   },
 
- 
+  auth: {
+    watchLoggedIn:false,
+    router: {
+      middleware: ["auth"],
+    },
+    strategies: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        codeChallengeMethod: '',  
+        responseType: 'code', 
+        grantType: 'authorization_code', 
+        endpoints: {
+          token: `${process.env.API_URL}/user/google/login`, 
+          userInfo: `${process.env.API_URL}/user/profile` 
+        },
+        token: {
+          property:'access_token',
+          global: true
+        },
+        user: {
+          property: 'user',
+        },
+      },
+      local: {
+        token: {
+          global: true
+        },
+        user: {
+          property: 'user',
+          autoFetch:false
+        },
+        endpoints: {
+          login: { url: '/user/local/login', method: 'post'},
+          user: { url: '/user/profile', method: 'get'}
+        },
+      }
+    },
+    redirect: {
+      callback: "/login",
+      //login: '/login',
+      //logout: false
+    },
+  },
+  
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
