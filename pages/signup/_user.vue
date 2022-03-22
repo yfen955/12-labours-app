@@ -7,6 +7,9 @@
         </div>
         <div class="fields flex-box">
           <el-form label-position="top">
+            <el-form-item> 
+               <div class="error">{{error}}</div>
+            </el-form-item>
             <contact-info :show-bg=false :show-phone=false @field-change="getField"/>
             <el-form-item :required="password.required" :label="password.display" >
               <el-input 
@@ -129,8 +132,8 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="signup__nav-button">
-          <el-button native-type="submit" :disabled="submitDisabled" @click="onSubmit">
+        <div class="signup__nav-button"><!--native-type="submit" -->
+          <el-button  :disabled="submitDisabled" @click="register">
             Sign up
           </el-button>  
         </div>
@@ -155,17 +158,19 @@ export default {
   },
 
   data: () => {
-    return {      
+    const userFields=['title','firstName','lastName','email','confirmEmail','password','confirmPassword']
+    return {  
+      authScheme:'local',    
       userType:null,
-      submitDisabled:true,     
+      submitDisabled:true, 
       contactInfoValues:
         {title:'',firstName:'',lastName:'',email:'',confirmEmail:''},     
       password:
-        {display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:15,placeholder:'Enter your password'},     
+        {display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:20,placeholder:'Enter your password'},     
       confirmPassword:
-        {display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:15,placeholder:'Please confirm your password'},
+        {display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:20,placeholder:'Please confirm your password'},
       profession:
-        {display:'Profession', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your profession'},
+        {display:'Profession', value:null, message:'', required:true,maxLength:255,placeholder:'Enter your profession'},
       institution:
         {display:'Institution', value:null, message:'', required:true,placeholder:'Select your institution'},
       hpi:
@@ -178,11 +183,12 @@ export default {
         {display:'DHB', value:null,message:'', required:true,placeholder:'Select your DHB'},
       invalidFields:[],
       researcherFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','institution'],
+        [...userFields,'profession','institution'],
       clinicianFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','hpi','hospital','dhb'],
+        [...userFields,'profession','hpi','hospital','dhb'],
       patientFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','nhi','dhb']
+        [...userFields,'nhi','dhb'],
+      error:''
     }
   },
   
@@ -229,15 +235,50 @@ export default {
       }
     },
 
-    onSubmit:function(){
-      /*TBD: Code to submit form values */
+    async register(){
+      try {
+        this.error=''
+        await this.$axios.post('/user/local/register', {
+          strategy:this.authScheme,
+          userInfo: this.getFormData()      
+        }).then((response)=>{  
+          if(response.status===200)
+            this.$router.push({ name: 'verify',  
+              params: { 
+                registrationEmail:response.data.email,
+                fromRegistration:  true,
+                emailSent:response.data.emailSent,    
+              } 
+            })
+        })
+      } 
+      catch (error) {
+        this.error = error.response? error.response.data.message : error
+      }
+    },
+
+    getFormData:function(){
+      return{
+        userTypeName:this.userType,
+        title:this.contactInfoValues.title,
+        firstName:this.contactInfoValues.firstName,
+        lastName:this.contactInfoValues.lastName,
+        email:this.contactInfoValues.email,
+        password:this.password.value,
+        profession:this.profession.value,
+        institutionId:this.institution.value,
+        hpi:this.hpi.value,
+        nhi:this.nhi.value,
+        hospitalId:this.hospital.value,
+        dhbId:this.dhb.value
+      }
     }
   },
 
   watch:{
     invalidFields: {
       handler: function(val) {
-        this.submitDisabled=val.length>0
+        this.submitDisabled=val.length>0  
       }
     }
   },
@@ -245,7 +286,7 @@ export default {
   created() {
     this.userType= this.$route.params.user 
     if(this.userType){ 
-      switch(this.userType){
+      switch(this.userType.toLowerCase()){
         case "researcher":
           this.invalidFields=this.researcherFields
           break;

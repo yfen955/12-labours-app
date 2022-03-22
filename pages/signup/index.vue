@@ -10,16 +10,18 @@
         </div>
         <div class="signup__user">
           <el-select class="--sm" v-model="userType">
-            <el-option label="Researcher" value="researcher"></el-option>
-            <el-option label="Clinician" value="clinician"></el-option>
-            <el-option label="Patient" value="patient"></el-option>
+            <el-option v-for="item in userTypes"
+              :key="item.value"
+              :label="item.display"
+              :value="item.display.toLowerCase()">
+            </el-option>
           </el-select>
         </div>
         <div class="signup__image">
           <img :src="require(`~/static/img/${imgFile}`)"/>
         </div>
         <div class="signup__nav-button">
-          <nuxt-link :to="{name: 'signup-user-detail', params: {user: userType}}">
+          <nuxt-link :to="{name: 'signup-user', params: {user: userType}}">
             <el-button>
               Sign up
             </el-button>
@@ -37,19 +39,29 @@
 export default { 
   name: 'SignupPage',
 
+  async asyncData({$axios}) {
+    const userTypes=await $axios.$get(`/user/types`)
+    return {userTypes}
+  },
+
   data: () => {
-    return {      
-      userType:'researcher',
-      imgFile:'researcher-in-frame.png'
+    return {   
+      userType:'',
+      imgFile:'',
     }
   },
 
   watch:{
     userType: {
-      handler: function(user) {
-        this.imgFile=`${user}-in-frame.png`
+      handler: function(userType) {
+        this.imgFile=`${userType.toLowerCase()}-in-frame.png`
       }
     }
+  },
+  
+  created(){
+    this.userType=this.userTypes[0].display.toLowerCase()
+    this.imgFile=`${this.userType}-in-frame.png`
   }
 }
 

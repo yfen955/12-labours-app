@@ -43,19 +43,19 @@ export default {
         display:'Title', value:null,required:true,placeholder:'Select title'
       },
       firstName:{
-        display:'First Name', value:null,message:'',required:true,maxLength:100,placeholder:'Enter your first name'
+        display:'First Name', value:null,message:'',required:true,maxLength:150,placeholder:'Enter your first name'
       },
       lastName:{
-        display:'Last Name', value:null,message:'',required:true,maxLength:100,placeholder:'Enter your last name'
+        display:'Last Name', value:null,message:'',required:true,maxLength:150,placeholder:'Enter your last name'
       },
       phone:{
         display:'Phone', value:null,message:'',format:'phone',maxLength:50,placeholder:'Enter your phone'
       },
       email:{
-        display:'Email', value:null,message:'',required:true,format:'email',match:'confirmEmail',minLength:10,maxLength:100,placeholder:'Enter your email address'
+        display:'Email', value:null,message:'',required:true,format:'email',match:'confirmEmail',minLength:10,maxLength:255,placeholder:'Enter your email address'
       },
       confirmEmail:{
-        display:'Confirm Email', value:null,message:'',required:true,format:'email',match:'email',minLength:10,maxLength:100,placeholder:'Please confirm your email address'
+        display:'Confirm Email', value:null,message:'',required:true,format:'email',match:'email',minLength:10,maxLength:255,placeholder:'Please confirm your email address'
       }
     }
   },
