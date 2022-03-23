@@ -54,7 +54,8 @@ export default {
         this.error=''
         await this.$axios.post('/user/local/email', {
           email:this.email   
-        }).then((response)=>{  
+        })
+        .then((response)=>{  
           if(response.data.alreadyActive){
             this.$toast.success('Please login with your credentials!',{duration:3000, position: 'bottom-right'})
             this.$router.push('/login')

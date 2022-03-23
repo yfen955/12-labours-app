@@ -8,7 +8,7 @@
         <div class="fields flex-box">
           <el-form label-position="top">
             <el-form-item> 
-               <div class="error">{{error}}</div>
+              <div class="error">{{error}}</div>
             </el-form-item>
             <contact-info :show-bg=false :show-phone=false @field-change="getField"/>
             <el-form-item :required="password.required" :label="password.display" >
@@ -206,7 +206,7 @@ export default {
       this.updateValidity(name,Boolean(field.message)) 
       if(result.matchFlag){
         fieldToMatch.message=null
-        this.updateValidity(name,false)
+        this.updateValidity(field.match,false)
       }  
     },
 
@@ -238,6 +238,7 @@ export default {
     async register(){
       try {
         this.error=''
+        this.$auth.strategy.token.reset()  //TBC: If need to do this
         await this.$axios.post('/user/local/register', {
           strategy:this.authScheme,
           userInfo: this.getFormData()      
