@@ -116,7 +116,8 @@ export default {
       },
       local: {
         token: {
-          global: true
+          global: true,
+          property: 'access_token',
         },
         user: {
           property: 'user',

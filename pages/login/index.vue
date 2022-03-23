@@ -5,8 +5,11 @@
         <div class="login__title top-heading">
           <h1>LOGIN</h1>
         </div>
-        <div class="login__fields vertical-flex">
+        <div class="login__fields vertical-flex"> <!--  @submit.prevent.native="userLogin" -->
           <el-form label-position="top">
+            <el-form-item> 
+               <div class="error">{{error}}</div>
+            </el-form-item>
             <el-form-item :required="email.required" :label="email.display">
               <el-input 
                 v-model="email.value" 
@@ -25,18 +28,19 @@
               </el-input>
               <div class="error">{{password.message}}</div>
             </el-form-item> 
-            <div class="nav-button">
-              <el-button native-type="submit" :disabled="submitDisabled" @click="onSubmit">
+            <div class="nav-button"><!--native-type="submit"  @click="userLogin"-->
+              <el-button :disabled="submitDisabled" @click="userLogin">
                 Login
               </el-button>
               <div class="signup-link">
                 Do not have an account? 
-                <nuxt-link to="/signup">
-                  Sign up Here
-                </nuxt-link>
+                <nuxt-link to="/signup">Sign up Here</nuxt-link>
               </div>
             </div>
           </el-form>
+        </div>
+        <div id="googleButton" class="google-signin flex-box">
+          <el-button @click="googleSignIn">Log in With Google</el-button>
         </div>
       </div>
       <div class="signup-picture">
@@ -53,13 +57,14 @@ export default {
   data: () => {
     return { 
       email:{
-        display:'Email', value:null,format:'email',message:'',required:true
+        display:'Email', value:'noureen1979@hotmail.com',format:'email',message:'',required:true  //value:null
       },    
       password:{
-        display:'Password', value:null,message:'', required:true
+        display:'Password', value:'12345678',message:'', required:true
       },
       invalidFields:['email','password'],
-      submitDisabled:true
+      submitDisabled:false,
+      error:'',
     }
   },
 
@@ -81,17 +86,53 @@ export default {
           this.invalidFields.splice(fieldIndex, 1)
       }
     },
-    onSubmit:function(){
-      /*TBD: Code to verify login */
+    async userLogin() {
+      try {
+        let response =  await this.$auth.loginWith('local', {
+          data: {
+            email: this.email.value,
+            password: this.password.value
+          }
+        }).then((response) => { 
+          this.$auth.setUser(response.data.user)
+          this.$auth.strategy.token.set(response.data.access_token)
+          this.$toast.success('Successfully Logged In!',{duration:3000, position: 'bottom-right'})
+          this.$router.push('/')
+        })
+      } 
+      catch (err) {
+        this.error=err.response? err.response.data.message : err.message
+      }
+    },
+    async googleSignIn(){
+      try{
+        this.$auth.loginWith('google', {})
+      }
+      catch (err) {
+        this.error= err.message
+      }
     }
   },
 
   watch:{
     invalidFields: {
       handler: function(val) {
-        this.submitDisabled=val.length>0
+        //this.submitDisabled=val.length>0
+        this.submitDisabled=false;
       }
     }
+  },
+
+  mounted(){
+    /*if(process.client){
+      var url = window.location
+      let params = this.$parseGoogleToken(url)
+      //var access_token = new URLSearchParams(url.search).get('access_token')
+      if(params.access_token) {
+        //console.log(params.access_token);
+        this.$auth.strategy.token.set(params.access_token)
+      }
+    }*/
   }
 }
 
@@ -104,7 +145,7 @@ export default {
       width:100%;
     }
     box-sizing:border-box;
-    &__text{
+    &__title{
       padding:1rem;
       font-size:1.5rem;
       font-weight:bold;
@@ -118,14 +159,17 @@ export default {
 
   .nav-button{
     padding-top:1rem;
-    padding-bottom:14rem;
-    @media only screen and (max-width:  $viewport-sm) {
-      padding-bottom:2rem;
-    }
   }
 
   .signup-link{
     font-size:0.75rem;
   }
 
+  .google-signin{
+    justify-content:center;
+    padding: 3rem 0 12rem 0;
+    @media only screen and (max-width:  $viewport-sm) {
+      padding: 0.5rem 0 2rem 0;
+    }
+  }
 </style>
