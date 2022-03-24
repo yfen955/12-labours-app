@@ -48,7 +48,7 @@ export default {
         .then((response)=>{  
           if(response.status===200){
             this.$toast.success('You can now login with your credentials!',{duration:3000, position: 'bottom-right'})
-            this.$router.push('/login')
+            this.$router.replace('/login')
           }
         })
       } 

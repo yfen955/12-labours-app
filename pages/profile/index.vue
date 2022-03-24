@@ -202,9 +202,10 @@ export default {
     },
 
     resetForm(){
-      this.newPassword.value=this.oldPassword.value=this.newPassword2.value=this.passwordChangeError=null;
-      this.newPassword.message=this.oldPassword.message=this.newPassword2.message='';
-      this.submitDisabled=true;
+      this.newPassword.value=this.oldPassword.value=this.newPassword2.value=this.passwordChangeError=null
+      this.newPassword.message=this.oldPassword.message=this.newPassword2.message=''
+      this.submitDisabled=true
+      this.invalidFields=['oldPassword','newPassword','newPassword2']
     },
       
     async changePassword() {
