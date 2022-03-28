@@ -5,7 +5,7 @@
         <div class="login__title top-heading">
           <h1>LOGIN</h1>
         </div>
-        <div class="login__fields vertical-flex"> <!--  @submit.prevent.native="userLogin" -->
+        <div class="login__fields vertical-flex"> <!--  @submit.prevent.native="localSignIn" -->
           <el-form label-position="top">
             <el-form-item> 
                <div class="error">{{error}}</div>
@@ -28,8 +28,8 @@
               </el-input>
               <div class="error">{{password.message}}</div>
             </el-form-item> 
-            <div class="nav-button"><!--native-type="submit"  @click="userLogin"-->
-              <el-button :disabled="submitDisabled" @click="userLogin">
+            <div class="nav-button"><!--native-type="submit"  @click="localSignIn"-->
+              <el-button :disabled="submitDisabled" @click="localSignIn">
                 Login
               </el-button>
               <div class="signup-link">
@@ -39,8 +39,9 @@
             </div>
           </el-form>
         </div>
-        <div id="googleButton" class="google-signin flex-box">
-          <el-button @click="googleSignIn">Log in With Google</el-button>
+        <div class="google-signin flex-box">
+          <!--<el-button @click="googleSignIn">Log in With Google</el-button>-->
+          <img src='~/static/img/google-signin.png' @click="googleSignIn"></img>
         </div>
       </div>
       <div class="signup-picture">
@@ -57,13 +58,13 @@ export default {
   data: () => {
     return { 
       email:{
-        display:'Email', value:'noureen1979@hotmail.com',format:'email',message:'',required:true  //value:null
+        display:'Email', value:null,format:'email',message:'',required:true  
       },    
       password:{
-        display:'Password', value:'12345678',message:'', required:true
+        display:'Password', value:null,message:'', required:true
       },
       invalidFields:['email','password'],
-      submitDisabled:false,
+      submitDisabled:true,
       error:'',
     }
   },
@@ -86,7 +87,7 @@ export default {
           this.invalidFields.splice(fieldIndex, 1)
       }
     },
-    async userLogin() {
+    async localSignIn() {
       try {
         let response =  await this.$auth.loginWith('local', {
           data: {
@@ -94,10 +95,8 @@ export default {
             password: this.password.value
           }
         }).then((response) => { 
-          this.$auth.setUser(response.data.user)
-          this.$auth.strategy.token.set(response.data.access_token)
-          this.$toast.success('Successfully Logged In!',{duration:3000, position: 'bottom-right'})
-          this.$router.push('/')
+          this.$auth.setUser(response.data.user)     
+          this.$router.replace('/?login=true')
         })
       } 
       catch (err) {
@@ -105,34 +104,21 @@ export default {
       }
     },
     async googleSignIn(){
-      try{
-        this.$auth.loginWith('google', {})
-      }
-      catch (err) {
-        this.error= err.message
-      }
+      this.$auth.loginWith('google', { params: { prompt: "select_account" } })
     }
   },
 
   watch:{
     invalidFields: {
       handler: function(val) {
-        //this.submitDisabled=val.length>0
-        this.submitDisabled=false;
+        this.submitDisabled=val.length>0
       }
     }
   },
 
   mounted(){
-    /*if(process.client){
-      var url = window.location
-      let params = this.$parseGoogleToken(url)
-      //var access_token = new URLSearchParams(url.search).get('access_token')
-      if(params.access_token) {
-        //console.log(params.access_token);
-        this.$auth.strategy.token.set(params.access_token)
-      }
-    }*/
+    const isError=this.$route.query.err
+    if(isError) this.$toast.error('Your request for authentication failed. Try again!',{duration:5000, position: 'bottom-right'})
   }
 }
 
@@ -167,9 +153,12 @@ export default {
 
   .google-signin{
     justify-content:center;
-    padding: 3rem 0 12rem 0;
+    padding: 2rem 0 10rem 0;
     @media only screen and (max-width:  $viewport-sm) {
       padding: 0.5rem 0 2rem 0;
+    }
+    img:hover {
+      cursor: pointer;
     }
   }
 </style>
