@@ -2,22 +2,22 @@
   <div class="page-outer">
     <div class="container-default msg-box">
       <div v-if="validRequest && emailSent">
-        <h1>A Verification email has been sent to your email.</h1>
-        <p>Please check your inbox and click <b>verification link</b>.</p>
+        <h1 class="top-heading">CONFIRM EMAIL</h1>
+        <p>A verification email has been sent to you. Please check your inbox and click <b>verification link</b>.</p>
         <div class="shaded resend-box">
           If you haven't received any email, click the following button. <br/>
           <el-button class="resend-btn" @click="resend">Resend Email</el-button>
         </div>
       </div>
       <div v-if="validRequest && !emailSent">
-        <h1>Problem while sending email</h1>
+        <h1 class="top-heading">Problem while sending email</h1>
         <p>Due to some problem, the confirmation email failed to reach your inbox.</p>
         <div class="shaded resend-box">
           To send again, click the following button. <br/>
           <el-button class="resend-btn" @click="resend">Resend Email</el-button>
         </div>
       </div>
-      <div class="err-box">
+      <div class="err-box flex-box">
         <span class="err-message">
           {{error}}
         </span>
@@ -63,6 +63,7 @@ export default {
           else
           {
             this.emailSent=response.data.emailSent
+            if(response.status===200) this.$toast.success('Sent again!',{duration:3000, position: 'bottom-right'})
           }
         })
       } 
@@ -86,15 +87,16 @@ export default {
   }
 
   .err-box{
-    padding-top:2rem;
+    justify-content:center;
+    padding:2rem 0.5rem 3rem 0.5rem;
   }
 
   .resend-box{
-    margin-top:1rem;
+    margin-top:3rem;
     padding:2rem;
   }
 
   .resend-btn{
-    margin-top:0.5rem;
+    margin-top:1rem;
   }
 </style>

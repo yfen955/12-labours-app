@@ -1,9 +1,14 @@
 export const state = () => ({
-  counter: 0,
+  googleProfile:{}
 });
 
+export const getters = {
+  getGoogleProfile: state => state.googleProfile
+}
+
+
 export const mutations = {
-  increment(state) {
-    state.counter++;
-  },
+  setGoogleProfile(state,newProfile){
+    state.googleProfile=newProfile
+  }
 };

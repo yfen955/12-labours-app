@@ -3,7 +3,7 @@
     <div class="flex-box">
       <div class="signup container-default vertical-flex">
         <div class="signup__title top-heading">
-          <h1>SIGN UP</h1>
+          <h1>SIGN UP </h1>
         </div>
         <div class="signup__text">
           I'm signing up as a
@@ -21,7 +21,7 @@
           <img :src="require(`~/static/img/${imgFile}`)"/>
         </div>
         <div class="signup__nav-button">
-          <nuxt-link :to="{name: 'signup-user', params: {user: userType}}">
+          <nuxt-link :to="{name: 'signup-user', params: {user: userType}, query :{ strategy : strategy}}">
             <el-button>
               Sign up
             </el-button>
@@ -39,9 +39,10 @@
 export default { 
   name: 'SignupPage',
 
-  async asyncData({$axios}) {
+  async asyncData({$axios,query}) {
     const userTypes=await $axios.$get(`/user/types`)
-    return {userTypes}
+    const strategy= query.strategy
+    return {userTypes,strategy}
   },
 
   data: () => {
@@ -62,6 +63,11 @@ export default {
   created(){
     this.userType=this.userTypes[0].display.toLowerCase()
     this.imgFile=`${this.userType}-in-frame.png`
+  },
+
+  mounted(){
+    if(this.strategy && this.strategy=='google')
+      this.$toast.show('Follow these steps to create account at 12 Labours!',{ duration: 5000, position: 'bottom-right'})
   }
 }
 

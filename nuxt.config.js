@@ -100,10 +100,10 @@ export default {
       google: {
         clientId: process.env.GOOGLE_CLIENT_ID,
         codeChallengeMethod: '',  
-        responseType: 'code', 
+        responseType: 'code',  
         grantType: 'authorization_code', 
         endpoints: {
-          token: `${process.env.API_URL}/user/google/login`, 
+          //token: `${process.env.API_URL}/user/google/login`, 
           userInfo: `${process.env.API_URL}/user/profile` 
         },
         token: {
@@ -112,6 +112,7 @@ export default {
         },
         user: {
           property: 'user',
+          autoFetch:false
         },
       },
       local: {
@@ -130,9 +131,7 @@ export default {
       }
     },
     redirect: {
-      callback: "/login",
-      //login: '/login',
-      //logout: false
+      callback: "/login/callback",
     },
   },
   

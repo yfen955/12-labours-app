@@ -141,7 +141,7 @@ export default {
   //middleware: 'auth',
 
   async asyncData({$auth,redirect}) {
-    if(!$auth.loggedIn ||  !$auth.user || !$auth.strategy.token.status().valid()){     //TBC: Ideally this check would be implemented by adding middleware=auth. But doing so, is surprisingly logging out user. 
+    if(!$auth.loggedIn ||  !$auth.user || !$auth.strategy.token.status().valid()){     
       return redirect('/login');
     }
 
@@ -229,7 +229,7 @@ export default {
     async deleteUser(){
      try {
         this.verifyLoggedIn();
-        let response=await this.$axios.post('/user/delete', {
+        let response=await this.$axios.post( '/user/delete', {
           userId:this.user.user_id
         })
         if(response.status===200){ 
