@@ -98,7 +98,7 @@ export default {
     },
     strategies: {
       google: {
-        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientId: process.env.google_client_id,
         codeChallengeMethod: '',  
         responseType: 'code',  
         grantType: 'authorization_code', 
