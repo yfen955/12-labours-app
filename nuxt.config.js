@@ -17,7 +17,6 @@ export default {
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
     google_analytics_ga4:process.env.GOOGLE_ANALYTICS_GA4,
-    google_client_id:process.env.GOOGLE_CLIENT_ID,
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
@@ -98,7 +97,7 @@ export default {
     },
     strategies: {
       google: {
-        clientId: process.env.google_client_id,
+        clientId: process.env.GOOGLE_CLIENT_ID,
         codeChallengeMethod: '',  
         responseType: 'code',  
         grantType: 'authorization_code', 
