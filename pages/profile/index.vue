@@ -233,7 +233,7 @@ export default {
           userId:this.user.user_id
         })
         if(response.status===200){ 
-          await this.$auth.logout();    
+          await this.$auth.logout() 
           this.$toast.success('Your account is deleted successfully!',{duration:3000, position: 'bottom-right'})             
           this.$router.push('/')
         }

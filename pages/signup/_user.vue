@@ -245,7 +245,7 @@ export default {
           userInfo: this.getFormData()      
         })
         .then((response)=>{  
-          this.$auth.logout()     //TBC: if needed
+          this.$auth.logout()    //TBC: if needed
           if(this.strategy=='google'){
             this.$auth.strategy.token.set(response.data.access_token)  
             this.$auth.setUser(response.data.user)
@@ -283,7 +283,7 @@ export default {
         nhi:this.nhi.value,
         hospitalId:this.hospital.value,
         dhbId:this.dhb.value,
-        googleId:this.googleProfile.googleId
+        googleId: (this.googleProfile && this.googleProfile.googleId) ? this.googleProfile.googleId : null
       }
     }
   },
@@ -308,8 +308,10 @@ export default {
     if(!this.userType)
       this.$router.replace({ path: '/signup' })
 
-    /*if(this.strategy=='google' && (!this.googleProfile.email || !this.googleProfile.googleId))
-      throw new Error('Authentication failed. Try again')*/
+    if(this.strategy=='local') this.$auth.$storage.removeCookie('googleProfile', true)  //Remove if any cookie was not reset
+
+    if(this.strategy=='google' && (!this.googleProfile.email || !this.googleProfile.googleId))
+      throw new Error('Authentication failed. Try again')
 
     this.contactInfoValues=
       this.strategy=='google' ? {title:'',firstName:this.googleProfile.firstName,lastName:this.googleProfile.lastName,email:this.googleProfile.email} : {title:'',firstName:'',lastName:'',email:'',confirmEmail:''}    
