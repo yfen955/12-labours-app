@@ -20,12 +20,22 @@
         <div class="signup__image">
           <img :src="require(`~/static/img/${imgFile}`)"/>
         </div>
-        <div class="signup__nav-button">
-          <nuxt-link :to="{name: 'signup-user', params: {user: userType}, query :{ strategy : strategy}}">
-            <el-button>
-              Sign up
-            </el-button>
-          </nuxt-link>  
+        <div class="signup__nav-button vertical-flex">
+          <div>
+            <nuxt-link :to="{name: 'signup-user', params: {user: userType}, query :{ strategy : strategy}}">
+              <el-button>
+                Sign up
+              </el-button>
+            </nuxt-link> 
+          </div>
+          <!--<div> <i>or</i> </div>-->
+          <div v-if="strategy!='google'"
+            class="customGoogleBtn"
+            @click="googleSignIn"
+          >
+            <span class="icon"></span>
+            <span class="buttonText" >Sign up with Google</span>
+          </div>
         </div>
       </div>
       <div class="signup-picture">
@@ -52,6 +62,12 @@ export default {
     }
   },
 
+  methods:{
+    async googleSignIn(){
+      this.$auth.loginWith('google', { params: { prompt: "select_account" } })
+    }
+  },
+
   watch:{
     userType: {
       handler: function(userType) {
@@ -74,6 +90,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import '@/assets/google.scss';
+
   .signup{
     width:50%;
     @media only screen and (max-width:  $viewport-sm) {
@@ -105,10 +123,13 @@ export default {
       }
     }
     &__nav-button{
+      align-items:center;
+      row-gap:3rem;
       padding:1rem;
-      margin-bottom:12rem;
+      margin-bottom:10rem;
       
       @media only screen and (max-width:  $viewport-sm) {
+        row-gap:1rem;
         margin-bottom:3rem;
       }
     }

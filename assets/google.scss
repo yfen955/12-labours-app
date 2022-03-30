@@ -1,0 +1,37 @@
+.customGoogleBtn {
+  display: inline-block;
+  background: #4285F4;
+  color: #fff;
+  width: 190px;
+  border-radius: 2px;
+  border: thin solid #4285F4;     //#888;
+  //box-shadow: 1px 1px 1px grey;
+  white-space: nowrap;
+  box-sizing:border-box;
+  
+  span.label {
+    font-family: serif;
+    font-weight: normal;
+  }
+  span.icon {
+    background: url('/img/g-logo.png') transparent 50% no-repeat;
+    background-size: contain;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+  }
+  span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    //padding-left: 8px;     //42px;
+    //padding-right: 8px;     //42px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Use the Roboto font that is loaded in the <head> */
+    font-family: 'Roboto', sans-serif;
+  }
+}
+.customGoogleBtn:hover {
+  cursor: pointer;
+}

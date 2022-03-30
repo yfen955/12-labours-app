@@ -40,8 +40,10 @@
           </el-form>
         </div>
         <div class="google-signin flex-box">
-          <!--<el-button @click="googleSignIn">Log in With Google</el-button>-->
-          <img src='~/static/img/google-signin.png' @click="googleSignIn"></img>
+          <div class="customGoogleBtn" @click="googleSignIn">
+            <span class="icon"></span>
+            <span class="buttonText" >Sign in with Google</span>
+          </div>
         </div>
       </div>
       <div class="signup-picture">
@@ -125,6 +127,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import '@/assets/google.scss';
+
   .login{
     width:50%;
     @media only screen and (max-width:  $viewport-sm) {
@@ -156,9 +160,6 @@ export default {
     padding: 2rem 0 10rem 0;
     @media only screen and (max-width:  $viewport-sm) {
       padding: 0.5rem 0 2rem 0;
-    }
-    img:hover {
-      cursor: pointer;
     }
   }
 </style>
