@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1> I am callback {{returnPath}} </h1>
-  </div>
+  <div></div>
 </template>
 
 <script>
@@ -26,7 +24,6 @@ export default {
           }
           else{         
             $auth.strategy.token.set(response.data.access_token)
-            $auth.setUser(response.data.user)
             redirect('/?login=true')
           }
         }

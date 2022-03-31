@@ -87,7 +87,8 @@ export default {
   ],
   
   axios: {
-    baseURL: process.env.API_URL || "http://localhost:8080"
+    baseURL: process.env.API_URL || "http://localhost:8080",
+    headers: {'Authorization':process.env.API_KEY}
   },
 
   auth: {
@@ -107,17 +108,18 @@ export default {
         },
         token: {
           property:'access_token',
-          global: true
+          global: true,
+          name:'access_token'  
         },
         user: {
-          property: 'user',
-          autoFetch:false
+          property: 'user'
         },
       },
       local: {
         token: {
           global: true,
-          property: 'access_token',
+          property: 'access_token',     //Field of the response JSON to be used for value
+          name:'access_token'           //Authorization header name to be used in axios requests. Default is 'Authorization'
         },
         user: {
           property: 'user',
