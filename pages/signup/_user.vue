@@ -249,7 +249,6 @@ export default {
           if(this.strategy=='google'){
             this.$auth.strategy.token.set(response.data.access_token)  
             this.$auth.setUser(response.data.user)
-            this.$auth.$storage.removeCookie('googleProfile', true)
             this.$toast.success('Successfully created new account!',{duration:3000, position: 'bottom-right'})
             this.$router.replace('/')
           }
@@ -301,37 +300,45 @@ export default {
 
   created() 
   {
-    this.userType= this.$route.params.user 
-    if(!this.userType)
-      this.$router.replace({ path: '/signup' })
+    try{
+      this.userType= this.$route.params.user 
+      if(!this.userType)
+        this.$router.replace({ path: '/signup' })
 
-    if(this.strategy=='local') this.$auth.$storage.removeCookie('googleProfile', true)  //Remove if any cookie was not reset
+      if(this.strategy=='google' && !this.googleProfile)
+        this.$router.replace({ path: '/error' })
 
-    if(this.strategy=='google' && (!this.googleProfile.email || !this.googleProfile.googleId))
-      throw new Error('Authentication failed. Try again')
+      this.contactInfoValues=
+        this.strategy=='google' ? {title:'',firstName:this.googleProfile.firstName,lastName:this.googleProfile.lastName,email:this.googleProfile.email} : {title:'',firstName:'',lastName:'',email:'',confirmEmail:''}    
+      
+      const userFields=this.strategy=='google' ? ['title', 'firstName','lastName','email'] :  ['title','firstName','lastName','email','confirmEmail','password','confirmPassword']
 
-    this.contactInfoValues=
-      this.strategy=='google' ? {title:'',firstName:this.googleProfile.firstName,lastName:this.googleProfile.lastName,email:this.googleProfile.email} : {title:'',firstName:'',lastName:'',email:'',confirmEmail:''}    
-    const userFields=this.strategy=='google' ? ['title', 'firstName','lastName','email'] :  ['title','firstName','lastName','email','confirmEmail','password','confirmPassword']
+      switch(this.userType.toLowerCase()){
+        case "researcher":
+          this.invalidFields=[...userFields,'profession','institution']
+          break;
+        case "clinician":
+          this.invalidFields=[...userFields,'profession','hpi','hospital','dhb']
+          break;
+        case "patient":
+          this.invalidFields= [...userFields,'nhi','dhb']
+          break;
+      }
 
-    switch(this.userType.toLowerCase()){
-      case "researcher":
-        this.invalidFields=[...userFields,'profession','institution']
-        break;
-      case "clinician":
-        this.invalidFields=[...userFields,'profession','hpi','hospital','dhb']
-        break;
-      case "patient":
-        this.invalidFields= [...userFields,'nhi','dhb']
-        break;
+      if(this.strategy=='google'){ 
+        this.emailData ={disabled:true,value:this.googleProfile.email},
+        this.confirmEmailData ={visible:false}
+        this.firstNameData={value:this.googleProfile.firstName}
+        this.lastNameData={value:this.googleProfile.lastName}
+      }
     }
-
-    if(this.strategy=='google'){ 
-      this.emailData ={disabled:true,value:this.googleProfile.email},
-      this.confirmEmailData ={visible:false}
-      this.firstNameData={value:this.googleProfile.firstName}
-      this.lastNameData={value:this.googleProfile.lastName}
+    catch(err){
+      console.log(err)
     }
+  },
+
+  beforeDestroy() {
+    this.$auth.$storage.removeCookie('googleProfile', true) 
   }
 }
 

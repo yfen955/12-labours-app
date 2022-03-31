@@ -61,8 +61,7 @@ export default {
     async resend(){
       try {
         this.error=''
-        if(this.emailAttemtps++ <this.allowedAttempts) { 
-          this.emailSent=false                            //Referesh each time       
+        if(this.emailAttemtps++ <this.allowedAttempts) {       
           await this.$axios.post('/user/local/email', {
             email:this.email   
           })
