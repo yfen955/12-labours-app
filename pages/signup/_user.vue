@@ -254,12 +254,9 @@ export default {
             this.$router.replace('/')
           }
           else{
-            this.$router.replace({ name: 'verify',  
-              params: { 
-                registrationEmail:response.data.email,
-                fromRegistration:  true,
-                emailSent:response.data.emailSent,    
-              } 
+            this.$router.replace({ name: 'verify-email-id',  
+              params: {id:response.data.email},
+              query:{emailSent:response.data.emailSent}
             })
           }
         })
