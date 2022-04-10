@@ -12,6 +12,7 @@ export default {
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+
   },
   env: {
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
@@ -43,12 +44,12 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "@/plugins/dsc",
+    "@/plugins/dsc.js",
     "@/plugins/graphcms.js",
-    "@/plugins/helpers",
+    "@/plugins/helpers.js",
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
-    "@plugins/vue-gtag.client.js"
+    "@/plugins/vue-gtag.client.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -78,8 +79,63 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources"],
+  modules: [
+    "@nuxtjs/style-resources",
+    "@nuxtjs/axios",
+    "@nuxtjs/auth-next",
+    "@nuxtjs/toast"
+  ],
+  
+  axios: {
+    baseURL: process.env.API_URL || "http://localhost:8080",
+    headers: {'Authorization':process.env.API_KEY}
+  },
 
+  auth: {
+    watchLoggedIn:false,
+    router: {
+      middleware: ["auth"],
+    },
+    strategies: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        codeChallengeMethod: '',  
+        responseType: 'code',  
+        grantType: 'authorization_code', 
+        endpoints: {
+          //token: `${process.env.API_URL}/user/google/login`, 
+          userInfo: `${process.env.API_URL}/user/profile` 
+        },
+        token: {
+          property:'access_token',
+          global: true,
+          name:'access_token'  
+        },
+        user: {
+          property: 'user'
+        },
+      },
+      local: {
+        token: {
+          global: true,
+          property: 'access_token',     //Field of the response JSON to be used for value
+          name:'access_token'           //Authorization header name to be used in axios requests. Default is 'Authorization'
+        },
+        user: {
+          property: 'user',
+          autoFetch:false
+        },
+        endpoints: {
+          login: { url: '/user/local/login', method: 'post'},
+          user: { url: '/user/profile', method: 'get'}
+        },
+      }
+    },
+    redirect: {
+      callback: "/login/callback",
+    },
+  },
+  
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],

@@ -36,6 +36,11 @@ export default {
     const content= await graphcmsQuery.content($graphcms, 'about');    
     const topNews= await graphcmsQuery.topNews($graphcms, 3);    
     return {content,topNews}
+  },
+
+  mounted(){
+    const loginSuccess=this.$route.query.login
+    if(loginSuccess) this.$toast.success('Successfully Logged In!',{duration:3000, position: 'bottom-right'})
   }
 }
 </script>

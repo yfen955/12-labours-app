@@ -51,6 +51,11 @@ p a{
   font-size:inherit;    //To overwrite the default font size of link(present inline in text), which is much smaller than font size of body
 }
 
+.err-message{
+  color:$danger;
+  font-weight:600;
+}
+
 .shaded{
   background-color:$background;
 }

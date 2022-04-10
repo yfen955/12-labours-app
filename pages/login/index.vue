@@ -5,8 +5,11 @@
         <div class="login__title top-heading">
           <h1>LOGIN</h1>
         </div>
-        <div class="login__fields vertical-flex">
+        <div class="login__fields vertical-flex"> <!--  @submit.prevent.native="localSignIn" -->
           <el-form label-position="top">
+            <el-form-item> 
+               <div class="error">{{error}}</div>
+            </el-form-item>
             <el-form-item :required="email.required" :label="email.display">
               <el-input 
                 v-model="email.value" 
@@ -25,18 +28,22 @@
               </el-input>
               <div class="error">{{password.message}}</div>
             </el-form-item> 
-            <div class="nav-button">
-              <el-button native-type="submit" :disabled="submitDisabled" @click="onSubmit">
+            <div class="nav-button"><!--native-type="submit"  @click="localSignIn"-->
+              <el-button :disabled="submitDisabled" @click="localSignIn">
                 Login
               </el-button>
               <div class="signup-link">
                 Do not have an account? 
-                <nuxt-link to="/signup">
-                  Sign up Here
-                </nuxt-link>
+                <nuxt-link to="/signup">Sign up Here</nuxt-link>
               </div>
             </div>
           </el-form>
+        </div>
+        <div class="google-signin flex-box">
+          <div class="customGoogleBtn" @click="googleSignIn">
+            <span class="icon"></span>
+            <span class="buttonText" >Sign in with Google</span>
+          </div>
         </div>
       </div>
       <div class="signup-picture">
@@ -53,13 +60,14 @@ export default {
   data: () => {
     return { 
       email:{
-        display:'Email', value:null,format:'email',message:'',required:true
+        display:'Email', value:null,format:'email',message:'',required:true  
       },    
       password:{
         display:'Password', value:null,message:'', required:true
       },
       invalidFields:['email','password'],
-      submitDisabled:true
+      submitDisabled:true,
+      error:'',
     }
   },
 
@@ -81,8 +89,24 @@ export default {
           this.invalidFields.splice(fieldIndex, 1)
       }
     },
-    onSubmit:function(){
-      /*TBD: Code to verify login */
+    async localSignIn() {
+      try {
+        let response =  await this.$auth.loginWith('local', {
+          data: {
+            email: this.email.value,
+            password: this.password.value
+          }
+        }).then((response) => { 
+          this.$auth.setUser(response.data.user)     
+          this.$router.replace('/?login=true')
+        })
+      } 
+      catch (err) {
+        this.error=err.response? err.response.data.message : err.message
+      }
+    },
+    async googleSignIn(){
+      this.$auth.loginWith('google', { params: { prompt: "select_account" } })
     }
   },
 
@@ -92,19 +116,26 @@ export default {
         this.submitDisabled=val.length>0
       }
     }
+  },
+
+  mounted(){
+    const isError=this.$route.query.err
+    if(isError) this.$toast.error('Your request for authentication failed. Try again!',{duration:5000, position: 'bottom-right'})
   }
 }
 
 </script>
 
 <style scoped lang="scss">
+  @import '@/assets/google.scss';
+
   .login{
     width:50%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }
     box-sizing:border-box;
-    &__text{
+    &__title{
       padding:1rem;
       font-size:1.5rem;
       font-weight:bold;
@@ -118,14 +149,17 @@ export default {
 
   .nav-button{
     padding-top:1rem;
-    padding-bottom:14rem;
-    @media only screen and (max-width:  $viewport-sm) {
-      padding-bottom:2rem;
-    }
   }
 
   .signup-link{
     font-size:0.75rem;
   }
 
+  .google-signin{
+    justify-content:center;
+    padding: 2rem 0 10rem 0;
+    @media only screen and (max-width:  $viewport-sm) {
+      padding: 0.5rem 0 2rem 0;
+    }
+  }
 </style>

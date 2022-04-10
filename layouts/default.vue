@@ -1,10 +1,10 @@
 <template>
   <div>
-    <twelve-labours-header>
+    <twelve-labours-header2>
       <template v-slot:logo>
         <img class="header-logo" src="img/12-labours-logo-black.png" alt="Logo for 12 Labours">
       </template>
-    </twelve-labours-header>
+    </twelve-labours-header2>
     <nuxt />
     <twelve-labours-footer :footerLinks="footerLinks">
       <template v-slot:logo>

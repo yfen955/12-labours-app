@@ -6,9 +6,20 @@
           <h1>SIGN UP</h1>
         </div>
         <div class="fields flex-box">
-          <el-form label-position="top">
-            <contact-info :show-bg=false :show-phone=false @field-change="getField"/>
-            <el-form-item :required="password.required" :label="password.display" >
+          <el-form label-position="top"> <!-- @submit.prevent.native="register" -->
+            <el-form-item> 
+              <div class="error">{{error}}</div>
+            </el-form-item>
+            <contact-info 
+              :show-bg=false 
+              :phone-data={visible:false} 
+              :email-data="emailData"
+              :confirm-email-data="confirmEmailData"
+              :first-name-data="firstNameData"
+              :last-name-data="lastNameData"
+              @field-change="getField"
+            />
+            <el-form-item v-if="strategy=='local'" :required="password.required" :label="password.display" >
               <el-input 
                 v-model="password.value" 
                 @blur="fieldChange('password')" 
@@ -18,7 +29,7 @@
                 type="password"></el-input>
               <div class="error">{{password.message}}</div>
             </el-form-item> 
-            <el-form-item :required="confirmPassword.required" :label="confirmPassword.display">
+            <el-form-item v-if="strategy=='local'" :required="confirmPassword.required" :label="confirmPassword.display">
               <el-input 
                 v-model="confirmPassword.value" 
                 @blur="fieldChange('confirmPassword')" 
@@ -41,14 +52,13 @@
               </div>
             </el-form-item>  
             <el-form-item :required="institution.required" :label="institution.display" v-if="userType=='researcher'" >
-               <el-autocomplete
-                v-model="institution.value"
-                :fetch-suggestions="searchInstitution"
-                :placeholder="institution.placeholder"
-                @blur="fieldChange('institution')" 
-                :maxlength="institution.maxLength"
-              >
-              </el-autocomplete>
+              <el-select v-model="institution.value" :placeholder="institution.placeholder" @change="selectChange('institution')">
+                <el-option v-for="item in institutions"
+                  :key="item.value"
+                  :label="item.display"
+                  :value="item.value">
+                </el-option>
+              </el-select>
               <div class="error">
                 {{institution.message}}
               </div>
@@ -80,14 +90,13 @@
               </div>
             </el-form-item> 
             <el-form-item :required="hospital.required" :label="hospital.display" v-if="userType=='clinician'">
-              <el-autocomplete
-                v-model="hospital.value"
-                :fetch-suggestions="searchHospital"
-                :placeholder="hospital.placeholder"
-                @blur="fieldChange('hospital')" 
-                :maxlength="hospital.maxLength"
-              >
-              </el-autocomplete>
+              <el-select v-model="hospital.value" :placeholder="hospital.placeholder" @change="selectChange('hospital')">
+                <el-option v-for="item in hospitals"
+                  :key="item.value"
+                  :label="item.display"
+                  :value="item.value">
+                </el-option>
+              </el-select>
               <div class="error">
                 {{hospital.message}}
               </div>
@@ -119,7 +128,7 @@
               </div>
             </el-form-item>
             <el-form-item :required="dhb.required" :label="dhb.display" v-if="userType=='patient' || userType=='clinician'">
-              <el-select v-model="dhb.value" placeholder="Select your DHB" @change="selectChange('dhb')">
+              <el-select v-model="dhb.value" :placeholder="dhb.placeholder" @change="selectChange('dhb')">
                 <el-option-group v-for="group in dhbs" :key="group.label":label="group.label">
                   <el-option v-for="item in group.options"
                     :key="item.value"
@@ -131,8 +140,8 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="signup__nav-button">
-          <el-button native-type="submit" :disabled="submitDisabled" @click="onSubmit">
+        <div class="signup__nav-button"><!--native-type="submit" @click="register"-->
+          <el-button  :disabled="submitDisabled" @click="register">
             Sign up
           </el-button>  
         </div>
@@ -145,44 +154,42 @@
 
 <script>
 
-import {dhbs,hospitals,institutions} from '~/static/data/data.json'
 export default { 
 
   name: 'SignupPage',
 
-  async asyncData() {
-    return{dhbs,hospitals,institutions}
+  async asyncData({$axios,query}) {
+    const  hospitals  = await $axios.$get(`/hospitals`)
+    const institutions=await $axios.$get(`/institutions`)
+    const dhbs=await $axios.$get(`/dhbs`)
+    const strategy=query.strategy || 'local'
+    return{dhbs,hospitals,institutions,strategy}
   },
 
   data: () => {
-    return {      
+    return {  
       userType:null,
-      submitDisabled:true,     
-      contactInfoValues:
-        {title:'',firstName:'',lastName:'',email:'',confirmEmail:''},     
+      submitDisabled:true, 
+      contactInfoValues:{},   
+      emailData:{},confirmEmailData:{},firstNameData:{},lastNameData:{},
       password:
-        {display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:15,placeholder:'Enter your password'},     
+        {display:'Password', value:null,message:'', required:true,format:'password',match:'confirmPassword', minLength:8, maxLength:20,placeholder:'Enter your password'},     
       confirmPassword:
-        {display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:15,placeholder:'Please confirm your password'},
+        {display:'Confirm Password', value:null, message:'', required:true,format:'password',match:'password', minLength:8, maxLength:20,placeholder:'Please confirm your password'},
       profession:
-        {display:'Profession', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your profession'},
+        {display:'Profession', value:null, message:'', required:true,maxLength:255,placeholder:'Enter your profession'},
       institution:
-        {display:'Institution', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your institution'},
+        {display:'Institution', value:null, message:'', required:true,placeholder:'Select your institution'},
       hpi:
         {display:'HPI number', value:null, message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
       nhi:{  
         display:'NHI number', value:null,message:'', required:true,minLength:7, maxLength:7,splitValues:['','','']},
       hospital:
-        {display:'Healthcare center/Hospital', value:null, message:'', required:true,maxLength:100,placeholder:'Enter your hospital'},
+        {display:'Healthcare center/Hospital', value:null, message:'', required:true,placeholder:'Select your hospital'},
       dhb:
         {display:'DHB', value:null,message:'', required:true,placeholder:'Select your DHB'},
       invalidFields:[],
-      researcherFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','institution'],
-      clinicianFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','profession','hpi','hospital','dhb'],
-      patientFields:
-        ['title','firstName','lastName','email','confirmEmail','password','confirmPassword','nhi','dhb']
+      error:''
     }
   },
   
@@ -200,7 +207,7 @@ export default {
       this.updateValidity(name,Boolean(field.message)) 
       if(result.matchFlag){
         fieldToMatch.message=null
-        this.updateValidity(name,false)
+        this.updateValidity(field.match,false)
       }  
     },
 
@@ -229,26 +236,60 @@ export default {
       }
     },
 
-    onSubmit:function(){
-      /*TBD: Code to submit form values */
+    async register(){
+      try {
+        this.error=''
+        const endpoint= this.strategy=='google' ? '/user/google/register' : '/user/local/register' 
+        await this.$axios.post(endpoint, {
+          strategy:this.strategy,
+          userInfo: this.getFormData()      
+        })
+        .then((response)=>{  
+          this.$auth.logout()    //TBC: if needed
+          if(this.strategy=='google'){
+            this.$auth.strategy.token.set(response.data.access_token)  
+            this.$auth.setUser(response.data.user)
+            this.$toast.success('Successfully created new account!',{duration:3000, position: 'bottom-right'})
+            this.$router.replace('/')
+          }
+          else{
+            this.$router.replace({ name: 'verify-email-id',  
+              params: {id:response.data.email},
+              query:{emailSent:response.data.emailSent}
+            })
+          }
+        })
+      } 
+      catch (error) {
+        this.error = error.response? error.response.data.message : error
+      }
     },
 
-    searchHospital(queryString, cb) {
-      var results = queryString ? this.hospitals.filter(this.createFilter(queryString)) : this.hospitals;
-      cb(results)
-    },
-    
-    searchInstitution(queryString, cb) {
-      var results = queryString ? this.institutions.filter(this.createFilter(queryString)) : this.institutions;
-      cb(results)
-    },
-    createFilter(queryString) {
-      return (row) => {
-        return (row.display.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+    getFormData:function(){
+      return{
+        userTypeName:this.userType,
+        title:this.contactInfoValues.title,
+        firstName:this.contactInfoValues.firstName,
+        lastName:this.contactInfoValues.lastName,
+        email:this.contactInfoValues.email,
+        password:this.password.value,
+        profession:this.profession.value,
+        institutionId:this.institution.value,
+        hpi:this.hpi.value,
+        nhi:this.nhi.value,
+        hospitalId:this.hospital.value,
+        dhbId:this.dhb.value,
+        googleId: (this.googleProfile && this.googleProfile.googleId) ? this.googleProfile.googleId : null
       }
     }
   },
 
+  computed:{
+    googleProfile(){
+      return this.$auth.$storage.getCookie('googleProfile')
+    }
+  },
+  
   watch:{
     invalidFields: {
       handler: function(val) {
@@ -257,24 +298,47 @@ export default {
     }
   },
 
-  created() {
-    this.userType= this.$route.params.user 
-    if(this.userType){ 
-      switch(this.userType){
+  created() 
+  {
+    try{
+      this.userType= this.$route.params.user 
+      if(!this.userType)
+        this.$router.replace({ path: '/signup' })
+
+      if(this.strategy=='google' && !this.googleProfile)
+        this.$router.replace({ path: '/error' })
+
+      this.contactInfoValues=
+        this.strategy=='google' ? {title:'',firstName:this.googleProfile.firstName,lastName:this.googleProfile.lastName,email:this.googleProfile.email} : {title:'',firstName:'',lastName:'',email:'',confirmEmail:''}    
+      
+      const userFields=this.strategy=='google' ? ['title', 'firstName','lastName','email'] :  ['title','firstName','lastName','email','confirmEmail','password','confirmPassword']
+
+      switch(this.userType.toLowerCase()){
         case "researcher":
-          this.invalidFields=this.researcherFields
+          this.invalidFields=[...userFields,'profession','institution']
           break;
         case "clinician":
-          this.invalidFields=this.clinicianFields
+          this.invalidFields=[...userFields,'profession','hpi','hospital','dhb']
           break;
         case "patient":
-          this.invalidFields=this.patientFields
+          this.invalidFields= [...userFields,'nhi','dhb']
           break;
       }
+
+      if(this.strategy=='google'){ 
+        this.emailData ={disabled:true,value:this.googleProfile.email},
+        this.confirmEmailData ={visible:false}
+        this.firstNameData={value:this.googleProfile.firstName}
+        this.lastNameData={value:this.googleProfile.lastName}
+      }
     }
-    else{
-      this.$router.replace({ path: '/signup' })
+    catch(err){
+      console.log(err)
     }
+  },
+
+  beforeDestroy() {
+    this.$auth.$storage.removeCookie('googleProfile', true) 
   }
 }
 
