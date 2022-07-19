@@ -1,5 +1,23 @@
 # 12-labours-app
 
+## Environment variables
+
+Here is the list of environment variables used by the app
+```bash
+#this should point to the api server, the default value is http://localhost:8080
+API_URL=http://localhost:8080
+#Endpoint to the GraphCMS
+GRAPHCMS_ENDPOINT=
+#The client id for Google OAuth. They are provided from the Credentials setup on Google Cloud
+GOOGLE_CLIENT_ID=
+#Location of the xml educational material for 12 Labours
+TWELVE_LABOURS_XML=https://12-labours.s3.us-west-2.amazonaws.com/portal/docs
+#An API Key to protect the server, this variable is required and should be the same when starting the api and app server
+API_KEY=
+#This is the client number for google analytics, this is not essential
+GOOGLE_ANALYTICS_GA4=
+```
+
 ## Build Setup
 
 ```bash
