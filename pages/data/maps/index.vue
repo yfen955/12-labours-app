@@ -27,20 +27,24 @@ export default {
 
   methods: {
     async searchText(text) {
-      // const config = {
-      //   headers: {
-      //     'Accept': 'application/json'
-      //   }
-      // }
-      // try {
-      //   const res = await axios.get(`/search/${text}`, config)
-      //   console.log(res.data);
-      //   this.url = res.data.location;
-      // } catch (error) {
-      //   console.log(error);
-      // }
-      console.log(w3_data[0]);
-      this.url = w3_data[0].Location;
+      const config = {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }
+      try {
+        const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/search`, config)
+        console.log(res);
+        let model = res.data.filter((record, index) => {
+          if (index == text)
+            return record
+        })
+        this.url = model[0].Location;
+      } catch (error) {
+        console.log(error);
+      }
+      // console.log(w3_data[0]);
+      // this.url = w3_data[0].Location;
     }
   },
 }

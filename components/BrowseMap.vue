@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent='onSubmit'>
-    <input type="text" v-model="text" placeholder="search model...">
+    <input type="text" v-model="text" placeholder="search model index...">
     <input type="submit" value="search model">
   </form>
 </template>
