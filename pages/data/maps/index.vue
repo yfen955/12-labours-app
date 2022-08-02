@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Map from '../../../components/Map.vue';
-import BrowseMap from '../../../components/BrowseMap.vue';
+import Map from '../../../components/Map/Map.vue';
+import BrowseMap from '../../../components/Map/BrowseMap.vue';
 import axios from "axios";
 
 export default {
