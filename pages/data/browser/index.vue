@@ -107,6 +107,7 @@ export default {
         this.currentData = sparcInfoData;
       else
         this.currentData = datasetData;
+      this.filteredData = this.currentData
     }
   },
 
