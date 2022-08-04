@@ -9,24 +9,32 @@
           <li v-for="type in searchTypes" :key="type.label">
             <nuxt-link
               class="search-tabs__button"
-              to="/"
+              :class="{ active: type.type === $route.query.type }"
+              :to="{
+                path: '/data/browser',
+                query: {
+                  ...$route.query,
+                  type: type.type,
+                }
+              }"
               >
               {{ type.label }}
             </nuxt-link>
           </li>
         </ul>
+        <!-- <p>{{getType}}</p> -->
       </div>
-      <!-- search -->
+      <!-- search data -->
       <SearchData />
-      <div class="mb-48 container">
+      <div>
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
-            <!-- filter -->
-            <FilterData />
+            <!-- filter data -->
+            <FilterData v-on:filter-list="selectedItems" />
           </el-col>
           <el-col :span="18">
-            <!-- data details -->
-            <DisplayData :isLoadingSearch="isLoadingSearch" />
+            <!-- display data -->
+            <DisplayData :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" />
           </el-col>
         </el-row>
       </div>
@@ -39,7 +47,10 @@
 import SearchData from "../../../components/DataBrowser/SearchData.vue";
 import FilterData from "../../../components/DataBrowser/FilterData.vue";
 import DisplayData from "../../../components/DataBrowser/DisplayData.vue";
-// import dataDetails from "../../../assets/spreadsheet.json";
+import datasetData from "../../../assets/datasetData.json";
+import toolsData from "../../../assets/toolsData.json";
+import newsData from "../../../assets/newsData.json";
+import sparcInfoData from "../../../assets/sparcInfoData.json";
 
 const searchTypes = [
   {
@@ -73,18 +84,64 @@ export default {
         },
         {
           to: {
-            name: 'data',
-            query: {
-              type: 'data'
-            }
+            name: 'data'
           },
-          label: 'Find Data'
+          label: 'DATA & MODELS'
         },
       ],
       searchTypes,
       isLoadingSearch: false,
+      currentData: datasetData,
+      filteredData: datasetData,
+      category: '',
     }
   },
+
+  watch: {
+    '$route.query.type': function(val) {
+      if (val === 'tools')
+        this.currentData = toolsData;
+      else if (val === 'news')
+        this.currentData = newsData;
+      else if (val === 'sparcInfo')
+        this.currentData = sparcInfoData;
+      else
+        this.currentData = datasetData;
+    }
+  },
+
+  computed: {
+    getType: function() {
+      this.category = this.$route.query.type;
+      return this.$route.query;
+    }
+  },
+
+  methods: {
+    selectedItems(species, organs) {
+      if (species.length > 0 && organs.length > 0) {
+        this.filteredData = this.currentData.filter((data, index) => {
+          let existSpecies = species.findIndex(item => item === data.Species)
+          let existOrgan = organs.findIndex(item => item === data.Organ)
+          if (existSpecies !== -1 && existOrgan !== -1)
+            return data
+        })
+      } else if (species.length === 0 && organs.length > 0) {
+        this.filteredData = this.currentData.filter((data, index) => {
+          let existOrgan = organs.findIndex(item => item === data.Organ)
+          if (existOrgan !== -1)
+            return data
+        })
+      } else if (organs.length === 0 && species.length > 0) {
+        this.filteredData = this.currentData.filter((data, index) => {
+          let existSpecies = species.findIndex(item => item === data.Species)
+          if (existSpecies !== -1)
+            return data
+        })
+      } else
+        this.filteredData = this.currentData
+    }
+  }
 }
 </script>
 
@@ -114,7 +171,7 @@ export default {
   li {
     width: 100%;
     text-align: center;
-    color: #8300bf;
+    // color: #8300bf;
   }
   li:last-child > a {
     border-right: none;
@@ -133,7 +190,7 @@ export default {
   line-height: 3.5rem;
   @media (min-width: 40rem) {
     font-size: 0.65rem;
-    border-right: 0.1rem solid #8300bf;
+    border-right: 0.1rem solid ; // #8300bf
   }
   @media (min-width: 50rem) {
     font-size: .75rem;

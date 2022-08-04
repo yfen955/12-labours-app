@@ -51,7 +51,13 @@ export default {
         title:'data browser',
         imgFile:'researcher-in-frame.png',
         detail:'Browse data and models.',
-        btnLink:{caption:'View Data Browser', to:'/data/browser'}
+        btnLink:{
+          caption:'View Data Browser',
+          to: {
+            path: '/data/browser',
+            query: { type: 'dataset' }
+          }
+        }
       }
     }
   }

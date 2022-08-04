@@ -1,18 +1,5 @@
 [
     {
-        "id": "0",
-        "img": "dummy0.jpg",
-        "Blackfynn_dataset": "https://app.blackfynn.io/N:organization:618e8dd9-f8d2-4dc4-9abb-c6aaab2e78a0/datasets/N:dataset:11d3dbdf-d90c-4e42-8341-cc4a956f5c9c/overview",
-        "Discover": "Not even",
-        "Last_modified": "Nov 25, 2020 15:05:00",
-        "Location": "https://mapcore-bucket1.s3-us-west-2.amazonaws.com/Generic+Scaffold/Bladder/cat/catBladder_metadata.json",
-        "Note": "Generic",
-        "Organ": "Bladder",
-        "Published": "Yeah-nah",
-        "Scaffoldvuer_Link": "https://mapcore-demo.org/current/scaffoldvuer/#/?url=https://mapcore-bucket1.s3-us-west-2.amazonaws.com/Generic+Scaffold/Bladder/cat/catBladder_metadata.json",
-        "Species": "Cat"
-    },
-    {
         "id": "1",
         "img": "dummy1.jpg",
         "Blackfynn_dataset": "/",
@@ -156,6 +143,8 @@
         "Species": "Mouse"
     },
     {
+        "id": "12",
+        "img": "dummy12.jpg",
         "Blackfynn_dataset": "/",
         "Discover": "Not even",
         "Last_modified": "Mar 30, 2020 10:31:20",
@@ -167,6 +156,8 @@
         "Species": "Mouse"
     },
     {
+        "id": "13",
+        "img": "dummy13.jpg",
         "Blackfynn_dataset": "https://app.blackfynn.io/N:organization:618e8dd9-f8d2-4dc4-9abb-c6aaab2e78a0/datasets/N:dataset:9dd7a07b-2037-4ce7-829d-395cc4382518/overview",
         "Discover": "Not even",
         "Last_modified": "Oct 7, 2020 12:45:50",
@@ -178,6 +169,8 @@
         "Species": "Mouse"
     },
     {
+        "id": "14",
+        "img": "dummy14.jpg",
         "Blackfynn_dataset": "/",
         "Discover": "Not even",
         "Last_modified": "Dec 11, 2019 10:27:24",
@@ -189,6 +182,8 @@
         "Species": ""
     },
     {
+        "id": "15",
+        "img": "dummy15.jpg",
         "Blackfynn_dataset": "/",
         "Discover": "Not even",
         "Last_modified": "Jul 20, 2020 13:32:04",
@@ -794,6 +789,8 @@
         "Species": "Pig"
     },
     {
+        "id": "70",
+        "img": "dummy70.jpg",
         "Blackfynn_dataset": "/",
         "Discover": "Not even",
         "Last_modified": "30 August, 2021",
@@ -805,6 +802,8 @@
         "Species": "Mouse"
     },
     {
+        "id": "71",
+        "img": "dummy71.jpg",
         "Blackfynn_dataset": "/",
         "Discover": "Not even",
         "Last_modified": "3 September, 2021",

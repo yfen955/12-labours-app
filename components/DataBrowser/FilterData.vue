@@ -3,12 +3,76 @@
     <h4>Refine results</h4>
     <hr />
     <h5>Filter</h5>
+    <el-form ref="form" :model="form">
+      <el-collapse>
+        <el-collapse-item title="Species" v-model="selectedSpecies">
+          <el-checkbox
+            class="filter-selecter"
+            v-for="type in species"
+            :key="type"
+            @change="handleSpecies(type)"
+          >
+            {{ type }}
+          </el-checkbox>
+        </el-collapse-item>
+        <el-collapse-item title="Organ" v-model="selectedOrgans">
+          <el-checkbox
+            class="filter-selecter"
+            v-for="type in organs"
+            :key="type"
+            @change="handleOrgans(type)"
+          >
+            {{ type }}
+          </el-checkbox>
+        </el-collapse-item>
+      </el-collapse>
+    </el-form>
   </div>
 </template>
 
 <script>
-export default {
+const species = ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'];
+const organs = ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'];
 
+export default {
+  data() {
+    return {
+      species,
+      organs,
+      selectedSpecies: [],
+      selectedOrgans: [],
+      form: {
+        species: [],
+        organs: [],
+      }
+    };
+  },
+
+  methods: {
+    handleSpecies(val) {
+      let exist = this.selectedSpecies.findIndex(item => item === val)
+      if (exist == -1)
+        this.selectedSpecies.push(val);
+      else {
+        this.selectedSpecies = this.selectedSpecies.filter((value, index) => {
+          return value !== val
+        })
+      }
+      this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
+    },
+
+    handleOrgans(val) {
+      let exist = this.selectedOrgans.findIndex(item => item === val)
+      if (exist == -1)
+        this.selectedOrgans.push(val);
+      else {
+        this.selectedOrgans = this.selectedOrgans.filter((value, index) => {
+          return value !== val
+        })
+      }
+      this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
+    },
+  },
 }
 </script>
 
@@ -34,5 +98,9 @@ export default {
     border: none;
     border-bottom: 1px solid #E4E7ED;
   }
+}
+.filter-selecter{
+  width: 8em;
+  margin: 0;
 }
 </style>

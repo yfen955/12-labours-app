@@ -1,11 +1,12 @@
 <template>
   <div>
     <!-- data summary -->
-    <el-row class="search-heading">
+    <el-row class="data-heading">
       <p v-show="!isLoadingSearch && dataDetails.length">
         {{ dataDetails.length }} Results | Showing
       </p>
       <el-pagination
+        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
@@ -18,13 +19,16 @@
     <!-- data details -->
     <el-row class="data-container">
       <el-row
-        v-for="item in dataShowed"
+        v-for="item in dataDetails.slice(this.currentFirstData, this.currentFirstData + this.limit)"
         :key="item.id"
         :gutter="20"
         class="data-details"
       >
-        <el-col :span="6">{{ item.img }}</el-col>
-        <el-col :span="18">
+        <el-col :span="6">
+          <img :src="imgPlaceholder" v-if="!item.img" style="width: 90%">
+          <p v-else>{{ item.img }}</p>
+        </el-col>
+        <el-col :span="18" style="margin-bottom:1em;">
           <el-row>
             {{ item.Blackfynn_dataset }}
           </el-row>
@@ -76,45 +80,40 @@
               {{ item.Species }}
             </el-col>
           </el-row>
-          <!-- <el-descriptions column="1">
-            <el-descriptions-item label="Discover">
-              {{ item.Discover }}
-            </el-descriptions-item>
-            <el-descriptions-item label="Last modified">
-              {{ item.Last_modified }}
-            </el-descriptions-item>
-            <el-descriptions-item label="Note">
-              {{ item.Note }}
-            </el-descriptions-item>
-            <el-descriptions-item label="Organ">
-              {{ item.Organ }}
-            </el-descriptions-item>
-            <el-descriptions-item label="Published">
-              {{ item.Published }}
-            </el-descriptions-item>
-            <el-descriptions-item label="Species">
-              {{ item.Species }}
-            </el-descriptions-item>
-          </el-descriptions> -->
         </el-col>
-        <hr />
+        <hr>
       </el-row>
+    </el-row>
+    <el-row class="data-heading">
+      <p v-show="!isLoadingSearch && dataDetails.length">
+        {{ dataDetails.length }} Results | Showing
+      </p>
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40, 50]"
+        :page-size="limit"
+        layout="sizes, prev, pager, next"
+        :total="dataDetails.length">
+      </el-pagination>
     </el-row>
   </div>
 </template>
 
 <script>
-import dataDetails from "../../assets/spreadsheet.json";
 
 export default {
   name: "DisplayData",
-  props: [ "isLoadingSearch" ],
+  props: [ "isLoadingSearch", "dataDetails" ],
   data: () => {
     return {
       limit: 10,
       currentPage: 1,
-      dataDetails,
-      dataShowed: dataDetails.slice(0, 10),
+      dataShowed: [],
+      currentFirstData: 0,
+      imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
     }
   },
   
@@ -124,15 +123,14 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      const currentFirstData = (val - 1) * this.limit;
-      this.dataShowed = dataDetails.slice(currentFirstData, currentFirstData + this.limit);
+      this.currentFirstData = (val - 1) * this.limit;
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
-.search-heading {
+.data-heading {
   align-items: center;
   display: flex;
   margin-top: 2em;
@@ -148,10 +146,10 @@ export default {
     flex-shrink: 0;
     margin-left: 0;
   }
-  el-pagination {
-    font-size: 0.875em;
-    flex-shrink: 0;
-  }
+}
+el-pagination {
+  font-size: 0.875em;
+  flex-shrink: 0;
 }
 .data-container {
   border: 1px solid #ececee;
@@ -161,7 +159,6 @@ export default {
 }
 hr {
   border: .5px solid #E4E7ED;
-  margin-top: 1em;
-  margin-bottom: 0;
+  margin-bottom: 0em;
 }
 </style>
