@@ -2,31 +2,51 @@
   <div class="white-background">
     <h4>Refine results</h4>
     <hr />
-    <h5>Filter</h5>
-    <el-form ref="form" :model="form">
-      <el-collapse>
-        <el-collapse-item title="Species" v-model="selectedSpecies">
+    <h5>Filters applied</h5>
+    <el-card shadow="never" class="facet-card">
+      <span v-if="selectedItems.length === 0" class="no-facets">
+        No filters applied
+      </span>
+      <el-tag
+        v-for="facet in selectedItems"
+        :key="facet"
+        class="capitalize"
+        disable-transitions
+        closable
+        @close="deselectFacet(facet)"
+      >
+        {{ facet }}
+      </el-tag>
+    </el-card>
+    <el-collapse>
+      <el-collapse-item title="Species" v-model="species">
+        <el-checkbox-group v-model="selectedSpecies">
           <el-checkbox
             class="filter-selecter"
             v-for="type in species"
             :key="type"
-            @change="handleSpecies(type)"
+            :label="type"
+            @change="handleChange()"
           >
             {{ type }}
           </el-checkbox>
-        </el-collapse-item>
-        <el-collapse-item title="Organ" v-model="selectedOrgans">
+        </el-checkbox-group>
+      </el-collapse-item>
+      <el-collapse-item title="Organ" v-model="organs">
+        <el-checkbox-group v-model="selectedOrgans">
           <el-checkbox
             class="filter-selecter"
             v-for="type in organs"
             :key="type"
-            @change="handleOrgans(type)"
+            :label="type"
+            @change="handleChange()"
           >
             {{ type }}
           </el-checkbox>
-        </el-collapse-item>
-      </el-collapse>
-    </el-form>
+        </el-checkbox-group>
+        
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
@@ -41,35 +61,20 @@ export default {
       organs,
       selectedSpecies: [],
       selectedOrgans: [],
-      form: {
-        species: [],
-        organs: [],
-      }
+      selectedItems: [],
     };
   },
 
   methods: {
-    handleSpecies(val) {
-      let exist = this.selectedSpecies.findIndex(item => item === val)
-      if (exist == -1)
-        this.selectedSpecies.push(val);
-      else {
-        this.selectedSpecies = this.selectedSpecies.filter((value, index) => {
-          return value !== val
-        })
-      }
+    handleChange() {
+      this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
       this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
     },
 
-    handleOrgans(val) {
-      let exist = this.selectedOrgans.findIndex(item => item === val)
-      if (exist == -1)
-        this.selectedOrgans.push(val);
-      else {
-        this.selectedOrgans = this.selectedOrgans.filter((value, index) => {
-          return value !== val
-        })
-      }
+    deselectFacet(item) {
+      this.selectedSpecies = this.selectedSpecies.filter(data => item !== data)
+      this.selectedOrgans = this.selectedOrgans.filter(data => item !== data)
+      this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
       this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
     },
   },
@@ -102,5 +107,16 @@ export default {
 .filter-selecter{
   width: 8em;
   margin: 0;
+}
+.facet-card {
+  margin: 1rem;
+  overflow-y: auto;
+  .no-facets {
+    font-style: italic;
+    opacity: 0.5;
+  }
+  .capitalize {
+    text-transform: capitalize;
+  }
 }
 </style>

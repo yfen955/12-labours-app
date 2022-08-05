@@ -30,7 +30,7 @@
         </el-col>
         <el-col :span="18" style="margin-bottom:1em;">
           <el-row>
-            {{ item.Blackfynn_dataset }}
+            <a :href="item.Scaffoldvuer_Link">{{ item.Scaffoldvuer_Link }}</a>
           </el-row>
           <el-row>
             <el-col :span="8">
