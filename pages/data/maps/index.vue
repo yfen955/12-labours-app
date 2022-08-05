@@ -32,8 +32,7 @@ export default {
         }
       }
       try {
-        const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/search`, config)
-        // console.log(res);
+        const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
         let model = res.data.filter((record, index) => {
           if (index == text || record.Organ.toLowerCase() === text || record.Species.toLowerCase() === text)
             return record
