@@ -3,19 +3,14 @@
     <div v-show="dataDetails.length">
       <!-- data summary -->
       <el-row class="data-heading">
-        <p>
+        <p v-show="!isLoadingSearch && dataDetails.length">
           {{ dataDetails.length }} Results | Showing
         </p>
-        <el-pagination
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
+        <pagination
+          :total-count="dataDetails.length"
           :page-size="limit"
-          layout="sizes, prev, pager, next"
-          :total="dataDetails.length">
-        </el-pagination>
+          @select-page="handleCurrentChange">
+        </pagination>
       </el-row>
       <!-- data details -->
       <el-row class="data-container">
@@ -73,19 +68,14 @@
         </el-row>
       </el-row>
       <el-row class="data-heading">
-        <p>
+        <p v-show="!isLoadingSearch && dataDetails.length">
           {{ dataDetails.length }} Results | Showing
         </p>
-        <el-pagination
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="limit"
-          layout="sizes, prev, pager, next"
-          :total="dataDetails.length">
-        </el-pagination>
+        <pagination
+          :total-count="dataDetails.length"
+          :page-size="limit"          
+          @select-page="handleCurrentChange">
+        </pagination>
       </el-row>
     </div>
   </div>
@@ -95,7 +85,7 @@
 
 export default {
   name: "DisplayData",
-  props: [ "dataDetails" ],
+  props: [ "isLoadingSearch", "dataDetails" ],
   data: () => {
     return {
       limit: 10,
@@ -122,8 +112,6 @@ export default {
 .data-heading {
   align-items: center;
   display: flex;
-  margin-top: 2em;
-  margin-bottom: 1em;
   justify-content: space-between;
   @media screen and (max-width: 28em) {
     flex-direction: column;
@@ -135,10 +123,6 @@ export default {
     flex-shrink: 0;
     margin-left: 0;
   }
-}
-el-pagination {
-  font-size: 0.875em;
-  flex-shrink: 0;
 }
 .data-container {
   border: 1px solid #ececee;

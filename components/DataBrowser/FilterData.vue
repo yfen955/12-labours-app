@@ -10,7 +10,7 @@
       <el-tag
         v-for="facet in selectedItems"
         :key="facet"
-        class="capitalize"
+        class="tags"
         disable-transitions
         closable
         @close="deselectFacet(facet)"
@@ -82,11 +82,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .white-background {
   background-color: white;
   border: 1px solid #E4E7ED; // lineColor2
-//   border-bottom: none;
   h4 {
     line-height: 1rem;
     font-weight: 600;
@@ -105,8 +103,8 @@ export default {
   }
 }
 .filter-selecter{
-  width: 8em;
   margin: 0;
+  width: 100%;
 }
 .facet-card {
   margin: 1rem;
@@ -115,8 +113,15 @@ export default {
     font-style: italic;
     opacity: 0.5;
   }
-  .capitalize {
-    text-transform: capitalize;
+  .tags {
+    color: $app-primary-color;
+  }
+}
+::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
+  &::after {
+    transform: rotate(45deg) scale(1) !important;
+    left: 0.3em !important;
+    top: 0.1em !important;
   }
 }
 </style>

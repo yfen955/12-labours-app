@@ -55,7 +55,7 @@ export default {
         await axios
           .get(path)
           .then((res) => {
-            // console.log(res);
+            console.log(res.data);
             this.currentData = res.data.data.core_metadata_collection
           })
           .catch((err) => {
@@ -105,6 +105,6 @@ export default {
 
 <style scoped lang="scss">
 .facet-menu {
-  margin-top: 2em;
+  margin-top: 1em;
 }
 </style>
