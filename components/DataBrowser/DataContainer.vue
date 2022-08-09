@@ -1,24 +1,38 @@
 <template>
   <div>
-    <el-row :gutter="24">
+    <!-- display dataset -->
+    <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'dataset'">
       <el-col :span="6" class="facet-menu">
-        <!-- filter data -->
-        <FilterData v-on:filter-list="selectedItems" />
+        <FilterData :filterDict="filterDict" v-on:filter-list="selectedItems" />
       </el-col>
-      <el-col :span="18" v-if="$route.query.type === 'dataset'">
-        <!-- display data -->
+      <el-col :span="18">
         <DisplayData :dataDetails="filteredData" />
       </el-col>
-      <el-col :span="18" v-if="!isLoadingSearch && $route.query.type === 'tools'">
-        <!-- display tools -->
-        <DisplayTools :dataDetails="currentData" />
+    </el-row>
+    <!-- display tools -->
+    <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'tools'">
+      <el-col :span="6" class="facet-menu">
+        <FilterData v-on:filter-list="selectedItems" />
       </el-col>
-      <el-col :span="18" v-if="!isLoadingSearch && $route.query.type === 'news'">
-        <!-- display news -->
+      <el-col :span="18">
+        <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
+      </el-col>
+    </el-row>
+    <!-- display news -->
+    <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'news'">
+      <el-col :span="6" class="facet-menu">
+        <FilterData v-on:filter-list="selectedItems" />
+      </el-col>
+      <el-col :span="18">
         <DisplayData :dataDetails="currentData" />
       </el-col>
-      <el-col :span="18" v-if="!isLoadingSearch && $route.query.type === 'sparcInfo'">
-        <!-- display sparcInfo -->
+    </el-row>
+    <!-- display sparcInfo -->
+    <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'sparcInfo'">
+      <el-col :span="6" class="facet-menu">
+        <FilterData v-on:filter-list="selectedItems" />
+      </el-col>
+      <el-col :span="18">
         <DisplayData :dataDetails="currentData" />
       </el-col>
     </el-row>
@@ -43,6 +57,10 @@ export default {
       isLoadingSearch: false,
       currentData: datasetData,
       filteredData: datasetData,
+      filterDict: {
+        "species": ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
+        "organs":['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem']
+      }
     }
   },
 

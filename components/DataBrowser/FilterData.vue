@@ -55,7 +55,9 @@ const species = ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'];
 const organs = ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'];
 
 export default {
-  data() {
+  props:["isLoadingSearch"],
+
+  data: () => {
     return {
       species,
       organs,
