@@ -3,7 +3,7 @@
     <!-- display dataset -->
     <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'dataset'">
       <el-col :span="6" class="facet-menu">
-        <FilterData :filterDict="filterDict" v-on:filter-list="selectedItems" />
+        <FilterData v-on:filter-list="selectedDataTypes" />
       </el-col>
       <el-col :span="18">
         <DisplayData :dataDetails="filteredData" />
@@ -21,10 +21,14 @@
     <!-- display news -->
     <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'news'">
       <el-col :span="6" class="facet-menu">
-        <FilterData v-on:filter-list="selectedItems" />
+        <FilterNews v-on:filter-list="selectedNewsTypes" :tissues_type="tissues_type" />
       </el-col>
       <el-col :span="18">
-        <DisplayData :dataDetails="currentData" />
+        <!-- <DisplayData :dataDetails="currentData" /> -->
+        <span v-if="errorMessage === ''">
+          <DisplayNews :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
+        </span>
+        <span v-else>{{errorMessage}}</span>
       </el-col>
     </el-row>
     <!-- display sparcInfo -->
@@ -41,26 +45,24 @@
 
 <script>
 import axios from "axios";
-import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
 import DisplayTools from "./DisplayTools.vue";
+import DisplayNews from "./DisplayNews.vue";
 import datasetData from "../../assets/datasetData.json";
-import toolsData from "../../assets/toolsData.json";
-import newsData from "../../assets/newsData.json";
 import sparcInfoData from "../../assets/sparcInfoData.json";
+import FilterData from "./FilterData.vue";
+import FilterNews from "./FilterNews.vue";
 
 export default {
-  components: { FilterData, DisplayData, DisplayTools },
-  props: [ "category", "projects_list" ],
+  components: { DisplayData, DisplayTools, DisplayNews, FilterData, FilterNews },
+  props: [ "category", "payload" ],
   data: () => {
     return {
       isLoadingSearch: false,
       currentData: datasetData,
       filteredData: datasetData,
-      filterDict: {
-        "species": ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
-        "organs":['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem']
-      }
+      tissues_type: [],
+      errorMessage: '',
     }
   },
 
@@ -68,20 +70,36 @@ export default {
     '$route.query.type': async function(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
-        const id = this.projects_list[1].project_id;
-        const path = `https://abi-12-labours-api.herokuapp.com/project/${id}/core_metadata_collection`;
+        const path = `https://abi-12-labours-api.herokuapp.com/nodes/core_metadata_collection`;
         await axios
-          .get(path)
+          .post(path, this.payload)
           .then((res) => {
-            console.log(res.data);
-            this.currentData = res.data.data.core_metadata_collection
+            // console.log(res.data.data);
+            this.currentData = res.data.data
           })
           .catch((err) => {
             console.log(err);
           });
       }
-      else if (val === 'news')
-        this.currentData = newsData;
+      else if (val === 'news') {
+        const path = `https://abi-12-labours-api.herokuapp.com/nodes/sample`;
+        await axios
+          .post(path, this.payload)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.error)
+              this.errorMessage = res.data.error
+            else {
+              this.currentData = res.data.data
+              this.tissues_type = Array.from(new Set(this.currentData.map((data, index) =>{
+                return data.tissue_type
+              }))).sort()
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
       else if (val === 'sparcInfo')
         this.currentData = sparcInfoData;
       else
@@ -92,9 +110,8 @@ export default {
   },
 
   methods: {
-    selectedItems(species, organs) {
-      if (this.category === 'dataset') {
-        if (species.length > 0 && organs.length > 0) {
+    selectedDataTypes(species, organs) {
+      if (species.length > 0 && organs.length > 0) {
         this.filteredData = this.currentData.filter((data, index) => {
           let existSpecies = species.findIndex(item => item === data.Species)
           let existOrgan = organs.findIndex(item => item === data.Organ)
@@ -115,7 +132,17 @@ export default {
         })
       } else
         this.filteredData = this.currentData
-      }
+    },
+
+    selectedNewsTypes(tissues) {
+      if (tissues.length > 0) {
+        this.filteredData = this.currentData.filter((data, index) => {
+          let existTissue = tissues.findIndex(item => item === data.tissue_type)
+          if (existTissue !== -1)
+            return data
+        })
+      } else
+        this.filteredData = this.currentData
     }
   },
 }

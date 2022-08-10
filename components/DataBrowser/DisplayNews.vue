@@ -21,50 +21,42 @@
           class="data-details"
         >
           <el-col :span="6">
-            <img :src="imgPlaceholder" v-if="!item.img" style="width: 85%">
+            <img :src="imgPlaceholder" v-if="!item.img" style="width: 75%">
             <p v-else>{{ item.img }}</p>
           </el-col>
           <el-col :span="18" style="margin-bottom:1em;">
             <el-row>
-              <p>{{ item.title }}</p>
+              <p>{{ item.submitter_id }}</p>
             </el-row>
             <el-row>
-              <p>{{ item.description }}</p>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <strong>Contributor</strong>
-              </el-col>
-              <el-col :span="16">
-                {{ item.contributor }}
-              </el-col>
+              <p>{{ item.biospecimen_anatomic_site }}</p>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <strong>Coverage</strong>
+                <strong>Composition</strong>
               </el-col>
               <el-col :span="16">
-                {{ item.coverage }}
+                {{ item.composition }}
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <strong>Date</strong>
+                <strong>Current Weight</strong>
               </el-col>
               <el-col :span="16">
-                {{ item.date.slice(0, 10) }}
+                {{ item.current_weight }}
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <strong>Publisher</strong>
+                <strong>Tissue Type</strong>
               </el-col>
               <el-col :span="16">
-                {{ item.publisher }}
+                {{ item.tissue_type }}
               </el-col>
             </el-row>
           </el-col>
-          <hr>
+        <hr>
         </el-row>
       </el-row>
       <el-row class="data-heading">
