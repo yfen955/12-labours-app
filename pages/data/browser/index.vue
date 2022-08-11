@@ -5,10 +5,12 @@
       <!-- categories -->
       <div>
         <h1>Browse categories</h1>
-        <tab-nav class="categories-nav" :tabs="searchTypes" :activeTab="defaultCategory" v-on:tabClick="changeCategory" />
+        <tab-nav class="categories-nav"
+          :tabs="searchTypes"
+          :activeTab="defaultCategory"
+          v-on:tabClick="changeCategory"
+        />
       </div>
-      <!-- search data -->
-      <SearchData />
       <!-- data container -->
       <DataContainer
         v-if="!isLoadingSearch"
@@ -16,13 +18,11 @@
         :payload="payload"
       />
     </div>
-    
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import SearchData from "../../../components/DataBrowser/SearchData.vue";
 import DataContainer from "../../../components/DataBrowser/DataContainer.vue";
 
 const searchTypes = [
@@ -46,7 +46,7 @@ const searchTypes = [
 
 export default {
   name: 'DataBrowser',
-  components: { SearchData, DataContainer },
+  components: { DataContainer },
   data: () => {
     return {
       pageTitle: 'Data Browser',
