@@ -21,7 +21,7 @@
     <!-- display news -->
     <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'news'">
       <el-col :span="6" class="facet-menu">
-        <FilterNews v-on:filter-list="selectedNewsTypes" :tissues_type="tissues_type" />
+        <FilterNews v-on:filter-list="filterTissues" :tissues_type="tissues_type" />
       </el-col>
       <el-col :span="18">
         <!-- <DisplayData :dataDetails="currentData" /> -->
@@ -94,6 +94,8 @@ export default {
               this.tissues_type = Array.from(new Set(this.currentData.map((data, index) =>{
                 return data.tissue_type
               }))).sort()
+              const nullIndex = this.tissues_type.findIndex(item => item == undefined);
+              this.tissues_type.splice(nullIndex, 1);
             }
           })
           .catch((err) => {
@@ -110,6 +112,30 @@ export default {
   },
 
   methods: {
+    async filterTissues(item_list) {
+      if (item_list.length > 0) {
+        const listStr = '[' + item_list.map((item, index) => {return `"${item}"`}) + ']';
+        const newPayload = {
+          node_type: "sample",
+          condition:
+            `project_id: ["demo1-jenkins"], tissue_type: ${listStr}`,
+          field:
+            "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
+        };
+        axios
+          .post(`https://abi-12-labours-api.herokuapp.com/graphql`, newPayload)
+          .then((res) => {
+            console.log(res.data.data.sample);
+            this.filteredData = res.data.data.sample;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else
+        this.filteredData = this.currentData;
+      
+    },
+
     selectedDataTypes(species, organs) {
       if (species.length > 0 && organs.length > 0) {
         this.filteredData = this.currentData.filter((data, index) => {

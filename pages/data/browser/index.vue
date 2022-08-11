@@ -69,7 +69,7 @@ export default {
       defaultCategory: "dataset",
       payload: {},
       program: "demo1",
-      format: 'json',
+      format: "json",
     }
   },
 
@@ -91,11 +91,11 @@ export default {
         project: this.projects_list[1],
         format: this.format,
       };
-    this.payload = {
-        program: this.program,
-        project: 'jenkins',
-        format: this.format,
-      };
+    // this.payload = {
+    //   program: this.program,
+    //   project: "d1p1",
+    //   format: this.format,
+    // };
     this.category = this.$route.query.type;
   },
 

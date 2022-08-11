@@ -29,8 +29,7 @@
             :label="type"
             @change="handleChange()"
           >
-            <span v-if="type !== undefined">{{ type }}</span>
-            <span v-else>Others</span>
+            {{ type }}
           </el-checkbox>
         </el-checkbox-group>
       </el-collapse-item>
