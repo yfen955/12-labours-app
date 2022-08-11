@@ -6,13 +6,13 @@
         <FilterData v-on:filter-list="selectedDataTypes" />
       </el-col>
       <el-col :span="18">
-        <DisplayData :dataDetails="filteredData" />
+        <DisplayData :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
       </el-col>
     </el-row>
     <!-- display tools -->
     <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'tools'">
       <el-col :span="6" class="facet-menu">
-        <FilterData v-on:filter-list="selectedItems" />
+        <FilterData v-on:filter-list="selectedDataTypes" />
       </el-col>
       <el-col :span="18">
         <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
@@ -26,7 +26,7 @@
       <el-col :span="18">
         <!-- <DisplayData :dataDetails="currentData" /> -->
         <span v-if="errorMessage === ''">
-          <DisplayNews :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
+          <DisplayNews :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
         </span>
         <span v-else>{{errorMessage}}</span>
       </el-col>
@@ -34,7 +34,7 @@
     <!-- display sparcInfo -->
     <el-row :gutter="24" v-if="!isLoadingSearch && $route.query.type === 'sparcInfo'">
       <el-col :span="6" class="facet-menu">
-        <FilterData v-on:filter-list="selectedItems" />
+        <FilterData v-on:filter-list="selectedDataTypes" />
       </el-col>
       <el-col :span="18">
         <DisplayData :dataDetails="currentData" />
@@ -86,7 +86,7 @@ export default {
         await axios
           .post(path, this.payload)
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.error)
               this.errorMessage = res.data.error
             else {

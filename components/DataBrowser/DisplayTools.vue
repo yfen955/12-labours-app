@@ -2,16 +2,12 @@
   <div>
     <div v-show="dataDetails.length">
       <!-- data summary -->
-      <el-row class="data-heading">
-        <p v-show="!isLoadingSearch && dataDetails.length">
-          {{ dataDetails.length }} Results | Showing
-        </p>
-        <pagination
-          :total-count="dataDetails.length"
-          :page-size="limit"
-          @select-page="handleCurrentChange">
-        </pagination>
-      </el-row>
+      <PaginationHeading
+        :isLoadingSearch="isLoadingSearch"
+        :dataDetails="dataDetails"
+        :limit="limit"
+        v-on:pageChange="handlePageChange"
+      />
       <!-- data details -->
       <el-row class="data-container">
         <el-row
@@ -67,24 +63,22 @@
           <hr>
         </el-row>
       </el-row>
-      <el-row class="data-heading">
-        <p v-show="!isLoadingSearch && dataDetails.length">
-          {{ dataDetails.length }} Results | Showing
-        </p>
-        <pagination
-          :total-count="dataDetails.length"
-          :page-size="limit"          
-          @select-page="handleCurrentChange">
-        </pagination>
-      </el-row>
+      <PaginationHeading
+        :isLoadingSearch="isLoadingSearch"
+        :dataDetails="dataDetails"
+        :limit="limit"
+        v-on:pageChange="handlePageChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import PaginationHeading from "./PaginationHeading.vue"
 
 export default {
   name: "DisplayData",
+  components: { PaginationHeading },
   props: [ "isLoadingSearch", "dataDetails" ],
   data: () => {
     return {
@@ -97,33 +91,15 @@ export default {
   },
   
   methods: {
-    handleSizeChange(val) {
-      this.limit = val;
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.currentFirstData = (val - 1) * this.limit;
+    handlePageChange(currentPage, currentFirstData) {
+      this.currentPage = currentPage;
+      this.currentFirstData = currentFirstData;
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
-.data-heading {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  @media screen and (max-width: 28em) {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 0;
-  }
-  p {
-    font-size: 0.875em;
-    flex-shrink: 0;
-    margin-left: 0;
-  }
-}
 .data-container {
   border: 1px solid #ececee;
 }
