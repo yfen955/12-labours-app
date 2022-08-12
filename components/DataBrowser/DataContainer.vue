@@ -8,7 +8,7 @@
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-list="selectedDataTypes" />
+          <FilterData :dataDetails="searchedData" v-on:filter-data="updateFilteredData" />
         </el-col>
         <el-col :span="18">
           <DisplayData :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
@@ -19,7 +19,7 @@
     <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-list="selectedDataTypes" />
+          <FilterData v-on:filter-data="updateFilteredData" />
         </el-col>
         <el-col :span="18">
           <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
@@ -30,11 +30,15 @@
     <span v-if="!isLoadingSearch && $route.query.type === 'news'">
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterNews v-on:filter-list="filterTissues" :tissues_type="tissues_type" />
+          <FilterNews
+            v-on:filter-data="updateFilteredData"
+            :tissues_type="tissues_type"
+            :dataDetails="searchedData"
+          />
         </el-col>
         <el-col :span="18">
           <span v-if="errorMessage === ''">
-            <DisplayNews :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
+            <DisplayNews :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" :payload="payload" />
           </span>
           <span v-else>{{errorMessage}}</span>
         </el-col>
@@ -44,7 +48,7 @@
     <span v-if="!isLoadingSearch && $route.query.type === 'sparcInfo'">
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-list="selectedDataTypes" />
+          <FilterData v-on:filter-data="updateFilteredData" />
         </el-col>
         <el-col :span="18">
           <DisplayData :dataDetails="currentData" />
@@ -126,56 +130,13 @@ export default {
   },
 
   methods: {
-    async filterTissues(item_list) {
-      if (item_list.length > 0) {
-        const listStr = '[' + item_list.map((item, index) => {return `"${item}"`}) + ']';
-        const newPayload = {
-          node_type: "sample",
-          condition:
-            `project_id: ["demo1-jenkins"], tissue_type: ${listStr}`,
-          field:
-            "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
-        };
-        axios
-          .post(`https://abi-12-labours-api.herokuapp.com/graphql`, newPayload)
-          .then((res) => {
-            console.log(res.data.data.sample);
-            this.filteredData = res.data.data.sample;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else
-        this.filteredData = this.searchedData;
-    },
-
     matchSearchData(matchData) {
       this.searchedData = matchData;
       this.filteredData = this.searchedData;
     },
 
-    selectedDataTypes(species, organs) {
-      if (species.length > 0 && organs.length > 0) {
-        this.filteredData = this.searchedData.filter((data, index) => {
-          let existSpecies = species.findIndex(item => item === data.Species)
-          let existOrgan = organs.findIndex(item => item === data.Organ)
-          if (existSpecies !== -1 && existOrgan !== -1)
-            return data
-        })
-      } else if (species.length === 0 && organs.length > 0) {
-        this.filteredData = this.searchedData.filter((data, index) => {
-          let existOrgan = organs.findIndex(item => item === data.Organ)
-          if (existOrgan !== -1)
-            return data
-        })
-      } else if (species.length > 0 && organs.length === 0) {
-        this.filteredData = this.searchedData.filter((data, index) => {
-          let existSpecies = species.findIndex(item => item === data.Species)
-          if (existSpecies !== -1)
-            return data
-        })
-      } else
-        this.filteredData = this.searchedData
+    updateFilteredData(data) {
+      this.filteredData = data;
     },
 
     selectedNewsTypes(tissues) {

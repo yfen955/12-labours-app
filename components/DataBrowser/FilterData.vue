@@ -55,7 +55,7 @@ const species = ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'];
 const organs = ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'];
 
 export default {
-  props:["isLoadingSearch"],
+  props:[ "dataDetails" ],
 
   data: () => {
     return {
@@ -64,20 +64,42 @@ export default {
       selectedSpecies: [],
       selectedOrgans: [],
       selectedItems: [],
+      filteredData: [],
     };
   },
 
   methods: {
     handleChange() {
       this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
-      this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
+      if (this.selectedSpecies.length > 0 && this.selectedOrgans.length > 0) {
+        this.filteredData = this.dataDetails.filter((data, index) => {
+          let existSpecies = this.selectedSpecies.findIndex(item => item === data.Species)
+          let existOrgan = this.selectedOrgans.findIndex(item => item === data.Organ)
+          if (existSpecies !== -1 && existOrgan !== -1)
+            return data
+        })
+      } else if (this.selectedSpecies.length === 0 && this.selectedOrgans.length > 0) {
+        this.filteredData = this.dataDetails.filter((data, index) => {
+          let existOrgan = this.selectedOrgans.findIndex(item => item === data.Organ)
+          if (existOrgan !== -1)
+            return data
+        })
+      } else if (this.selectedSpecies.length > 0 && this.selectedOrgans.length === 0) {
+        this.filteredData = this.dataDetails.filter((data, index) => {
+          let existSpecies = this.selectedSpecies.findIndex(item => item === data.Species)
+          if (existSpecies !== -1)
+            return data
+        })
+      } else
+        this.filteredData = this.dataDetails
+      console.log(this.filteredData.length);
+      this.$emit('filter-data', this.filteredData)
     },
 
     deselectFacet(item) {
       this.selectedSpecies = this.selectedSpecies.filter(data => item !== data)
       this.selectedOrgans = this.selectedOrgans.filter(data => item !== data)
       this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
-      this.$emit('filter-list', this.selectedSpecies, this.selectedOrgans)
     },
   },
 }

@@ -74,28 +74,28 @@ export default {
   },
 
   created: async function() {
-    this.isLoadingSearch = true
-    const path = `https://abi-12-labours-api.herokuapp.com/${this.program}/project`;
-    await axios
-      .get(path)
-      .then((res) => {
-        // console.log(res.data.project);
-        this.projects_list = res.data.project
-        this.isLoadingSearch = false
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  //   this.isLoadingSearch = true
+  //   const path = `https://abi-12-labours-api.herokuapp.com/${this.program}/project`;
+  //   await axios
+  //     .get(path)
+  //     .then((res) => {
+  //       // console.log(res.data.project);
+  //       this.projects_list = res.data.project
+  //       this.isLoadingSearch = false
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   this.payload = {
+  //       program: this.program,
+  //       project: this.projects_list[1],
+  //       format: this.format,
+  //     };
     this.payload = {
-        program: this.program,
-        project: this.projects_list[1],
-        format: this.format,
-      };
-    // this.payload = {
-    //   program: this.program,
-    //   project: "d1p1",
-    //   format: this.format,
-    // };
+      program: this.program,
+      project: "jenkins",
+      format: this.format,
+    };
     this.category = this.$route.query.type;
   },
 

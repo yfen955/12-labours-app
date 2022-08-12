@@ -38,25 +38,45 @@
 </template>
 
 <script>
+import axios from "axios";
 
 export default {
-  props:[ "isLoadingSearch", "tissues_type" ],
+  props:[ "tissues_type", "dataDetails" ],
 
   data: () => {
     return {
       selectedTissues: [],
-      selectedItems: [],
+      filteredData: [],
     };
   },
 
   methods: {
-    handleChange() {
-      this.$emit('filter-list', this.selectedTissues)
+    async handleChange() {
+      if (this.selectedTissues.length > 0) {
+        const listStr = '[' + this.selectedTissues.map((item, index) => {return `"${item}"`}) + ']';
+        const newPayload = {
+          node_type: "sample",
+          condition:
+            `project_id: ["demo1-jenkins"], tissue_type: ${listStr}`,
+          field:
+            "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
+        };
+        await axios
+          .post(`https://abi-12-labours-api.herokuapp.com/graphql`, newPayload)
+          .then((res) => {
+            // console.log(res.data.data.sample);
+            this.filteredData = res.data.data.sample;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else
+        this.filteredData = this.dataDetails;
+      this.$emit('filter-data', this.filteredData);
     },
 
     deselectFacet(item) {
       this.selectedTissues = this.selectedTissues.filter(data => item !== data)
-      this.$emit('filter-list', this.selectedTissues)
     },
   },
 }
