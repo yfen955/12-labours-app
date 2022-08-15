@@ -28,7 +28,7 @@
     </span>
     <!-- display news -->
     <span v-if="!isLoadingSearch && $route.query.type === 'news'">
-      <SearchNews
+      <SearchData
         :currentData="currentData"
         v-on:matchData="matchSearchData"
       />
@@ -69,13 +69,12 @@ import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
 import DisplayTools from "./DisplayTools.vue";
-import SearchNews from "./SearchNews.vue";
 import FilterNews from "./FilterNews.vue";
 import DisplayNews from "./DisplayNews.vue";
 import sparcInfoData from "../../assets/sparcInfoData.json";
 
 export default {
-  components: { SearchData, FilterData, DisplayData, DisplayTools, SearchNews, FilterNews, DisplayNews },
+  components: { SearchData, FilterData, DisplayData, DisplayTools, FilterNews, DisplayNews },
   props: [ "category", "payload" ],
   data: () => {
     return {
