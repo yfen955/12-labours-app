@@ -25,16 +25,24 @@ export default {
 
   methods: {
     onSubmit() {
-      console.log(this.searchContent);
-      const textList = this.searchContent.split(' ');
-      const matchData = this.currentData.filter((data, index) => {
-        let organIndex = textList.findIndex(item => item.toLowerCase() === (data.Organ.toLowerCase()))
-        let noteIndex = textList.findIndex(item => item.toLowerCase() === (data.Note.toLowerCase()))
-        let speciesIndex = textList.findIndex(item => item.toLowerCase() === (data.Species.toLowerCase()))
-        if (organIndex !== -1 || noteIndex !== -1 || speciesIndex !== -1)
-          return data
-      })
-      console.log(matchData);
+      let matchData = this.currentData;
+      if (this.searchContent !== "") {
+        const textList = this.searchContent.toLowerCase().split(' ');
+        matchData = this.currentData.filter((data, index) => {
+          for (var key in data) {
+            let exist = false;
+            for (var i in textList) {
+              let value = data[key]
+              if (typeof(value) == 'string') {
+                exist = value.toLowerCase().includes(textList[i])
+                if (exist) {
+                  return data
+                }
+              }
+            }
+          }
+        })
+      }
       this.$emit('matchData', matchData);
     }
   }
