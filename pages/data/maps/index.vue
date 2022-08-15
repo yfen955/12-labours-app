@@ -20,27 +20,53 @@ export default {
 
   data() {
     return {
+      isLoadingSearch: false,
+      scaffoldVuers: [],
+      defaultModel: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
       url: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
     }
   },
 
+  created: async function() {
+    this.isLoadingSearch = true;
+    const config = {
+      headers: {
+        'Accept': 'application/json'
+      }
+    };
+    try {
+      const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
+      // console.log(res.data);
+      this.scaffoldVuers = res.data;
+    } catch (error) {
+      console.log(error);
+    };
+    this.isLoadingSearch = false;
+  },
+
   methods: {
     async searchText(text) {
-      const config = {
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
-      try {
-        const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
-        let model = res.data.filter((record, index) => {
-          if (index == text || record.Organ.toLowerCase() === text || record.Species.toLowerCase() === text)
-            return record
+      if (text !== "") {
+        const textList = text.toLowerCase().split(' ');
+        let matchData = this.scaffoldVuers.filter((data, index) => {
+          for (var key in data) {
+            let exist = false;
+            for (var i in textList) {
+              let value = data[key]
+              if (typeof(value) == 'string') {
+                exist = value.toLowerCase().includes(textList[i])
+                if (exist) {
+                  console.log(value);
+                  return data
+                }
+              }
+            }
+          }
         })
-        this.url = model[0].Location;
-        console.log(model);
-      } catch (error) {
-        console.log(error);
+        // console.log(matchData);
+        this.url = matchData[0].Location;
+      } else {
+        this.url = this.defaultModel;
       }
     }
   },
