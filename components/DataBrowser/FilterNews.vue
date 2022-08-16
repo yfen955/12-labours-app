@@ -123,6 +123,7 @@ export default {
     transform: rotate(45deg) scale(1) !important;
     left: 0.3em !important;
     top: 0.1em !important;
+    // color: ;
   }
 }
 </style>

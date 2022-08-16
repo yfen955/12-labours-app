@@ -1,13 +1,12 @@
 <template>
-  <div>
+  <div class="container-default">
+    <BrowseMap v-on:search-text="searchText" />
     <client-only placeholder="Loading scaffold ...">
       <div class="scaffoldvuer-container">
-        <BrowseMap v-on:search-text="searchText" />
-        <Map :location='url' />
+        <Map v-if="!isLoading" :location='url' />
       </div>
     </client-only>
   </div>
-  
 </template>
 
 <script>
@@ -20,15 +19,24 @@ export default {
 
   data() {
     return {
-      isLoadingSearch: false,
+      isLoading: false,
       scaffoldVuers: [],
-      defaultModel: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
-      url: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
+      currentModel: {},
+      url: '',
     }
   },
 
   created: async function() {
-    this.isLoadingSearch = true;
+    this.$router.push({
+      path: '/data/maps',
+      query: {
+        species: 'cat',
+        organ: 'bladder',
+        file_path: 'cat_bladder_metadata.json',
+        // id: '',  // when view changed, there will be id in the url
+      }
+    });
+    this.isLoading = true;
     const config = {
       headers: {
         'Accept': 'application/json'
@@ -38,14 +46,25 @@ export default {
       const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
       // console.log(res.data);
       this.scaffoldVuers = res.data;
+      this.currentModel = this.scaffoldVuers[0];
+      this.url = this.currentModel.Location;
+      let url_list = this.url.split('/');
+      this.$router.push({
+        path: '/data/maps',
+        query: {
+          species: `${this.currentModel.Species.toLowerCase()}`,
+          organ: `${this.currentModel.Organ.toLowerCase()}`,
+          file_path: `${url_list[url_list.length - 1]}`,
+        }
+      })
     } catch (error) {
       console.log(error);
     };
-    this.isLoadingSearch = false;
+    this.isLoading = false;
   },
 
   methods: {
-    async searchText(text) {
+    searchText(text) {
       if (text !== "") {
         const textList = text.toLowerCase().split(' ');
         let matchData = this.scaffoldVuers.filter((data, index) => {
@@ -56,7 +75,6 @@ export default {
               if (typeof(value) == 'string') {
                 exist = value.toLowerCase().includes(textList[i])
                 if (exist) {
-                  console.log(value);
                   return data
                 }
               }
@@ -64,10 +82,18 @@ export default {
           }
         })
         // console.log(matchData);
-        this.url = matchData[0].Location;
-      } else {
-        this.url = this.defaultModel;
+        this.currentModel = matchData[0];
       }
+      this.url = this.currentModel.Location;
+      let url_list = this.url.split('/');
+      this.$router.push({
+        path: '/data/maps',
+        query: {
+          species: `${this.currentModel.Species.toLowerCase()}`,
+          organ: `${this.currentModel.Organ.toLowerCase()}`,
+          file_path: `${url_list[url_list.length - 1]}`,
+        }
+      });
     }
   },
 }
