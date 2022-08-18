@@ -57,14 +57,13 @@ export default {
         const newPayload = {
           node_type: "sample",
           condition:
-            `project_id: ["demo1-jenkins"], tissue_type: ${listStr}`,
+            `(project_id: ["demo1-jenkins"], tissue_type: ${listStr})`,
           field:
             "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
         };
         await axios
-          .post(`https://abi-12-labours-api.herokuapp.com/graphql`, newPayload)
+          .post(`${process.env.api_url}graphql`, newPayload)
           .then((res) => {
-            // console.log(res.data.data.sample);
             this.filteredData = res.data.data.sample;
           })
           .catch((err) => {
@@ -76,7 +75,8 @@ export default {
     },
 
     deselectFacet(item) {
-      this.selectedTissues = this.selectedTissues.filter(data => item !== data)
+      this.selectedTissues = this.selectedTissues.filter(data => item !== data);
+      this.handleChange();
     },
   },
 }

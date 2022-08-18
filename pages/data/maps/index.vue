@@ -1,13 +1,12 @@
 <template>
-  <div>
+  <div class="container-default">
+    <BrowseMap v-on:search-text="searchText" />
     <client-only placeholder="Loading scaffold ...">
       <div class="scaffoldvuer-container">
-        <BrowseMap v-on:search-text="searchText" />
-        <Map :location='url' />
+        <Map v-if="!isLoading" :location='url' />
       </div>
     </client-only>
   </div>
-  
 </template>
 
 <script>
@@ -20,28 +19,79 @@ export default {
 
   data() {
     return {
-      url: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
+      isLoading: false,
+      scaffoldVuers: [],
+      currentModel: {},
+      url: '',
     }
   },
 
-  methods: {
-    async searchText(text) {
-      const config = {
-        headers: {
-          'Accept': 'application/json'
+  created: async function() {
+    this.$router.push({
+      path: '/data/maps',
+      query: {
+        species: 'cat',
+        organ: 'bladder',
+        file_path: 'cat_bladder_metadata.json',
+        // id: '',  // when view changed, there will be id in the url
+      }
+    });
+    this.isLoading = true;
+    const config = {
+      headers: {
+        'Accept': 'application/json'
+      }
+    };
+    try {
+      const res = await axios.get(`${process.env.api_url}spreadsheet`, config)
+      this.scaffoldVuers = res.data;
+      this.currentModel = this.scaffoldVuers[0];
+      this.url = this.currentModel.Location;
+      let url_list = this.url.split('/');
+      this.$router.push({
+        path: '/data/maps',
+        query: {
+          species: `${this.currentModel.Species.toLowerCase()}`,
+          organ: `${this.currentModel.Organ.toLowerCase()}`,
+          file_path: `${url_list[url_list.length - 1]}`,
         }
-      }
-      try {
-        const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
-        let model = res.data.filter((record, index) => {
-          if (index == text || record.Organ.toLowerCase() === text || record.Species.toLowerCase() === text)
-            return record
+      })
+    } catch (error) {
+      console.log(error);
+    };
+    this.isLoading = false;
+  },
+
+  methods: {
+    searchText(text) {
+      if (text !== "") {
+        const textList = text.toLowerCase().split(' ');
+        let matchData = this.scaffoldVuers.filter((data, index) => {
+          for (let key in data) {
+            let exist = false;
+            for (let i in textList) {
+              let value = data[key]
+              if (typeof(value) == 'string') {
+                exist = value.toLowerCase().includes(textList[i])
+                if (exist) {
+                  return data
+                }
+              }
+            }
+          }
         })
-        this.url = model[0].Location;
-        console.log(model);
-      } catch (error) {
-        console.log(error);
+        this.currentModel = matchData[0];
       }
+      this.url = this.currentModel.Location;
+      let url_list = this.url.split('/');
+      this.$router.push({
+        path: '/data/maps',
+        query: {
+          species: `${this.currentModel.Species.toLowerCase()}`,
+          organ: `${this.currentModel.Organ.toLowerCase()}`,
+          file_path: `${url_list[url_list.length - 1]}`,
+        }
+      });
     }
   },
 }

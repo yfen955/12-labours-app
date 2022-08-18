@@ -93,22 +93,10 @@ export default {
     },
 
     async downloadFile(id) {
-      // window.open('https://abi-12-labours-api.herokuapp.com/nodes/download',"_blank")
-      console.log(id);
-      const url = `https://abi-12-labours-api.herokuapp.com/records/${id}`;
-      await axios
-        .post(url, this.payload, { responseType: "blob" })
-        .then((response) => {
-          const blob = new Blob([response.data], { type: "application/json" });
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = `${id}`;
-          link.click();
-          URL.revokeObjectURL(link.href);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      window.open(
+        `${process.env.api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
+        "_self"
+      );
     }
   },
 }

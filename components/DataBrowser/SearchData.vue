@@ -29,9 +29,9 @@ export default {
       if (this.searchContent !== "") {
         const textList = this.searchContent.toLowerCase().split(' ');
         matchData = this.currentData.filter((data, index) => {
-          for (var key in data) {
+          for (let key in data) {
             let exist = false;
-            for (var i in textList) {
+            for (let i in textList) {
               let value = data[key]
               if (typeof(value) == 'string') {
                 exist = value.toLowerCase().includes(textList[i])
