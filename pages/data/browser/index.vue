@@ -39,7 +39,7 @@ const searchTypes = [
     name: 'news',
   },
   {
-    label: 'SPARC Information',
+    label: '12 Labours Information',
     name: 'sparcInfo',
   }
 ]
