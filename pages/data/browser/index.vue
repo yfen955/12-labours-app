@@ -67,19 +67,20 @@ export default {
       category: '',
       projects_list: [],
       defaultCategory: "dataset",
-      payload: {},
-      program: "demo1",
-      format: "json",
+      payload: {
+        program: "demo1",
+        project: "jenkins",
+        format: "json",
+      },
     }
   },
 
   created: async function() {
   //   this.isLoadingSearch = true
-  //   const path = `https://abi-12-labours-api.herokuapp.com/${this.program}/project`;
+  //   const path = `${process.env.api_url}${this.program}/project`;
   //   await axios
   //     .get(path)
   //     .then((res) => {
-  //       // console.log(res.data.project);
   //       this.projects_list = res.data.project
   //       this.isLoadingSearch = false
   //     })
@@ -91,11 +92,7 @@ export default {
   //       project: this.projects_list[1],
   //       format: this.format,
   //     };
-    this.payload = {
-      program: this.program,
-      project: "jenkins",
-      format: this.format,
-    };
+
     this.category = this.$route.query.type;
   },
 

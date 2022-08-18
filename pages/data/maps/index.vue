@@ -43,8 +43,7 @@ export default {
       }
     };
     try {
-      const res = await axios.get(`https://abi-12-labours-api.herokuapp.com/spreadsheet`, config)
-      // console.log(res.data);
+      const res = await axios.get(`${process.env.api_url}spreadsheet`, config)
       this.scaffoldVuers = res.data;
       this.currentModel = this.scaffoldVuers[0];
       this.url = this.currentModel.Location;
@@ -68,9 +67,9 @@ export default {
       if (text !== "") {
         const textList = text.toLowerCase().split(' ');
         let matchData = this.scaffoldVuers.filter((data, index) => {
-          for (var key in data) {
+          for (let key in data) {
             let exist = false;
-            for (var i in textList) {
+            for (let i in textList) {
               let value = data[key]
               if (typeof(value) == 'string') {
                 exist = value.toLowerCase().includes(textList[i])
@@ -81,7 +80,6 @@ export default {
             }
           }
         })
-        // console.log(matchData);
         this.currentModel = matchData[0];
       }
       this.url = this.currentModel.Location;

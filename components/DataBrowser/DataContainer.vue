@@ -91,11 +91,10 @@ export default {
     '$route.query.type': async function(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
-        const path = `https://abi-12-labours-api.herokuapp.com/nodes/core_metadata_collection`;
+        const path = `${process.env.api_url}nodes/core_metadata_collection`;
         await axios
           .post(path, this.payload)
           .then((res) => {
-            // console.log(res.data.data);
             this.currentData = res.data.data
           })
           .catch((err) => {
@@ -103,11 +102,10 @@ export default {
           });
       }
       else if (val === 'news') {
-        const path = `https://abi-12-labours-api.herokuapp.com/nodes/sample`;
+        const path = `${process.env.api_url}nodes/sample`;
         await axios
           .post(path, this.payload)
           .then((res) => {
-            // console.log(res.data);
             if (res.data.error)
               this.errorMessage = res.data.error
             else {

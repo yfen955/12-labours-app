@@ -94,7 +94,7 @@ export default {
 
     async downloadFile(id) {
       window.open(
-        `https://abi-12-labours-api.herokuapp.com/${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
+        `${process.env.api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
         "_self"
       );
     }
