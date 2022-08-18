@@ -27,7 +27,7 @@ export default {
       process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours",
     twelve_labours_xml:
       process.env.TWELVE_LABOURS_XML,
-    api_url: process.env.API_URL,
+    query_api_url: process.env.QUERY_API_URL,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

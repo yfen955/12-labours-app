@@ -62,7 +62,7 @@ export default {
             "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
         };
         await axios
-          .post(`${process.env.api_url}graphql`, newPayload)
+          .post(`${process.env.query_api_url}graphql`, newPayload)
           .then((res) => {
             this.filteredData = res.data.data.sample;
           })

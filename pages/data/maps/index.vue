@@ -43,7 +43,7 @@ export default {
       }
     };
     try {
-      const res = await axios.get(`${process.env.api_url}spreadsheet`, config)
+      const res = await axios.get(`${process.env.query_api_url}spreadsheet`, config)
       this.scaffoldVuers = res.data;
       this.currentModel = this.scaffoldVuers[0];
       this.url = this.currentModel.Location;

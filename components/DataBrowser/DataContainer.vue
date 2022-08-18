@@ -91,7 +91,7 @@ export default {
     '$route.query.type': async function(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
-        const path = `${process.env.api_url}nodes/core_metadata_collection`;
+        const path = `${process.env.query_api_url}nodes/core_metadata_collection`;
         await axios
           .post(path, this.payload)
           .then((res) => {
@@ -102,7 +102,7 @@ export default {
           });
       }
       else if (val === 'news') {
-        const path = `${process.env.api_url}nodes/sample`;
+        const path = `${process.env.query_api_url}nodes/sample`;
         await axios
           .post(path, this.payload)
           .then((res) => {

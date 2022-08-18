@@ -94,7 +94,7 @@ export default {
 
     async downloadFile(id) {
       window.open(
-        `${process.env.api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
+        `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
         "_self"
       );
     }
