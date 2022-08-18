@@ -77,7 +77,7 @@ export default {
 
   created: async function() {
   //   this.isLoadingSearch = true
-  //   const path = `${process.env.api_url}${this.program}/project`;
+  //   const path = `${process.env.query_api_url}${this.program}/project`;
   //   await axios
   //     .get(path)
   //     .then((res) => {
