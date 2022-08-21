@@ -34,7 +34,7 @@
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterNews
+          <FilterData
             v-on:filter-data="updateFilteredData"
             :tissues_type="tissues_type"
             :dataDetails="searchedData"
@@ -48,8 +48,8 @@
         </el-col>
       </el-row>
     </span>
-    <!-- display sparcInfo -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'sparcInfo'">
+    <!-- display laboursInfo -->
+    <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
           <FilterData v-on:filter-data="updateFilteredData" />
@@ -121,7 +121,7 @@ export default {
             console.log(err);
           });
       }
-      else if (val === 'sparcInfo')
+      else if (val === 'laboursInfo')
         this.currentData = sparcInfoData;
       else
         this.currentData = datasetData;
@@ -140,17 +140,6 @@ export default {
     updateFilteredData(data) {
       this.filteredData = data;
     },
-
-    selectedNewsTypes(tissues) {
-      if (tissues.length > 0) {
-        this.filteredData = this.searchedData.filter((data, index) => {
-          let existTissue = tissues.findIndex(item => item === data.tissue_type)
-          if (existTissue !== -1)
-            return data
-        })
-      } else
-        this.filteredData = this.searchedData
-    }
   },
 }
 </script>

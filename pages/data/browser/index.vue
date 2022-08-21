@@ -40,7 +40,7 @@ const searchTypes = [
   },
   {
     label: '12 Labours Information',
-    name: 'sparcInfo',
+    name: 'laboursInfo',
   }
 ]
 
