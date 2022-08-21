@@ -92,7 +92,6 @@ export default {
         })
       } else
         this.filteredData = this.dataDetails
-      console.log(this.filteredData.length);
       this.$emit('filter-data', this.filteredData)
     },
 
@@ -100,6 +99,7 @@ export default {
       this.selectedSpecies = this.selectedSpecies.filter(data => item !== data)
       this.selectedOrgans = this.selectedOrgans.filter(data => item !== data)
       this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
+      this.handleChange()
     },
   },
 }
