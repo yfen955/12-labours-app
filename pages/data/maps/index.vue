@@ -27,15 +27,6 @@ export default {
   },
 
   created: async function() {
-    this.$router.push({
-      path: '/data/maps',
-      query: {
-        species: 'cat',
-        organ: 'bladder',
-        file_path: 'cat_bladder_metadata.json',
-        // id: '',  // when view changed, there will be id in the url
-      }
-    });
     this.isLoading = true;
     const config = {
       headers: {
@@ -45,6 +36,12 @@ export default {
     try {
       const res = await axios.get(`${process.env.query_api_url}spreadsheet`, config)
       this.scaffoldVuers = res.data;
+    } catch (error) {
+      console.log(error);
+    };
+    this.isLoading = false;
+
+    if (this.$router.currentRoute.fullPath === "/data/maps") {
       this.currentModel = this.scaffoldVuers[0];
       this.url = this.currentModel.Location;
       let url_list = this.url.split('/');
@@ -56,10 +53,17 @@ export default {
           file_path: `${url_list[url_list.length - 1]}`,
         }
       })
-    } catch (error) {
-      console.log(error);
-    };
-    this.isLoading = false;
+    } else {
+      const filePath = this.$router.currentRoute.query.file_path;
+      for (let i = 0; i < filePath.length; i++) {
+        let exist = this.scaffoldVuers[i].Location.includes(filePath)
+        if (exist) {
+          this.currentModel = this.scaffoldVuers[i];
+          this.url = this.scaffoldVuers[i].Location;
+          break
+        }
+      }
+    }
   },
 
   methods: {
@@ -96,7 +100,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
