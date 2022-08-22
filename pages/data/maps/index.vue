@@ -1,6 +1,14 @@
 <template>
   <div class="container-default">
     <BrowseMap v-on:search-text="searchText" />
+    <el-button
+      type='success'
+      @click='copyLink()'
+      size='small'
+      class="copy-btn"
+    >
+      Copy the link
+    </el-button>
     <client-only placeholder="Loading scaffold ...">
       <div class="scaffoldvuer-container">
         <Map v-if="!isLoading" :location='url' />
@@ -96,7 +104,25 @@ export default {
           file_path: `${url_list[url_list.length - 1]}`,
         }
       });
+    },
+
+    copyLink() {
+      let url = 'localhost:3000' + this.$router.currentRoute.fullPath;
+      let inputNode = document.createElement('input');
+      inputNode.value = url;
+      document.body.appendChild(inputNode);
+      inputNode.select();
+      document.execCommand('copy');
+      inputNode.className = 'oInput';
+      inputNode.style.display = 'none';
+      this.$message.success('copied');
     }
   },
 }
 </script>
+
+<style>
+.copy-btn {
+  margin-left: 80%;
+}
+</style>
