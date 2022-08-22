@@ -80,12 +80,10 @@ export default {
         const textList = text.toLowerCase().split(' ');
         let matchData = this.scaffoldVuers.filter((data, index) => {
           for (let key in data) {
-            let exist = false;
             for (let i in textList) {
               let value = data[key]
               if (typeof(value) == 'string') {
-                exist = value.toLowerCase().includes(textList[i])
-                if (exist) {
+                if (value.toLowerCase().includes(textList[i])) {
                   return data
                 }
               }

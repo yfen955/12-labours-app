@@ -29,17 +29,20 @@ export default {
       if (this.searchContent !== "") {
         const textList = this.searchContent.toLowerCase().split(' ');
         matchData = this.currentData.filter((data, index) => {
-          for (let key in data) {
-            let exist = false;
-            for (let i in textList) {
+          let count = 0;
+          for (let i in textList) {
+            for (let key in data) {
               let value = data[key]
               if (typeof(value) == 'string') {
-                exist = value.toLowerCase().includes(textList[i])
-                if (exist) {
-                  return data
+                if (value.toLowerCase().includes(textList[i])) {
+                  count += 1;
+                  break
                 }
               }
             }
+          }
+          if (count === textList.length) {
+            return data
           }
         })
       }
