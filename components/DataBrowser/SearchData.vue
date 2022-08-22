@@ -25,10 +25,10 @@ export default {
 
   methods: {
     onSubmit() {
-      let matchData = this.currentData;
+      let matchData = [];
       if (this.searchContent !== "") {
         const textList = this.searchContent.toLowerCase().split(' ');
-        matchData = this.currentData.filter((data, index) => {
+        let count_list = this.currentData.map((data, index) => {
           let count = 0;
           for (let i in textList) {
             for (let key in data) {
@@ -41,10 +41,21 @@ export default {
               }
             }
           }
-          if (count === textList.length) {
-            return data
-          }
+          return count
         })
+        for (let i = textList.length; i > 0; i--) {
+          let indexs = [];
+          let idx = count_list.indexOf(i);
+          while (idx != -1) {
+            indexs.push(idx);
+            idx = count_list.indexOf(i, idx + 1);
+          }
+          for (let j in indexs) {
+            matchData.push(this.currentData[indexs[j]]);
+          }
+        }
+      } else {
+        matchData = this.currentData;
       }
       this.$emit('matchData', matchData);
     }
