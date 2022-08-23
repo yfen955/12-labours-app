@@ -15,15 +15,20 @@
         closable
         @close="deselectFacet(facet)"
       >
-        {{ facet }}
+        <span v-if="facet !== undefined">{{ facet }}</span>
       </el-tag>
     </el-card>
     <el-collapse>
-      <el-collapse-item title="Species" v-model="species">
-        <el-checkbox-group v-model="selectedSpecies">
+      <el-collapse-item
+        v-for="filter in filters_list"
+        :key="filter.index"
+        :title="filter.title"
+        v-model="filter.filter_items"
+      >
+        <el-checkbox-group v-model="filter.selectedItem">
           <el-checkbox
             class="filter-selecter"
-            v-for="type in species"
+            v-for="type in filter.filter_items"
             :key="type"
             :label="type"
             @change="handleChange()"
@@ -31,75 +36,121 @@
             {{ type }}
           </el-checkbox>
         </el-checkbox-group>
-      </el-collapse-item>
-      <el-collapse-item title="Organ" v-model="organs">
-        <el-checkbox-group v-model="selectedOrgans">
-          <el-checkbox
-            class="filter-selecter"
-            v-for="type in organs"
-            :key="type"
-            :label="type"
-            @change="handleChange()"
-          >
-            {{ type }}
-          </el-checkbox>
-        </el-checkbox-group>
-        
       </el-collapse-item>
     </el-collapse>
   </div>
 </template>
 
 <script>
-const species = ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'];
-const organs = ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'];
-
 export default {
-  props:[ "dataDetails" ],
+  props:[ "dataDetails", "tissues_type" ],
 
   data: () => {
     return {
-      species,
-      organs,
-      selectedSpecies: [],
-      selectedOrgans: [],
+      filters_list: [],
+      dataset_filters_list: [
+        {
+          index: 0,
+          title: "Species",
+          filter_items: ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
+          selectedItem: [],
+        },
+        {
+          index: 1,
+          title: "Organ",
+          filter_items: ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'],
+          selectedItem: [],
+        },
+      ],
+      tools_filters_list: [],
+      labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
     };
   },
 
+  created: function() {
+    if (this.$route.query.type === 'dataset') {
+      this.filters_list = this.dataset_filters_list;
+      this.selectedItems = [];
+    }
+    else if (this.$route.query.type === 'tools') {
+      this.filters_list = this.tools_filters_list;
+      this.selectedItems = [];
+    }
+    else if (this.$route.query.type === 'news') {
+      this.filters_list.push({
+        index: 0,
+        title: "Tissues",
+        filter_items: this.tissues_type,
+        selectedItem: [],
+      })
+      this.selectedItems = [];
+    }
+    else if (this.$route.query.type === 'laboursInfo') {
+      this.filters_list = this.labours_filters_list;
+      this.selectedItems = [];
+    }
+  },
+
   methods: {
-    handleChange() {
-      this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
-      if (this.selectedSpecies.length > 0 && this.selectedOrgans.length > 0) {
-        this.filteredData = this.dataDetails.filter((data, index) => {
-          let existSpecies = this.selectedSpecies.findIndex(item => item === data.Species)
-          let existOrgan = this.selectedOrgans.findIndex(item => item === data.Organ)
-          if (existSpecies !== -1 && existOrgan !== -1)
-            return data
-        })
-      } else if (this.selectedSpecies.length === 0 && this.selectedOrgans.length > 0) {
-        this.filteredData = this.dataDetails.filter((data, index) => {
-          let existOrgan = this.selectedOrgans.findIndex(item => item === data.Organ)
-          if (existOrgan !== -1)
-            return data
-        })
-      } else if (this.selectedSpecies.length > 0 && this.selectedOrgans.length === 0) {
-        this.filteredData = this.dataDetails.filter((data, index) => {
-          let existSpecies = this.selectedSpecies.findIndex(item => item === data.Species)
-          if (existSpecies !== -1)
-            return data
-        })
-      } else
-        this.filteredData = this.dataDetails
+    async handleChange() {
+      if (this.$route.query.type === 'dataset') {
+        // combine all the items be selected
+        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
+        
+        if (this.selectedItems.length > 0) {
+          this.filteredData = this.dataDetails.filter((data, index) => {
+            if (this.selectedItems.includes(data.Species) || this.selectedItems.includes(data.Organ)) {
+              return data
+            }
+          })
+        } else {
+          // if no item is selected, return all the data
+          this.filteredData = this.dataDetails
+        }
+      } else if (this.$route.query.type === 'news') {
+        if (this.selectedTissues.length > 0) {
+          // fetch the result data
+          const listStr = '[' + this.selectedTissues.map((item, index) => {return `"${item}"`}) + ']';
+          const newPayload = {
+            node_type: "sample",
+            condition:
+              `(project_id: ["demo1-jenkins"], tissue_type: ${listStr})`,
+            field:
+              "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
+          };
+          await axios
+            .post(`${process.env.query_api_url}graphql`, newPayload)
+            .then((res) => {
+              this.filteredData = res.data.data.sample;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else
+          this.filteredData = this.dataDetails;
+      }
       this.$emit('filter-data', this.filteredData)
     },
 
+    // if a tag is closed, it will call this function
     deselectFacet(item) {
-      this.selectedSpecies = this.selectedSpecies.filter(data => item !== data)
-      this.selectedOrgans = this.selectedOrgans.filter(data => item !== data)
-      this.selectedItems = this.selectedSpecies.concat(this.selectedOrgans)
-      this.handleChange()
+      if (this.$route.query.type === 'dataset') {
+        for (let i = 0; i < this.filters_list.length; i++) {
+          let index = this.filters_list[i].selectedItem.indexOf(item)
+          if (index > -1) {
+            this.filters_list[i].selectedItem.splice(index, 1)
+          }
+        }
+        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
+      }
+      else if (this.$route.query.type === 'news') {
+        this.selectedTissues = this.selectedTissues.filter(data => item !== data);
+      }
+
+      // after update the selectedItem, hangle the change so that the data will changes
+      this.handleChange();
     },
   },
 }

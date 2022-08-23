@@ -42,9 +42,6 @@ export default {
 ::v-deep .region-tree-node {
   color: $app-primary-color !important;
 }
-// ::v-deep .icon-button {
-//   fill: $app-primary-color !important;
-// }
 ::v-deep .el-color-picker__color {
   border: 1px solid $app-primary-color !important;
 }

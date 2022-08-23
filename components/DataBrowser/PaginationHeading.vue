@@ -23,6 +23,7 @@ export default {
   },
 
   methods: {
+    // update the page and first data
     handleCurrentChange(val) {
       this.currentPage = val;
       this.currentFirstData = (val - 1) * this.limit;

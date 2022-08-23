@@ -28,6 +28,8 @@ export default {
       let matchData = [];
       if (this.searchContent !== "") {
         const textList = this.searchContent.toLowerCase().split(' ');
+
+        // find out how many key words each data contains
         let count_list = this.currentData.map((data, index) => {
           let count = 0;
           for (let i in textList) {
@@ -43,18 +45,26 @@ export default {
           }
           return count
         })
+
+        // add the data to the result list
+        // data contains most key words is added to the result list first
         for (let i = textList.length; i > 0; i--) {
           let indexs = [];
+
+          // find out all the indexs of data contains [i] key word(s)
           let idx = count_list.indexOf(i);
           while (idx != -1) {
             indexs.push(idx);
             idx = count_list.indexOf(i, idx + 1);
           }
+
+          // push the data to the result list
           for (let j in indexs) {
             matchData.push(this.currentData[indexs[j]]);
           }
         }
       } else {
+        // if search is empty, return all the data
         matchData = this.currentData;
       }
       this.$emit('matchData', matchData);

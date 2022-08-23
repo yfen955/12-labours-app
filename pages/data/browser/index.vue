@@ -2,7 +2,7 @@
   <div>
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
-      <!-- categories -->
+      <!-- display categories -->
       <div>
         <h1>Browse categories</h1>
         <tab-nav class="categories-nav"
@@ -69,34 +69,37 @@ export default {
       defaultCategory: "dataset",
       payload: {
         program: "demo1",
-        project: "jenkins",
+        project: "demo1-12L",
         format: "json",
       },
     }
   },
 
   created: async function() {
-  //   this.isLoadingSearch = true
-  //   const path = `${process.env.query_api_url}${this.program}/project`;
-  //   await axios
-  //     .get(path)
-  //     .then((res) => {
-  //       this.projects_list = res.data.project
-  //       this.isLoadingSearch = false
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   this.payload = {
-  //       program: this.program,
-  //       project: this.projects_list[1],
-  //       format: this.format,
-  //     };
+    // // fetch the payload
+    // this.isLoadingSearch = true
+    // const path = `${process.env.query_api_url}${this.program}/project`;
+    // await axios
+    //   .get(path)
+    //   .then((res) => {
+    //     this.projects_list = res.data.project
+    //     this.isLoadingSearch = false
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // this.payload = {
+    //     program: this.program,
+    //     project: this.projects_list[1],
+    //     format: this.format,
+    //   };
 
+    // update the category to the current category in the url
     this.category = this.$route.query.type;
   },
 
   methods: {
+    // change the category by change the variable in the url
     changeCategory(val) {
       this.$router.push({
         path: '/data/browser',

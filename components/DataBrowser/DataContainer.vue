@@ -15,6 +15,7 @@
         </el-col>
       </el-row>
     </span>
+
     <!-- display tools -->
     <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
       <el-row :gutter="24">
@@ -26,6 +27,7 @@
         </el-col>
       </el-row>
     </span>
+
     <!-- display news -->
     <span v-if="!isLoadingSearch && $route.query.type === 'news'">
       <SearchData
@@ -42,12 +44,13 @@
         </el-col>
         <el-col :span="18">
           <span v-if="errorMessage === ''">
-            <DisplayNews :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" :payload="payload" />
+            <DisplayData :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" :payload="payload" />
           </span>
           <span v-else>{{errorMessage}}</span>
         </el-col>
       </el-row>
     </span>
+
     <!-- display laboursInfo -->
     <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
       <el-row :gutter="24">
@@ -59,6 +62,7 @@
         </el-col>
       </el-row>
     </span>
+
   </div>
 </template>
 
@@ -88,6 +92,7 @@ export default {
   },
 
   watch: {
+    // if the type variable in the url changes, change the current data to the data in that category
     '$route.query.type': async function(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
@@ -102,19 +107,27 @@ export default {
           });
       }
       else if (val === 'news') {
-        const path = `${process.env.query_api_url}nodes/sample`;
+        // const path = `${process.env.query_api_url}nodes/sample`;
+        const path = `${process.env.query_api_url}dummy`;
         await axios
-          .post(path, this.payload)
+          // .post(path, this.payload)
+          .get(path)
           .then((res) => {
             if (res.data.error)
               this.errorMessage = res.data.error
             else {
-              this.currentData = res.data.data
+              // this.currentData = res.data.data
+              this.currentData = res.data
+
+              // find out which types of tissue exist & sort the list
               this.tissues_type = Array.from(new Set(this.currentData.map((data, index) =>{
                 return data.tissue_type
               }))).sort()
+
+              // remove the undefined data
               const nullIndex = this.tissues_type.findIndex(item => item == undefined);
-              this.tissues_type.splice(nullIndex, 1);
+              if (nullIndex !== -1)
+                this.tissues_type.splice(nullIndex, 1);
             }
           })
           .catch((err) => {
@@ -125,6 +138,8 @@ export default {
         this.currentData = sparcInfoData;
       else
         this.currentData = datasetData;
+
+      // update the searchedData & filteredData to the currentData
       this.searchedData = this.currentData;
       this.filteredData = this.searchedData;
       this.isLoadingSearch = false;
@@ -132,11 +147,11 @@ export default {
   },
 
   methods: {
+    // update the data after search & filter
     matchSearchData(matchData) {
       this.searchedData = matchData;
       this.filteredData = this.searchedData;
     },
-
     updateFilteredData(data) {
       this.filteredData = data;
     },

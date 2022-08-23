@@ -35,6 +35,7 @@ export default {
   },
 
   created: async function() {
+    // fetch & store all models
     this.isLoading = true;
     const config = {
       headers: {
@@ -49,6 +50,7 @@ export default {
     };
     this.isLoading = false;
 
+    // if the url has no variable, then use the first one as the default model & add the variables to the url
     if (this.$router.currentRoute.fullPath === "/data/maps") {
       this.currentModel = this.scaffoldVuers[0];
       this.url = this.currentModel.Location;
@@ -61,7 +63,9 @@ export default {
           file_path: `${url_list[url_list.length - 1]}`,
         }
       })
-    } else {
+    }
+    // find the current model depends on the file_path in the url
+    else {
       const filePath = this.$router.currentRoute.query.file_path;
       for (let i = 0; i < filePath.length; i++) {
         let exist = this.scaffoldVuers[i].Location.includes(filePath)
@@ -106,13 +110,13 @@ export default {
 
     copyLink() {
       let url = 'localhost:3000' + this.$router.currentRoute.fullPath;
-      let inputNode = document.createElement('input');
-      inputNode.value = url;
+      let inputNode = document.createElement('input');  // create a new input
+      inputNode.value = url;  // set the value to the url
       document.body.appendChild(inputNode);
       inputNode.select();
-      document.execCommand('copy');
+      document.execCommand('copy');   // call to execute the browser copy command
       inputNode.className = 'oInput';
-      inputNode.style.display = 'none';
+      inputNode.style.display = 'none';   // hide the input
       this.$message.success('copied');
     }
   },
