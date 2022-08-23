@@ -7,21 +7,16 @@
 
 <script>
 export default {
-    name: 'BrowseMap',
-    data() {
-        return {
-            text: '',
-        }
-    },
-    methods: {
-        onSubmit() {
-            this.$emit('search-text', this.text)
-            this.text = ''
-        }
+  name: 'BrowseMap',
+  data() {
+    return {
+      text: '',
     }
+  },
+  methods: {
+    onSubmit() {
+      this.$emit('search-text', this.text)
+    }
+  }
 }
 </script>
-
-<style>
-
-</style>
