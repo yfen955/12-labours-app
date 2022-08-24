@@ -109,7 +109,8 @@ export default {
     },
 
     copyLink() {
-      let url = 'localhost:3000' + this.$router.currentRoute.fullPath;
+      let url = process.env.base_url + this.$router.currentRoute.fullPath;  // current url
+      console.log(url);
       let inputNode = document.createElement('input');  // create a new input
       inputNode.value = url;  // set the value to the url
       document.body.appendChild(inputNode);

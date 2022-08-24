@@ -28,6 +28,7 @@ export default {
     twelve_labours_xml:
       process.env.TWELVE_LABOURS_XML,
     query_api_url: process.env.QUERY_API_URL,
+    base_url: process.env.BASEURL,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
