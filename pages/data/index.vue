@@ -45,13 +45,19 @@ export default {
         title:'Interactive Viewer',
         imgFile:'patient-in-frame.png',
         detail:'  View the interactive 3D scaffold',
-        btnLink:{caption:'Launch Interactive Viewer', to:'https://sparc.science/maps', external:true}
+        btnLink:{caption:'Launch Interactive Viewer', to:'/data/maps'}
       },
       dataBrowserSpecs:{
         title:'data browser',
         imgFile:'researcher-in-frame.png',
         detail:'Browse data and models.',
-        btnLink:{caption:'View Data Browser', to:'/'}
+        btnLink:{
+          caption:'View Data Browser',
+          to: {
+            path: '/data/browser',
+            query: { type: 'dataset' }
+          }
+        }
       }
     }
   }

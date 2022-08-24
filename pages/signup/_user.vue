@@ -129,7 +129,7 @@
             </el-form-item>
             <el-form-item :required="dhb.required" :label="dhb.display" v-if="userType=='patient' || userType=='clinician'">
               <el-select v-model="dhb.value" :placeholder="dhb.placeholder" @change="selectChange('dhb')">
-                <el-option-group v-for="group in dhbs" :key="group.label":label="group.label">
+                <el-option-group v-for="group in dhbs" :key="group.label" :label="group.label">
                   <el-option v-for="item in group.options"
                     :key="item.value"
                     :label="item.display"
