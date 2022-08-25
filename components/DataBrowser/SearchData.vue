@@ -3,8 +3,20 @@
     <el-form label-position="top" v-model="searchContent" @submit.native.prevent>
       <el-form-item label="Search within category">
         <div class="search-title">
-          <el-input v-model="searchContent" placeholder="Enter search criteria" @keyup.enter.native="onSubmit">
-          </el-input>
+          <div class="input-wrap">
+            <el-input
+              v-model="searchContent"
+              placeholder="Enter search criteria"
+              @keyup.enter.native="onSubmit"
+            />
+            <el-button
+              v-if="searchContent"
+              class="btn-clear-search"
+              icon="el-icon-close"
+              @click="clearSearch"
+            />
+          </div>
+          
           <el-button icon="el-icon-search" class="search-btn" @click="onSubmit">
             Search
           </el-button>
@@ -68,6 +80,11 @@ export default {
         matchData = this.currentData;
       }
       this.$emit('matchData', matchData);
+    },
+
+    clearSearch() {
+      this.searchContent = '';
+      this.$emit('matchData', this.currentData);
     }
   }
 }
@@ -80,6 +97,29 @@ export default {
 .search-title {
   display: flex;
   position: relative;
+}
+.input-wrap {
+  display: flex;
+  position: relative;
+  width: 100%;
+  border-radius: .2rem;
+  margin-right: 0.5rem;
+}
+.btn-clear-search {
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  outline: none;
+  padding: .5em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  &:hover,
+  &:active {
+    opacity: 0.75;
+  }
 }
 .search-btn {
   margin-left: 1em;
