@@ -93,21 +93,34 @@ export default {
     }
   },
 
+  watch: {
+    selectedItems(after, before) {
+      if (after.length === 0) {
+        this.$emit('filter-changed', true);
+      }
+    },
+  },
+
   methods: {
-    async handleChange() {
+    async handleChange(originalData) {
+      let currentData = this.dataDetails;
+      if (originalData !== undefined) {
+        currentData = originalData;
+      }
+
       if (this.$route.query.type === 'dataset') {
         // combine all the items be selected
         this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
         
         if (this.selectedItems.length > 0) {
-          this.filteredData = this.dataDetails.filter((data, index) => {
+          this.filteredData = currentData.filter((data, index) => {
             if (this.selectedItems.includes(data.Species) || this.selectedItems.includes(data.Organ)) {
               return data
             }
           })
         } else {
           // if no item is selected, return all the data
-          this.filteredData = this.dataDetails
+          this.filteredData = currentData
         }
       } else if (this.$route.query.type === 'news') {
         if (this.selectedTissues.length > 0) {
