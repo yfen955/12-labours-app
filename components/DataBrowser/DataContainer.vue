@@ -3,15 +3,22 @@
     <!-- display dataset -->
     <span v-if="!isLoadingSearch && $route.query.type === 'dataset'">
       <SearchData
-        :currentData="currentData"
+        :dataDetails="filteredData"
         v-on:matchData="matchSearchData"
+        v-on:search-changed="filterAgain"
+        ref="search"
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData :dataDetails="searchedData" v-on:filter-data="updateFilteredData" />
+          <FilterData
+            :dataDetails="searchedData"
+            v-on:filter-data="updateFilteredData"
+            v-on:filter-changed="searchAgain"
+            ref="filter"
+          />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
+          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
         </el-col>
       </el-row>
     </span>
@@ -80,6 +87,7 @@ export default {
   data: () => {
     return {
       isLoadingSearch: false,
+      originalData: datasetData,
       currentData: datasetData,
       searchedData: datasetData,
       filteredData: datasetData,
@@ -97,7 +105,7 @@ export default {
         await axios
           .post(path, this.payload)
           .then((res) => {
-            this.currentData = res.data.data
+            this.originalData = res.data.data
           })
           .catch((err) => {
             console.log(err);
@@ -113,11 +121,11 @@ export default {
             if (res.data.error)
               this.errorMessage = res.data.error
             else {
-              // this.currentData = res.data.data
-              this.currentData = res.data
+              // this.originalData = res.data.data
+              this.originalData = res.data
 
               // find out which types of tissue exist & sort the list
-              this.tissues_type = Array.from(new Set(this.currentData.map((data, index) =>{
+              this.tissues_type = Array.from(new Set(this.originalData.map((data, index) =>{
                 return data.tissue_type
               }))).sort()
 
@@ -132,25 +140,35 @@ export default {
           });
       }
       else if (val === 'laboursInfo')
-        this.currentData = sparcInfoData;
+        this.originalData = sparcInfoData;
       else
-        this.currentData = datasetData;
+        this.originalData = datasetData;
 
-      // update the searchedData & filteredData to the currentData
-      this.searchedData = this.currentData;
-      this.filteredData = this.searchedData;
+      // update the searchedData & filteredData to the originalData
+      this.currentData = this.originalData;
+      this.searchedData = this.originalData;
+      this.filteredData = this.originalData;
       this.isLoadingSearch = false;
     }
   },
 
   methods: {
     // update the data after search & filter
-    matchSearchData(matchData) {
-      this.searchedData = matchData;
-      this.filteredData = this.searchedData;
+    matchSearchData(data) {
+      this.searchedData = data;
+      this.currentData = data;
     },
     updateFilteredData(data) {
       this.filteredData = data;
+      this.currentData = data;
+    },
+
+    filterAgain() {
+      this.$refs.filter.handleChange(this.originalData);
+    },
+
+    searchAgain() {
+      this.$refs.search.onSubmit(this.originalData);
     },
   },
 }

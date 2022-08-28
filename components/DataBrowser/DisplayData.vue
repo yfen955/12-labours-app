@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="dataDetails.length">
+    <div v-if="dataDetails.length > 0">
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
@@ -98,6 +98,9 @@
         v-on:pageChange="handlePageChange"
       />
     </div>
+    <div v-else class="no-result">
+      <p>No result</p>
+    </div>
   </div>
 </template>
 
@@ -144,5 +147,13 @@ export default {
 hr {
   border: .5px solid #E4E7ED;
   margin-bottom: 0em;
+}
+.no-result {
+  margin: 1.5em;
+  p {
+    color: #E4E7ED;
+    font-size: 2em;
+    text-align: center;
+  }
 }
 </style>
