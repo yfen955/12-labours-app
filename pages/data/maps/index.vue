@@ -28,53 +28,25 @@ export default {
   data() {
     return {
       isLoading: false,
-      scaffoldVuers: [],
-      currentModel: {},
       url: '',
     }
   },
 
   created: async function() {
-    // fetch & store all models
-    this.isLoading = true;
-    const config = {
-      headers: {
-        'Accept': 'application/json'
-      }
-    };
-    try {
-      const res = await axios.get(`${process.env.query_api_url}spreadsheet`, config)
-      this.scaffoldVuers = res.data;
-    } catch (error) {
-      console.log(error);
-    };
-    this.isLoading = false;
-
     // if the url has no variable, then use the first one as the default model & add the variables to the url
     if (this.$router.currentRoute.fullPath === "/data/maps") {
-      this.currentModel = this.scaffoldVuers[0];
-      this.url = this.currentModel.Location;
-      let url_list = this.url.split('/');
+      const defaultURL = "https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json";
       this.$router.push({
         path: '/data/maps',
         query: {
-          species: `${this.currentModel.Species.toLowerCase()}`,
-          organ: `${this.currentModel.Organ.toLowerCase()}`,
-          file_path: `${url_list[url_list.length - 1]}`,
+          url: defaultURL,
         }
-      })
+      });
+      this.url = defaultURL;
     }
     // find the current model depends on the file_path in the url
     else {
-      const filePath = this.$router.currentRoute.query.file_path;
-      for (let i = 0; i < filePath.length; i++) {
-        let exist = this.scaffoldVuers[i].Location.includes(filePath)
-        if (exist) {
-          this.currentModel = this.scaffoldVuers[i];
-          this.url = this.scaffoldVuers[i].Location;
-          break
-        }
-      }
+      this.url = this.$router.currentRoute.query.url;
     }
   },
 
