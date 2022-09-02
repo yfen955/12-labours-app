@@ -1,6 +1,6 @@
 <template>
   <div class="container-default">
-    <BrowseMap v-on:search-text="searchText" />
+    <!-- <BrowseMap v-on:search-text="searchText" /> -->
     <el-button
       type='success'
       @click='copyLink()'
@@ -9,73 +9,31 @@
     >
       Copy the link
     </el-button>
-    <client-only placeholder="Loading scaffold ...">
-      <div class="scaffoldvuer-container">
-        <Map v-if="!isLoading" :location='url' />
-      </div>
-    </client-only>
+    <Model v-if="!isLoading" :location='url' :taxo='taxo' :uberonid='uberonid' />
   </div>
 </template>
 
 <script>
-import Map from '../../../components/Map/Map.vue';
+import Model from '../../../components/Map/Model.vue';
 import BrowseMap from '../../../components/Map/BrowseMap.vue';
-import axios from "axios";
 
 export default {
-  components: { Map, BrowseMap },
+  components: { Model, BrowseMap },
 
-  data() {
+  data: () => {
     return {
       isLoading: false,
-      scaffoldVuers: [],
-      currentModel: {},
+      display: '',
       url: '',
+      taxo: '',
+      // uberonid: '',
     }
   },
 
-  created: async function() {
-    // fetch & store all models
-    this.isLoading = true;
-    const config = {
-      headers: {
-        'Accept': 'application/json'
-      }
-    };
-    try {
-      const res = await axios.get(`${process.env.query_api_url}spreadsheet`, config)
-      this.scaffoldVuers = res.data;
-    } catch (error) {
-      console.log(error);
-    };
-    this.isLoading = false;
-
-    // if the url has no variable, then use the first one as the default model & add the variables to the url
-    if (this.$router.currentRoute.fullPath === "/data/maps") {
-      this.currentModel = this.scaffoldVuers[0];
-      this.url = this.currentModel.Location;
-      let url_list = this.url.split('/');
-      this.$router.push({
-        path: '/data/maps',
-        query: {
-          species: `${this.currentModel.Species.toLowerCase()}`,
-          organ: `${this.currentModel.Organ.toLowerCase()}`,
-          file_path: `${url_list[url_list.length - 1]}`,
-        }
-      })
-    }
-    // find the current model depends on the file_path in the url
-    else {
-      const filePath = this.$router.currentRoute.query.file_path;
-      for (let i = 0; i < filePath.length; i++) {
-        let exist = this.scaffoldVuers[i].Location.includes(filePath)
-        if (exist) {
-          this.currentModel = this.scaffoldVuers[i];
-          this.url = this.scaffoldVuers[i].Location;
-          break
-        }
-      }
-    }
+  created: function() {
+    this.url = this.$route.query.url;
+    this.taxo = this.$route.query.taxo;
+    this.uberonid = this.$route.query.uberonid;
   },
 
   methods: {

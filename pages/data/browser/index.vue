@@ -56,9 +56,7 @@ export default {
           label: 'Home'
         },
         {
-          to: {
-            name: 'data'
-          },
+          to: { name: 'data' },
           label: 'DATA & MODELS'
         },
       ],
@@ -69,7 +67,7 @@ export default {
       defaultCategory: "dataset",
       payload: {
         program: "demo1",
-        project: "demo1-12L",
+        project: "12L",
         format: "json",
       },
     }

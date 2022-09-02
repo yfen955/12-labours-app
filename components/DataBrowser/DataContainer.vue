@@ -18,7 +18,7 @@
           />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
+          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
         </el-col>
       </el-row>
     </span>
@@ -30,7 +30,7 @@
           <FilterData v-on:filter-data="updateFilteredData" />
         </el-col>
         <el-col :span="18">
-          <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
+          <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
         </el-col>
       </el-row>
     </span>
