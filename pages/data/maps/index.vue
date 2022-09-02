@@ -1,6 +1,6 @@
 <template>
   <div class="container-default">
-    <BrowseMap v-on:search-text="searchText" />
+    <!-- <BrowseMap v-on:search-text="searchText" /> -->
     <el-button
       type='success'
       @click='copyLink()'
@@ -9,45 +9,31 @@
     >
       Copy the link
     </el-button>
-    <client-only placeholder="Loading scaffold ...">
-      <div class="scaffoldvuer-container">
-        <Map v-if="!isLoading" :location='url' />
-      </div>
-    </client-only>
+    <Model v-if="!isLoading" :location='url' :taxo='taxo' :uberonid='uberonid' />
   </div>
 </template>
 
 <script>
-import Map from '../../../components/Map/Map.vue';
+import Model from '../../../components/Map/Model.vue';
 import BrowseMap from '../../../components/Map/BrowseMap.vue';
-import axios from "axios";
 
 export default {
-  components: { Map, BrowseMap },
+  components: { Model, BrowseMap },
 
-  data() {
+  data: () => {
     return {
       isLoading: false,
+      display: '',
       url: '',
+      taxo: '',
+      // uberonid: '',
     }
   },
 
-  created: async function() {
-    // if the url has no variable, then use the first one as the default model & add the variables to the url
-    if (this.$router.currentRoute.fullPath === "/data/maps") {
-      const defaultURL = "https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json";
-      this.$router.push({
-        path: '/data/maps',
-        query: {
-          url: defaultURL,
-        }
-      });
-      this.url = defaultURL;
-    }
-    // find the current model depends on the file_path in the url
-    else {
-      this.url = this.$router.currentRoute.query.url;
-    }
+  created: function() {
+    this.url = this.$route.query.url;
+    this.taxo = this.$route.query.taxo;
+    this.uberonid = this.$route.query.uberonid;
   },
 
   methods: {

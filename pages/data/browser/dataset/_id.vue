@@ -95,7 +95,7 @@
                 </div>
                 <hr>
                 <div class="text item">
-                  <b>Description: </b>
+                  <b>Description: </b> {{ sampleData.description }}
                 </div>
               </el-col>
               <el-col :span="6">
@@ -155,8 +155,24 @@
               <el-button @click="handleDownload">Download the file</el-button>
             </span>
             <span v-if="$route.query.datasetTab === 'gallery'">
-              <h3>gallery</h3>
-              <el-button @click="viewModel">View the model</el-button>
+              <el-row :gutter="20" class="gallery-container">
+                <el-col :span="8">
+                  <el-card>
+                    <p>scaffold image</p>
+                    <div>
+                      <el-button @click="viewScaffold">View Scaffold</el-button>
+                    </div>
+                  </el-card>
+                </el-col>
+                <el-col :span="8">
+                  <el-card>
+                    <p>flatmat image</p>
+                    <div>
+                      <el-button @click="viewFlatmap">View Flatmap</el-button>
+                    </div>
+                  </el-card>
+                </el-col>
+              </el-row>
             </span>
             <span v-if="$route.query.datasetTab === 'references'">
               references
@@ -275,8 +291,29 @@ export default {
       })
     },
 
-    viewModel() {
-      console.log();
+    // go to map viewer with display & url
+    viewScaffold() {
+      let route = this.$router.resolve({
+        path: '/data/maps',
+        query: {
+          display: 'scaffold',
+          url: `https://mapcore-bucket1.s3-us-west-2.amazonaws.com/bladder/rat/rat_bladder_metadata.json`,
+        }
+      });
+      window.open(route.href);
+    },
+
+    // go to map viewer with display & taxo & uberonid
+    viewFlatmap() {
+      let route = this.$router.resolve({
+        path: '/data/maps',
+        query: {
+          display: 'flatmap',
+          taxo: 'NCBITaxon:10114',
+          uberonid: 'UBERON:0013702',
+        }
+      });
+      window.open(route.href);
     },
 
     handlePreview() {
@@ -293,7 +330,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .text {
   font-size: 1em;
 }
@@ -318,6 +355,10 @@ export default {
 .card-content {
   margin-top: .5em;
   margin-bottom: .5em;
+}
+.gallery-container {
+  margin-top: 1em;
+  text-align: center;
 }
 hr {
   border: .5px solid #E4E7ED;

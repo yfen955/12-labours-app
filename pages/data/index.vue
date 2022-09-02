@@ -45,7 +45,14 @@ export default {
         title:'Interactive Viewer',
         imgFile:'patient-in-frame.png',
         detail:'  View the interactive 3D scaffold',
-        btnLink:{caption:'Launch Interactive Viewer', to:'/data/maps'}
+        btnLink:{caption:'Launch Interactive Viewer', to: {
+            path: '/data/maps',
+            query: {
+              display: 'scaffold',
+              url: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
+            }
+          }
+        }
       },
       dataBrowserSpecs:{
         title:'data browser',
