@@ -7,9 +7,9 @@
         <!-- left column -->
         <el-col :span="6">
           <!-- image -->
-          <el-card shadow="never">
+          <el-card shadow="never" class="img-container">
             <div class="text item">
-              image
+              <img :src="imgPlaceholder" alt="image" style="width: 90%">
             </div>
             <div class="text item">
               <el-button>Get Dataset</el-button>
@@ -29,7 +29,7 @@
               <el-col>
                 <span class="card-title">PROJECT:</span>
                 <div class="card-content">
-                  dummy data
+                  Anatomic-Functional Mapping of Enteric Neural Circuits
                 </div>
               </el-col>
               <hr>
@@ -43,28 +43,28 @@
               <el-col>
                 <span class="card-title">ANATOMICAL STRUCTURE:</span>
                 <div class="card-content">
-                  <el-button></el-button>
+                  <el-button>COLON</el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">SPECIES:</span>
                 <div class="card-content">
-                  <el-button></el-button>
+                  <el-button>MOUSE</el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">EXPERIMENTAL APPROACH:</span>
                 <div class="card-content">
-                  <el-button></el-button>
+                  <el-button>ANATOMY</el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">SEX:</span>
                 <div class="card-content">
-                  <el-button></el-button>
+                  <el-button>MALE</el-button>
                 </div>
               </el-col>
               <hr>
@@ -86,40 +86,41 @@
         <el-col :span="18">
           <!-- title & description -->
           <el-card shadow="never">
-            <h1>Title</h1>
+            <h1>Correlated electrophysiological immunohistochemical and morphological properties of proximal colon myenteric neurons</h1>
             <br>
             <el-row :gutter="20">
               <el-col :span="18">
                 <div class="text item">
-                  <b>Contributors: </b>
+                  <b>Contributors: Rachel Gwynne, Katerina Koussoulas</b>
                 </div>
                 <hr>
                 <div class="text item">
-                  <b>Description: </b> {{ sampleData.description }}
+                  <!-- <b>Description:</b> {{ sampleData.description }} -->
+                  <b>Description:</b> Each set includes membrane potential records from a myenteric neuron of mouse proximal colon plus micrographs of cell body morphology, immunoreactivity for nNOS, calretinin (where possible), and micrographs showing axonal projections
                 </div>
               </el-col>
               <el-col :span="6">
                 <el-card shadow="never">
                   <div class="text item small">
-                    <b>Viewing version: </b>
+                    <b>Viewing version:</b> 1.0
                   </div>
                   <div class="text item small">
-                    DOI:
+                    DOI: 10.26275/umgm-rzar
                   </div>
                   <div class="text item small">
-                    date
+                    August 10, 2022
                   </div>
                   <div class="text item small">
-                    <i class="el-icon-document-copy"></i> files
+                    <i class="el-icon-document-copy"></i> 2532 files
                   </div>
                   <div class="text item small">
-                    <i class="el-icon-files"></i> size
+                    <i class="el-icon-files"></i> 14.88 GB
                   </div>
                   <div class="text item small">
-                    <b>Latest version: </b>
+                    <b>Latest version:</b> 1.0
                   </div>
                   <div class="text item small">
-                    date
+                    August 10, 2022
                   </div>
                   <div class="text item small">
                     View other versions
@@ -127,11 +128,18 @@
                 </el-card>
               </el-col>
             </el-row>
+            <br>
             <hr>
-            <div class="text item">
-              <b>Usage Rights: </b>
+            <div class="inline-block">
+              <div class="text item">
+                <b>Usage Rights:</b> CC-BY-4.0
+              </div>
+              <div class="text item right-item">
+                <b>Downloads:</b> 0
+              </div>
             </div>
           </el-card>
+          <br>
 
           <!-- details -->
           <el-card shadow="never">
@@ -246,6 +254,7 @@ export default {
       datasetTabs,
       defaultTab: "abstract",
       sampleData: [],
+      imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
     }
   },
   
@@ -255,23 +264,23 @@ export default {
       query: { datasetTab: 'abstract' }
     })
 
-    let id = "193e278e-5895-4d1b-be79-55697416cb58";
+    // let id = "193e278e-5895-4d1b-be79-55697416cb58";
+    // // let payload = {
+    // //   program: this.$route.params.program,
+    // //   project: this.$route.params.project,
+    // //   format: this.$route.params.format,
+    // // }
     // let payload = {
-    //   program: this.$route.params.program,
-    //   project: this.$route.params.project,
-    //   format: this.$route.params.format,
-    // }
-    let payload = {
-      program: "demo1",
-      project: "12L",
-      format: "json",
-    };
-    const path = `${process.env.query_api_url}record/${id}`;
-    await axios
-      .post(path, payload)
-      .then((res) => {
-        this.sampleData = res.data[0];
-      })
+    //   program: "demo1",
+    //   project: "12L",
+    //   format: "json",
+    // };
+    // const path = `${process.env.query_api_url}record/${id}`;
+    // await axios
+    //   .post(path, payload)
+    //   .then((res) => {
+    //     this.sampleData = res.data[0];
+    //   })
   },
 
   methods: {
@@ -331,6 +340,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.img-container {
+  text-align: center;
+}
 .text {
   font-size: 1em;
 }
@@ -363,5 +375,12 @@ export default {
 hr {
   border: .5px solid #E4E7ED;
   // margin-bottom: 1em;
+}
+.inline-block {
+  display: flex;
+  margin-bottom: 0;
+  .right-item {
+    margin-left: 62%;
+  }
 }
 </style>
