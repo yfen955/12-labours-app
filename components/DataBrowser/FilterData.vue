@@ -43,12 +43,13 @@
 
 <script>
 export default {
-  props:[ "dataDetails", "tissues_type" ],
+  props:[ "dataDetails", "file_type" ],
 
   data: () => {
     return {
       filters_list: [],
-      dataset_filters_list: [
+      dataset_filters_list: [],
+      tools_filters_list: [
         {
           index: 0,
           title: "Species",
@@ -62,39 +63,38 @@ export default {
           selectedItem: [],
         },
       ],
-      tools_filters_list: [],
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
     };
   },
 
+  computed: {
+    isOnchange({ $route, selectedItems }) {
+      return { $route, selectedItems }
+    },
+  },
+
   created: function() {
-    if (this.$route.query.type === 'dataset') {
-      this.filters_list = this.dataset_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'tools') {
-      this.filters_list = this.tools_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'news') {
-      this.filters_list.push({
-        index: 0,
-        title: "Tissues",
-        filter_items: this.tissues_type,
-        selectedItem: [],
-      })
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'laboursInfo') {
-      this.filters_list = this.labours_filters_list;
-      this.selectedItems = [];
-    }
+    this.dataChange(this.$route.query.type)
   },
 
   watch: {
+    '$route.query.type': {
+      handler() {
+        this.dataChange(this.$route.query.type)
+      }
+    },
+
     selectedItems(after, before) {
+      // this.$router.push({
+      //   path:'/data/browser',
+      //   query: {
+      //     type: 'dataset',
+      //     filter: this.selectedItems,
+      //   }
+      // })
+      // this.$router.query.filter.replace( this.selectedItems )
       if (after.length === 0) {
         this.$emit('filter-changed', true);
       }
@@ -102,6 +102,36 @@ export default {
   },
 
   methods: {
+    async dataChange(val) {
+      if (val === 'dataset') {
+        this.filters_list = this.dataset_filters_list;
+      }
+      else if (val === 'tools') {
+        this.filters_list = this.tools_filters_list;
+      }
+      else if (val === 'news') {
+        if (!this.$route.query.filter) {
+          this.filters_list.push({
+            index: 0,
+            title: "File types",
+            filter_items: this.file_type,
+            selectedItem: this.$route.query.filter,
+          })
+        } else {
+          this.filters_list.push({
+            index: 0,
+            title: "File types",
+            filter_items: this.file_type,
+            selectedItem: [],
+          })
+        }
+      }
+      else if (val === 'laboursInfo') {
+        this.filters_list = this.labours_filters_list;
+      }
+      this.selectedItems = [];
+    },
+
     async handleChange(originalData) {
       let currentData = this.dataDetails;
       if (originalData !== undefined) {
@@ -109,6 +139,9 @@ export default {
       }
 
       if (this.$route.query.type === 'dataset') {
+        
+      }
+      else if (this.$route.query.type === 'tools') {
         // combine all the items be selected
         this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
         
@@ -122,16 +155,17 @@ export default {
           // if no item is selected, return all the data
           this.filteredData = currentData
         }
-      } else if (this.$route.query.type === 'news') {
+      }
+      else if (this.$route.query.type === 'news') {
         if (this.selectedTissues.length > 0) {
           // fetch the result data
           const listStr = '[' + this.selectedTissues.map((item, index) => {return `"${item}"`}) + ']';
           const newPayload = {
-            node_type: "sample",
-            condition:
-              `(project_id: ["demo1-jenkins"], tissue_type: ${listStr})`,
-            field:
-              "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
+            node: `${dictionary}`,
+            filter: {
+              file_type: ["jpeg", ".txt"],
+            },
+            search: "",
           };
           await axios
             .post(`${process.env.query_api_url}graphql`, newPayload)
@@ -149,7 +183,7 @@ export default {
 
     // if a tag is closed, it will call this function
     deselectFacet(item) {
-      if (this.$route.query.type === 'dataset') {
+      if (this.$route.query.type === 'tools') {
         for (let i = 0; i < this.filters_list.length; i++) {
           let index = this.filters_list[i].selectedItem.indexOf(item)
           if (index > -1) {

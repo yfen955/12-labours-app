@@ -86,12 +86,12 @@
         <el-col :span="18">
           <!-- title & description -->
           <el-card shadow="never">
-            <h1>Correlated electrophysiological immunohistochemical and morphological properties of proximal colon myenteric neurons</h1>
+            <h1>{{sampleData.title}}</h1>
             <br>
             <el-row :gutter="20">
               <el-col :span="18">
                 <div class="text item">
-                  <b>Contributors: Rachel Gwynne, Katerina Koussoulas</b>
+                  <b>Contributors: {{sampleData.contributor_name}}</b>
                 </div>
                 <hr>
                 <div class="text item">
@@ -231,9 +231,10 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
+  props: [ 'id', 'program', 'project', 'format' ],
   data: () => {
     return {
-      pageTitle: 'Dataset',
+      pageTitle: `Dataset`,
       breadcrumb: [
         {
           to: { name: 'index' },
@@ -255,32 +256,33 @@ export default {
       defaultTab: "abstract",
       sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
+      currentID: '',
     }
   },
   
   created: async function() {
     this.$router.push({
-      path:'/data/browser/dataset',
+      path: `${this.$route.path}`,
       query: { datasetTab: 'abstract' }
     })
 
-    // let id = "193e278e-5895-4d1b-be79-55697416cb58";
     // // let payload = {
     // //   program: this.$route.params.program,
     // //   project: this.$route.params.project,
     // //   format: this.$route.params.format,
     // // }
-    // let payload = {
-    //   program: "demo1",
-    //   project: "12L",
-    //   format: "json",
-    // };
-    // const path = `${process.env.query_api_url}record/${id}`;
-    // await axios
-    //   .post(path, payload)
-    //   .then((res) => {
-    //     this.sampleData = res.data[0];
-    //   })
+    let newPayload = {
+      node: 'dataset_description',
+      filter: { study_organ_system: ["heart", "brain"]},
+      search: `${this.$route.params.id}`,
+    };
+    const path = `${process.env.query_api_url}graphql`;
+    await axios
+      .post(path, newPayload)
+      .then((res) => {
+        this.sampleData = res.data.data["dataset_description"][0];
+        console.log(this.sampleData);
+      })
   },
 
   methods: {

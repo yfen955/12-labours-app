@@ -25,12 +25,23 @@
 
     <!-- display tools -->
     <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
+      <SearchData
+        :dataDetails="filteredData"
+        v-on:matchData="matchSearchData"
+        v-on:search-changed="filterAgain"
+        ref="search"
+      />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-data="updateFilteredData" />
+          <FilterData
+            :dataDetails="searchedData"
+            v-on:filter-data="updateFilteredData"
+            v-on:filter-changed="searchAgain"
+            ref="filter"
+          />
         </el-col>
         <el-col :span="18">
-          <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
+          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
         </el-col>
       </el-row>
     </span>
@@ -45,7 +56,7 @@
         <el-col :span="6" class="facet-menu">
           <FilterData
             v-on:filter-data="updateFilteredData"
-            :tissues_type="tissues_type"
+            :file_type="file_type"
             :dataDetails="searchedData"
           />
         </el-col>
@@ -75,7 +86,7 @@
 
 <script>
 import axios from "axios";
-import datasetData from "../../assets/datasetData.json";
+import dummyData from "../../assets/datasetData.json";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
@@ -87,72 +98,117 @@ export default {
   data: () => {
     return {
       isLoadingSearch: false,
-      originalData: datasetData,
-      currentData: datasetData,
-      searchedData: datasetData,
-      filteredData: datasetData,
-      tissues_type: [],
+      originalData: [],
+      currentData: [],
+      searchedData: [],
+      filteredData: [],
+      file_type: [],
       errorMessage: '',
     }
   },
 
+  created: function() {
+    // when open find data page, call the function to fetch the data
+    this.dataChange(this.$route.query.type)
+  },
+
   watch: {
     // if the type variable in the url changes, change the current data to the data in that category
-    '$route.query.type': async function(val) {
+    '$route.query.type': function(val) {
+      this.dataChange(val)
+    },
+  },
+
+  methods: {
+    async dataChange(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
-        const path = `${process.env.query_api_url}nodes/core_metadata_collection`;
-        await axios
-          .post(path, this.payload)
-          .then((res) => {
-            this.originalData = res.data.data
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        this.originalData = dummyData;
       }
       else if (val === 'news') {
-        // const path = `${process.env.query_api_url}nodes/sample`;
-        const path = `${process.env.query_api_url}dummy`;
+        const path = `${process.env.query_api_url}records/slide`;
+        let payload2 = {
+          program: "demo1",
+          project: "12L",
+          format: "json",
+        }
         await axios
-          // .post(path, this.payload)
-          .get(path)
+          .post(path, payload2)
           .then((res) => {
             if (res.data.error)
               this.errorMessage = res.data.error
             else {
-              // this.originalData = res.data.data
-              this.originalData = res.data
+              this.originalData = res.data.data
 
               // find out which types of tissue exist & sort the list
-              this.tissues_type = Array.from(new Set(this.originalData.map((data, index) =>{
-                return data.tissue_type
+              this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
+                return data.file_type
               }))).sort()
 
               // remove the undefined data
-              const nullIndex = this.tissues_type.findIndex(item => item == undefined);
+              const nullIndex = this.file_type.findIndex(item => item == undefined);
               if (nullIndex !== -1)
-                this.tissues_type.splice(nullIndex, 1);
+                this.file_type.splice(nullIndex, 1);
             }
           })
           .catch((err) => {
             console.log(err);
+            this.originalData = [];
           });
       }
-      else if (val === 'laboursInfo')
+      else if (val === 'laboursInfo') {
         this.originalData = sparcInfoData;
-      else
-        this.originalData = datasetData;
+      }
+      else {
+        const path = `${process.env.query_api_url}records/dataset_description`;
+        let payload2 = {
+          program: "demo1",
+          project: "12L",
+          format: "json",
+        }
+        await axios
+          .post(path, payload2)
+          .then((res) => {
+            this.originalData = res.data.data;
+
+            // find out which types of file exist & sort the list
+            this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
+              return data.file_type
+            }))).sort()
+
+            // remove the undefined data
+            const nullIndex = this.file_type.findIndex(item => item == undefined);
+            if (nullIndex !== -1)
+              this.file_type.splice(nullIndex, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+            this.originalData = [];
+          });
+
+        // this.originalData = [
+        //   {
+        //     experiments: {
+        //       node_id: '123',
+        //     },
+        //     title: 'title1',
+        //   },
+        //   {
+        //     experiments: {
+        //       node_id: '456',
+        //     },
+        //     title: 'title2',
+        //   },
+        // ]
+      }
 
       // update the searchedData & filteredData to the originalData
       this.currentData = this.originalData;
       this.searchedData = this.originalData;
       this.filteredData = this.originalData;
       this.isLoadingSearch = false;
-    }
-  },
+    },
 
-  methods: {
     // update the data after search & filter
     matchSearchData(data) {
       this.searchedData = data;
