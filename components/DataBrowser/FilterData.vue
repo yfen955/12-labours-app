@@ -15,7 +15,7 @@
         closable
         @close="deselectFacet(facet)"
       >
-        <span v-if="facet !== undefined">{{ facet }}</span>
+        <span v-if="facet !== 'NA'">{{ facet }}</span>
       </el-tag>
     </el-card>
     <el-collapse>
@@ -29,11 +29,12 @@
           <el-checkbox
             class="filter-selecter"
             v-for="type in filter.filter_items"
+            v-show="type !== 'NA'"
             :key="type"
             :label="type"
             @change="handleChange()"
           >
-            {{ type }}
+            {{ type[0].toUpperCase() + type.slice(1) }}
           </el-checkbox>
         </el-checkbox-group>
       </el-collapse-item>
@@ -43,7 +44,7 @@
 
 <script>
 export default {
-  props:[ "dataDetails", "file_type" ],
+  props:[ "dataDetails", "organs_list", "file_type" ],
 
   data: () => {
     return {
@@ -69,20 +70,14 @@ export default {
     };
   },
 
-  computed: {
-    isOnchange({ $route, selectedItems }) {
-      return { $route, selectedItems }
-    },
-  },
-
   created: function() {
-    this.dataChange(this.$route.query.type)
+    this.dataChange(this.$route.query.type);
   },
 
   watch: {
     '$route.query.type': {
       handler() {
-        this.dataChange(this.$route.query.type)
+        this.dataChange(this.$route.query.type);
       }
     },
 
@@ -104,32 +99,30 @@ export default {
   methods: {
     async dataChange(val) {
       if (val === 'dataset') {
-        this.filters_list = this.dataset_filters_list;
+        this.filters_list.push({
+          index: 0,
+          title: "Organs",
+          filter_items: this.organs_list,
+          selectedItem: [],
+        })
       }
       else if (val === 'tools') {
         this.filters_list = this.tools_filters_list;
       }
       else if (val === 'news') {
-        if (!this.$route.query.filter) {
-          this.filters_list.push({
-            index: 0,
-            title: "File types",
-            filter_items: this.file_type,
-            selectedItem: this.$route.query.filter,
-          })
-        } else {
-          this.filters_list.push({
-            index: 0,
-            title: "File types",
-            filter_items: this.file_type,
-            selectedItem: [],
-          })
-        }
+        this.filters_list.push({
+          index: 0,
+          title: "File types",
+          filter_items: this.file_type,
+          selectedItem: [],
+        })
       }
       else if (val === 'laboursInfo') {
         this.filters_list = this.labours_filters_list;
       }
       this.selectedItems = [];
+
+      this.generateFiltersDict(this.filters_list);
     },
 
     async handleChange(originalData) {
@@ -166,7 +159,7 @@ export default {
               file_type: ["jpeg", ".txt"],
             },
             search: "",
-          };
+          }
           await axios
             .post(`${process.env.query_api_url}graphql`, newPayload)
             .then((res) => {
@@ -178,7 +171,8 @@ export default {
         } else
           this.filteredData = this.dataDetails;
       }
-      this.$emit('filter-data', this.filteredData)
+      this.generateFiltersDict();
+      this.$emit('filter-data', this.filteredData);
     },
 
     // if a tag is closed, it will call this function
@@ -199,6 +193,19 @@ export default {
       // after update the selectedItem, hangle the change so that the data will changes
       this.handleChange();
     },
+
+    generateFiltersDict(currentList) {
+      let filters_dict = {};
+      for (let i = 0; i < currentList.length; i++) {
+        if (currentList[i].selectedItem.length === 0) {
+          // filters_dict[currentList[i].title.toLowerCase()] = currentList[i].filter_items;
+          filters_dict['study_organ_system'] = currentList[i].filter_items;
+        } else {
+          filters_dict['study_organ_system'] = currentList[i].selectedItem;
+        }
+      }
+      this.$emit('filter-dict', filters_dict);
+    }
   },
 }
 </script>

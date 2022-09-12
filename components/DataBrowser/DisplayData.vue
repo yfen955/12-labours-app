@@ -27,10 +27,7 @@
                 <nuxt-link class="title-link" :to="{
                   name: 'data-browser-dataset-id',
                   params: {
-                    'id': item.experiments[0].submitter_id,
-                    'program': payload.program,
-                    'project': payload.project,
-                    'format': payload.format,
+                    id: item.experiments[0].submitter_id,
                   }
                 }">
                   {{ item.title }}

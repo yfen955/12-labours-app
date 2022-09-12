@@ -7,7 +7,7 @@
         <h1>Browse categories</h1>
         <tab-nav class="categories-nav"
           :tabs="searchTypes"
-          :activeTab="defaultCategory"
+          :activeTab="category"
           v-on:tabClick="changeCategory"
         />
       </div>
@@ -64,7 +64,6 @@ export default {
       isLoadingSearch: false,
       category: '',
       projects_list: [],
-      defaultCategory: "dataset",
       payload: {
         program: "demo1",
         project: "12L",

@@ -4,6 +4,7 @@
     <span v-if="!isLoadingSearch && $route.query.type === 'dataset'">
       <SearchData
         :dataDetails="filteredData"
+        :filterDict="filterDict"
         v-on:matchData="matchSearchData"
         v-on:search-changed="filterAgain"
         ref="search"
@@ -12,13 +13,19 @@
         <el-col :span="6" class="facet-menu">
           <FilterData
             :dataDetails="searchedData"
+            :organs_list="organs_list"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
+            v-on:filter-dict="updateFilterDict"
             ref="filter"
           />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
+          <DisplayData
+            :dataDetails="currentData"
+            :isLoadingSearch="isLoadingSearch"
+            :payload="payload"
+          />
         </el-col>
       </el-row>
     </span>
@@ -27,6 +34,7 @@
     <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
       <SearchData
         :dataDetails="filteredData"
+        :filterDict="filterDict"
         v-on:matchData="matchSearchData"
         v-on:search-changed="filterAgain"
         ref="search"
@@ -37,6 +45,7 @@
             :dataDetails="searchedData"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
+            v-on:filter-dict="updateFilterDict"
             ref="filter"
           />
         </el-col>
@@ -103,13 +112,15 @@ export default {
       searchedData: [],
       filteredData: [],
       file_type: [],
+      organs_list: [],
       errorMessage: '',
+      filterDict: {},
     }
   },
 
   created: function() {
     // when open find data page, call the function to fetch the data
-    this.dataChange(this.$route.query.type)
+    this.dataChange(this.$route.query.type);
   },
 
   watch: {
@@ -171,35 +182,18 @@ export default {
           .then((res) => {
             this.originalData = res.data.data;
 
-            // find out which types of file exist & sort the list
-            this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
-              return data.file_type
+            this.organs_list = Array.from(new Set(this.originalData.map((data, index) =>{
+              return data.study_organ_system
             }))).sort()
 
-            // remove the undefined data
-            const nullIndex = this.file_type.findIndex(item => item == undefined);
+            const nullIndex = this.organs_list.findIndex(item => item == undefined);
             if (nullIndex !== -1)
-              this.file_type.splice(nullIndex, 1);
+              this.organs_list.splice(nullIndex, 1);
           })
           .catch((err) => {
             console.log(err);
             this.originalData = [];
           });
-
-        // this.originalData = [
-        //   {
-        //     experiments: {
-        //       node_id: '123',
-        //     },
-        //     title: 'title1',
-        //   },
-        //   {
-        //     experiments: {
-        //       node_id: '456',
-        //     },
-        //     title: 'title2',
-        //   },
-        // ]
       }
 
       // update the searchedData & filteredData to the originalData
@@ -207,6 +201,7 @@ export default {
       this.searchedData = this.originalData;
       this.filteredData = this.originalData;
       this.isLoadingSearch = false;
+
     },
 
     // update the data after search & filter
@@ -226,6 +221,10 @@ export default {
     searchAgain() {
       this.$refs.search.onSubmit(this.originalData);
     },
+
+    updateFilterDict(val) {
+      this.filterDict = val;
+    }
   },
 }
 </script>
