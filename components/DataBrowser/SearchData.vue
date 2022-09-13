@@ -102,12 +102,14 @@ export default {
           node: 'dataset_description',
           filter: this.filterDict,
           search: this.searchContent + this.mimeTypeContent,
+          number: 10,
+          page: 1,
         };
         const path = `${process.env.query_api_url}graphql`;
         await axios
           .post(path, newPayload)
           .then((res) => {
-            matchData = res.data["dataset_description"];
+            matchData = res.data.data;
           })
           .catch((err) => {
             console.log(err);

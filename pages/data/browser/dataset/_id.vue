@@ -278,8 +278,8 @@ export default {
     this.sampleData = this.sampleData[0];
 
     let filters = {additional_types: ["application/x.vnd.abi.scaffold.meta+json"]};
-    this.manifest_data = await this.fetch_data('manifest', filters, this.$route.params.id);
-    if (this.manifest_data.length == 0) {
+    this.manifest_data = await this.fetch_data('manifest', filters, `${this.$route.params.id}`);
+    if (this.manifest_data.length === 0) {
       this.has_scaffold = false
     } else {
       this.has_scaffold = true
@@ -298,12 +298,14 @@ export default {
         node: nodeName,
         filter: filter_dict,
         search: searchContent,
+        number: 10,
+        page: 1,
       };
       const path = `${process.env.query_api_url}graphql`;
       await axios
         .post(path, newPayload)
         .then((res) => {
-          fetched_data = res.data[nodeName];
+          fetched_data = res.data.data;
         })
       return fetched_data;
     },

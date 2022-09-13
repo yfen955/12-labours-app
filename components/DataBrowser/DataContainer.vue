@@ -32,6 +32,8 @@
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
+            :currentPage="currentPage"
+            :limit="limit"
           />
         </el-col>
       </el-row>
@@ -114,6 +116,8 @@ export default {
   data: () => {
     return {
       isLoadingSearch: false,
+      currentPage: 1,
+      limit: 10,
       originalData: [],
       currentData: [],
       searchedData: [],
@@ -183,11 +187,19 @@ export default {
         this.originalData = sparcInfoData;
       }
       else {  // if val === dataset
-        const path = `${process.env.query_api_url}records/dataset_description`;
+        // const path = `${process.env.query_api_url}records/dataset_description`;
+        // let payload2 = {
+        //   program: "demo1",
+        //   project: "12L",
+        //   format: "json",
+        // }
+        const path = `${process.env.query_api_url}graphql`;
         let payload2 = {
-          program: "demo1",
-          project: "12L",
-          format: "json",
+          node: 'dataset_description',
+          filter: {},
+          search: "",
+          number: this.limit,
+          page: this.currentPage,
         }
         await axios
           .post(path, payload2)

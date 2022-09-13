@@ -55,12 +55,14 @@ export default {
       tools_filters_list: [
         {
           index: 0,
+          fieldName: "species",
           title: "Species",
           filter_items: ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
           selectedItem: [],
         },
         {
           index: 1,
+          fieldName: "organ",
           title: "Organ",
           filter_items: ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'],
           selectedItem: [],
@@ -104,13 +106,15 @@ export default {
       if (val === 'dataset') {
         this.filters_list.push({
           index: 0,
-          title: "study_organ_system",
+          fieldName: "study_organ_system",
+          title: "Anatomical Structures",
           filter_items: this.organs_list,
           selectedItem: [],
         })
         this.filters_list.push({
           index: 1,
-          title: "Mime types",
+          fieldName: "addtional_types",
+          title: "Data types",
           filter_items: this.mime_type_list,
           selectedItem: [],
         })
@@ -158,13 +162,15 @@ export default {
           filter: {
             study_organ_system: this.filters_list[0].selectedItem.length === 0 ? this.filters_list[0].filter_items : this.filters_list[0].selectedItem
           },
-          search: this.searchContent + " " + this.mime_content,
+          search: this.searchContent.length === 0 ? this.mime_content : this.searchContent + " " + this.mime_content,
+          number: 10,
+          page: 1,
         };
         const path = `${process.env.query_api_url}graphql`;
         await axios
           .post(path, newPayload)
           .then((res) => {
-            this.filteredData = res.data["dataset_description"];
+            this.filteredData = res.data.data;
           })
           .catch((err) => {
             console.log(err);
@@ -216,14 +222,13 @@ export default {
     generateFiltersDict(currentList) {
       let filters_dict = {};
       for (let i = 0; i < currentList.length; i++) {
-        if (currentList[i].title !== "Mime types") {
+        if (currentList[i].title !== "Data types") {
           if (currentList[i].selectedItem.length === 0) {
-            filters_dict[currentList[i].title.toLowerCase()] = currentList[i].filter_items;
+            filters_dict[currentList[i].fieldName] = currentList[i].filter_items;
           } else {
-            filters_dict[currentList[i].title.toLowerCase()] = currentList[i].selectedItem;
+            filters_dict[currentList[i].fieldName] = currentList[i].selectedItem;
           }
         }
-        
       }
       this.$emit('filter-dict', filters_dict);
 
