@@ -103,13 +103,15 @@ export default {
           filter: this.filterDict,
           search: this.searchContent + this.mimeTypeContent,
         };
-        console.log(newPayload);
         const path = `${process.env.query_api_url}graphql`;
         await axios
           .post(path, newPayload)
           .then((res) => {
             matchData = res.data["dataset_description"];
           })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         matchData = originalData;
       }

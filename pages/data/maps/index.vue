@@ -37,34 +37,34 @@ export default {
   },
 
   methods: {
-    searchText(text) {
-      if (text !== "") {
-        const textList = text.toLowerCase().split(' ');
-        let matchData = this.scaffoldVuers.filter((data, index) => {
-          for (let key in data) {
-            for (let i in textList) {
-              let value = data[key]
-              if (typeof(value) == 'string') {
-                if (value.toLowerCase().includes(textList[i])) {
-                  return data
-                }
-              }
-            }
-          }
-        })
-        this.currentModel = matchData[0];
-      }
-      this.url = this.currentModel.Location;
-      let url_list = this.url.split('/');
-      this.$router.push({
-        path: '/data/maps',
-        query: {
-          species: `${this.currentModel.Species.toLowerCase()}`,
-          organ: `${this.currentModel.Organ.toLowerCase()}`,
-          file_path: `${url_list[url_list.length - 1]}`,
-        }
-      });
-    },
+  //   searchText(text) {
+  //     if (text !== "") {
+  //       const textList = text.toLowerCase().split(' ');
+  //       let matchData = this.scaffoldVuers.filter((data, index) => {
+  //         for (let key in data) {
+  //           for (let i in textList) {
+  //             let value = data[key]
+  //             if (typeof(value) == 'string') {
+  //               if (value.toLowerCase().includes(textList[i])) {
+  //                 return data
+  //               }
+  //             }
+  //           }
+  //         }
+  //       })
+  //       this.currentModel = matchData[0];
+  //     }
+  //     this.url = this.currentModel.Location;
+  //     let url_list = this.url.split('/');
+  //     this.$router.push({
+  //       path: '/data/maps',
+  //       query: {
+  //         species: `${this.currentModel.Species.toLowerCase()}`,
+  //         organ: `${this.currentModel.Organ.toLowerCase()}`,
+  //         file_path: `${url_list[url_list.length - 1]}`,
+  //       }
+  //     });
+  //   },
 
     copyLink() {
       let url = process.env.base_url + this.$router.currentRoute.fullPath;  // current url

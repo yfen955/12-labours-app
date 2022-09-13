@@ -160,13 +160,15 @@ export default {
           },
           search: this.searchContent + " " + this.mime_content,
         };
-        console.log(newPayload);
         const path = `${process.env.query_api_url}graphql`;
         await axios
           .post(path, newPayload)
           .then((res) => {
             this.filteredData = res.data["dataset_description"];
           })
+          .catch((err) => {
+            console.log(err);
+          });
       }
       else if (this.$route.query.type === 'tools') {
         // combine all the items be selected
@@ -213,7 +215,6 @@ export default {
 
     generateFiltersDict(currentList) {
       let filters_dict = {};
-      console.log(currentList);
       for (let i = 0; i < currentList.length; i++) {
         if (currentList[i].title !== "Mime types") {
           if (currentList[i].selectedItem.length === 0) {

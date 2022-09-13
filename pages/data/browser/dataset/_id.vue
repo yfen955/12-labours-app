@@ -364,9 +364,9 @@ export default {
     },
 
     modifyName() {
-      let name_list = this.sampleData.contributor_name.slice(1, -1).split(', ');
+      let name_list = this.sampleData.contributor_name.slice(2, -2).split("', '");
       for (let i = 0; i < name_list.length; i++) {
-        let person_list = name_list[i].split(' ');
+        let person_list = name_list[i].split(', ');
         this.contributorName += person_list[1] + ' ' + person_list[0] + ", ";
       }
       this.contributorName = this.contributorName.slice(0, -2);
