@@ -49,7 +49,7 @@ export default {
             path: '/data/maps',
             query: {
               display: 'scaffold',
-              url: 'https://mapcore-bucket1.s3-us-west-2.amazonaws.com/others/29_Jan_2020/heartICN_metadata.json',
+              url: `${process.env.query_api_url}download/data/datasets/dataset-217-version-2/derivative/pig_brainstem_metadata.json`,
             }
           }
         }

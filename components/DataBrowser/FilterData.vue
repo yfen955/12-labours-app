@@ -15,7 +15,7 @@
         closable
         @close="deselectFacet(facet)"
       >
-        <span v-if="facet !== undefined">{{ facet }}</span>
+        <span v-if="facet !== 'NA'">{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
       </el-tag>
     </el-card>
     <el-collapse>
@@ -29,11 +29,12 @@
           <el-checkbox
             class="filter-selecter"
             v-for="type in filter.filter_items"
+            v-show="type !== 'NA'"
             :key="type"
             :label="type"
             @change="handleChange()"
           >
-            {{ type }}
+            {{ type[0].toUpperCase() + type.slice(1) }}
           </el-checkbox>
         </el-checkbox-group>
       </el-collapse-item>
@@ -42,13 +43,16 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  props:[ "dataDetails", "tissues_type" ],
+  props:[ "dataDetails", "searchContent", "organs_list", "file_type", "mime_type_list", "scaffold_datasetIDs", "plot_datasetIDs" ],
 
   data: () => {
     return {
       filters_list: [],
-      dataset_filters_list: [
+      dataset_filters_list: [],
+      tools_filters_list: [
         {
           index: 0,
           title: "Species",
@@ -62,39 +66,33 @@ export default {
           selectedItem: [],
         },
       ],
-      tools_filters_list: [],
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
+      mime_content: "",
     };
   },
 
   created: function() {
-    if (this.$route.query.type === 'dataset') {
-      this.filters_list = this.dataset_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'tools') {
-      this.filters_list = this.tools_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'news') {
-      this.filters_list.push({
-        index: 0,
-        title: "Tissues",
-        filter_items: this.tissues_type,
-        selectedItem: [],
-      })
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'laboursInfo') {
-      this.filters_list = this.labours_filters_list;
-      this.selectedItems = [];
-    }
+    this.dataChange(this.$route.query.type);
   },
 
   watch: {
+    '$route.query.type': {
+      handler() {
+        this.dataChange(this.$route.query.type);
+      }
+    },
+
     selectedItems(after, before) {
+      // this.$router.push({
+      //   path:'/data/browser',
+      //   query: {
+      //     type: 'dataset',
+      //     filter: this.selectedItems,
+      //   }
+      // })
+      // this.$router.query.filter.replace( this.selectedItems )
       if (after.length === 0) {
         this.$emit('filter-changed', true);
       }
@@ -102,6 +100,40 @@ export default {
   },
 
   methods: {
+    async dataChange(val) {
+      if (val === 'dataset') {
+        this.filters_list.push({
+          index: 0,
+          title: "study_organ_system",
+          filter_items: this.organs_list,
+          selectedItem: [],
+        })
+        this.filters_list.push({
+          index: 1,
+          title: "Mime types",
+          filter_items: this.mime_type_list,
+          selectedItem: [],
+        })
+      }
+      else if (val === 'tools') {
+        this.filters_list = this.tools_filters_list;
+      }
+      else if (val === 'news') {
+        this.filters_list.push({
+          index: 0,
+          title: "File types",
+          filter_items: this.file_type,
+          selectedItem: [],
+        })
+      }
+      else if (val === 'laboursInfo') {
+        this.filters_list = this.labours_filters_list;
+      }
+      this.selectedItems = [];
+
+      this.generateFiltersDict(this.filters_list);
+    },
+
     async handleChange(originalData) {
       let currentData = this.dataDetails;
       if (originalData !== undefined) {
@@ -109,8 +141,38 @@ export default {
       }
 
       if (this.$route.query.type === 'dataset') {
+        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem);
+        
+        if (this.selectedItems.includes('Scaffold') && this.selectedItems.includes('Plot')) {
+          this.mime_content = this.scaffold_datasetIDs + ", " + this.plot_datasetIDs;
+        } else if (this.selectedItems.includes('Scaffold')) {
+          this.mime_content = this.scaffold_datasetIDs;
+        } else if (this.selectedItems.includes('Plot')) {
+          this.mime_content = this.plot_datasetIDs;
+        } else {
+          this.mime_content = "";
+        }
+        
+        let newPayload = {
+          node: 'dataset_description',
+          filter: {
+            study_organ_system: this.filters_list[0].selectedItem.length === 0 ? this.filters_list[0].filter_items : this.filters_list[0].selectedItem
+          },
+          search: this.searchContent + " " + this.mime_content,
+        };
+        const path = `${process.env.query_api_url}graphql`;
+        await axios
+          .post(path, newPayload)
+          .then((res) => {
+            this.filteredData = res.data["dataset_description"];
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else if (this.$route.query.type === 'tools') {
         // combine all the items be selected
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
+        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem);
         
         if (this.selectedItems.length > 0) {
           this.filteredData = currentData.filter((data, index) => {
@@ -122,49 +184,52 @@ export default {
           // if no item is selected, return all the data
           this.filteredData = currentData
         }
-      } else if (this.$route.query.type === 'news') {
-        if (this.selectedTissues.length > 0) {
-          // fetch the result data
-          const listStr = '[' + this.selectedTissues.map((item, index) => {return `"${item}"`}) + ']';
-          const newPayload = {
-            node_type: "sample",
-            condition:
-              `(project_id: ["demo1-jenkins"], tissue_type: ${listStr})`,
-            field:
-              "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
-          };
-          await axios
-            .post(`${process.env.query_api_url}graphql`, newPayload)
-            .then((res) => {
-              this.filteredData = res.data.data.sample;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else
-          this.filteredData = this.dataDetails;
       }
-      this.$emit('filter-data', this.filteredData)
+      else if (this.$route.query.type === 'news') {
+
+      }
+
+      this.generateFiltersDict(this.filters_list);
+
+      this.$emit('filter-data', this.filteredData);
     },
 
     // if a tag is closed, it will call this function
     deselectFacet(item) {
-      if (this.$route.query.type === 'dataset') {
-        for (let i = 0; i < this.filters_list.length; i++) {
-          let index = this.filters_list[i].selectedItem.indexOf(item)
-          if (index > -1) {
-            this.filters_list[i].selectedItem.splice(index, 1)
-          }
+      // find and remove the item that is deselected
+      for (let i = 0; i < this.filters_list.length; i++) {
+        let index = this.filters_list[i].selectedItem.indexOf(item)
+        if (index > -1) {
+          this.filters_list[i].selectedItem.splice(index, 1)
         }
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
       }
-      else if (this.$route.query.type === 'news') {
-        this.selectedTissues = this.selectedTissues.filter(data => item !== data);
+
+      // update the selectedItems list
+      for (let i = 0; i < this.filters_list.length; i++) {
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem)
       }
 
       // after update the selectedItem, hangle the change so that the data will changes
       this.handleChange();
     },
+
+    generateFiltersDict(currentList) {
+      let filters_dict = {};
+      for (let i = 0; i < currentList.length; i++) {
+        if (currentList[i].title !== "Mime types") {
+          if (currentList[i].selectedItem.length === 0) {
+            filters_dict[currentList[i].title.toLowerCase()] = currentList[i].filter_items;
+          } else {
+            filters_dict[currentList[i].title.toLowerCase()] = currentList[i].selectedItem;
+          }
+        }
+        
+      }
+      this.$emit('filter-dict', filters_dict);
+
+      // mime type should be sent to the seach component as search content
+      this.$emit('mimeType-content', this.mime_content);
+    }
   },
 }
 </script>

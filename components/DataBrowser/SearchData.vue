@@ -27,8 +27,10 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  props: [ "dataDetails" ],
+  props: [ "dataDetails", "filterDict", "mimeTypeContent" ],
   data() {
     return {
       searchContent: '',
@@ -37,6 +39,7 @@ export default {
 
   watch: {
     searchContent(after, before) {
+      this.$emit("search-content", this.searchContent)
       if (after.length === 0) {
         this.$emit('search-changed', true);
       }
@@ -44,55 +47,75 @@ export default {
   },
 
   methods: {
-    onSubmit(originalData) {
-      let currentData = this.dataDetails;
-      let type = Object.prototype.toString.call(originalData);
-      if (type === "[object Array]") {
-        currentData = originalData;
-      }
+    async onSubmit(originalData) {
+      // let currentData = this.dataDetails;
+      // let type = Object.prototype.toString.call(originalData);
+      // if (type === "[object Array]") {
+      //   currentData = originalData;
+      // }
 
       let matchData = [];
-      if (this.searchContent !== "") {
-        const textList = this.searchContent.toLowerCase().split(' ');
+      // if (this.searchContent !== "") {
+      //   const textList = this.searchContent.toLowerCase().split(' ');
 
-        // find out how many key words each data contains
-        let count_list = currentData.map((data, index) => {
-          let count = 0;
-          for (let i in textList) {
-            for (let key in data) {
-              let value = data[key]
-              if (typeof(value) == 'string') {
-                if (value.toLowerCase().includes(textList[i])) {
-                  count += 1;
-                  break
-                }
-              }
-            }
-          }
-          return count
-        })
+      //   // find out how many key words each data contains
+      //   let count_list = currentData.map((data, index) => {
+      //     let count = 0;
+      //     for (let i in textList) {
+      //       for (let key in data) {
+      //         let value = data[key]
+      //         if (typeof(value) == 'string') {
+      //           if (value.toLowerCase().includes(textList[i])) {
+      //             count += 1;
+      //             break
+      //           }
+      //         }
+      //       }
+      //     }
+      //     return count
+      //   })
 
-        // add the data to the result list
-        // data contains most key words is added to the result list first
-        for (let i = textList.length; i > 0; i--) {
-          let indexs = [];
+      //   // add the data to the result list
+      //   // data contains most key words is added to the result list first
+      //   for (let i = textList.length; i > 0; i--) {
+      //     let indexs = [];
 
-          // find out all the indexs of data contains [i] key word(s)
-          let idx = count_list.indexOf(i);
-          while (idx != -1) {
-            indexs.push(idx);
-            idx = count_list.indexOf(i, idx + 1);
-          }
+      //     // find out all the indexs of data contains [i] key word(s)
+      //     let idx = count_list.indexOf(i);
+      //     while (idx != -1) {
+      //       indexs.push(idx);
+      //       idx = count_list.indexOf(i, idx + 1);
+      //     }
 
-          // push the data to the result list
-          for (let j in indexs) {
-            matchData.push(currentData[indexs[j]]);
-          }
-        }
+      //     // push the data to the result list
+      //     for (let j in indexs) {
+      //       matchData.push(currentData[indexs[j]]);
+      //     }
+      //   }
+      // } else {
+      //   // if search is empty, return all the data
+      //   matchData = currentData;
+      // }
+
+      if (this.searchContent.length > 0) {
+        let newPayload = {
+          node: 'dataset_description',
+          filter: this.filterDict,
+          search: this.searchContent + this.mimeTypeContent,
+        };
+        const path = `${process.env.query_api_url}graphql`;
+        await axios
+          .post(path, newPayload)
+          .then((res) => {
+            matchData = res.data["dataset_description"];
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
-        // if search is empty, return all the data
-        matchData = currentData;
+        matchData = originalData;
       }
+      
       this.$emit('matchData', matchData);
     },
 

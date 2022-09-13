@@ -86,17 +86,17 @@
         <el-col :span="18">
           <!-- title & description -->
           <el-card shadow="never">
-            <h1>Correlated electrophysiological immunohistochemical and morphological properties of proximal colon myenteric neurons</h1>
+            <h1>{{sampleData.title}}</h1>
             <br>
             <el-row :gutter="20">
               <el-col :span="18">
                 <div class="text item">
-                  <b>Contributors: Rachel Gwynne, Katerina Koussoulas</b>
+                  <b>Contributors: {{contributorName}}</b>
                 </div>
                 <hr>
                 <div class="text item">
                   <!-- <b>Description:</b> {{ sampleData.description }} -->
-                  <b>Description:</b> Each set includes membrane potential records from a myenteric neuron of mouse proximal colon plus micrographs of cell body morphology, immunoreactivity for nNOS, calretinin (where possible), and micrographs showing axonal projections
+                  <b>Description:</b> 
                 </div>
               </el-col>
               <el-col :span="6">
@@ -145,7 +145,7 @@
           <el-card shadow="never">
             <tab-nav class="categories-nav"
               :tabs="datasetTabs"
-              :activeTab="defaultTab"
+              :activeTab="currentTab"
               v-on:tabClick="changeTab"
             />
             <span v-if="$route.query.datasetTab === 'abstract'">
@@ -165,7 +165,7 @@
             <span v-if="$route.query.datasetTab === 'gallery'">
               <el-row :gutter="20" class="gallery-container">
                 <el-col :span="8">
-                  <el-card>
+                  <el-card v-show="has_scaffold">
                     <p>scaffold image</p>
                     <div>
                       <el-button @click="viewScaffold">View Scaffold</el-button>
@@ -173,7 +173,7 @@
                   </el-card>
                 </el-col>
                 <el-col :span="8">
-                  <el-card>
+                  <el-card v-show="has_scaffold">
                     <p>flatmat image</p>
                     <div>
                       <el-button @click="viewFlatmap">View Flatmap</el-button>
@@ -231,9 +231,10 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
+  props: [ 'id', 'program', 'project', 'format' ],
   data: () => {
     return {
-      pageTitle: 'Dataset',
+      pageTitle: `Dataset`,
       breadcrumb: [
         {
           to: { name: 'index' },
@@ -252,38 +253,61 @@ export default {
         },
       ],
       datasetTabs,
-      defaultTab: "abstract",
+      currentTab: '',
       sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
+      currentID: '',
+      manifest_data: [],
+      has_scaffold: false,
+      contributorName: "",
     }
   },
   
   created: async function() {
-    this.$router.push({
-      path:'/data/browser/dataset',
-      query: { datasetTab: 'abstract' }
-    })
+    if (!this.$route.query.datasetTab) {
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: { datasetTab: 'abstract' }
+      })
+      this.currentTab = 'abstract';
+    } else {
+      this.currentTab = this.$route.query.datasetTab;
+    }
+    
+    this.sampleData = await this.fetch_data('dataset_description', {}, `${this.$route.params.id}`);
+    this.sampleData = this.sampleData[0];
 
-    // let id = "193e278e-5895-4d1b-be79-55697416cb58";
-    // // let payload = {
-    // //   program: this.$route.params.program,
-    // //   project: this.$route.params.project,
-    // //   format: this.$route.params.format,
-    // // }
-    // let payload = {
-    //   program: "demo1",
-    //   project: "12L",
-    //   format: "json",
-    // };
-    // const path = `${process.env.query_api_url}record/${id}`;
-    // await axios
-    //   .post(path, payload)
-    //   .then((res) => {
-    //     this.sampleData = res.data[0];
-    //   })
+    let filters = {additional_types: ["application/x.vnd.abi.scaffold.meta+json"]};
+    this.manifest_data = await this.fetch_data('manifest', filters, this.$route.params.id);
+    if (this.manifest_data.length == 0) {
+      this.has_scaffold = false
+    } else {
+      this.has_scaffold = true
+    }
+
+    this.modifyName();
+    
+    // let filter_dict = this.$route.params.filter_list;
+    // console.log(this.$route.params);
   },
 
   methods: {
+    async fetch_data(nodeName, filter_dict, searchContent) {
+      let fetched_data = [];
+      let newPayload = {
+        node: nodeName,
+        filter: filter_dict,
+        search: searchContent,
+      };
+      const path = `${process.env.query_api_url}graphql`;
+      await axios
+        .post(path, newPayload)
+        .then((res) => {
+          fetched_data = res.data[nodeName];
+        })
+      return fetched_data;
+    },
+
     // go back to the data browser for datasets
     goToDataset() {
       this.$router.push({
@@ -295,18 +319,21 @@ export default {
     // change the tab by change the variable in the url
     changeTab(val) {
       this.$router.push({
-        path: '/data/browser/dataset',
+        path: `${this.$route.path}`,
         query: { datasetTab: val }
       })
     },
 
     // go to map viewer with display & url
-    viewScaffold() {
+    async viewScaffold() {
+      // let filters = {additional_types: ["application/x.vnd.abi.scaffold.meta+json"]};
+      // let manifest_data = await this.fetch_data('manifest', filters, this.$route.params.id);
+      
       let route = this.$router.resolve({
         path: '/data/maps',
         query: {
           display: 'scaffold',
-          url: `https://mapcore-bucket1.s3-us-west-2.amazonaws.com/bladder/rat/rat_bladder_metadata.json`,
+          url: `${process.env.query_api_url}download/data/datasets/${this.$route.params.id}/${this.manifest_data[0].filename}`,
         }
       });
       window.open(route.href);
@@ -334,6 +361,15 @@ export default {
       const path = `datasets/${this.sampleData.experiments[0].submitter_id}/${this.sampleData.filename}`;
       const filepath = path.replaceAll("/", "&");
       window.open(`${process.env.query_api_url}download/data/${filepath}`, "_self");
+    },
+
+    modifyName() {
+      let name_list = this.sampleData.contributor_name.slice(2, -2).split("', '");
+      for (let i = 0; i < name_list.length; i++) {
+        let person_list = name_list[i].split(', ');
+        this.contributorName += person_list[1] + ' ' + person_list[0] + ", ";
+      }
+      this.contributorName = this.contributorName.slice(0, -2);
     }
   },
 }
