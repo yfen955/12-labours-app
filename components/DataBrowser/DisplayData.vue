@@ -39,7 +39,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8"><strong>Keywords</strong></el-col>
-                <el-col :span="16">{{ item.keywords }}</el-col>
+                <el-col :span="16">{{ displayKeywords(item.keywords) }}</el-col>
               </el-row>
               <el-row>
                 <el-col :span="8"><strong>Samples</strong></el-col>
@@ -173,6 +173,16 @@ export default {
         "_self"
       );
     },
+
+    displayKeywords(keywords) {
+      let result = "";
+      let keywords_list = keywords.split(",");
+      for (let i = 0; i < keywords_list.length; i++) {
+        result += ", " + keywords_list[i];
+      }
+      result = result.slice(2);
+      return result;
+    }
   },
 }
 </script>
