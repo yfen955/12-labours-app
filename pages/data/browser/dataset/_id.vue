@@ -303,7 +303,7 @@ export default {
       await axios
         .post(path, newPayload)
         .then((res) => {
-          fetched_data = res.data.data[nodeName];
+          fetched_data = res.data[nodeName];
         })
       return fetched_data;
     },

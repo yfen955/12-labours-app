@@ -30,7 +30,7 @@
 import axios from "axios";
 
 export default {
-  props: [ "dataDetails", "filterDict" ],
+  props: [ "dataDetails", "filterDict", "mimeTypeContent" ],
   data() {
     return {
       searchContent: '',
@@ -39,6 +39,7 @@ export default {
 
   watch: {
     searchContent(after, before) {
+      this.$emit("search-content", this.searchContent)
       if (after.length === 0) {
         this.$emit('search-changed', true);
       }
@@ -100,13 +101,14 @@ export default {
         let newPayload = {
           node: 'dataset_description',
           filter: this.filterDict,
-          search: this.searchContent,
+          search: this.searchContent + this.mimeTypeContent,
         };
+        console.log(newPayload);
         const path = `${process.env.query_api_url}graphql`;
         await axios
           .post(path, newPayload)
           .then((res) => {
-            matchData = res.data.data["dataset_description"];
+            matchData = res.data["dataset_description"];
           })
       } else {
         matchData = originalData;

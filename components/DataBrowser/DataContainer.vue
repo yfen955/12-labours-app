@@ -5,8 +5,10 @@
       <SearchData
         :dataDetails="filteredData"
         :filterDict="filterDict"
+        :mimeTypeContent="mimeTypeContent"
         v-on:matchData="matchSearchData"
         v-on:search-changed="filterAgain"
+        v-on:search-content="updateSearchContent"
         ref="search"
       />
       <el-row :gutter="24">
@@ -14,9 +16,14 @@
           <FilterData
             :dataDetails="searchedData"
             :organs_list="organs_list"
+            :mime_type_list="mime_type_list"
+            :scaffold_datasetIDs="scaffold_datasetIDs"
+            :plot_datasetIDs="plot_datasetIDs"
+            :searchContent="searchContent"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
             v-on:filter-dict="updateFilterDict"
+            v-on:mimeType-content="updateMimeType"
             ref="filter"
           />
         </el-col>
@@ -111,10 +118,15 @@ export default {
       currentData: [],
       searchedData: [],
       filteredData: [],
-      file_type: [],
       organs_list: [],
+      mime_type_list: [],
+      scaffold_datasetIDs: "",
+      plot_datasetIDs: "",
+      file_type: [],
       errorMessage: '',
       filterDict: {},
+      mimeTypeContent: "",
+      searchContent: "",
     }
   },
 
@@ -170,7 +182,7 @@ export default {
       else if (val === 'laboursInfo') {
         this.originalData = sparcInfoData;
       }
-      else {
+      else {  // if val === dataset
         const path = `${process.env.query_api_url}records/dataset_description`;
         let payload2 = {
           program: "demo1",
@@ -193,6 +205,22 @@ export default {
           .catch((err) => {
             console.log(err);
             this.originalData = [];
+          });
+        
+        const newPath = `${process.env.query_api_url}filter/mimetypes`;
+        let payload3 = {
+          program: "demo1",
+          project: "12L",
+        }
+        await axios
+          .post(newPath, payload3)
+          .then((res) => {
+            this.mime_type_list = Object.keys(res.data.data);
+            this.scaffold_datasetIDs = res.data.data['Scaffold'];
+            this.plot_datasetIDs = res.data.data['Plot'];
+          })
+          .catch((err) => {
+            console.log(err);
           });
       }
 
@@ -224,7 +252,15 @@ export default {
 
     updateFilterDict(val) {
       this.filterDict = val;
-    }
+    },
+
+    updateMimeType(val) {
+      this.mimeTypeContent = val;
+    },
+
+    updateSearchContent(val) {
+      this.searchContent = val;
+    },
   },
 }
 </script>
