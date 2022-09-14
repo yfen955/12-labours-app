@@ -52,50 +52,53 @@
 
           <!-- display tools -->
           <span v-if="$route.query.type === 'tools'">
-            <el-col :span="6">
-              <img :src="imgPlaceholder" v-if="!item.img" style="width: 90%">
-              <p v-else>{{ item.img }}</p>
-            </el-col>
-            <el-col :span="18" style="margin-bottom:1em;">
-              <el-row>
-                <!-- path: `/data/browser/dataset/${item.id}`, -->
-                <nuxt-link :to="{
-                  name: 'data-browser-dataset-id',
-                  params: {
-                    'program': `${payload.program}`,
-                    'project': `${payload.project}`,
-                    'format': `${payload.format}`
-                  }
-                }">
-                  {{ item.id }}
-                </nuxt-link>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Discover</strong></el-col>
-                <el-col :span="16">{{ item.Discover }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Last modified</strong></el-col>
-                <el-col :span="16">{{ item.Last_modified }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Note</strong></el-col>
-                <el-col :span="16">{{ item.Note }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Organ</strong></el-col>
-                <el-col :span="16">{{ item.Organ }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Published</strong></el-col>
-                <el-col :span="16">{{ item.Published }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Species</strong></el-col>
-                <el-col :span="16">{{ item.Species }}</el-col>
-              </el-row>
-            </el-col>
+            <el-row>
+              <el-col :span="6">
+                <img :src="imgPlaceholder" v-if="!item.img" style="width: 90%">
+                <p v-else>{{ item.img }}</p>
+              </el-col>
+              <el-col :span="18" style="margin-bottom:1em;">
+                <el-row>
+                  <!-- path: `/data/browser/dataset/${item.id}`, -->
+                  <nuxt-link :to="{
+                    name: 'data-browser-dataset-id',
+                    params: {
+                      'program': `${payload.program}`,
+                      'project': `${payload.project}`,
+                      'format': `${payload.format}`
+                    }
+                  }">
+                    {{ item.id }}
+                  </nuxt-link>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Discover</strong></el-col>
+                  <el-col :span="16">{{ item.Discover }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Last modified</strong></el-col>
+                  <el-col :span="16">{{ item.Last_modified }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Note</strong></el-col>
+                  <el-col :span="16">{{ item.Note }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Organ</strong></el-col>
+                  <el-col :span="16">{{ item.Organ }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Published</strong></el-col>
+                  <el-col :span="16">{{ item.Published }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Species</strong></el-col>
+                  <el-col :span="16">{{ item.Species }}</el-col>
+                </el-row>
+              </el-col>
+            </el-row>
           </span>
+          
 
           <!-- display news -->
           <span v-if="$route.query.type === 'news'">
@@ -127,8 +130,8 @@
 
           <!-- display 12 labours information -->
           <span v-if="$route.query.type === 'laboursInfo'"></span>
-        
-          <hr>  
+          
+          <hr />
         </el-row>
       </el-row>
       <PaginationHeading
@@ -190,15 +193,14 @@ export default {
 <style scoped lang="scss">
 .data-container {
   border: 1px solid #ececee;
+  padding: 1em;
 }
 .data-details {
-  padding: 1em;
-  height: 15em;
+  padding: 1em 1em 0 1em;
 }
 hr {
-  border: .5px solid #E4E7ED;
-  margin-top: .5em;
-  width: 100%;
+  border: 1px solid #E4E7ED;
+  margin-bottom: 0;
 }
 .no-result {
   margin: 1.5em;
