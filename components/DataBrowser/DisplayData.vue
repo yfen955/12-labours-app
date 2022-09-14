@@ -19,10 +19,10 @@
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
             <el-col :span="6">
-              <img :src="imgPlaceholder" v-if="!item.img" style="width: 90%">
+              <img :src="imgPlaceholder" v-if="!item.img">
               <p v-else>{{ item.img }}</p>
             </el-col>
-            <el-col :span="18" style="margin-bottom:1em;">
+            <el-col :span="18" style="margin-bottom: 1em">
               <el-row>
                 <nuxt-link class="title-link" :to="{
                   name: 'data-browser-dataset-id',
@@ -193,7 +193,7 @@ export default {
 }
 .data-details {
   padding: 1em;
-  height: 13em;
+  height: 15em;
 }
 hr {
   border: .5px solid #E4E7ED;
