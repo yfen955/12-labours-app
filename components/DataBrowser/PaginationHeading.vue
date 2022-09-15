@@ -3,6 +3,10 @@
     <p v-show="!isLoadingSearch && totalCount">
       {{ totalCount }} Results | Showing
     </p>
+    <pagination-menu 
+      :page-size="limit"
+      @update-page-size="updatePageSize"
+    />
     <pagination
       :total-count="totalCount"
       :page-size="limit"
@@ -14,10 +18,11 @@
 <script>
 export default {
   name: "PaginationHeading",
-  props: [ "isLoadingSearch", "totalCount", "limit" ],
+  props: [ "isLoadingSearch", "totalCount" ],
   data: () => {
     return {
       currentPage: 1,
+      limit: 5,
     }
   },
 
@@ -27,6 +32,11 @@ export default {
       this.currentPage = val;
       this.$emit('pageChange', this.currentPage);
     },
+
+    updatePageSize(val) {
+      this.limit = val;
+      this.$emit('sizeChange', this.limit);
+    }
   },
 }
 </script>

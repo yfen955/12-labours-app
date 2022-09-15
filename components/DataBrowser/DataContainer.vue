@@ -32,9 +32,9 @@
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
-            :limit="limit"
             :totalCount="totalCount"
             v-on:pageChange="updateCurrentPage"
+            v-on:sizeChange="updateLimit"
           />
         </el-col>
       </el-row>
@@ -117,8 +117,8 @@ export default {
     return {
       isLoadingSearch: false,
       currentPage: 1,
-      limit: 5,
       totalCount: 0,
+      limit: 10,
       originalData: [],
       currentData: [],
       searchedData: [],
@@ -285,7 +285,12 @@ export default {
     async updateCurrentPage(val) {
       this.currentPage = val;
       await this.fetchData();
-    }
+    },
+    
+    async updateLimit(val) {
+      this.limit = val;
+      await this.fetchData();
+    },
   },
 }
 </script>

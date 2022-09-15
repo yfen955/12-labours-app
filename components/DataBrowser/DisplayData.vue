@@ -5,8 +5,8 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
-        :limit="limit"
         v-on:pageChange="handlePageChange"
+        v-on:sizeChange="handleSizeChange"
       />
       <!-- data details -->
       <el-row class="data-container">
@@ -115,8 +115,8 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
-        :limit="limit"
         v-on:pageChange="handlePageChange"
+        v-on:sizeChange="handleSizeChange"
       />
     </div>
     <div v-else class="no-result">
@@ -131,18 +131,24 @@ import PaginationHeading from "./PaginationHeading.vue"
 export default {
   name: "DisplayData",
   components: { PaginationHeading },
-  props: [ "isLoadingSearch", "dataDetails", "payload", "limit", "totalCount" ],
+  props: [ "isLoadingSearch", "dataDetails", "payload", "totalCount" ],
   data: () => {
     return {
+      limit: 10,
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
     }
   },
-  
+
   methods: {
-    handlePageChange(currentPage) {
-      this.currentPage = currentPage;
+    handlePageChange(val) {
+      this.currentPage = val;
       this.$emit('pageChange', this.currentPage);
+    },
+
+    handleSizeChange(val) {
+      this.limit = val;
+      this.$emit('sizeChange', this.limit);
     },
 
     async downloadFile(id) {
