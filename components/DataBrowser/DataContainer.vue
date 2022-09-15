@@ -16,6 +16,10 @@
             :dataDetails="searchedData"
             :mime_type_list="mime_type_list"
             :mime_dict="mime_dict"
+            :species_list="species_list"
+            :species_dict="species_dict"
+            :anatomy_list="anatomy_list"
+            :anatomy_dict="anatomy_dict"
             :searchContent="searchContent"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
@@ -121,6 +125,10 @@ export default {
       filteredData: [],
       mime_type_list: [],
       mime_dict: {},
+      species_list: [],
+      species_dict: {},
+      anatomy_list: [],
+      anatomy_dict: {},
       file_type: [],
       errorMessage: '',
       filterDict: {},
@@ -226,9 +234,17 @@ export default {
         await this.fetchData();
         
         // fetch all the data types
-        let result = await this.fetchFilter("mimetypes");
-        this.mime_type_list = result[0];
-        this.mime_dict = result[1];
+        let mime = await this.fetchFilter("mimetypes");
+        this.mime_type_list = mime[0];
+        this.mime_dict = mime[1];
+
+        let species = await this.fetchFilter("species");
+        this.species_list = species[0];
+        this.species_dict = species[1];
+
+        let anatomy = await this.fetchFilter("anatomy");
+        this.anatomy_list = anatomy[0];
+        this.anatomy_dict = anatomy[1];
       }
 
       // update the searchedData & filteredData to the originalData

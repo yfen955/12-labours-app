@@ -8,8 +8,8 @@
         No filters applied
       </span>
       <el-tag
-        v-for="facet in selectedItems"
-        :key="facet"
+        v-for="(facet, index) in selectedItems"
+        :key="index"
         class="tags"
         disable-transitions
         closable
@@ -20,17 +20,17 @@
     </el-card>
     <el-collapse>
       <el-collapse-item
-        v-for="filter in filters_list"
-        :key="filter.index"
+        v-for="(filter, index) in filters_list"
+        :key="index"
         :title="filter.title"
         v-model="filter.filter_items"
       >
         <el-checkbox-group v-model="filter.selectedItem">
           <el-checkbox
             class="filter-selecter"
-            v-for="type in filter.filter_items"
+            v-for="(type, index) in filter.filter_items"
             v-show="type !== 'NA'"
-            :key="type"
+            :key="index"
             :label="type"
             @change="handleChange()"
           >
@@ -46,7 +46,7 @@
 import axios from "axios";
 
 export default {
-  props:[ "dataDetails", "searchContent", "file_type", "mime_type_list", "mime_dict" ],
+  props:[ "dataDetails", "searchContent", "file_type", "mime_type_list", "mime_dict", "species_list", "species_dict", "anatomy_list", "anatomy_dict" ],
 
   data: () => {
     return {
@@ -73,6 +73,7 @@ export default {
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
+      filters_dict_list: [], 
     };
   },
 
@@ -106,12 +107,27 @@ export default {
     async dataChange(val) {
       if (val === 'dataset') {
         this.filters_list.push({
-          index: 1,
+          index: 0,
           fieldName: "submitter_id",
           title: "Data types",
           filter_items: this.mime_type_list,
           selectedItem: [],
         })
+        this.filters_list.push({
+          index: 1,
+          fieldName: "submitter_id",
+          title: "Species",
+          filter_items: this.species_list,
+          selectedItem: [],
+        })
+        this.filters_list.push({
+          index: 2,
+          fieldName: "submitter_id",
+          title: "Anatomy",
+          filter_items: this.anatomy_list,
+          selectedItem: [],
+        })
+        this.filters_dict_list = [this.mime_dict, this.species_dict, this.anatomy_dict];
       }
       else if (val === 'tools') {
         this.filters_list = this.tools_filters_list;
@@ -140,9 +156,7 @@ export default {
         currentData = originalData;
       }
 
-      if (this.$route.query.type === 'dataset') {
-        this.selectedItems = this.filters_list[0].selectedItem;
-        
+      if (this.$route.query.type === 'dataset') {        
         let newPayload = {
           node: 'experiment',
           filter: this.filters_dict,
@@ -203,27 +217,16 @@ export default {
     },
 
     generateFiltersDict(currentList) {
+      this.filters_dict = {};
       currentList.map((data, index) => {
-        if (data.selectedItem.length === 0) {
-          if (data.title === "Data types") {
-            let id_list = [];
-            data.filter_items.map((item, i) => {
-              id_list = [...id_list,...this.mime_dict[item]];
-              return id_list;
-            })
-            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
-          } else
-            this.filters_dict[data.fieldName] = data.filter_items;
-        } else {
-          if (data.title === "Data types") {
-            let id_list = [];
+        if (data.selectedItem.length !== 0) {
+          let id_list = [];
             data.selectedItem.map((item, i) => {
-              id_list = [...id_list,...this.mime_dict[item]];
+              let id_dict = this.filters_dict_list[index];
+              id_list = [...id_list,...id_dict[item]];
               return id_list;
             })
             this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
-          } else
-            this.filters_dict[data.fieldName] = data.selectedItem;
         }
       })
       
