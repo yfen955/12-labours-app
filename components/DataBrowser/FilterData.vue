@@ -46,7 +46,7 @@
 import axios from "axios";
 
 export default {
-  props:[ "dataDetails", "searchContent", "organs_list", "file_type", "mime_type_list", "scaffold_datasetIDs", "plot_datasetIDs" ],
+  props:[ "dataDetails", "searchContent", "file_type", "mime_type_list", "mime_dict" ],
 
   data: () => {
     return {
@@ -71,7 +71,7 @@ export default {
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
-      mime_content: "",
+      filters_dict: {},
     };
   },
 
@@ -105,15 +105,8 @@ export default {
     async dataChange(val) {
       if (val === 'dataset') {
         this.filters_list.push({
-          index: 0,
-          fieldName: "study_organ_system",
-          title: "Anatomical Structures",
-          filter_items: this.organs_list,
-          selectedItem: [],
-        })
-        this.filters_list.push({
           index: 1,
-          fieldName: "addtional_types",
+          fieldName: "submitter_id",
           title: "Data types",
           filter_items: this.mime_type_list,
           selectedItem: [],
@@ -139,31 +132,21 @@ export default {
     },
 
     async handleChange(originalData) {
+      this.generateFiltersDict(this.filters_list);
+
       let currentData = this.dataDetails;
       if (originalData !== undefined) {
         currentData = originalData;
       }
 
       if (this.$route.query.type === 'dataset') {
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem);
-        
-        if (this.selectedItems.includes('Scaffold') && this.selectedItems.includes('Plot')) {
-          this.mime_content = this.scaffold_datasetIDs + ", " + this.plot_datasetIDs;
-        } else if (this.selectedItems.includes('Scaffold')) {
-          this.mime_content = this.scaffold_datasetIDs;
-        } else if (this.selectedItems.includes('Plot')) {
-          this.mime_content = this.plot_datasetIDs;
-        } else {
-          this.mime_content = "";
-        }
+        this.selectedItems = this.filters_list[0].selectedItem;
         
         let newPayload = {
-          node: 'dataset_description',
-          filter: {
-            study_organ_system: this.filters_list[0].selectedItem.length === 0 ? this.filters_list[0].filter_items : this.filters_list[0].selectedItem
-          },
-          search: this.searchContent.length === 0 ? this.mime_content : this.searchContent + " " + this.mime_content,
-          number: 10,
+          node: 'experiment',
+          filter: this.filters_dict,
+          search: this.searchContent,
+          limit: 10,
           page: 1,
         };
         const path = `${process.env.query_api_url}graphql`;
@@ -195,8 +178,6 @@ export default {
 
       }
 
-      this.generateFiltersDict(this.filters_list);
-
       this.$emit('filter-data', this.filteredData);
     },
 
@@ -220,20 +201,31 @@ export default {
     },
 
     generateFiltersDict(currentList) {
-      let filters_dict = {};
-      for (let i = 0; i < currentList.length; i++) {
-        if (currentList[i].title !== "Data types") {
-          if (currentList[i].selectedItem.length === 0) {
-            filters_dict[currentList[i].fieldName] = currentList[i].filter_items;
-          } else {
-            filters_dict[currentList[i].fieldName] = currentList[i].selectedItem;
-          }
+      currentList.map((data, index) => {
+        if (data.selectedItem.length === 0) {
+          if (data.title === "Data types") {
+            let id_list = [];
+            data.filter_items.map((item, i) => {
+              id_list = [...id_list,...this.mime_dict[item]];
+              return id_list;
+            })
+            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
+          } else
+            this.filters_dict[data.fieldName] = data.filter_items;
+        } else {
+          if (data.title === "Data types") {
+            let id_list = [];
+            data.selectedItem.map((item, i) => {
+              id_list = [...id_list,...this.mime_dict[item]];
+              return id_list;
+            })
+            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
+          } else
+            this.filters_dict[data.fieldName] = data.selectedItem;
         }
-      }
-      this.$emit('filter-dict', filters_dict);
-
-      // mime type should be sent to the seach component as search content
-      this.$emit('mimeType-content', this.mime_content);
+      })
+      
+      this.$emit('filter-dict', this.filters_dict);
     }
   },
 }

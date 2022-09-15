@@ -18,36 +18,39 @@
         >
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
-            <el-col :span="6">
-              <img :src="imgPlaceholder" v-if="!item.img">
-              <p v-else>{{ item.img }}</p>
-            </el-col>
-            <el-col :span="18" style="margin-bottom: 1em">
-              <el-row>
-                <nuxt-link class="title-link" :to="{
-                  name: 'data-browser-dataset-id',
-                  params: {
-                    id: item.experiments[0].submitter_id,
-                  }
-                }">
-                  {{ item.title }}
-                </nuxt-link>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Organ</strong></el-col>
-                <el-col :span="16">{{ item.study_organ_system }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Keywords</strong></el-col>
-                <el-col :span="16">{{ displayKeywords(item.keywords) }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Samples</strong></el-col>
-                <el-col :span="16">
-                  {{item.number_of_samples}} samples out of {{item.number_of_subjects}} objects
-                </el-col>
-              </el-row>
-            </el-col>
+            <el-row>
+              <el-col :span="6">
+                <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img" style="width: 90%">
+                <p v-else>{{ item.dataset_descriptions[0].img }}</p>
+              </el-col>
+              <el-col :span="18" style="margin-bottom: 1em">
+                <el-row>
+                  <nuxt-link class="title-link" :to="{
+                    name: 'data-browser-dataset-id',
+                    params: {
+                      id: item.submitter_id,
+                    }
+                  }">
+                    {{ item.dataset_descriptions[0].title }}
+                  </nuxt-link>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Organ</strong></el-col>
+                  <el-col :span="16">{{ item.dataset_descriptions[0].study_organ_system }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Keywords</strong></el-col>
+                  <el-col :span="16">{{ displayKeywords(item.dataset_descriptions[0].keywords) }}</el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8"><strong>Samples</strong></el-col>
+                  <el-col :span="16">
+                    {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+            
           </span>
 
           <!-- display tools -->
@@ -101,32 +104,7 @@
           
 
           <!-- display news -->
-          <span v-if="$route.query.type === 'news'">
-            <el-col :span="6">
-              <img :src="imgPlaceholder" v-if="!item.img" style="width: 75%">
-              <p v-else>{{ item.img }}</p>
-            </el-col>
-            <el-col :span="18" style="margin-bottom:1em;">
-              <el-row><p>{{ item.submitter_id }}</p></el-row>
-              <el-row><p>{{ item.biospecimen_anatomic_site }}</p></el-row>
-              <el-row>
-                <el-col :span="8"><strong>Composition</strong>
-                </el-col>
-                <el-col :span="16">{{ item.composition }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Current Weight</strong></el-col>
-                <el-col :span="16">{{ item.current_weight }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8"><strong>Tissue Type</strong></el-col>
-                <el-col :span="16">{{ item.tissue_type }}</el-col>
-              </el-row>
-              <el-row>
-                <el-button @click="downloadFile(item.id)">Download this Metadata</el-button>
-              </el-row>
-            </el-col>
-          </span>
+          <span v-if="$route.query.type === 'news'"></span>
 
           <!-- display 12 labours information -->
           <span v-if="$route.query.type === 'laboursInfo'"></span>
@@ -153,11 +131,9 @@ import PaginationHeading from "./PaginationHeading.vue"
 export default {
   name: "DisplayData",
   components: { PaginationHeading },
-  props: [ "isLoadingSearch", "dataDetails", "payload" ],
+  props: [ "isLoadingSearch", "dataDetails", "payload", "limit", "currentPage", "totalData" ],
   data: () => {
     return {
-      limit: 10,
-      currentPage: 1,
       dataShowed: [],
       currentFirstData: 0,
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),

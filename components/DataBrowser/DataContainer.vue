@@ -5,7 +5,6 @@
       <SearchData
         :dataDetails="filteredData"
         :filterDict="filterDict"
-        :mimeTypeContent="mimeTypeContent"
         v-on:matchData="matchSearchData"
         v-on:search-changed="filterAgain"
         v-on:search-content="updateSearchContent"
@@ -15,15 +14,12 @@
         <el-col :span="6" class="facet-menu">
           <FilterData
             :dataDetails="searchedData"
-            :organs_list="organs_list"
             :mime_type_list="mime_type_list"
-            :scaffold_datasetIDs="scaffold_datasetIDs"
-            :plot_datasetIDs="plot_datasetIDs"
+            :mime_dict="mime_dict"
             :searchContent="searchContent"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
             v-on:filter-dict="updateFilterDict"
-            v-on:mimeType-content="updateMimeType"
             ref="filter"
           />
         </el-col>
@@ -122,14 +118,11 @@ export default {
       currentData: [],
       searchedData: [],
       filteredData: [],
-      organs_list: [],
       mime_type_list: [],
-      scaffold_datasetIDs: "",
-      plot_datasetIDs: "",
+      mime_dict: {},
       file_type: [],
       errorMessage: '',
       filterDict: {},
-      mimeTypeContent: "",
       searchContent: "",
     }
   },
@@ -153,35 +146,35 @@ export default {
         this.originalData = dummyData;
       }
       else if (val === 'news') {
-        const path = `${process.env.query_api_url}records/slide`;
-        let payload2 = {
-          program: "demo1",
-          project: "12L",
-          format: "json",
-        }
-        await axios
-          .post(path, payload2)
-          .then((res) => {
-            if (res.data.error)
-              this.errorMessage = res.data.error
-            else {
-              this.originalData = res.data.data
+        // const path = `${process.env.query_api_url}records/slide`;
+        // let payload2 = {
+        //   program: "demo1",
+        //   project: "12L",
+        //   format: "json",
+        // }
+        // await axios
+        //   .post(path, payload2)
+        //   .then((res) => {
+        //     if (res.data.error)
+        //       this.errorMessage = res.data.error
+        //     else {
+        //       this.originalData = res.data.data
 
-              // find out which types of tissue exist & sort the list
-              this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
-                return data.file_type
-              }))).sort()
+        //       // find out which types of tissue exist & sort the list
+        //       this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
+        //         return data.file_type
+        //       }))).sort()
 
-              // remove the undefined data
-              const nullIndex = this.file_type.findIndex(item => item == undefined);
-              if (nullIndex !== -1)
-                this.file_type.splice(nullIndex, 1);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            this.originalData = [];
-          });
+        //       // remove the undefined data
+        //       const nullIndex = this.file_type.findIndex(item => item == undefined);
+        //       if (nullIndex !== -1)
+        //         this.file_type.splice(nullIndex, 1);
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     this.originalData = [];
+        //   });
       }
       else if (val === 'laboursInfo') {
         this.originalData = sparcInfoData;
@@ -191,28 +184,19 @@ export default {
         // let payload2 = {
         //   program: "demo1",
         //   project: "12L",
-        //   format: "json",
         // }
         const path = `${process.env.query_api_url}graphql`;
         let payload2 = {
-          node: 'dataset_description',
+          node: 'experiment',
           filter: {},
           search: "",
-          number: this.limit,
+          limit: this.limit,
           page: this.currentPage,
         }
         await axios
           .post(path, payload2)
           .then((res) => {
             this.originalData = res.data.data;
-
-            this.organs_list = Array.from(new Set(this.originalData.map((data, index) =>{
-              return data.study_organ_system
-            }))).sort()
-
-            const nullIndex = this.organs_list.findIndex(item => item == undefined);
-            if (nullIndex !== -1)
-              this.organs_list.splice(nullIndex, 1);
           })
           .catch((err) => {
             console.log(err);
@@ -227,9 +211,8 @@ export default {
         await axios
           .post(newPath, payload3)
           .then((res) => {
-            this.mime_type_list = Object.keys(res.data.data);
-            this.scaffold_datasetIDs = res.data.data['Scaffold'];
-            this.plot_datasetIDs = res.data.data['Plot'];
+            this.mime_type_list = Object.keys(res.data);
+            this.mime_dict = res.data;
           })
           .catch((err) => {
             console.log(err);
@@ -264,10 +247,6 @@ export default {
 
     updateFilterDict(val) {
       this.filterDict = val;
-    },
-
-    updateMimeType(val) {
-      this.mimeTypeContent = val;
     },
 
     updateSearchContent(val) {

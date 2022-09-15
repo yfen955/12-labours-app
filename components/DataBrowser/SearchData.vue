@@ -30,7 +30,7 @@
 import axios from "axios";
 
 export default {
-  props: [ "dataDetails", "filterDict", "mimeTypeContent" ],
+  props: [ "dataDetails", "filterDict" ],
   data() {
     return {
       searchContent: '',
@@ -101,8 +101,8 @@ export default {
         let newPayload = {
           node: 'dataset_description',
           filter: this.filterDict,
-          search: this.searchContent + this.mimeTypeContent,
-          number: 10,
+          search: this.searchContent,
+          limit: 10,
           page: 1,
         };
         const path = `${process.env.query_api_url}graphql`;
