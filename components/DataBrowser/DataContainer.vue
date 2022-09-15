@@ -28,8 +28,9 @@
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
-            :currentPage="currentPage"
             :limit="limit"
+            :totalCount="totalCount"
+            v-on:pageChange="updateCurrentPage"
           />
         </el-col>
       </el-row>
@@ -104,7 +105,6 @@ import dummyData from "../../assets/datasetData.json";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
-import sparcInfoData from "../../assets/sparcInfoData.json";
 
 export default {
   components: { SearchData, FilterData, DisplayData },
@@ -113,7 +113,8 @@ export default {
     return {
       isLoadingSearch: false,
       currentPage: 1,
-      limit: 10,
+      limit: 5,
+      totalCount: 0,
       originalData: [],
       currentData: [],
       searchedData: [],
@@ -140,69 +141,43 @@ export default {
   },
 
   methods: {
+    async fetchData() {
+      const path = `${process.env.query_api_url}graphql`;
+      let payload2 = {
+        node: 'experiment',
+        filter: {},
+        search: "",
+        limit: this.limit,
+        page: this.currentPage,
+      }
+      await axios
+        .post(path, payload2)
+        .then((res) => {
+          this.originalData = res.data.data;
+          this.currentData = res.data.data;
+          this.totalCount = res.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.originalData = [];
+        });
+    },
+
     async dataChange(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
         this.originalData = dummyData;
       }
       else if (val === 'news') {
-        // const path = `${process.env.query_api_url}records/slide`;
-        // let payload2 = {
-        //   program: "demo1",
-        //   project: "12L",
-        //   format: "json",
-        // }
-        // await axios
-        //   .post(path, payload2)
-        //   .then((res) => {
-        //     if (res.data.error)
-        //       this.errorMessage = res.data.error
-        //     else {
-        //       this.originalData = res.data.data
 
-        //       // find out which types of tissue exist & sort the list
-        //       this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
-        //         return data.file_type
-        //       }))).sort()
-
-        //       // remove the undefined data
-        //       const nullIndex = this.file_type.findIndex(item => item == undefined);
-        //       if (nullIndex !== -1)
-        //         this.file_type.splice(nullIndex, 1);
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     this.originalData = [];
-        //   });
       }
       else if (val === 'laboursInfo') {
-        this.originalData = sparcInfoData;
+        
       }
       else {  // if val === dataset
-        // const path = `${process.env.query_api_url}records/dataset_description`;
-        // let payload2 = {
-        //   program: "demo1",
-        //   project: "12L",
-        // }
-        const path = `${process.env.query_api_url}graphql`;
-        let payload2 = {
-          node: 'experiment',
-          filter: {},
-          search: "",
-          limit: this.limit,
-          page: this.currentPage,
-        }
-        await axios
-          .post(path, payload2)
-          .then((res) => {
-            this.originalData = res.data.data;
-          })
-          .catch((err) => {
-            console.log(err);
-            this.originalData = [];
-          });
+        await this.fetchData();
         
+        // fetch all the data types
         const newPath = `${process.env.query_api_url}filter/mimetypes`;
         let payload3 = {
           program: "demo1",
@@ -224,14 +199,14 @@ export default {
       this.searchedData = this.originalData;
       this.filteredData = this.originalData;
       this.isLoadingSearch = false;
-
     },
 
-    // update the data after search & filter
+    // update the variables after they change
     matchSearchData(data) {
       this.searchedData = data;
       this.currentData = data;
     },
+
     updateFilteredData(data) {
       this.filteredData = data;
       this.currentData = data;
@@ -252,6 +227,11 @@ export default {
     updateSearchContent(val) {
       this.searchContent = val;
     },
+
+    async updateCurrentPage(val) {
+      this.currentPage = val;
+      await this.fetchData();
+    }
   },
 }
 </script>

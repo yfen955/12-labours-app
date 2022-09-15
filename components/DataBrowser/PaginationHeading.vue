@@ -1,10 +1,10 @@
 <template>
   <el-row class="data-heading">
-    <p v-show="!isLoadingSearch && dataDetails.length">
-      {{ dataDetails.length }} Results | Showing
+    <p v-show="!isLoadingSearch && totalCount">
+      {{ totalCount }} Results | Showing
     </p>
     <pagination
-      :total-count="dataDetails.length"
+      :total-count="totalCount"
       :page-size="limit"
       @select-page="handleCurrentChange">
     </pagination>
@@ -14,11 +14,10 @@
 <script>
 export default {
   name: "PaginationHeading",
-  props: [ "isLoadingSearch", "dataDetails", "limit" ],
+  props: [ "isLoadingSearch", "totalCount", "limit" ],
   data: () => {
     return {
       currentPage: 1,
-      currentFirstData: 0,
     }
   },
 
@@ -26,8 +25,7 @@ export default {
     // update the page and first data
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.currentFirstData = (val - 1) * this.limit;
-      this.$emit('pageChange', this.currentPage, this.currentFirstData);
+      this.$emit('pageChange', this.currentPage);
     },
   },
 }

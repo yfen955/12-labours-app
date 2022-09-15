@@ -4,14 +4,14 @@
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
-        :dataDetails="dataDetails"
+        :totalCount="totalCount"
         :limit="limit"
         v-on:pageChange="handlePageChange"
       />
       <!-- data details -->
       <el-row class="data-container">
         <el-row
-          v-for="(item, index) in dataDetails.slice(this.currentFirstData, this.currentFirstData + this.limit)"
+          v-for="(item, index) in dataDetails"
           :key="index"
           :gutter="20"
           class="data-details"
@@ -114,7 +114,7 @@
       </el-row>
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
-        :dataDetails="dataDetails"
+        :totalCount="totalCount"
         :limit="limit"
         v-on:pageChange="handlePageChange"
       />
@@ -131,19 +131,18 @@ import PaginationHeading from "./PaginationHeading.vue"
 export default {
   name: "DisplayData",
   components: { PaginationHeading },
-  props: [ "isLoadingSearch", "dataDetails", "payload", "limit", "currentPage", "totalData" ],
+  props: [ "isLoadingSearch", "dataDetails", "payload", "limit", "totalCount" ],
   data: () => {
     return {
       dataShowed: [],
-      currentFirstData: 0,
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
     }
   },
   
   methods: {
-    handlePageChange(currentPage, currentFirstData) {
+    handlePageChange(currentPage) {
       this.currentPage = currentPage;
-      this.currentFirstData = currentFirstData;
+      this.$emit('pageChange', this.currentPage);
     },
 
     async downloadFile(id) {
