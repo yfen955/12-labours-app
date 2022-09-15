@@ -72,6 +72,7 @@ export default {
       selectedItems: [],
       filteredData: [],
       filters_dict: {},
+      newTotalCount: 0,
     };
   },
 
@@ -154,6 +155,7 @@ export default {
           .post(path, newPayload)
           .then((res) => {
             this.filteredData = res.data.data;
+            this.newTotalCount = res.data.total;
           })
           .catch((err) => {
             console.log(err);
@@ -178,7 +180,7 @@ export default {
 
       }
 
-      this.$emit('filter-data', this.filteredData);
+      this.$emit('filter-data', this.filteredData, this.newTotalCount);
     },
 
     // if a tag is closed, it will call this function

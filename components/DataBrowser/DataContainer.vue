@@ -163,13 +163,61 @@ export default {
         });
     },
 
+    async fetchFilter(field) {
+      let type_list = [];
+      let filter_dict = [];
+      const newPath = `${process.env.query_api_url}filter/${field}`;
+        let payload3 = {
+          program: "demo1",
+          project: "12L",
+        }
+        await axios
+          .post(newPath, payload3)
+          .then((res) => {
+            type_list = Object.keys(res.data);
+            filter_dict = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      return new Array(type_list, filter_dict);
+    },
+
     async dataChange(val) {
       this.isLoadingSearch = true
       if (val === 'tools') {
         this.originalData = dummyData;
       }
       else if (val === 'news') {
+        // const path = `${process.env.query_api_url}records/slide`;
+        // let payload2 = {
+        //   program: "demo1",
+        //   project: "12L",
+        //   format: "json",
+        // }
+        // await axios
+        //   .post(path, payload2)
+        //   .then((res) => {
+        //     if (res.data.error)
+        //       this.errorMessage = res.data.error
+        //     else {
+        //       this.originalData = res.data.data
 
+        //       // find out which types of tissue exist & sort the list
+        //       this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
+        //         return data.file_type
+        //       }))).sort()
+
+        //       // remove the undefined data
+        //       const nullIndex = this.file_type.findIndex(item => item == undefined);
+        //       if (nullIndex !== -1)
+        //         this.file_type.splice(nullIndex, 1);
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     this.originalData = [];
+        //   });
       }
       else if (val === 'laboursInfo') {
         
@@ -178,20 +226,9 @@ export default {
         await this.fetchData();
         
         // fetch all the data types
-        const newPath = `${process.env.query_api_url}filter/mimetypes`;
-        let payload3 = {
-          program: "demo1",
-          project: "12L",
-        }
-        await axios
-          .post(newPath, payload3)
-          .then((res) => {
-            this.mime_type_list = Object.keys(res.data);
-            this.mime_dict = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        let result = await this.fetchFilter("mimetypes");
+        this.mime_type_list = result[0];
+        this.mime_dict = result[1];
       }
 
       // update the searchedData & filteredData to the originalData
@@ -207,9 +244,10 @@ export default {
       this.currentData = data;
     },
 
-    updateFilteredData(data) {
+    updateFilteredData(data, total) {
       this.filteredData = data;
       this.currentData = data;
+      this.totalCount = total;
     },
 
     filterAgain() {
