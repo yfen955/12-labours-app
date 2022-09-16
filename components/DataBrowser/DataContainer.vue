@@ -5,7 +5,6 @@
       <SearchData
         :dataDetails="filteredData"
         :filterDict="filterDict"
-        :mimeTypeContent="mimeTypeContent"
         v-on:matchData="matchSearchData"
         v-on:search-changed="filterAgain"
         v-on:search-content="updateSearchContent"
@@ -15,15 +14,16 @@
         <el-col :span="6" class="facet-menu">
           <FilterData
             :dataDetails="searchedData"
-            :organs_list="organs_list"
             :mime_type_list="mime_type_list"
-            :scaffold_datasetIDs="scaffold_datasetIDs"
-            :plot_datasetIDs="plot_datasetIDs"
+            :mime_dict="mime_dict"
+            :species_list="species_list"
+            :species_dict="species_dict"
+            :anatomy_list="anatomy_list"
+            :anatomy_dict="anatomy_dict"
             :searchContent="searchContent"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
             v-on:filter-dict="updateFilterDict"
-            v-on:mimeType-content="updateMimeType"
             ref="filter"
           />
         </el-col>
@@ -32,8 +32,9 @@
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
-            :currentPage="currentPage"
-            :limit="limit"
+            :totalCount="totalCount"
+            v-on:pageChange="updateCurrentPage"
+            v-on:sizeChange="updateLimit"
           />
         </el-col>
       </el-row>
@@ -108,7 +109,6 @@ import dummyData from "../../assets/datasetData.json";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
-import sparcInfoData from "../../assets/sparcInfoData.json";
 
 export default {
   components: { SearchData, FilterData, DisplayData },
@@ -117,19 +117,21 @@ export default {
     return {
       isLoadingSearch: false,
       currentPage: 1,
+      totalCount: 0,
       limit: 10,
       originalData: [],
       currentData: [],
       searchedData: [],
       filteredData: [],
-      organs_list: [],
       mime_type_list: [],
-      scaffold_datasetIDs: "",
-      plot_datasetIDs: "",
+      mime_dict: {},
+      species_list: [],
+      species_dict: {},
+      anatomy_list: [],
+      anatomy_dict: {},
       file_type: [],
       errorMessage: '',
       filterDict: {},
-      mimeTypeContent: "",
       searchContent: "",
     }
   },
@@ -147,79 +149,32 @@ export default {
   },
 
   methods: {
-    async dataChange(val) {
-      this.isLoadingSearch = true
-      if (val === 'tools') {
-        this.originalData = dummyData;
+    async fetchData() {
+      const path = `${process.env.query_api_url}graphql`;
+      let payload2 = {
+        node: 'experiment',
+        filter: {},
+        search: "",
+        limit: this.limit,
+        page: this.currentPage,
       }
-      else if (val === 'news') {
-        const path = `${process.env.query_api_url}records/slide`;
-        let payload2 = {
-          program: "demo1",
-          project: "12L",
-          format: "json",
-        }
-        await axios
-          .post(path, payload2)
-          .then((res) => {
-            if (res.data.error)
-              this.errorMessage = res.data.error
-            else {
-              this.originalData = res.data.data
+      await axios
+        .post(path, payload2)
+        .then((res) => {
+          this.originalData = res.data.data;
+          this.currentData = res.data.data;
+          this.totalCount = res.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.originalData = [];
+        });
+    },
 
-              // find out which types of tissue exist & sort the list
-              this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
-                return data.file_type
-              }))).sort()
-
-              // remove the undefined data
-              const nullIndex = this.file_type.findIndex(item => item == undefined);
-              if (nullIndex !== -1)
-                this.file_type.splice(nullIndex, 1);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            this.originalData = [];
-          });
-      }
-      else if (val === 'laboursInfo') {
-        this.originalData = sparcInfoData;
-      }
-      else {  // if val === dataset
-        // const path = `${process.env.query_api_url}records/dataset_description`;
-        // let payload2 = {
-        //   program: "demo1",
-        //   project: "12L",
-        //   format: "json",
-        // }
-        const path = `${process.env.query_api_url}graphql`;
-        let payload2 = {
-          node: 'dataset_description',
-          filter: {},
-          search: "",
-          number: this.limit,
-          page: this.currentPage,
-        }
-        await axios
-          .post(path, payload2)
-          .then((res) => {
-            this.originalData = res.data.data;
-
-            this.organs_list = Array.from(new Set(this.originalData.map((data, index) =>{
-              return data.study_organ_system
-            }))).sort()
-
-            const nullIndex = this.organs_list.findIndex(item => item == undefined);
-            if (nullIndex !== -1)
-              this.organs_list.splice(nullIndex, 1);
-          })
-          .catch((err) => {
-            console.log(err);
-            this.originalData = [];
-          });
-        
-        const newPath = `${process.env.query_api_url}filter/mimetypes`;
+    async fetchFilter(field) {
+      let type_list = [];
+      let filter_dict = [];
+      const newPath = `${process.env.query_api_url}filter/${field}`;
         let payload3 = {
           program: "demo1",
           project: "12L",
@@ -227,13 +182,69 @@ export default {
         await axios
           .post(newPath, payload3)
           .then((res) => {
-            this.mime_type_list = Object.keys(res.data.data);
-            this.scaffold_datasetIDs = res.data.data['Scaffold'];
-            this.plot_datasetIDs = res.data.data['Plot'];
+            type_list = Object.keys(res.data);
+            filter_dict = res.data;
           })
           .catch((err) => {
             console.log(err);
           });
+      return new Array(type_list, filter_dict);
+    },
+
+    async dataChange(val) {
+      this.isLoadingSearch = true
+      if (val === 'tools') {
+        this.originalData = dummyData;
+      }
+      else if (val === 'news') {
+        // const path = `${process.env.query_api_url}records/slide`;
+        // let payload2 = {
+        //   program: "demo1",
+        //   project: "12L",
+        //   format: "json",
+        // }
+        // await axios
+        //   .post(path, payload2)
+        //   .then((res) => {
+        //     if (res.data.error)
+        //       this.errorMessage = res.data.error
+        //     else {
+        //       this.originalData = res.data.data
+
+        //       // find out which types of tissue exist & sort the list
+        //       this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
+        //         return data.file_type
+        //       }))).sort()
+
+        //       // remove the undefined data
+        //       const nullIndex = this.file_type.findIndex(item => item == undefined);
+        //       if (nullIndex !== -1)
+        //         this.file_type.splice(nullIndex, 1);
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     this.originalData = [];
+        //   });
+      }
+      else if (val === 'laboursInfo') {
+        
+      }
+      else {  // if val === dataset
+        await this.fetchData();
+        
+        // fetch all the data types
+        let mime = await this.fetchFilter("mimetypes");
+        this.mime_type_list = mime[0];
+        this.mime_dict = mime[1];
+
+        let species = await this.fetchFilter("species");
+        this.species_list = species[0];
+        this.species_dict = species[1];
+
+        let anatomy = await this.fetchFilter("anatomy");
+        this.anatomy_list = anatomy[0];
+        this.anatomy_dict = anatomy[1];
       }
 
       // update the searchedData & filteredData to the originalData
@@ -241,17 +252,18 @@ export default {
       this.searchedData = this.originalData;
       this.filteredData = this.originalData;
       this.isLoadingSearch = false;
-
     },
 
-    // update the data after search & filter
+    // update the variables after they change
     matchSearchData(data) {
       this.searchedData = data;
       this.currentData = data;
     },
-    updateFilteredData(data) {
+
+    updateFilteredData(data, total) {
       this.filteredData = data;
       this.currentData = data;
+      this.totalCount = total;
     },
 
     filterAgain() {
@@ -266,12 +278,18 @@ export default {
       this.filterDict = val;
     },
 
-    updateMimeType(val) {
-      this.mimeTypeContent = val;
-    },
-
     updateSearchContent(val) {
       this.searchContent = val;
+    },
+
+    async updateCurrentPage(val) {
+      this.currentPage = val;
+      await this.fetchData();
+    },
+    
+    async updateLimit(val) {
+      this.limit = val;
+      await this.fetchData();
     },
   },
 }

@@ -8,8 +8,8 @@
         No filters applied
       </span>
       <el-tag
-        v-for="facet in selectedItems"
-        :key="facet"
+        v-for="(facet, index) in selectedItems"
+        :key="index"
         class="tags"
         disable-transitions
         closable
@@ -20,17 +20,17 @@
     </el-card>
     <el-collapse>
       <el-collapse-item
-        v-for="filter in filters_list"
-        :key="filter.index"
+        v-for="(filter, index) in filters_list"
+        :key="index"
         :title="filter.title"
         v-model="filter.filter_items"
       >
         <el-checkbox-group v-model="filter.selectedItem">
           <el-checkbox
             class="filter-selecter"
-            v-for="type in filter.filter_items"
+            v-for="(type, index) in filter.filter_items"
             v-show="type !== 'NA'"
-            :key="type"
+            :key="index"
             :label="type"
             @change="handleChange()"
           >
@@ -46,7 +46,7 @@
 import axios from "axios";
 
 export default {
-  props:[ "dataDetails", "searchContent", "organs_list", "file_type", "mime_type_list", "scaffold_datasetIDs", "plot_datasetIDs" ],
+  props:[ "dataDetails", "searchContent", "file_type", "mime_type_list", "mime_dict", "species_list", "species_dict", "anatomy_list", "anatomy_dict" ],
 
   data: () => {
     return {
@@ -71,7 +71,9 @@ export default {
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
-      mime_content: "",
+      filters_dict: {},
+      newTotalCount: 0,
+      filters_dict_list: [], 
     };
   },
 
@@ -106,18 +108,26 @@ export default {
       if (val === 'dataset') {
         this.filters_list.push({
           index: 0,
-          fieldName: "study_organ_system",
-          title: "Anatomical Structures",
-          filter_items: this.organs_list,
-          selectedItem: [],
-        })
-        this.filters_list.push({
-          index: 1,
-          fieldName: "addtional_types",
+          fieldName: "submitter_id",
           title: "Data types",
           filter_items: this.mime_type_list,
           selectedItem: [],
         })
+        this.filters_list.push({
+          index: 1,
+          fieldName: "submitter_id",
+          title: "Species",
+          filter_items: this.species_list,
+          selectedItem: [],
+        })
+        this.filters_list.push({
+          index: 2,
+          fieldName: "submitter_id",
+          title: "Anatomy",
+          filter_items: this.anatomy_list,
+          selectedItem: [],
+        })
+        this.filters_dict_list = [this.mime_dict, this.species_dict, this.anatomy_dict];
       }
       else if (val === 'tools') {
         this.filters_list = this.tools_filters_list;
@@ -139,31 +149,19 @@ export default {
     },
 
     async handleChange(originalData) {
+      this.generateFiltersDict(this.filters_list);
+
       let currentData = this.dataDetails;
       if (originalData !== undefined) {
         currentData = originalData;
       }
 
-      if (this.$route.query.type === 'dataset') {
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem);
-        
-        if (this.selectedItems.includes('Scaffold') && this.selectedItems.includes('Plot')) {
-          this.mime_content = this.scaffold_datasetIDs + ", " + this.plot_datasetIDs;
-        } else if (this.selectedItems.includes('Scaffold')) {
-          this.mime_content = this.scaffold_datasetIDs;
-        } else if (this.selectedItems.includes('Plot')) {
-          this.mime_content = this.plot_datasetIDs;
-        } else {
-          this.mime_content = "";
-        }
-        
+      if (this.$route.query.type === 'dataset') {        
         let newPayload = {
-          node: 'dataset_description',
-          filter: {
-            study_organ_system: this.filters_list[0].selectedItem.length === 0 ? this.filters_list[0].filter_items : this.filters_list[0].selectedItem
-          },
-          search: this.searchContent.length === 0 ? this.mime_content : this.searchContent + " " + this.mime_content,
-          number: 10,
+          node: 'experiment',
+          filter: this.filters_dict,
+          search: this.searchContent,
+          limit: 10,
           page: 1,
         };
         const path = `${process.env.query_api_url}graphql`;
@@ -171,6 +169,7 @@ export default {
           .post(path, newPayload)
           .then((res) => {
             this.filteredData = res.data.data;
+            this.newTotalCount = res.data.total;
           })
           .catch((err) => {
             console.log(err);
@@ -195,9 +194,7 @@ export default {
 
       }
 
-      this.generateFiltersDict(this.filters_list);
-
-      this.$emit('filter-data', this.filteredData);
+      this.$emit('filter-data', this.filteredData, this.newTotalCount);
     },
 
     // if a tag is closed, it will call this function
@@ -220,20 +217,20 @@ export default {
     },
 
     generateFiltersDict(currentList) {
-      let filters_dict = {};
-      for (let i = 0; i < currentList.length; i++) {
-        if (currentList[i].title !== "Data types") {
-          if (currentList[i].selectedItem.length === 0) {
-            filters_dict[currentList[i].fieldName] = currentList[i].filter_items;
-          } else {
-            filters_dict[currentList[i].fieldName] = currentList[i].selectedItem;
-          }
+      this.filters_dict = {};
+      currentList.map((data, index) => {
+        if (data.selectedItem.length !== 0) {
+          let id_list = [];
+            data.selectedItem.map((item, i) => {
+              let id_dict = this.filters_dict_list[index];
+              id_list = [...id_list,...id_dict[item]];
+              return id_list;
+            })
+            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
         }
-      }
-      this.$emit('filter-dict', filters_dict);
-
-      // mime type should be sent to the seach component as search content
-      this.$emit('mimeType-content', this.mime_content);
+      })
+      
+      this.$emit('filter-dict', this.filters_dict);
     }
   },
 }

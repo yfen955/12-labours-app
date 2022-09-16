@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <client-only placeholder="Loading model ...">
-
-      <span v-if="$route.query.display === 'scaffold'">
-        <div class="scaffoldvuer-container">
-          <ScaffoldVuer :url='location' style="height:90%" />
-        </div>
-      </span>
-
-      <span v-if="$route.query.display === 'flatmap'">
+  <div class="container-default">
+    <div class="modal-container">
+      <div class="title-container">
+        <h1>Flatmap Viewer</h1>
+        <CopyLink />
+      </div>
+      
+      <client-only placeholder="Loading Flatmap ...">
         <div class="flatmap-container">
           <FlatmapVuer
             :entry="taxo"
@@ -19,28 +17,30 @@
             height="90%"
           />
         </div>
-        </span>
-    </client-only>
+      </client-only>
+    </div>
+    
   </div>
 </template>
 
 <script>
-import '@abi-software/scaffoldvuer/dist/scaffoldvuer.css';
+import CopyLink from "../../../../components/Map/copyLink";
 
 export default {
-  name: 'Model',
-  components: { 
-    ScaffoldVuer: process.client
-      ? () => import('@abi-software/scaffoldvuer').then(m => m.ScaffoldVuer)
-      : null,
+  name: 'FlatmapViewer',
+  components: {
     FlatmapVuer: process.client
       ? () => import('@abi-software/flatmapvuer').then(m => m.FlatmapVuer)
       : null,
+    CopyLink
   },
-  props: [ 'location', 'taxo', 'uberonid' ],
+  props: [ "id" ],
   data: () => {
     return {
+      isLoading: true,
       flatmapAPI: process.env.flatmap_api,
+      taxo: 'NCBITaxon:10114',
+      uberonid: 'UBERON:0013702',
     }
   },
 
@@ -61,22 +61,25 @@ export default {
       }
       return id
     },
-  }
+  },
 }
 </script>
 
 <style scoped lang="scss">
-.scaffoldvuer-container {
-  height: 90vh;
-  max-width: calc(100% - 48px);
-  left: 24px;
-  overflow: hidden;
-  position: relative;
+.modal-container {
+  border: 1px solid #E4E7ED;
 }
-::v-deep .el-loading-text {
-    color: $app-primary-color !important;
+.title-container {
+  display: flex;
+  h1 {
+    margin-top: .5em;
+    margin-left: 1em;
   }
-::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
+}
+</style>
+
+<style lang="scss">
+.el-checkbox__input.is-checked .el-checkbox__inner {
   border-color: $app-primary-color !important;
   &::after {
     transform: rotate(45deg) scale(1) !important;
@@ -84,83 +87,17 @@ export default {
     top: 0.1em !important;
   }
 }
-::v-deep .region-tree-node {
+.el-icon-arrow-left {
   color: $app-primary-color !important;
 }
-::v-deep .el-color-picker__color {
-  border: 1px solid $app-primary-color !important;
-}
-::v-deep .el-slider__bar {
-  background-color: $app-primary-color !important;
-}
-::v-deep .el-slider__button {
-  border: 2px solid $app-primary-color !important;
-}
-::v-deep i {
+.el-icon-loading {
   color: $app-primary-color !important;
 }
-::v-deep .backgroundChoice.active {
-  border: 2px solid $app-primary-color !important;
-}
-::v-deep .background-popper {
-  border: 1px solid $app-primary-color !important;
-  &.el-popper[x-placement^=top] .popper__arrow {
-    border-top-color: $app-primary-color !important;
-  }
-  &.el-popper[x-placement^=bottom] .popper__arrow {
-    border-bottom-color: $app-primary-color !important;
-  }
-}
-::v-deep .scaffold-popper {
-  background-color: $background !important;
-  border: 1px solid $app-primary-color !important;
-  &.right-popper .popper__arrow {
-    border-right-color: $app-primary-color !important;
-    &::after {
-      border-right-color: $background !important;
-    }
-  }
-  &.left-popper .popper__arrow {
-    border-left-color: $app-primary-color !important;
-    &::after {
-      border-left-color: $background !important;
-    }
-  }
-  &.popper-zoomout[x-placement^=top] .popper__arrow {
-    border-top-color: $app-primary-color !important;
-    &::after {
-      border-top-color: $background !important;
-    }
-  }
-  &.popper-zoomout[x-placement^=bottom] .popper__arrow {
-    border-bottom-color: $app-primary-color !important;
-    &::after {
-      border-bottom-color: $background !important;
-    }
-  }
-}
-::v-deep .el-popper {
-  &.scaffold-popper[x-placement^=top] .popper__arrow {
-    border-top-color: $app-primary-color !important;
-    &::after {
-      border-top-color: $background !important;
-    }
-  }
-  &.scaffold-popper[x-placement^=bottom] .popper__arrow {
-    border-bottom-color: $app-primary-color !important;
-    &::after {
-      border-bottom-color: $background !important;
-    }
-  }
-}
-</style>
-
-<style lang="scss">
 .flatmap-container {
-  margin-top: 1.5rem;
+  margin: .5em;
   height: 90vh;
   max-width: calc(100% - 48px);
-  padding-left: 24px;
+  padding-left: 12px;
   @import '~@abi-software/flatmapvuer/dist/flatmapvuer';
 
   span {
@@ -233,6 +170,25 @@ export default {
         &::after {
           border-bottom-color: $background !important;
         }
+      }
+    }
+
+    .pathway-container {
+      max-height: calc(100% - 48px);
+      transition: all 1s ease;
+    }
+
+    .pathway-location.open {
+      left: 0;
+      .pathway-container {
+        opacity: 1;
+      }
+    }
+
+    .pathway-location.close {
+      left: -300px;
+      .pathway-container {
+        opacity: 0;
       }
     }
   }
