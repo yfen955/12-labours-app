@@ -1,7 +1,7 @@
 <template>
   <div>
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <div class="container-default">
+    <div class="container-default" v-if="!isLoading">
       <el-row :gutter="20">
 
         <!-- left column -->
@@ -86,7 +86,7 @@
         <el-col :span="18">
           <!-- title & description -->
           <el-card shadow="never">
-            <h1>{{sampleData.title}}</h1>
+            <h1>{{sampleData.dataset_descriptions[0].title}}</h1>
             <br>
             <el-row :gutter="20">
               <el-col :span="18">
@@ -158,29 +158,48 @@
               cite
             </span>
             <span v-if="$route.query.datasetTab === 'files'">
-              <h3>files</h3>
-              <el-button @click="handlePreview">Preview the file</el-button>
-              <el-button @click="handleDownload">Download the file</el-button>
+              files
+              <!-- <el-button @click="handlePreview">Preview the file</el-button>
+              <el-button @click="handleDownload">Download the file</el-button> -->
             </span>
             <span v-if="$route.query.datasetTab === 'gallery'">
-              <el-row :gutter="20" class="gallery-container">
-                <el-col :span="8">
-                  <el-card v-show="has_scaffold">
-                    <p>scaffold image</p>
+              <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px">
+                <!-- view Scaffold -->
+                <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
+                  <el-card class="medium">
+                    <img :src="imgPlaceholder" alt="image" class="modal-image">
+                    <p>Scaffold</p>
+                    <p>{{ generateFilename(item.filename) }}</p>
                     <div>
-                      <el-button @click="viewScaffold">View Scaffold</el-button>
+                      <el-button @click="viewScaffold(item)" class="modal-button">View Scaffold</el-button>
                     </div>
                   </el-card>
-                </el-col>
-                <el-col :span="8">
-                  <el-card v-show="has_scaffold">
-                    <p>flatmat image</p>
+                </el-carousel-item>
+
+                <!-- view Flatmap -->
+                <el-carousel-item>
+                  <el-card class="medium">
+                    <img :src="imgPlaceholder" alt="image" style="width: 70%">
+                    <p>Flatmap</p>
+                    <p></p>
                     <div>
-                      <el-button @click="viewFlatmap">View Flatmap</el-button>
+                      <el-button @click="viewFlatmap()" class="modal-button">View Flatmap</el-button>
                     </div>
                   </el-card>
-                </el-col>
-              </el-row>
+                </el-carousel-item>
+
+                <!-- view Plot -->
+                <el-carousel-item v-show="has_plot" v-for="item in plot_manifest_data" :key="item.id">
+                  <el-card class="medium">
+                    <i class="el-icon-data-analysis"></i>
+                    <p>Plot</p>
+                    <p>{{ generateFilename(item.filename) }}</p>
+                    <div>
+                      <el-button @click="viewPlot(item)" class="modal-button">View Plot</el-button>
+                    </div>
+                  </el-card>
+                </el-carousel-item>
+              </el-carousel>
             </span>
             <span v-if="$route.query.datasetTab === 'references'">
               references
@@ -252,18 +271,22 @@ export default {
           label: 'Data Browser'
         },
       ],
+      isLoading: false,
       datasetTabs,
       currentTab: '',
       sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       currentID: '',
-      manifest_data: [],
+      scaffold_manifest_data: [],
+      plot_manifest_data: [],
       has_scaffold: false,
+      has_plot: false,
       contributorName: "",
     }
   },
   
   created: async function() {
+    this.isLoading = true;
     if (!this.$route.query.datasetTab) {
       this.$router.push({
         path: `${this.$route.path}`,
@@ -274,21 +297,28 @@ export default {
       this.currentTab = this.$route.query.datasetTab;
     }
     
-    this.sampleData = await this.fetch_data('dataset_description', {}, `${this.$route.params.id}`);
+    this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
+    this.isLoading = false;
 
-    let filters = {additional_types: ["application/x.vnd.abi.scaffold.meta+json"]};
-    this.manifest_data = await this.fetch_data('manifest', filters, `${this.$route.params.id}`);
-    if (this.manifest_data.length === 0) {
+    let scaffold = {additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]};
+    this.scaffold_manifest_data = await this.fetch_data('manifest', scaffold, `${this.$route.params.id}`);
+    if (this.scaffold_manifest_data.length === 0) {
       this.has_scaffold = false
     } else {
       this.has_scaffold = true
     }
 
+    let plot = {additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]};
+    this.plot_manifest_data = await this.fetch_data('manifest', plot, `${this.$route.params.id}`);
+    console.log(this.plot_manifest_data);
+    if (this.plot_manifest_data.length === 0) {
+      this.has_plot = false
+    } else {
+      this.has_plot = true
+    }
+
     this.modifyName();
-    
-    // let filter_dict = this.$route.params.filter_list;
-    // console.log(this.$route.params);
   },
 
   methods: {
@@ -298,15 +328,20 @@ export default {
         node: nodeName,
         filter: filter_dict,
         search: searchContent,
-        number: 10,
+        limit: 100,
         page: 1,
       };
+      console.log(newPayload);
       const path = `${process.env.query_api_url}graphql`;
       await axios
         .post(path, newPayload)
         .then((res) => {
           fetched_data = res.data.data;
         })
+        .catch((err) => {
+          console.log(err);
+          fetched_data = [];
+        });
       return fetched_data;
     },
 
@@ -327,15 +362,11 @@ export default {
     },
 
     // go to map viewer with display & url
-    async viewScaffold() {
-      // let filters = {additional_types: ["application/x.vnd.abi.scaffold.meta+json"]};
-      // let manifest_data = await this.fetch_data('manifest', filters, this.$route.params.id);
-      
+    async viewScaffold(item) {
       let route = this.$router.resolve({
-        path: '/data/maps',
-        query: {
-          display: 'scaffold',
-          url: `${process.env.query_api_url}download/data/datasets/${this.$route.params.id}/${this.manifest_data[0].filename}`,
+        name: 'data-maps-scaffold-id',
+        params: {
+          id: item.id,
         }
       });
       window.open(route.href);
@@ -344,34 +375,49 @@ export default {
     // go to map viewer with display & taxo & uberonid
     viewFlatmap() {
       let route = this.$router.resolve({
-        path: '/data/maps',
-        query: {
-          display: 'flatmap',
-          taxo: 'NCBITaxon:10114',
-          uberonid: 'UBERON:0013702',
+        name: 'data-maps-flatmap-id',
+        params: {
+          // id: item.id,
+          id: 1,
         }
       });
       window.open(route.href);
     },
 
-    handlePreview() {
-
+    viewPlot(item) {
+      let route = this.$router.resolve({
+        name: 'data-maps-plot-id',
+        params: {
+          id: item.id,
+        }
+      });
+      window.open(route.href);
     },
 
-    // download the file
-    handleDownload() {
-      const path = `datasets/${this.sampleData.experiments[0].submitter_id}/${this.sampleData.filename}`;
-      const filepath = path.replaceAll("/", "&");
-      window.open(`${process.env.query_api_url}download/data/${filepath}`, "_self");
-    },
+    // handlePreview() {
+
+    // },
+
+    // // download the file
+    // handleDownload() {
+    //   const path = `datasets/${this.sampleData.experiments[0].submitter_id}/${this.sampleData.filename}`;
+    //   const filepath = path.replaceAll("/", "&");
+    //   window.open(`${process.env.query_api_url}download/data/${filepath}`, "_self");
+    // },
 
     modifyName() {
-      let name_list = this.sampleData.contributor_name.slice(2, -2).split("', '");
+      let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
       for (let i = 0; i < name_list.length; i++) {
         let person_list = name_list[i].split(', ');
         this.contributorName += person_list[1] + ' ' + person_list[0] + ", ";
       }
       this.contributorName = this.contributorName.slice(0, -2);
+    },
+
+    generateFilename(name) {
+      let name_list = name.split("/");
+      let index = name_list.length - 1;
+      return name_list[index];
     }
   },
 }
@@ -412,7 +458,6 @@ export default {
 }
 hr {
   border: .5px solid #E4E7ED;
-  // margin-bottom: 1em;
 }
 .inline-block {
   display: flex;
@@ -420,5 +465,21 @@ hr {
   .right-item {
     margin-left: 62%;
   }
+}
+.el-icon-data-analysis {
+  font-size: 5em;
+}
+.el-carousel__item {
+  margin-top: 1em;
+  width: 270px;
+}
+.medium {
+  height: 280px;
+}
+.modal-image {
+  width: 70%;
+}
+.modal-button {
+  margin-top: 1em;
 }
 </style>

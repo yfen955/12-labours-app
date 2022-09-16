@@ -9,7 +9,8 @@
     >
       Copy the link
     </el-button>
-    <Model v-if="!isLoading" :location='url' :taxo='taxo' :uberonid='uberonid' />
+    <!-- <Model v-if="!isLoading" :location='url' :taxo='taxo' :uberonid='uberonid' /> -->
+    <Model v-if="!isLoading" />
   </div>
 </template>
 
@@ -23,17 +24,7 @@ export default {
   data: () => {
     return {
       isLoading: false,
-      display: '',
-      url: '',
-      taxo: '',
-      // uberonid: '',
     }
-  },
-
-  created: function() {
-    this.url = this.$route.query.url;
-    this.taxo = this.$route.query.taxo;
-    this.uberonid = this.$route.query.uberonid;
   },
 
   methods: {
