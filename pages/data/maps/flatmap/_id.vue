@@ -175,7 +175,7 @@ export default {
 
     .pathway-container {
       max-height: calc(100% - 48px);
-      transition: all 0s ease;
+      transition: all 1s ease;
     }
 
     .pathway-location.open {

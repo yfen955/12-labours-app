@@ -46,10 +46,9 @@ export default {
         imgFile:'patient-in-frame.png',
         detail:'  View the interactive 3D scaffold',
         btnLink:{caption:'Launch Interactive Viewer', to: {
-            path: '/data/maps',
-            query: {
-              display: 'scaffold',
-              url: `${process.env.query_api_url}download/data/datasets/dataset-217-version-2/derivative/pig_brainstem_metadata.json`,
+            name: 'data-maps-scaffold-id',
+            params: {
+              id: 'f865f693-c3b0-4c84-91ba-8db2ad58f6ec',
             }
           }
         }
