@@ -43,7 +43,7 @@ export default {
     data = data[0][0];
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.url = `${process.env.query_api_url}download/data/datasets/${dataset_id}/${filename}`;
+    this.url = `${process.env.query_api_url}data/download/datasets/${dataset_id}/${filename}`;
     this.isLoading = false;
   },
 }

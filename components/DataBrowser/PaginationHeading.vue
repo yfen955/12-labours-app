@@ -10,7 +10,7 @@
     <pagination
       :total-count="totalCount"
       :page-size="limit"
-      :current-page="currentPage"
+      :selected="currentPage"
       @select-page="handleCurrentChange"
     />
   </el-row>
