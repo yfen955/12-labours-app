@@ -163,13 +163,19 @@
               <el-button @click="handleDownload">Download the file</el-button> -->
             </span>
             <span v-if="$route.query.datasetTab === 'gallery'">
-              <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px">
+              <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
                 <!-- view Scaffold -->
                 <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
                   <el-card class="medium">
                     <img :src="imgPlaceholder" alt="image" class="model-image">
-                    <p>Scaffold</p>
-                    <p>{{ generateFilename(item.filename) }}</p>
+                    <p><b>Scaffold</b></p>
+                    <el-popover
+                      placement="top-start"
+                      trigger="hover"
+                      :content="generateFilename(item.filename)"
+                    >
+                      <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
+                    </el-popover>
                     <div>
                       <el-button @click="viewMap('scaffold', item.id)" class="model-button">View Scaffold</el-button>
                     </div>
@@ -179,9 +185,9 @@
                 <!-- view Flatmap -->
                 <el-carousel-item>
                   <el-card class="medium">
-                    <img :src="imgPlaceholder" alt="image" style="width: 70%">
-                    <p>Flatmap</p>
-                    <p></p>
+                    <img :src="imgPlaceholder" alt="image" class="model-image">
+                    <p><b>Flatmap</b></p>
+                    <p>Mouse</p>
                     <div>
                       <el-button @click="viewMap('flatmap', 1)" class="model-button">View Flatmap</el-button>
                     </div>
@@ -192,7 +198,7 @@
                 <el-carousel-item v-show="has_plot" v-for="item in plot_manifest_data" :key="item.id">
                   <el-card class="medium">
                     <i class="el-icon-data-analysis"></i>
-                    <p>Plot</p>
+                    <p><b>Plot</b></p>
                     <el-popover
                       placement="top-start"
                       trigger="hover"
@@ -301,7 +307,6 @@ export default {
     
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
-    this.isLoading = false;
 
     let scaffold = {additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]};
     this.scaffold_manifest_data = await this.fetch_data('manifest', scaffold, `${this.$route.params.id}`);
@@ -320,6 +325,8 @@ export default {
     }
 
     this.modifyName();
+    
+    this.isLoading = false;
   },
 
   methods: {
@@ -447,10 +454,10 @@ hr {
   }
 }
 .model-image {
-  width: 90%;
+  width: 70%;
 }
 .model-button {
-  margin-top: 1em;
+  margin-top: .5em;
 }
 
 </style>
