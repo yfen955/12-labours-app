@@ -140,12 +140,12 @@ export default {
   },
 
   methods: {
-    async downloadFile(id) {
-      window.open(
-        `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
-        "_self"
-      );
-    },
+    // async downloadFile(id) {
+    //   window.open(
+    //     `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
+    //     "_self"
+    //   );
+    // },
 
     displayKeywords(keywords) {
       let result = "";

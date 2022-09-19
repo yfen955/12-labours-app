@@ -49,10 +49,10 @@ export default {
     data = data[0][0];
     let dataset_id = data.experiments[0].submitter_id;
     let filename = data.filename;
-    this.source_url = `${process.env.query_api_url}download/data/datasets/${dataset_id}/${filename}`;
+    this.source_url = `${process.env.query_api_url}data/download/datasets/${dataset_id}/${filename}`;
     this.metadata = eval("(" + data.supplemental_json_metadata + ")");
     let supplementPath = data.is_described_by;
-    this.supplemental_data = [{url: `${process.env.query_api_url}download/data/datasets/${supplementPath}`}];
+    this.supplemental_data = [{url: `${process.env.query_api_url}data/download/datasets/${supplementPath}`}];
     this.isLoading = false;
   },
 }
