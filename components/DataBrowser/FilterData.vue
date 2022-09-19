@@ -43,10 +43,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import backendQuery from '@/services/backendQuery';
 
 export default {
-  props:[ "dataDetails", "searchContent", "file_type", "mime_type_list", "mime_dict", "species_list", "species_dict", "anatomy_list", "anatomy_dict" ],
+  props:[ "dataDetails", "searchContent", "file_type", "filterDict" ],
 
   data: () => {
     return {
@@ -73,7 +73,7 @@ export default {
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
-      filters_dict_list: [], 
+      filters_dict_list: [],
     };
   },
 
@@ -106,28 +106,18 @@ export default {
   methods: {
     async dataChange(val) {
       if (val === 'dataset') {
-        this.filters_list.push({
-          index: 0,
-          fieldName: "submitter_id",
-          title: "Data types",
-          filter_items: this.mime_type_list,
-          selectedItem: [],
-        })
-        this.filters_list.push({
-          index: 1,
-          fieldName: "submitter_id",
-          title: "Species",
-          filter_items: this.species_list,
-          selectedItem: [],
-        })
-        this.filters_list.push({
-          index: 2,
-          fieldName: "submitter_id",
-          title: "Anatomy",
-          filter_items: this.anatomy_list,
-          selectedItem: [],
-        })
-        this.filters_dict_list = [this.mime_dict, this.species_dict, this.anatomy_dict];
+        let count = 0;
+        for (let key in this.filterDict) {
+          this.filters_list.push({
+            index: count,
+            fieldName: "submitter_id",
+            title: key,
+            filter_items: Object.keys(this.filterDict[key]),
+            selectedItem: [],
+          });
+          count += 1;
+          this.filters_dict_list.push(this.filterDict[key]);
+        }
       }
       else if (val === 'tools') {
         this.filters_list = this.tools_filters_list;
@@ -146,34 +136,26 @@ export default {
       this.selectedItems = [];
 
       this.generateFiltersDict(this.filters_list);
+
     },
 
     async handleChange(originalData) {
       this.generateFiltersDict(this.filters_list);
+
+      this.selectedItems = [];
+      for (let i = 0; i < this.filters_list.length; i++) {
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+      }
 
       let currentData = this.dataDetails;
       if (originalData !== undefined) {
         currentData = originalData;
       }
 
-      if (this.$route.query.type === 'dataset') {        
-        let newPayload = {
-          node: 'experiment',
-          filter: this.filters_dict,
-          search: this.searchContent,
-          limit: 10,
-          page: 1,
-        };
-        const path = `${process.env.query_api_url}graphql`;
-        await axios
-          .post(path, newPayload)
-          .then((res) => {
-            this.filteredData = res.data.data;
-            this.newTotalCount = res.data.total;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      if (this.$route.query.type === 'dataset') {
+        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+        this.filteredData = result[0];
+        this.newTotalCount = result[1];
       }
       else if (this.$route.query.type === 'tools') {
         // combine all the items be selected
@@ -182,12 +164,12 @@ export default {
         if (this.selectedItems.length > 0) {
           this.filteredData = currentData.filter((data, index) => {
             if (this.selectedItems.includes(data.Species) || this.selectedItems.includes(data.Organ)) {
-              return data
+              return data;
             }
           })
         } else {
           // if no item is selected, return all the data
-          this.filteredData = currentData
+          this.filteredData = currentData;
         }
       }
       else if (this.$route.query.type === 'news') {
@@ -278,5 +260,9 @@ export default {
     left: 0.3em !important;
     top: 0.1em !important;
   }
+}
+::v-deep .el-checkbox__inner {
+  width: 1em;
+  height: 1em;
 }
 </style>

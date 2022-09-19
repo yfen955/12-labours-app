@@ -1,6 +1,6 @@
 <template>
   <div class="container-default">
-    <div class="modal-container">
+    <div class="model-container">
       <div class="title-container">
         <h1>Flatmap Viewer</h1>
         <CopyLink />
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.modal-container {
+.model-container {
   border: 1px solid #E4E7ED;
 }
 .title-container {
@@ -97,6 +97,7 @@ export default {
   margin: .5em;
   height: 90vh;
   max-width: calc(100% - 48px);
+  overflow: hidden;
   padding-left: 12px;
   @import '~@abi-software/flatmapvuer/dist/flatmapvuer';
 

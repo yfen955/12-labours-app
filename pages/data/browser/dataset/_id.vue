@@ -167,11 +167,11 @@
                 <!-- view Scaffold -->
                 <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
                   <el-card class="medium">
-                    <img :src="imgPlaceholder" alt="image" class="modal-image">
+                    <img :src="imgPlaceholder" alt="image" class="model-image">
                     <p>Scaffold</p>
                     <p>{{ generateFilename(item.filename) }}</p>
                     <div>
-                      <el-button @click="viewScaffold(item)" class="modal-button">View Scaffold</el-button>
+                      <el-button @click="viewMap('scaffold', item.id)" class="model-button">View Scaffold</el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -183,7 +183,7 @@
                     <p>Flatmap</p>
                     <p></p>
                     <div>
-                      <el-button @click="viewFlatmap()" class="modal-button">View Flatmap</el-button>
+                      <el-button @click="viewMap('flatmap', 1)" class="model-button">View Flatmap</el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -193,9 +193,15 @@
                   <el-card class="medium">
                     <i class="el-icon-data-analysis"></i>
                     <p>Plot</p>
-                    <p>{{ generateFilename(item.filename) }}</p>
+                    <el-popover
+                      placement="top-start"
+                      trigger="hover"
+                      :content="generateFilename(item.filename)"
+                    >
+                      <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
+                    </el-popover>
                     <div>
-                      <el-button @click="viewPlot(item)" class="modal-button">View Plot</el-button>
+                      <el-button @click="viewMap('plot', item.id)" class="model-button">View Plot</el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -215,7 +221,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import backendQuery from '@/services/backendQuery';
 
 const datasetTabs = [
   {
@@ -266,7 +272,11 @@ export default {
         {
           to: {
             name: 'data-browser',
-            query: { type: 'dataset' }
+            query: {
+              type: 'dataset',
+              page: 1,
+              limit: 5,
+            }
           },
           label: 'Data Browser'
         },
@@ -287,15 +297,7 @@ export default {
   
   created: async function() {
     this.isLoading = true;
-    if (!this.$route.query.datasetTab) {
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: { datasetTab: 'abstract' }
-      })
-      this.currentTab = 'abstract';
-    } else {
-      this.currentTab = this.$route.query.datasetTab;
-    }
+    this.currentTab = this.$route.query.datasetTab;
     
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
@@ -311,7 +313,6 @@ export default {
 
     let plot = {additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]};
     this.plot_manifest_data = await this.fetch_data('manifest', plot, `${this.$route.params.id}`);
-    console.log(this.plot_manifest_data);
     if (this.plot_manifest_data.length === 0) {
       this.has_plot = false
     } else {
@@ -323,33 +324,19 @@ export default {
 
   methods: {
     async fetch_data(nodeName, filter_dict, searchContent) {
-      let fetched_data = [];
-      let newPayload = {
-        node: nodeName,
-        filter: filter_dict,
-        search: searchContent,
-        limit: 100,
-        page: 1,
-      };
-      console.log(newPayload);
-      const path = `${process.env.query_api_url}graphql`;
-      await axios
-        .post(path, newPayload)
-        .then((res) => {
-          fetched_data = res.data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-          fetched_data = [];
-        });
-      return fetched_data;
+      let result = await backendQuery.fetchGraphqlData(nodeName, filter_dict, searchContent, 100, 1);
+      return result[0];
     },
 
     // go back to the data browser for datasets
     goToDataset() {
       this.$router.push({
         path:'/data/browser',
-        query: { type: 'dataset' }
+        query: {
+          type: 'dataset',
+          page: 1,
+          limit: 5,
+        }
       })
     },
 
@@ -361,42 +348,16 @@ export default {
       })
     },
 
-    // go to map viewer with display & url
-    async viewScaffold(item) {
+    // go to the map viewer with id
+    viewMap(model, uuid) {
       let route = this.$router.resolve({
-        name: 'data-maps-scaffold-id',
+        name: `data-maps-${model}-id`,
         params: {
-          id: item.id,
+          id: uuid,
         }
       });
       window.open(route.href);
     },
-
-    // go to map viewer with display & taxo & uberonid
-    viewFlatmap() {
-      let route = this.$router.resolve({
-        name: 'data-maps-flatmap-id',
-        params: {
-          // id: item.id,
-          id: 1,
-        }
-      });
-      window.open(route.href);
-    },
-
-    viewPlot(item) {
-      let route = this.$router.resolve({
-        name: 'data-maps-plot-id',
-        params: {
-          id: item.id,
-        }
-      });
-      window.open(route.href);
-    },
-
-    // handlePreview() {
-
-    // },
 
     // // download the file
     // handleDownload() {
@@ -417,7 +378,8 @@ export default {
     generateFilename(name) {
       let name_list = name.split("/");
       let index = name_list.length - 1;
-      return name_list[index];
+      let fileName = name_list[index];
+      return fileName;
     }
   },
 }
@@ -471,15 +433,24 @@ hr {
 }
 .el-carousel__item {
   margin-top: 1em;
+  margin-left: 4.6em;
   width: 270px;
 }
 .medium {
-  height: 280px;
+  height: 270px;
+
+  .model-name {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
-.modal-image {
-  width: 70%;
+.model-image {
+  width: 90%;
 }
-.modal-button {
+.model-button {
   margin-top: 1em;
 }
+
 </style>

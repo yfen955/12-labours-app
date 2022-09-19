@@ -1,6 +1,6 @@
 <template>
   <div class="container-default">
-    <div class="modal-container">
+    <div class="model-container">
       <div class="title-container">
         <h1>Scaffold Viewer</h1>
         <CopyLink />
@@ -39,8 +39,8 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let data = await backendQuery.fetchManifestData('manifest', {}, `${this.$route.params.id}`, 100, 1);
-    data = data[0];
+    let data = await backendQuery.fetchGraphqlData('manifest', {}, `${this.$route.params.id}`, 100, 1);
+    data = data[0][0];
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
     this.url = `${process.env.query_api_url}download/data/datasets/${dataset_id}/${filename}`;
@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.modal-container {
+.model-container {
   border: 1px solid #E4E7ED;
 }
 .title-container {
