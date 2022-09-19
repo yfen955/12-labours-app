@@ -14,12 +14,7 @@
         <el-col :span="6" class="facet-menu">
           <FilterData
             :dataDetails="searchedData"
-            :mime_type_list="mime_type_list"
-            :mime_dict="mime_dict"
-            :species_list="species_list"
-            :species_dict="species_dict"
-            :anatomy_list="anatomy_list"
-            :anatomy_dict="anatomy_dict"
+            :filterDict="filterDict"
             :searchContent="searchContent"
             v-on:filter-data="updateFilteredData"
             v-on:filter-changed="searchAgain"
@@ -33,8 +28,6 @@
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
             :totalCount="totalCount"
-            v-on:pageChange="updateCurrentPage"
-            v-on:sizeChange="updateLimit"
           />
         </el-col>
       </el-row>
@@ -104,7 +97,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import backendQuery from '@/services/backendQuery';
 import dummyData from "../../assets/datasetData.json";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
@@ -116,22 +110,14 @@ export default {
   data: () => {
     return {
       isLoadingSearch: false,
-      currentPage: 1,
       totalCount: 0,
-      limit: 10,
       originalData: [],
       currentData: [],
       searchedData: [],
       filteredData: [],
-      mime_type_list: [],
-      mime_dict: {},
-      species_list: [],
-      species_dict: {},
-      anatomy_list: [],
-      anatomy_dict: {},
+      filterDict: {},
       file_type: [],
       errorMessage: '',
-      filterDict: {},
       searchContent: "",
     }
   },
@@ -146,35 +132,27 @@ export default {
     '$route.query.type': function(val) {
       this.dataChange(val)
     },
+
+    '$route.query.page': function(val) {
+      this.fetchData();
+    },
+    
+    '$route.query.limit': function(val) {
+      this.fetchData();
+    },
   },
 
   methods: {
     async fetchData() {
-      const path = `${process.env.query_api_url}graphql`;
-      let payload2 = {
-        node: 'experiment',
-        filter: {},
-        search: "",
-        limit: this.limit,
-        page: this.currentPage,
-      }
-      await axios
-        .post(path, payload2)
-        .then((res) => {
-          this.originalData = res.data.data;
-          this.currentData = res.data.data;
-          this.totalCount = res.data.total;
-        })
-        .catch((err) => {
-          console.log(err);
-          this.originalData = [];
-        });
+      let result = await backendQuery.fetchGraphqlData('experiment', this.filterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      this.originalData = result[0];
+      this.currentData = this.originalData;
+      this.totalCount = result[1];
     },
 
-    async fetchFilter(field) {
-      let type_list = [];
+    async fetchFilter() {
       let filter_dict = [];
-      const newPath = `${process.env.query_api_url}filter/${field}`;
+      const newPath = `${process.env.query_api_url}filters`;
         let payload3 = {
           program: "demo1",
           project: "12L",
@@ -182,17 +160,16 @@ export default {
         await axios
           .post(newPath, payload3)
           .then((res) => {
-            type_list = Object.keys(res.data);
             filter_dict = res.data;
           })
           .catch((err) => {
             console.log(err);
           });
-      return new Array(type_list, filter_dict);
+      return filter_dict;
     },
 
     async dataChange(val) {
-      this.isLoadingSearch = true
+      this.isLoadingSearch = true;
       if (val === 'tools') {
         this.originalData = dummyData;
       }
@@ -234,17 +211,7 @@ export default {
         await this.fetchData();
         
         // fetch all the data types
-        let mime = await this.fetchFilter("mimetypes");
-        this.mime_type_list = mime[0];
-        this.mime_dict = mime[1];
-
-        let species = await this.fetchFilter("species");
-        this.species_list = species[0];
-        this.species_dict = species[1];
-
-        let anatomy = await this.fetchFilter("anatomy");
-        this.anatomy_list = anatomy[0];
-        this.anatomy_dict = anatomy[1];
+        this.filterDict = await this.fetchFilter();
       }
 
       // update the searchedData & filteredData to the originalData
@@ -282,15 +249,9 @@ export default {
       this.searchContent = val;
     },
 
-    async updateCurrentPage(val) {
-      this.currentPage = val;
-      await this.fetchData();
-    },
-    
-    async updateLimit(val) {
-      this.limit = val;
-      await this.fetchData();
-    },
+    updateTotalNum(val) {
+      this.updateTotalNum = val;
+    }
   },
 }
 </script>

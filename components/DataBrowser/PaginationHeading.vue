@@ -10,8 +10,9 @@
     <pagination
       :total-count="totalCount"
       :page-size="limit"
-      @select-page="handleCurrentChange">
-    </pagination>
+      :current-page="currentPage"
+      @select-page="handleCurrentChange"
+    />
   </el-row>
 </template>
 
@@ -21,21 +22,50 @@ export default {
   props: [ "isLoadingSearch", "totalCount" ],
   data: () => {
     return {
-      currentPage: 1,
       limit: 5,
+      currentPage: 1,
     }
+  },
+
+  created: function() {
+    this.limit = parseInt(this.$route.query.limit);
+    this.currentPage = parseInt(this.$route.query.page);
+  },
+
+  watch: {
+    '$route.query.page': function(val) {
+      this.currentPage = parseInt(val);
+    },
+    
+    '$route.query.limit': function(val) {
+      this.limit = parseInt(val);
+    },
   },
 
   methods: {
     // update the page and first data
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.$router.replace({
+        path: '/data/browser',
+        query: {
+          type: this.$route.query.type,
+          page: val,
+          limit: this.$route.query.limit,
+        }
+      })
       this.$emit('pageChange', this.currentPage);
     },
 
     updatePageSize(val) {
-      this.limit = val;
-      this.$emit('sizeChange', this.limit);
+      this.$router.replace({
+        path: '/data/browser',
+        query: {
+          type: this.$route.query.type,
+          page: this.$route.query.page,
+          limit: val,
+        }
+      })
+      this.limit = val === 'View All' ?  100 : val;
     }
   },
 }

@@ -5,8 +5,6 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
-        v-on:pageChange="handlePageChange"
-        v-on:sizeChange="handleSizeChange"
       />
       <!-- data details -->
       <el-row class="data-container">
@@ -29,6 +27,9 @@
                     name: 'data-browser-dataset-id',
                     params: {
                       id: item.submitter_id,
+                    },
+                    query: {
+                      datasetTab: 'abstract',
                     }
                   }">
                     {{ item.dataset_descriptions[0].title }}
@@ -62,7 +63,6 @@
               </el-col>
               <el-col :span="18" style="margin-bottom:1em;">
                 <el-row>
-                  <!-- path: `/data/browser/dataset/${item.id}`, -->
                   <nuxt-link :to="{
                     name: 'data-browser-dataset-id',
                     params: {
@@ -102,7 +102,6 @@
             </el-row>
           </span>
           
-
           <!-- display news -->
           <span v-if="$route.query.type === 'news'"></span>
 
@@ -115,9 +114,10 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
-        v-on:pageChange="handlePageChange"
-        v-on:sizeChange="handleSizeChange"
       />
+      <!-- <template>
+        <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
+      </template> -->
     </div>
     <div v-else class="no-result">
       <p>No result</p>
@@ -134,23 +134,12 @@ export default {
   props: [ "isLoadingSearch", "dataDetails", "payload", "totalCount" ],
   data: () => {
     return {
-      limit: 10,
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
     }
   },
 
   methods: {
-    handlePageChange(val) {
-      this.currentPage = val;
-      this.$emit('pageChange', this.currentPage);
-    },
-
-    handleSizeChange(val) {
-      this.limit = val;
-      this.$emit('sizeChange', this.limit);
-    },
-
     async downloadFile(id) {
       window.open(
         `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
@@ -160,7 +149,7 @@ export default {
 
     displayKeywords(keywords) {
       let result = "";
-      let keywords_list = keywords.split(",");
+      let keywords_list = keywords.slice(2, -2).split("', '");
       for (let i = 0; i < keywords_list.length; i++) {
         result += ", " + keywords_list[i];
       }

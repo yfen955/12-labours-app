@@ -45,8 +45,8 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let data = await backendQuery.fetchManifestData('manifest', {}, `${this.$route.params.id}`, 100, 1);
-    data = data[0];
+    let data = await backendQuery.fetchGraphqlData('manifest', {}, `${this.$route.params.id}`, 100, 1);
+    data = data[0][0];
     let dataset_id = data.experiments[0].submitter_id;
     let filename = data.filename;
     this.source_url = `${process.env.query_api_url}download/data/datasets/${dataset_id}/${filename}`;

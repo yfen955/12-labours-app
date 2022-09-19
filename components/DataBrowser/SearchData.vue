@@ -143,6 +143,10 @@ export default {
   width: 100%;
   border-radius: .2rem;
   margin-right: 0.5rem;
+  
+  ::v-deep .el-input__inner {
+    width: 100%;
+  }
 }
 .btn-clear-search {
   color: black;

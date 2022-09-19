@@ -48,7 +48,7 @@ export default {
         btnLink:{caption:'Launch Interactive Viewer', to: {
             name: 'data-maps-scaffold-id',
             params: {
-              id: 'f865f693-c3b0-4c84-91ba-8db2ad58f6ec',
+              id: 'f865f693-c3b0-4c84-91ba-8db2ad58f6ec',   // use a default id for the scaffold
             }
           }
         }
@@ -61,7 +61,11 @@ export default {
           caption:'View Data Browser',
           to: {
             path: '/data/browser',
-            query: { type: 'dataset' }
+            query: {
+              type: 'dataset',
+              page: 1,
+              limit: 5,
+            }
           }
         }
       }
