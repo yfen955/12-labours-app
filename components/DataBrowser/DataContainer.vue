@@ -29,7 +29,7 @@
       </span>
 
       <!-- display tools -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
+      <span v-if="$route.query.type === 'tools'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -42,7 +42,7 @@
       </span>
 
       <!-- display news -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'news'">
+      <span v-if="$route.query.type === 'news'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -55,7 +55,7 @@
       </span>
 
       <!-- display laboursInfo -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
+      <span v-if="$route.query.type === 'laboursInfo'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -68,7 +68,6 @@
       </span>
     </div>
     <div v-else class="loading-container"></div>
-
   </div>
 </template>
 
