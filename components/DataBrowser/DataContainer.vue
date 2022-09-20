@@ -35,60 +35,39 @@
 
     <!-- display tools -->
     <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
-      <SearchData
-        :dataDetails="filteredData"
-        :filterDict="filterDict"
-        v-on:matchData="matchSearchData"
-        v-on:search-changed="filterAgain"
-        ref="search"
-      />
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData
-            :dataDetails="searchedData"
-            v-on:filter-data="updateFilteredData"
-            v-on:filter-changed="searchAgain"
-            v-on:filter-dict="updateFilterDict"
-            ref="filter"
-          />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" :payload="payload" />
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
 
     <!-- display news -->
     <span v-if="!isLoadingSearch && $route.query.type === 'news'">
-      <SearchData
-        :currentData="currentData"
-        v-on:matchData="matchSearchData"
-      />
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData
-            v-on:filter-data="updateFilteredData"
-            :file_type="file_type"
-            :dataDetails="searchedData"
-          />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <span v-if="errorMessage === ''">
-            <DisplayData :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" :payload="payload" />
-          </span>
-          <span v-else>{{errorMessage}}</span>
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
 
     <!-- display laboursInfo -->
     <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-data="updateFilteredData" />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="currentData" />
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
@@ -99,7 +78,6 @@
 <script>
 import axios from 'axios';
 import backendQuery from '@/services/backendQuery';
-import dummyData from "../../assets/datasetData.json";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
@@ -171,38 +149,10 @@ export default {
     async dataChange(val) {
       this.isLoadingSearch = true;
       if (val === 'tools') {
-        this.originalData = dummyData;
+        
       }
       else if (val === 'news') {
-        // const path = `${process.env.query_api_url}records/slide`;
-        // let payload2 = {
-        //   program: "demo1",
-        //   project: "12L",
-        //   format: "json",
-        // }
-        // await axios
-        //   .post(path, payload2)
-        //   .then((res) => {
-        //     if (res.data.error)
-        //       this.errorMessage = res.data.error
-        //     else {
-        //       this.originalData = res.data.data
-
-        //       // find out which types of tissue exist & sort the list
-        //       this.file_type = Array.from(new Set(this.originalData.map((data, index) =>{
-        //         return data.file_type
-        //       }))).sort()
-
-        //       // remove the undefined data
-        //       const nullIndex = this.file_type.findIndex(item => item == undefined);
-        //       if (nullIndex !== -1)
-        //         this.file_type.splice(nullIndex, 1);
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     this.originalData = [];
-        //   });
+        
       }
       else if (val === 'laboursInfo') {
         

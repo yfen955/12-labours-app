@@ -52,22 +52,7 @@ export default {
     return {
       filters_list: [],
       dataset_filters_list: [],
-      tools_filters_list: [
-        {
-          index: 0,
-          fieldName: "species",
-          title: "Species",
-          filter_items: ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
-          selectedItem: [],
-        },
-        {
-          index: 1,
-          fieldName: "organ",
-          title: "Organ",
-          filter_items: ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'],
-          selectedItem: [],
-        },
-      ],
+      tools_filters_list: [],
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
@@ -120,18 +105,13 @@ export default {
         }
       }
       else if (val === 'tools') {
-        this.filters_list = this.tools_filters_list;
+        
       }
       else if (val === 'news') {
-        this.filters_list.push({
-          index: 0,
-          title: "File types",
-          filter_items: this.file_type,
-          selectedItem: [],
-        })
+        
       }
       else if (val === 'laboursInfo') {
-        this.filters_list = this.labours_filters_list;
+        
       }
       this.selectedItems = [];
 
@@ -142,6 +122,7 @@ export default {
     async handleChange(originalData) {
       this.generateFiltersDict(this.filters_list);
 
+      // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
@@ -158,21 +139,12 @@ export default {
         this.newTotalCount = result[1];
       }
       else if (this.$route.query.type === 'tools') {
-        // combine all the items be selected
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem);
         
-        if (this.selectedItems.length > 0) {
-          this.filteredData = currentData.filter((data, index) => {
-            if (this.selectedItems.includes(data.Species) || this.selectedItems.includes(data.Organ)) {
-              return data;
-            }
-          })
-        } else {
-          // if no item is selected, return all the data
-          this.filteredData = currentData;
-        }
       }
       else if (this.$route.query.type === 'news') {
+
+      }
+      else if (this.$route.query.type === 'laboursInfo') {
 
       }
 
