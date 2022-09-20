@@ -46,7 +46,7 @@
 import backendQuery from '@/services/backendQuery';
 
 export default {
-  props:[ "searchContent", "file_type", "filterDict" ],
+  props:[ "searchContent", "file_type", "allFilterDict" ],
 
   data: () => {
     return {
@@ -78,16 +78,16 @@ export default {
     async dataChange(val) {
       if (val === 'dataset') {
         let count = 0;
-        for (let key in this.filterDict) {
+        for (let key in this.allFilterDict) {
           this.filters_list.push({
             index: count,
             fieldName: "submitter_id",
             title: key,
-            filter_items: Object.keys(this.filterDict[key]),
+            filter_items: Object.keys(this.allFilterDict[key]),
             selectedItem: [],
           });
           count += 1;
-          this.filters_dict_list.push(this.filterDict[key]);
+          this.filters_dict_list.push(this.allFilterDict[key]);
         }
       }
       else if (val === 'tools') {
@@ -156,12 +156,12 @@ export default {
       currentList.map((data, index) => {
         if (data.selectedItem.length !== 0) {
           let id_list = [];
-            data.selectedItem.forEach((item, i) => {
-              let id_dict = this.filters_dict_list[index];
-              id_list = id_list.concat(id_dict[item]);
-              return id_list;
-            })
-            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
+          data.selectedItem.forEach((item, i) => {
+            let id_dict = this.filters_dict_list[index];
+            id_list = id_list.concat(id_dict[item]);
+            return id_list;
+          })
+          this.filters_dict[data.title] = id_list;
         }
       })
       

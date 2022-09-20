@@ -4,14 +4,14 @@
     <div v-if="!isLoadingSearch">
       <span v-if="$route.query.type === 'dataset'">
         <SearchData
-          :filterDict="filterDict"
+          :currentFilterDict="currentFilterDict"
           v-on:matchData="updateModifiedData"
           v-on:search-content="updateSearchContent"
         />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
             <FilterData
-              :filterDict="filterDict"
+              :allFilterDict="allFilterDict"
               :searchContent="searchContent"
               v-on:filter-data="updateModifiedData"
               v-on:filter-dict="updateFilterDict"
@@ -29,7 +29,7 @@
       </span>
 
       <!-- display tools -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
+      <span v-if="$route.query.type === 'tools'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -42,7 +42,7 @@
       </span>
 
       <!-- display news -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'news'">
+      <span v-if="$route.query.type === 'news'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -55,7 +55,7 @@
       </span>
 
       <!-- display laboursInfo -->
-      <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
+      <span v-if="$route.query.type === 'laboursInfo'">
         <SearchData />
         <el-row :gutter="24">
           <el-col :span="6" class="facet-menu">
@@ -68,7 +68,6 @@
       </span>
     </div>
     <div v-else class="loading-container"></div>
-
   </div>
 </template>
 
@@ -87,7 +86,8 @@ export default {
       isLoadingSearch: false,
       totalCount: 0,
       currentData: [],
-      filterDict: {},
+      allFilterDict: {},
+      currentFilterDict: {},
       file_type: [],
       errorMessage: '',
       searchContent: "",
@@ -116,7 +116,7 @@ export default {
 
   methods: {
     async fetchData() {
-      let result = await backendQuery.fetchGraphqlData('experiment', this.filterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchGraphqlData('experiment', this.allFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       this.currentData = result[0];
       this.totalCount = result[1];
     },
@@ -126,7 +126,7 @@ export default {
       await axios
         .post(newPath, this.payload)
         .then((res) => {
-          this.filterDict = res.data;
+          this.allFilterDict = res.data;
         })
         .catch((err) => {
           console.log(err);
@@ -137,8 +137,7 @@ export default {
       this.isLoadingSearch = true;
 
       // show loading when fetching data
-      let thisContent = this;
-      let loading = thisContent.$loading({
+      let loading = this.$loading({
         lock: true,
         text: 'Loading...',
         spinner: 'el-icon-loading',
@@ -173,7 +172,7 @@ export default {
     },
 
     updateFilterDict(val) {
-      this.filterDict = val;
+      this.currentFilterDict = val;
     },
 
     updateSearchContent(val) {

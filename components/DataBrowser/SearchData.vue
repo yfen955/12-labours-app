@@ -30,7 +30,7 @@
 import backendQuery from '@/services/backendQuery';
 
 export default {
-  props: [ "dataDetails", "filterDict" ],
+  props: [ "dataDetails", "currentFilterDict" ],
   data() {
     return {
       searchContent: '',
@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async onSubmit() {
-      let result = await backendQuery.fetchGraphqlData('experiment', this.filterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       let matchData = result[0];
       let newTotalCount = result[1];
       this.$emit('matchData', matchData, newTotalCount);

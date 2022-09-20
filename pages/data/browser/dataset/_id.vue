@@ -223,6 +223,7 @@
         </el-col>
       </el-row>
     </div>
+    <div v-else class="loading-container"></div>
   </div>
 </template>
 
@@ -304,6 +305,14 @@ export default {
   created: async function() {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
+
+    // show loading when fetching data
+    let loading = this.$loading({
+      lock: true,
+      text: 'Loading...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.5)',
+    })
     
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
@@ -326,6 +335,8 @@ export default {
 
     this.modifyName();
     
+    // close loading
+    loading.close();
     this.isLoading = false;
   },
 
@@ -393,6 +404,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.loading-container {
+  height: 30em;
+}
 .img-container {
   text-align: center;
 }
