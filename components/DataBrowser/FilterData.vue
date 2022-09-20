@@ -156,12 +156,12 @@ export default {
       currentList.map((data, index) => {
         if (data.selectedItem.length !== 0) {
           let id_list = [];
-            data.selectedItem.forEach((item, i) => {
-              let id_dict = this.filters_dict_list[index];
-              id_list = id_list.concat(id_dict[item]);
-              return id_list;
-            })
-            this.filters_dict[data.fieldName] = Array.from(new Set(id_list));
+          data.selectedItem.forEach((item, i) => {
+            let id_dict = this.filters_dict_list[index];
+            id_list = id_list.concat(id_dict[item]);
+            return id_list;
+          })
+          this.filters_dict[data.title] = id_list;
         }
       })
       
