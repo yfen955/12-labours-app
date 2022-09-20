@@ -307,8 +307,7 @@ export default {
     this.currentTab = this.$route.query.datasetTab;
 
     // show loading when fetching data
-    let thisContent = this;
-    let loading = thisContent.$loading({
+    let loading = this.$loading({
       lock: true,
       text: 'Loading...',
       spinner: 'el-icon-loading',
