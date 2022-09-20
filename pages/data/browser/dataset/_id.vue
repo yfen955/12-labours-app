@@ -440,7 +440,7 @@ hr {
 }
 .el-carousel__item {
   margin-top: 1em;
-  margin-left: 4.6em;
+  margin-left: calc((50% - 270px) / 2);
   width: 270px;
 }
 .medium {
