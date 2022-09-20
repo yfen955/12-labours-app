@@ -153,7 +153,7 @@ export default {
 
     generateFiltersDict(currentList) {
       this.filters_dict = {};
-      currentList.map((data, index) => {
+      currentList.forEach((data, index) => {
         if (data.selectedItem.length !== 0) {
           let id_list = [];
           data.selectedItem.forEach((item, i) => {
