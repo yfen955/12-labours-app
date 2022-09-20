@@ -5,6 +5,7 @@
     </p>
     <pagination-menu 
       :page-size="limit"
+      :pageSizeOptions="pageSizeOptions"
       @update-page-size="updatePageSize"
     />
     <pagination
@@ -24,6 +25,7 @@ export default {
     return {
       limit: 5,
       currentPage: 1,
+      pageSizeOptions: [5, 10, 20, 50, 'View All']
     }
   },
 

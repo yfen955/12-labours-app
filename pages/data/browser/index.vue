@@ -102,6 +102,8 @@ export default {
         path: '/data/browser',
         query: {
           type: val,
+          page: 1,
+          limit: this.$route.query.limit,
         }
       })
     }
