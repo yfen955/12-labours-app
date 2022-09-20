@@ -65,34 +65,47 @@ export default {
       category: '',
       projects_list: [],
       payload: {
-        program: "demo1",
-        project: "12L",
-        format: "json",
+        program: "",
+        project: "",
       },
     }
   },
 
   created: async function() {
-    // // fetch the payload
-    // this.isLoadingSearch = true
-    // const path = `${process.env.query_api_url}${this.program}/project`;
-    // await axios
-    //   .get(path)
-    //   .then((res) => {
-    //     this.projects_list = res.data.project
-    //     this.isLoadingSearch = false
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // this.payload = {
-    //     program: this.program,
-    //     project: this.projects_list[1],
-    //     format: this.format,
-    //   };
-
+    this.isLoadingSearch = true;
     // update the category to the current category in the url
     this.category = this.$route.query.type;
+    
+    // fetch the program
+    let program = "";
+    let path = `${process.env.query_api_url}program`;
+    await axios
+      .get(path)
+      .then((res) => {
+        program = res.data.program[0];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // fetch the project
+    let project = "";
+    path = `${process.env.query_api_url}project/${program}`;
+    await axios
+      .get(path)
+      .then((res) => {
+        project = res.data.project[0];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+    // update the payload
+    this.payload = {
+      program: program,
+      project: project,
+    };
+    this.isLoadingSearch = false;
   },
 
   methods: {

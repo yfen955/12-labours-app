@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import backendQuery from '@/services/backendQuery';
 
 export default {
   props: [ "dataDetails", "filterDict" ],
@@ -37,46 +37,17 @@ export default {
     }
   },
 
-  watch: {
-    searchContent(after, before) {
-      this.$emit("search-content", this.searchContent)
-      if (after.length === 0) {
-        this.$emit('search-changed', true);
-      }
-    },
-  },
-
   methods: {
-    async onSubmit(originalData) {
-      let matchData = [];
-      
-      if (this.searchContent.length > 0) {
-        let newPayload = {
-          node: 'dataset_description',
-          filter: this.filterDict,
-          search: this.searchContent,
-          limit: 10,
-          page: 1,
-        };
-        const path = `${process.env.query_api_url}graphql`;
-        await axios
-          .post(path, newPayload)
-          .then((res) => {
-            matchData = res.data.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        matchData = originalData;
-      }
-      
-      this.$emit('matchData', matchData);
+    async onSubmit() {
+      let result = await backendQuery.fetchGraphqlData('experiment', this.filterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let matchData = result[0];
+      let newTotalCount = result[1];
+      this.$emit('matchData', matchData, newTotalCount);
     },
 
-    clearSearch() {
+    async clearSearch() {
       this.searchContent = '';
-      this.$emit('matchData', this.dataDetails);
+      this.onSubmit();
     }
   }
 }
