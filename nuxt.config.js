@@ -143,6 +143,12 @@ export default {
   build: {
     transpile: [/^element-ui/],
   },
+
+  vue: {
+    config: {
+      devtools: true
+    }
+  },
 };
 
 console.log(process.env.API_URL)

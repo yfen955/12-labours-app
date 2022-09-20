@@ -1,76 +1,73 @@
 <template>
   <div>
     <!-- display dataset -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'dataset'">
-      <SearchData
-        :dataDetails="filteredData"
-        :filterDict="filterDict"
-        v-on:matchData="matchSearchData"
-        v-on:search-changed="filterAgain"
-        v-on:search-content="updateSearchContent"
-        ref="search"
-      />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData
-            :dataDetails="searchedData"
-            :filterDict="filterDict"
-            :searchContent="searchContent"
-            v-on:filter-data="updateFilteredData"
-            v-on:filter-changed="searchAgain"
-            v-on:filter-dict="updateFilterDict"
-            ref="filter"
-          />
-        </el-col>
-        <el-col :span="18">
-          <DisplayData
-            :dataDetails="currentData"
-            :isLoadingSearch="isLoadingSearch"
-            :payload="payload"
-            :totalCount="totalCount"
-          />
-        </el-col>
-      </el-row>
-    </span>
+    <div v-if="!isLoadingSearch">
+      <span v-if="$route.query.type === 'dataset'">
+        <SearchData
+          :filterDict="filterDict"
+          v-on:matchData="updateModifiedData"
+          v-on:search-content="updateSearchContent"
+        />
+        <el-row :gutter="24">
+          <el-col :span="6" class="facet-menu">
+            <FilterData
+              :filterDict="filterDict"
+              :searchContent="searchContent"
+              v-on:filter-data="updateModifiedData"
+              v-on:filter-dict="updateFilterDict"
+            />
+          </el-col>
+          <el-col :span="18">
+            <DisplayData
+              :dataDetails="currentData"
+              :isLoadingSearch="isLoadingSearch"
+              :payload="payload"
+              :totalCount="totalCount"
+            />
+          </el-col>
+        </el-row>
+      </span>
 
-    <!-- display tools -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
-      <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
-    </span>
+      <!-- display tools -->
+      <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
+        <SearchData />
+        <el-row :gutter="24">
+          <el-col :span="6" class="facet-menu">
+            <FilterData />
+          </el-col>
+          <el-col :span="18">
+            <!-- <DisplayData /> -->
+          </el-col>
+        </el-row>
+      </span>
 
-    <!-- display news -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'news'">
-      <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
-    </span>
+      <!-- display news -->
+      <span v-if="!isLoadingSearch && $route.query.type === 'news'">
+        <SearchData />
+        <el-row :gutter="24">
+          <el-col :span="6" class="facet-menu">
+            <FilterData />
+          </el-col>
+          <el-col :span="18">
+            <!-- <DisplayData /> -->
+          </el-col>
+        </el-row>
+      </span>
 
-    <!-- display laboursInfo -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
-      <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
-    </span>
+      <!-- display laboursInfo -->
+      <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
+        <SearchData />
+        <el-row :gutter="24">
+          <el-col :span="6" class="facet-menu">
+            <FilterData />
+          </el-col>
+          <el-col :span="18">
+            <!-- <DisplayData /> -->
+          </el-col>
+        </el-row>
+      </span>
+    </div>
+    <div v-else class="loading-container"></div>
 
   </div>
 </template>
@@ -89,10 +86,7 @@ export default {
     return {
       isLoadingSearch: false,
       totalCount: 0,
-      originalData: [],
       currentData: [],
-      searchedData: [],
-      filteredData: [],
       filterDict: {},
       file_type: [],
       errorMessage: '',
@@ -123,31 +117,34 @@ export default {
   methods: {
     async fetchData() {
       let result = await backendQuery.fetchGraphqlData('experiment', this.filterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
-      this.originalData = result[0];
-      this.currentData = this.originalData;
+      this.currentData = result[0];
       this.totalCount = result[1];
     },
 
     async fetchFilter() {
-      let filter_dict = [];
       const newPath = `${process.env.query_api_url}filters`;
-        let payload3 = {
-          program: "demo1",
-          project: "12L",
-        }
-        await axios
-          .post(newPath, payload3)
-          .then((res) => {
-            filter_dict = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      return filter_dict;
+      await axios
+        .post(newPath, this.payload)
+        .then((res) => {
+          this.filterDict = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     async dataChange(val) {
       this.isLoadingSearch = true;
+
+      // show loading when fetching data
+      let thisContent = this;
+      let loading = thisContent.$loading({
+        lock: true,
+        text: 'Loading...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.5)',
+      })
+
       if (val === 'tools') {
         
       }
@@ -160,35 +157,19 @@ export default {
       else {  // if val === dataset
         await this.fetchData();
         
-        // fetch all the data types
-        this.filterDict = await this.fetchFilter();
+        // fetch all the filters
+        await this.fetchFilter();
       }
 
-      // update the searchedData & filteredData to the originalData
-      this.currentData = this.originalData;
-      this.searchedData = this.originalData;
-      this.filteredData = this.originalData;
+      // close loading
+      loading.close();
       this.isLoadingSearch = false;
     },
 
-    // update the variables after they change
-    matchSearchData(data) {
-      this.searchedData = data;
-      this.currentData = data;
-    },
-
-    updateFilteredData(data, total) {
-      this.filteredData = data;
+    // update the data after they change
+    updateModifiedData(data, total) {
       this.currentData = data;
       this.totalCount = total;
-    },
-
-    filterAgain() {
-      this.$refs.filter.handleChange(this.originalData);
-    },
-
-    searchAgain() {
-      this.$refs.search.onSubmit(this.originalData);
     },
 
     updateFilterDict(val) {
@@ -209,5 +190,8 @@ export default {
 <style scoped lang="scss">
 .facet-menu {
   margin-top: 1em;
+}
+.loading-container {
+  height: 30em;
 }
 </style>

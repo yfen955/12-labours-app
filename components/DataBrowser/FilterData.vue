@@ -46,7 +46,7 @@
 import backendQuery from '@/services/backendQuery';
 
 export default {
-  props:[ "dataDetails", "searchContent", "file_type", "filterDict" ],
+  props:[ "searchContent", "file_type", "filterDict" ],
 
   data: () => {
     return {
@@ -70,20 +70,6 @@ export default {
     '$route.query.type': {
       handler() {
         this.dataChange(this.$route.query.type);
-      }
-    },
-
-    selectedItems(after, before) {
-      // this.$router.push({
-      //   path:'/data/browser',
-      //   query: {
-      //     type: 'dataset',
-      //     filter: this.selectedItems,
-      //   }
-      // })
-      // this.$router.query.filter.replace( this.selectedItems )
-      if (after.length === 0) {
-        this.$emit('filter-changed', true);
       }
     },
   },
@@ -119,18 +105,13 @@ export default {
 
     },
 
-    async handleChange(originalData) {
+    async handleChange() {
       this.generateFiltersDict(this.filters_list);
 
       // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
-      }
-
-      let currentData = this.dataDetails;
-      if (originalData !== undefined) {
-        currentData = originalData;
       }
 
       if (this.$route.query.type === 'dataset') {
@@ -175,9 +156,9 @@ export default {
       currentList.map((data, index) => {
         if (data.selectedItem.length !== 0) {
           let id_list = [];
-            data.selectedItem.map((item, i) => {
+            data.selectedItem.forEach((item, i) => {
               let id_dict = this.filters_dict_list[index];
-              id_list = [...id_list,...id_dict[item]];
+              id_list = id_list.concat(id_dict[item]);
               return id_list;
             })
             this.filters_dict[data.fieldName] = Array.from(new Set(id_list));

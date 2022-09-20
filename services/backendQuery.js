@@ -3,7 +3,7 @@ import axios from "axios";
 async function fetchGraphqlData(node, filter, search, limit, page) {
   let fetched_data = [];
   let totalNum = 0;
-  let newPayload = {
+  let payload = {
     node: node,
     filter: filter,
     search: search,
@@ -12,7 +12,7 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
   };
   const path = `${process.env.query_api_url}graphql`;
   await axios
-    .post(path, newPayload)
+    .post(path, payload)
     .then((res) => {
       fetched_data = res.data.data;
       totalNum = res.data.total;
