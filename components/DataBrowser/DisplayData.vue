@@ -1,6 +1,16 @@
 <template>
   <div>
-    <div v-if="dataDetails.length > 0">
+    <!-- loading -->
+    <el-table
+      v-show="isLoadingSearch"
+      v-loading="isLoadingSearch"
+      element-loading-text="Loading..."
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.5)"
+      class="loading-container">
+    </el-table>
+
+    <div v-if="!isLoadingSearch && dataDetails.length > 0">
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
@@ -115,11 +125,8 @@
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
       />
-      <!-- <template>
-        <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
-      </template> -->
     </div>
-    <div v-else class="no-result">
+    <div v-if="!isLoadingSearch && dataDetails.length === 0" class="no-result">
       <p>No result</p>
     </div>
   </div>
@@ -161,6 +168,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.loading-container {
+  height: 30em;
+}
 .data-container {
   border: 1px solid #ececee;
   padding: 1em;

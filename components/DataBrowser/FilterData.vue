@@ -72,6 +72,11 @@ export default {
         this.dataChange(this.$route.query.type);
       }
     },
+    'allFilterDict': {
+      handler() {
+        this.dataChange(this.$route.query.type);
+      }
+    }
   },
 
   methods: {

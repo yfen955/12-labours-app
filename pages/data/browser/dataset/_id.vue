@@ -1,6 +1,17 @@
 <template>
   <div>
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
+
+    <!-- loading -->
+    <el-table
+      v-show="isLoading"
+      v-loading="isLoading"
+      element-loading-text="Loading..."
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.5)"
+      class="loading-container">
+    </el-table>
+
     <div class="container-default" v-if="!isLoading">
       <el-row :gutter="20">
 
@@ -223,7 +234,6 @@
         </el-col>
       </el-row>
     </div>
-    <div v-else class="loading-container"></div>
   </div>
 </template>
 
@@ -307,12 +317,12 @@ export default {
     this.currentTab = this.$route.query.datasetTab;
 
     // show loading when fetching data
-    let loading = this.$loading({
-      lock: true,
-      text: 'Loading...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.5)',
-    })
+    // let loading = this.$loading({
+    //   lock: false,
+    //   text: 'Loading...',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.5)',
+    // })
     
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
@@ -336,7 +346,7 @@ export default {
     this.modifyName();
     
     // close loading
-    loading.close();
+    // loading.close();
     this.isLoading = false;
   },
 

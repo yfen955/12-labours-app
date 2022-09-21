@@ -1,73 +1,69 @@
 <template>
   <div>
-    <!-- display dataset -->
-    <div v-if="!isLoadingSearch">
-      <span v-if="$route.query.type === 'dataset'">
-        <SearchData
-          :currentFilterDict="currentFilterDict"
-          v-on:matchData="updateModifiedData"
-          v-on:search-content="updateSearchContent"
-        />
-        <el-row :gutter="24">
-          <el-col :span="6" class="facet-menu">
-            <FilterData
-              :allFilterDict="allFilterDict"
-              :searchContent="searchContent"
-              v-on:filter-data="updateModifiedData"
-              v-on:filter-dict="updateFilterDict"
-            />
-          </el-col>
-          <el-col :span="18">
-            <DisplayData
-              :dataDetails="currentData"
-              :isLoadingSearch="isLoadingSearch"
-              :payload="payload"
-              :totalCount="totalCount"
-            />
-          </el-col>
-        </el-row>
-      </span>
+    <span v-if="$route.query.type === 'dataset'">
+      <SearchData
+        :currentFilterDict="currentFilterDict"
+        v-on:matchData="updateModifiedData"
+        v-on:search-content="updateSearchContent"
+      />
+      <el-row :gutter="24">
+        <el-col :span="6" class="facet-menu">
+          <FilterData
+            :allFilterDict="allFilterDict"
+            :searchContent="searchContent"
+            v-on:filter-data="updateModifiedData"
+            v-on:filter-dict="updateFilterDict"
+          />
+        </el-col>
+        <el-col :span="18">
+          <DisplayData
+            :dataDetails="currentData"
+            :isLoadingSearch="isLoadingSearch"
+            :payload="payload"
+            :totalCount="totalCount"
+          />
+        </el-col>
+      </el-row>
+    </span>
 
-      <!-- display tools -->
-      <span v-if="$route.query.type === 'tools'">
-        <SearchData />
-        <el-row :gutter="24">
-          <el-col :span="6" class="facet-menu">
-            <FilterData />
-          </el-col>
-          <el-col :span="18">
-            <!-- <DisplayData /> -->
-          </el-col>
-        </el-row>
-      </span>
+    <!-- display tools -->
+    <span v-if="$route.query.type === 'tools'">
+      <SearchData />
+      <el-row :gutter="24">
+        <el-col :span="6" class="facet-menu">
+          <FilterData />
+        </el-col>
+        <el-col :span="18">
+          <!-- <DisplayData /> -->
+        </el-col>
+      </el-row>
+    </span>
 
-      <!-- display news -->
-      <span v-if="$route.query.type === 'news'">
-        <SearchData />
-        <el-row :gutter="24">
-          <el-col :span="6" class="facet-menu">
-            <FilterData />
-          </el-col>
-          <el-col :span="18">
-            <!-- <DisplayData /> -->
-          </el-col>
-        </el-row>
-      </span>
+    <!-- display news -->
+    <span v-if="$route.query.type === 'news'">
+      <SearchData />
+      <el-row :gutter="24">
+        <el-col :span="6" class="facet-menu">
+          <FilterData />
+        </el-col>
+        <el-col :span="18">
+          <!-- <DisplayData /> -->
+        </el-col>
+      </el-row>
+    </span>
 
-      <!-- display laboursInfo -->
-      <span v-if="$route.query.type === 'laboursInfo'">
-        <SearchData />
-        <el-row :gutter="24">
-          <el-col :span="6" class="facet-menu">
-            <FilterData />
-          </el-col>
-          <el-col :span="18">
-            <!-- <DisplayData /> -->
-          </el-col>
-        </el-row>
-      </span>
-    </div>
-    <div v-else class="loading-container"></div>
+    <!-- display laboursInfo -->
+    <span v-if="$route.query.type === 'laboursInfo'">
+      <SearchData />
+      <el-row :gutter="24">
+        <el-col :span="6" class="facet-menu">
+          <FilterData />
+        </el-col>
+        <el-col :span="18">
+          <!-- <DisplayData /> -->
+        </el-col>
+      </el-row>
+    </span>
   </div>
 </template>
 
@@ -83,7 +79,7 @@ export default {
   props: [ "category", "payload" ],
   data: () => {
     return {
-      isLoadingSearch: false,
+      isLoadingSearch: true,
       totalCount: 0,
       currentData: [],
       allFilterDict: {},
@@ -116,7 +112,7 @@ export default {
 
   methods: {
     async fetchData() {
-      let result = await backendQuery.fetchGraphqlData('experiment', this.allFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       this.currentData = result[0];
       this.totalCount = result[1];
     },
@@ -136,14 +132,6 @@ export default {
     async dataChange(val) {
       this.isLoadingSearch = true;
 
-      // show loading when fetching data
-      let loading = this.$loading({
-        lock: true,
-        text: 'Loading...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.5)',
-      })
-
       if (val === 'tools') {
         
       }
@@ -154,14 +142,10 @@ export default {
         
       }
       else {  // if val === dataset
-        await this.fetchData();
-        
-        // fetch all the filters
         await this.fetchFilter();
+        await this.fetchData();
       }
 
-      // close loading
-      loading.close();
       this.isLoadingSearch = false;
     },
 
@@ -189,8 +173,5 @@ export default {
 <style scoped lang="scss">
 .facet-menu {
   margin-top: 1em;
-}
-.loading-container {
-  height: 30em;
 }
 </style>
