@@ -17,6 +17,9 @@
         </el-col>
         <el-col :span="18">
           <DisplayData
+            v-loading="isLoadingSearch"
+            element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
             :payload="payload"
