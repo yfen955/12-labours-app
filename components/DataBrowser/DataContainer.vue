@@ -1,157 +1,182 @@
 <template>
   <div>
-    <!-- display dataset -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'dataset'">
+    <span v-if="$route.query.type === 'dataset'">
       <SearchData
-        :currentData="currentData"
-        v-on:matchData="matchSearchData"
+        :currentFilterDict="currentFilterDict"
+        v-on:matchData="updateModifiedData"
+        v-on:search-content="updateSearchContent"
+        v-on:isLoading="updateLoading"
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData :dataDetails="searchedData" v-on:filter-data="updateFilteredData" />
+          <FilterData
+            :allFilterDict="allFilterDict"
+            :searchContent="searchContent"
+            v-on:filter-data="updateModifiedData"
+            v-on:filter-dict="updateFilterDict"
+            v-on:isLoading="updateLoading"
+          />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="filteredData" :isLoadingSearch="isLoadingSearch" />
+          <DisplayData
+            v-loading="isLoadingSearch"
+            element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading"
+            :dataDetails="currentData"
+            :isLoadingSearch="isLoadingSearch"
+            :payload="payload"
+            :totalCount="totalCount"
+          />
         </el-col>
       </el-row>
     </span>
 
     <!-- display tools -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'tools'">
+    <span v-if="$route.query.type === 'tools'">
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-data="updateFilteredData" />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <DisplayTools :dataDetails="currentData" :isLoadingSearch="isLoadingSearch" />
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
 
     <!-- display news -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'news'">
-      <SearchData
-        :currentData="currentData"
-        v-on:matchData="matchSearchData"
-      />
+    <span v-if="$route.query.type === 'news'">
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData
-            v-on:filter-data="updateFilteredData"
-            :tissues_type="tissues_type"
-            :dataDetails="searchedData"
-          />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <span v-if="errorMessage === ''">
-            <DisplayData :isLoadingSearch="isLoadingSearch" :dataDetails="filteredData" :payload="payload" />
-          </span>
-          <span v-else>{{errorMessage}}</span>
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
 
     <!-- display laboursInfo -->
-    <span v-if="!isLoadingSearch && $route.query.type === 'laboursInfo'">
+    <span v-if="$route.query.type === 'laboursInfo'">
+      <SearchData />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
-          <FilterData v-on:filter-data="updateFilteredData" />
+          <FilterData />
         </el-col>
         <el-col :span="18">
-          <DisplayData :dataDetails="currentData" />
+          <!-- <DisplayData /> -->
         </el-col>
       </el-row>
     </span>
-
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import datasetData from "../../assets/datasetData.json";
+import axios from 'axios';
+import backendQuery from '@/services/backendQuery';
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
-import sparcInfoData from "../../assets/sparcInfoData.json";
 
 export default {
   components: { SearchData, FilterData, DisplayData },
   props: [ "category", "payload" ],
   data: () => {
     return {
-      isLoadingSearch: false,
-      currentData: datasetData,
-      searchedData: datasetData,
-      filteredData: datasetData,
-      tissues_type: [],
+      isLoadingSearch: true,
+      totalCount: 0,
+      currentData: [],
+      allFilterDict: {},
+      currentFilterDict: {},
+      file_type: [],
       errorMessage: '',
+      searchContent: "",
     }
+  },
+
+  created: function() {
+    // when open find data page, call the function to fetch the data
+    this.dataChange(this.$route.query.type);
   },
 
   watch: {
     // if the type variable in the url changes, change the current data to the data in that category
-    '$route.query.type': async function(val) {
-      this.isLoadingSearch = true
-      if (val === 'tools') {
-        const path = `${process.env.query_api_url}nodes/core_metadata_collection`;
-        await axios
-          .post(path, this.payload)
-          .then((res) => {
-            this.currentData = res.data.data
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      else if (val === 'news') {
-        // const path = `${process.env.query_api_url}nodes/sample`;
-        const path = `${process.env.query_api_url}dummy`;
-        await axios
-          // .post(path, this.payload)
-          .get(path)
-          .then((res) => {
-            if (res.data.error)
-              this.errorMessage = res.data.error
-            else {
-              // this.currentData = res.data.data
-              this.currentData = res.data
+    '$route.query.type': function(val) {
+      this.dataChange(val);
+    },
 
-              // find out which types of tissue exist & sort the list
-              this.tissues_type = Array.from(new Set(this.currentData.map((data, index) =>{
-                return data.tissue_type
-              }))).sort()
-
-              // remove the undefined data
-              const nullIndex = this.tissues_type.findIndex(item => item == undefined);
-              if (nullIndex !== -1)
-                this.tissues_type.splice(nullIndex, 1);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      else if (val === 'laboursInfo')
-        this.currentData = sparcInfoData;
-      else
-        this.currentData = datasetData;
-
-      // update the searchedData & filteredData to the currentData
-      this.searchedData = this.currentData;
-      this.filteredData = this.searchedData;
-      this.isLoadingSearch = false;
-    }
+    '$route.query.page': function(val) {
+      this.fetchData();
+    },
+    
+    '$route.query.limit': function(val) {
+      this.fetchData();
+    },
   },
 
   methods: {
-    // update the data after search & filter
-    matchSearchData(matchData) {
-      this.searchedData = matchData;
-      this.filteredData = this.searchedData;
+    async fetchData() {
+      this.isLoadingSearch = true;
+      let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      this.currentData = result[0];
+      this.totalCount = result[1];
+      this.isLoadingSearch = false;
     },
-    updateFilteredData(data) {
-      this.filteredData = data;
+
+    async fetchFilter() {
+      const newPath = `${process.env.query_api_url}filters`;
+      await axios
+        .post(newPath, this.payload)
+        .then((res) => {
+          this.allFilterDict = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+
+    async dataChange(val) {
+      this.isLoadingSearch = true;
+      this.currentData = [];
+      if (val === 'tools') {
+        
+      }
+      else if (val === 'news') {
+        
+      }
+      else if (val === 'laboursInfo') {
+        
+      }
+      else {  // if val === dataset
+        await this.fetchFilter();
+        await this.fetchData();
+      }
+
+      this.isLoadingSearch = false;
+    },
+
+    // update the data after they change
+    updateModifiedData(data, total) {
+      this.currentData = data;
+      this.totalCount = total;
+    },
+
+    updateFilterDict(val) {
+      this.currentFilterDict = val;
+    },
+
+    updateSearchContent(val) {
+      this.searchContent = val;
+    },
+
+    updateTotalNum(val) {
+      this.updateTotalNum = val;
+    },
+
+    updateLoading(val) {
+      this.isLoadingSearch = val;
+    }
   },
 }
 </script>

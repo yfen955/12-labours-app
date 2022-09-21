@@ -8,32 +8,33 @@
         No filters applied
       </span>
       <el-tag
-        v-for="facet in selectedItems"
-        :key="facet"
+        v-for="(facet, index) in selectedItems"
+        :key="index"
         class="tags"
         disable-transitions
         closable
         @close="deselectFacet(facet)"
       >
-        <span v-if="facet !== undefined">{{ facet }}</span>
+        <span v-if="facet !== 'NA'">{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
       </el-tag>
     </el-card>
     <el-collapse>
       <el-collapse-item
-        v-for="filter in filters_list"
-        :key="filter.index"
+        v-for="(filter, index) in filters_list"
+        :key="index"
         :title="filter.title"
         v-model="filter.filter_items"
       >
         <el-checkbox-group v-model="filter.selectedItem">
           <el-checkbox
             class="filter-selecter"
-            v-for="type in filter.filter_items"
-            :key="type"
+            v-for="(type, index) in filter.filter_items"
+            v-show="type !== 'NA'"
+            :key="index"
             :label="type"
             @change="handleChange()"
           >
-            {{ type }}
+            {{ type[0].toUpperCase() + type.slice(1) }}
           </el-checkbox>
         </el-checkbox-group>
       </el-collapse-item>
@@ -42,116 +43,144 @@
 </template>
 
 <script>
+import backendQuery from '@/services/backendQuery';
+
 export default {
-  props:[ "dataDetails", "tissues_type" ],
+  props:[ "searchContent", "file_type", "allFilterDict" ],
 
   data: () => {
     return {
       filters_list: [],
-      dataset_filters_list: [
-        {
-          index: 0,
-          title: "Species",
-          filter_items: ['Human', 'Cat', 'Rat', 'Mouse', 'Pig'],
-          selectedItem: [],
-        },
-        {
-          index: 1,
-          title: "Organ",
-          filter_items: ['Bladder', 'Colon', 'Heart', 'Stomach', 'Lungs', 'Lung (Left)', 'Whole body', 'Brainstem'],
-          selectedItem: [],
-        },
-      ],
+      dataset_filters_list: [],
       tools_filters_list: [],
       labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
+      filters_dict: {},
+      newTotalCount: 0,
+      filters_dict_list: [],
+      isLoading: false,
     };
   },
 
   created: function() {
-    if (this.$route.query.type === 'dataset') {
-      this.filters_list = this.dataset_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'tools') {
-      this.filters_list = this.tools_filters_list;
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'news') {
-      this.filters_list.push({
-        index: 0,
-        title: "Tissues",
-        filter_items: this.tissues_type,
-        selectedItem: [],
-      })
-      this.selectedItems = [];
-    }
-    else if (this.$route.query.type === 'laboursInfo') {
-      this.filters_list = this.labours_filters_list;
-      this.selectedItems = [];
+    this.dataChange(this.$route.query.type);
+  },
+
+  watch: {
+    '$route.query.type': {
+      handler() {
+        this.dataChange(this.$route.query.type);
+      }
+    },
+    'allFilterDict': {
+      handler() {
+        this.dataChange(this.$route.query.type);
+      }
+    },
+    'isLoading': {
+      handler() {
+        this.$emit('isLoading', this.isLoading);
+      }
     }
   },
 
   methods: {
-    async handleChange() {
-      if (this.$route.query.type === 'dataset') {
-        // combine all the items be selected
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
-        
-        if (this.selectedItems.length > 0) {
-          this.filteredData = this.dataDetails.filter((data, index) => {
-            if (this.selectedItems.includes(data.Species) || this.selectedItems.includes(data.Organ)) {
-              return data
-            }
-          })
-        } else {
-          // if no item is selected, return all the data
-          this.filteredData = this.dataDetails
+    async dataChange(val) {
+      this.filters_list = [];
+      if (val === 'dataset') {
+        let count = 0;
+        for (let key in this.allFilterDict) {
+          this.filters_list.push({
+            index: count,
+            fieldName: "submitter_id",
+            title: key,
+            filter_items: Object.keys(this.allFilterDict[key]),
+            selectedItem: [],
+          });
+          count += 1;
+          this.filters_dict_list.push(this.allFilterDict[key]);
         }
-      } else if (this.$route.query.type === 'news') {
-        if (this.selectedTissues.length > 0) {
-          // fetch the result data
-          const listStr = '[' + this.selectedTissues.map((item, index) => {return `"${item}"`}) + ']';
-          const newPayload = {
-            node_type: "sample",
-            condition:
-              `(project_id: ["demo1-jenkins"], tissue_type: ${listStr})`,
-            field:
-              "id submitter_id biospecimen_anatomic_site composition sample_type tissue_type tumor_code",
-          };
-          await axios
-            .post(`${process.env.query_api_url}graphql`, newPayload)
-            .then((res) => {
-              this.filteredData = res.data.data.sample;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else
-          this.filteredData = this.dataDetails;
       }
-      this.$emit('filter-data', this.filteredData)
+      else if (val === 'tools') {
+        
+      }
+      else if (val === 'news') {
+        
+      }
+      else if (val === 'laboursInfo') {
+        
+      }
+      this.selectedItems = [];
+
+      this.generateFiltersDict(this.filters_list);
+
+    },
+
+    async handleChange() {
+      this.isLoading = true;
+      this.generateFiltersDict(this.filters_list);
+
+      // combine all the items that be selected
+      this.selectedItems = [];
+      for (let i = 0; i < this.filters_list.length; i++) {
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+      }
+
+      if (this.$route.query.type === 'dataset') {
+        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+        this.filteredData = result[0];
+        this.newTotalCount = result[1];
+      }
+      else if (this.$route.query.type === 'tools') {
+        
+      }
+      else if (this.$route.query.type === 'news') {
+
+      }
+      else if (this.$route.query.type === 'laboursInfo') {
+
+      }
+
+      this.$emit('filter-data', this.filteredData, this.newTotalCount);
+      this.isLoading = false;
     },
 
     // if a tag is closed, it will call this function
     deselectFacet(item) {
-      if (this.$route.query.type === 'dataset') {
-        for (let i = 0; i < this.filters_list.length; i++) {
-          let index = this.filters_list[i].selectedItem.indexOf(item)
-          if (index > -1) {
-            this.filters_list[i].selectedItem.splice(index, 1)
-          }
+      // find and remove the item that is deselected
+      for (let i = 0; i < this.filters_list.length; i++) {
+        let index = this.filters_list[i].selectedItem.indexOf(item)
+        if (index > -1) {
+          this.filters_list[i].selectedItem.splice(index, 1)
         }
-        this.selectedItems = this.filters_list[0].selectedItem.concat(this.filters_list[1].selectedItem)
       }
-      else if (this.$route.query.type === 'news') {
-        this.selectedTissues = this.selectedTissues.filter(data => item !== data);
+
+      // update the selectedItems list
+      for (let i = 0; i < this.filters_list.length; i++) {
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem)
       }
 
       // after update the selectedItem, hangle the change so that the data will changes
       this.handleChange();
     },
+
+    generateFiltersDict(currentList) {
+      this.filters_dict = {};
+      currentList.forEach((data, index) => {
+        if (data.selectedItem.length !== 0) {
+          let id_list = [];
+          data.selectedItem.forEach((item, i) => {
+            let id_dict = this.filters_dict_list[index];
+            id_list = id_list.concat(id_dict[item]);
+            return id_list;
+          })
+          this.filters_dict[data.title] = id_list;
+        }
+      })
+      
+      this.$emit('filter-dict', this.filters_dict);
+    }
   },
 }
 </script>
@@ -198,5 +227,9 @@ export default {
     left: 0.3em !important;
     top: 0.1em !important;
   }
+}
+::v-deep .el-checkbox__inner {
+  width: 1em;
+  height: 1em;
 }
 </style>

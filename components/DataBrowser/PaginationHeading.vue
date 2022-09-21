@@ -1,34 +1,74 @@
 <template>
   <el-row class="data-heading">
-    <p v-show="!isLoadingSearch && dataDetails.length">
-      {{ dataDetails.length }} Results | Showing
+    <p v-show="totalCount">
+      {{ totalCount }} Results | Showing
     </p>
-    <pagination
-      :total-count="dataDetails.length"
+    <pagination-menu 
       :page-size="limit"
-      @select-page="handleCurrentChange">
-    </pagination>
+      :pageSizeOptions="pageSizeOptions"
+      @update-page-size="updatePageSize"
+    />
+    <pagination
+      :total-count="totalCount"
+      :page-size="limit"
+      :selected="currentPage"
+      @select-page="handleCurrentChange"
+    />
   </el-row>
 </template>
 
 <script>
 export default {
   name: "PaginationHeading",
-  props: [ "isLoadingSearch", "dataDetails", "limit" ],
+  props: [ "isLoadingSearch", "totalCount" ],
   data: () => {
     return {
+      limit: 5,
       currentPage: 1,
-      currentFirstData: 0,
+      pageSizeOptions: [5, 10, 20, 50, 'View All']
     }
+  },
+
+  created: function() {
+    this.limit = parseInt(this.$route.query.limit);
+    this.currentPage = parseInt(this.$route.query.page);
+  },
+
+  watch: {
+    '$route.query.page': function(val) {
+      this.currentPage = parseInt(val);
+    },
+    
+    '$route.query.limit': function(val) {
+      this.limit = parseInt(val);
+    },
   },
 
   methods: {
     // update the page and first data
     handleCurrentChange(val) {
-      this.currentPage = val;
-      this.currentFirstData = (val - 1) * this.limit;
-      this.$emit('pageChange', this.currentPage, this.currentFirstData);
+      this.$router.replace({
+        path: '/data/browser',
+        query: {
+          type: this.$route.query.type,
+          page: val,
+          limit: this.$route.query.limit,
+        }
+      })
+      this.$emit('pageChange', this.currentPage);
     },
+
+    updatePageSize(val) {
+      this.$router.replace({
+        path: '/data/browser',
+        query: {
+          type: this.$route.query.type,
+          page: this.$route.query.page,
+          limit: val,
+        }
+      })
+      this.limit = val === 'View All' ?  100 : val;
+    }
   },
 }
 </script>
