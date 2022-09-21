@@ -5,6 +5,7 @@
         :currentFilterDict="currentFilterDict"
         v-on:matchData="updateModifiedData"
         v-on:search-content="updateSearchContent"
+        v-on:isLoading="updateLoading"
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
@@ -13,6 +14,7 @@
             :searchContent="searchContent"
             v-on:filter-data="updateModifiedData"
             v-on:filter-dict="updateFilterDict"
+            v-on:isLoading="updateLoading"
           />
         </el-col>
         <el-col :span="18">
@@ -115,9 +117,11 @@ export default {
 
   methods: {
     async fetchData() {
+      this.isLoadingSearch = true;
       let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       this.currentData = result[0];
       this.totalCount = result[1];
+      this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
@@ -168,6 +172,10 @@ export default {
 
     updateTotalNum(val) {
       this.updateTotalNum = val;
+    },
+
+    updateLoading(val) {
+      this.isLoadingSearch = val;
     }
   },
 }

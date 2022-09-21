@@ -1,6 +1,6 @@
 <template>
   <el-row class="data-heading">
-    <p v-show="!isLoadingSearch && totalCount">
+    <p v-show="totalCount">
       {{ totalCount }} Results | Showing
     </p>
     <pagination-menu 

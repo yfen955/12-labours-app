@@ -59,6 +59,7 @@ export default {
       filters_dict: {},
       newTotalCount: 0,
       filters_dict_list: [],
+      isLoading: false,
     };
   },
 
@@ -75,6 +76,11 @@ export default {
     'allFilterDict': {
       handler() {
         this.dataChange(this.$route.query.type);
+      }
+    },
+    'isLoading': {
+      handler() {
+        this.$emit('isLoading', this.isLoading);
       }
     }
   },
@@ -112,6 +118,7 @@ export default {
     },
 
     async handleChange() {
+      this.isLoading = true;
       this.generateFiltersDict(this.filters_list);
 
       // combine all the items that be selected
@@ -136,6 +143,7 @@ export default {
       }
 
       this.$emit('filter-data', this.filteredData, this.newTotalCount);
+      this.isLoading = false;
     },
 
     // if a tag is closed, it will call this function
