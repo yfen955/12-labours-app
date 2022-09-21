@@ -81,6 +81,7 @@ export default {
 
   methods: {
     async dataChange(val) {
+      this.filters_list = [];
       if (val === 'dataset') {
         let count = 0;
         for (let key in this.allFilterDict) {

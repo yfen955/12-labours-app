@@ -101,7 +101,7 @@ export default {
   watch: {
     // if the type variable in the url changes, change the current data to the data in that category
     '$route.query.type': function(val) {
-      this.dataChange(val)
+      this.dataChange(val);
     },
 
     '$route.query.page': function(val) {
@@ -134,7 +134,7 @@ export default {
 
     async dataChange(val) {
       this.isLoadingSearch = true;
-
+      this.currentData = [];
       if (val === 'tools') {
         
       }
