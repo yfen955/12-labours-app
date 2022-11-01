@@ -30,19 +30,30 @@
 import backendQuery from '@/services/backendQuery';
 
 export default {
-  props: [ "dataDetails", "currentFilterDict" ],
+  props: [ "currentFilterDict" ],
   data() {
     return {
+      isLoading: false,
       searchContent: '',
+    }
+  },
+
+  watch: {
+    'isLoading': {
+      handler() {
+        this.$emit('isLoading', this.isLoading);
+      }
     }
   },
 
   methods: {
     async onSubmit() {
+      this.isLoading = true;
       let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       let matchData = result[0];
       let newTotalCount = result[1];
       this.$emit('matchData', matchData, newTotalCount);
+      this.isLoading = false;
     },
 
     async clearSearch() {
