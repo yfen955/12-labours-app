@@ -4,7 +4,7 @@
 
 Here is the list of environment variables used by the app
 ```bash
-#this should point to the api server, the default value is http://localhost:8080
+#This should point to the api server, the default value is http://localhost:8080
 API_URL=http://localhost:8080
 #Endpoint to the GraphCMS
 GRAPHCMS_ENDPOINT=
@@ -16,6 +16,12 @@ TWELVE_LABOURS_XML=https://12-labours.s3.us-west-2.amazonaws.com/portal/docs
 API_KEY=
 #This is the client number for google analytics, this is not essential
 GOOGLE_ANALYTICS_GA4=
+#This is the api url of FastAPI backend
+QUERY_API_URL=
+#This is the url of the Map Viewer page
+BASEURL=localhost:3000
+#This is the API for the flatmap
+FLATMAP_API=
 ```
 
 ## Build Setup
@@ -71,6 +77,10 @@ More information about the usage of this directory in [the documentation](https:
 The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+
+### `services`
+
+The services directory contains JavaScript files with functions connect to APIs.
 
 ### `static`
 
