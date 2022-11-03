@@ -59,15 +59,15 @@ export default {
     },
 
     updatePageSize(val) {
+      this.limit = val === 'View All' ?  100 : val;
       this.$router.replace({
         path: '/data/browser',
         query: {
           type: this.$route.query.type,
           page: this.$route.query.page,
-          limit: val,
+          limit: this.limit,
         }
       })
-      this.limit = val === 'View All' ?  100 : val;
     }
   },
 }

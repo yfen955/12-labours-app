@@ -23,7 +23,6 @@
 
 <script>
 import axios from "axios";
-import DataContainer from "../../../components/DataBrowser/DataContainer.vue";
 
 const searchTypes = [
   {
@@ -46,7 +45,6 @@ const searchTypes = [
 
 export default {
   name: 'DataBrowser',
-  components: { DataContainer },
   data: () => {
     return {
       pageTitle: 'Data Browser',
