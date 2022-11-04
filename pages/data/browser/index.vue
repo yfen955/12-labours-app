@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 const searchTypes = [
   {
     label: 'Data',
