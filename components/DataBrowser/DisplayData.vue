@@ -27,6 +27,8 @@
                     name: 'data-browser-dataset-id',
                     params: {
                       id: item.submitter_id,
+                      program: `${payload.program}`,
+                      project: `${payload.project}`,
                     },
                     query: {
                       datasetTab: 'abstract',
@@ -137,13 +139,6 @@ export default {
   },
 
   methods: {
-    // async downloadFile(id) {
-    //   window.open(
-    //     `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
-    //     "_self"
-    //   );
-    // },
-
     displayKeywords(keywords) {
       let result = "";
       let keywords_list = keywords.slice(2, -2).split("', '");

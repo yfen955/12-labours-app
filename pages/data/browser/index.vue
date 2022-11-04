@@ -74,31 +74,11 @@ export default {
     // update the category to the current category in the url
     this.category = this.$route.query.type;
     
-    // fetch the program
-    let program = "";
-    let path = `${process.env.query_api_url}program`;
-    await axios
-      .get(path)
-      .then((res) => {
-        program = res.data.program[0];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // fetch the project
-    let project = "";
-    path = `${process.env.query_api_url}project/${program}`;
-    await axios
-      .get(path)
-      .then((res) => {
-        project = res.data.project[0];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    
-    // update the payload
+    // fetch the program & project
+    await this.$store.dispatch('fetchProgram');
+    let program = this.$store.getters['getProgram'];
+    await this.$store.dispatch('fetchProject', program);
+    let project = this.$store.getters['getProject'];
     this.payload = {
       program: program,
       project: project,

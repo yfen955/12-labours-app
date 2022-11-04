@@ -170,8 +170,6 @@
             </span>
             <span v-if="$route.query.datasetTab === 'files'">
               files
-              <!-- <el-button @click="handlePreview">Preview the file</el-button>
-              <el-button @click="handleDownload">Download the file</el-button> -->
             </span>
             <span v-if="$route.query.datasetTab === 'gallery'">
               <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
@@ -273,7 +271,7 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ 'id', 'program', 'project', 'format' ],
+  props: [ 'id', 'program', 'project' ],
   data: () => {
     return {
       pageTitle: `Dataset`,
@@ -309,21 +307,17 @@ export default {
       has_scaffold: false,
       has_plot: false,
       contributorName: "",
+      currentProgram: "",
+      currentProject: "",
     }
   },
   
   created: async function() {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
+    this.currentProgram = this.$route.params.program;
+    this.currentProject = this.$route.params.project;
 
-    // show loading when fetching data
-    // let loading = this.$loading({
-    //   lock: false,
-    //   text: 'Loading...',
-    //   spinner: 'el-icon-loading',
-    //   background: 'rgba(0, 0, 0, 0.5)',
-    // })
-    
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
 
@@ -344,9 +338,6 @@ export default {
     }
 
     this.modifyName();
-    
-    // close loading
-    // loading.close();
     this.isLoading = false;
   },
 
@@ -380,19 +371,10 @@ export default {
     viewMap(model, uuid) {
       let route = this.$router.resolve({
         name: `data-maps-${model}-id`,
-        params: {
-          id: uuid,
-        }
+        params: { id: uuid }
       });
       window.open(route.href);
     },
-
-    // // download the file
-    // handleDownload() {
-    //   const path = `datasets/${this.sampleData.experiments[0].submitter_id}/${this.sampleData.filename}`;
-    //   const filepath = path.replaceAll("/", "&");
-    //   window.open(`${process.env.query_api_url}download/data/${filepath}`, "_self");
-    // },
 
     modifyName() {
       let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
