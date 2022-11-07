@@ -128,9 +128,17 @@ export default {
       }
 
       if (this.$route.query.type === 'dataset') {
-        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
         this.filteredData = result[0];
         this.newTotalCount = result[1];
+        this.$router.replace({
+          path: '/data/browser',
+          query: {
+            type: this.$route.query.type,
+            page: 1,
+            limit: this.$route.query.limit,
+          }
+        });
       }
       else if (this.$route.query.type === 'tools') {
         
