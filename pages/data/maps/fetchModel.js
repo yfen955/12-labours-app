@@ -9,7 +9,7 @@ export const fetchModelInfo = async (id, store) => {
     await store.dispatch('fetchProject', program);
     project = store.getters['getProject'];
   };
-  let data = await backendQuery.getModelInfo(id, program, project);
+  let data = await backendQuery.getSingleData(id, program, project);
   return data;
 };
 

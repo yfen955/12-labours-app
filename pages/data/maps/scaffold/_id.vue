@@ -42,7 +42,7 @@ export default {
     let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.url = `${process.env.query_api_url}data/download/datasets/${dataset_id}/${filename}`;
+    this.url = `${process.env.query_api_url}/data/download/datasets/${dataset_id}/${filename}`;
     this.isLoading = false;
   },
 }
@@ -54,7 +54,9 @@ export default {
 }
 .title-container {
   display: flex;
+  width: 100%;
   h1 {
+    width: 100%;
     margin-top: .5em;
     margin-left: 1em;
   }

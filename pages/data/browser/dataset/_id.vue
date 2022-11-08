@@ -276,7 +276,7 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ 'id', 'program', 'project' ],
+  props: [ 'id' ],
   data: () => {
     return {
       pageTitle: `Dataset`,
@@ -312,16 +312,12 @@ export default {
       has_scaffold: false,
       has_plot: false,
       contributorName: "",
-      currentProgram: "",
-      currentProject: "",
     }
   },
   
   created: async function() {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
-    this.currentProgram = this.$route.params.program;
-    this.currentProject = this.$route.params.project;
 
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
@@ -384,8 +380,8 @@ export default {
     modifyName() {
       let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
       for (let i = 0; i < name_list.length; i++) {
-        let person_list = name_list[i].split(', ');
-        this.contributorName += person_list[1] + ' ' + person_list[0] + ", ";
+        let person_names = name_list[i].split(', ');
+        this.contributorName += person_names[1] + ' ' + person_names[0] + ", ";
       }
       this.contributorName = this.contributorName.slice(0, -2);
     },

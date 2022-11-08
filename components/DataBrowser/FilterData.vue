@@ -50,16 +50,14 @@ export default {
 
   data: () => {
     return {
+      isLoading: false,
       filters_list: [],
-      dataset_filters_list: [],
-      tools_filters_list: [],
-      labours_filters_list: [],
       selectedItems: [],
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
       filters_dict_list: [],
-      isLoading: false,
+      filters_selected_ids: {},
     };
   },
 
@@ -100,19 +98,14 @@ export default {
           });
           count += 1;
           this.filters_dict_list.push(this.allFilterDict[key]);
+          this.filters_selected_ids[key] = [];
         }
       }
-      else if (val === 'tools') {
-        
-      }
-      else if (val === 'news') {
-        
-      }
-      else if (val === 'laboursInfo') {
-        
-      }
-      this.selectedItems = [];
+      else if (val === 'tools') {}
+      else if (val === 'news') {}
+      else if (val === 'laboursInfo') {}
 
+      this.selectedItems = [];
       this.generateFiltersDict(this.filters_list);
 
     },
@@ -131,14 +124,14 @@ export default {
         let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
         this.filteredData = result[0];
         this.newTotalCount = result[1];
-        this.$router.replace({
-          path: '/data/browser',
-          query: {
-            type: this.$route.query.type,
-            page: 1,
-            limit: this.$route.query.limit,
-          }
-        });
+        // this.$router.replace({
+        //   path: '/data/browser',
+        //   query: {
+        //     type: this.$route.query.type,
+        //     page: 1,
+        //     limit: this.$route.query.limit,
+        //   }
+        // });
       }
       else if (this.$route.query.type === 'tools') {
         
