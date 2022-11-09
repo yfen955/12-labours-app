@@ -10,7 +10,7 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
     limit: parseInt(limit),
     page: parseInt(page),
   };
-  const path = `${process.env.query_api_url}graphql`;
+  const path = `${process.env.query_api_url}/graphql`;
   await axios
     .post(path, payload)
     .then((res) => {
@@ -24,6 +24,26 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
   return new Array(fetched_data, totalNum);
 }
 
+async function getSingleData(uuid, programName, projectName) {
+  let fetched_data = [];
+  let payload = {
+    program: programName,
+    project: projectName,
+  };
+  const path = `${process.env.query_api_url}/record/${uuid}`;
+  await axios
+    .post(path, payload)
+    .then((res) => {
+      fetched_data = res.data[0];
+    })
+    .catch((err) => {
+      console.log(err);
+      fetched_data = [];
+    });
+  return fetched_data;
+}
+
 export default {
-  fetchGraphqlData
+  fetchGraphqlData,
+  getSingleData
 }

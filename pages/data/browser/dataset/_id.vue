@@ -3,14 +3,13 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
 
     <!-- loading -->
-    <el-table
-      v-show="isLoading"
+    <div
+      v-if="isLoading"
       v-loading="isLoading"
       element-loading-text="Loading..."
       element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.5)"
-      class="loading-container">
-    </el-table>
+      class="loading-container"
+    ></div>
 
     <div class="container-default" v-if="!isLoading">
       <el-row :gutter="20">
@@ -23,10 +22,10 @@
               <img :src="imgPlaceholder" alt="image" style="width: 90%">
             </div>
             <div class="text item">
-              <el-button>Get Dataset</el-button>
+              <el-button><span class="display-ellipsis --1">Get Dataset</span></el-button>
             </div>
             <div class="text item">
-              <el-button>Cite Dataset</el-button>
+              <el-button><span class="display-ellipsis --1">Cite Dataset</span></el-button>
             </div>
           </el-card>
           <br>
@@ -47,35 +46,35 @@
               <el-col>
                 <span class="card-title">TYPE:</span>
                 <div class="card-content">
-                  <el-button @click="goToDataset">Dataset</el-button>
+                  <el-button @click="goToDataset"><span class="display-ellipsis --1">Dataset</span></el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">ANATOMICAL STRUCTURE:</span>
                 <div class="card-content">
-                  <el-button>COLON</el-button>
+                  <el-button><span class="display-ellipsis --1">COLON</span></el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">SPECIES:</span>
                 <div class="card-content">
-                  <el-button>MOUSE</el-button>
+                  <el-button><span class="display-ellipsis --1">MOUSE</span></el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">EXPERIMENTAL APPROACH:</span>
                 <div class="card-content">
-                  <el-button>ANATOMY</el-button>
+                  <el-button><span class="display-ellipsis --1">ANATOMY</span></el-button>
                 </div>
               </el-col>
               <hr>
               <el-col>
                 <span class="card-title">SEX:</span>
                 <div class="card-content">
-                  <el-button>MALE</el-button>
+                  <el-button><span class="display-ellipsis --1">MALE</span></el-button>
                 </div>
               </el-col>
               <hr>
@@ -170,8 +169,6 @@
             </span>
             <span v-if="$route.query.datasetTab === 'files'">
               files
-              <!-- <el-button @click="handlePreview">Preview the file</el-button>
-              <el-button @click="handleDownload">Download the file</el-button> -->
             </span>
             <span v-if="$route.query.datasetTab === 'gallery'">
               <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
@@ -188,7 +185,9 @@
                       <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                     </el-popover>
                     <div>
-                      <el-button @click="viewMap('scaffold', item.id)" class="model-button">View Scaffold</el-button>
+                      <el-button @click="viewMap('scaffold', item.id)" class="model-button">
+                        View Scaffold
+                      </el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -200,7 +199,9 @@
                     <p><b>Flatmap</b></p>
                     <p>Mouse</p>
                     <div>
-                      <el-button @click="viewMap('flatmap', 1)" class="model-button">View Flatmap</el-button>
+                      <el-button @click="viewMap('flatmap', 1)" class="model-button">
+                        View Flatmap
+                      </el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -218,7 +219,9 @@
                       <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                     </el-popover>
                     <div>
-                      <el-button @click="viewMap('plot', item.id)" class="model-button">View Plot</el-button>
+                      <el-button @click="viewMap('plot', item.id)" class="model-button">
+                        View Plot
+                      </el-button>
                     </div>
                   </el-card>
                 </el-carousel-item>
@@ -273,7 +276,7 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ 'id', 'program', 'project', 'format' ],
+  props: [ 'id' ],
   data: () => {
     return {
       pageTitle: `Dataset`,
@@ -316,14 +319,6 @@ export default {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
-    // show loading when fetching data
-    // let loading = this.$loading({
-    //   lock: false,
-    //   text: 'Loading...',
-    //   spinner: 'el-icon-loading',
-    //   background: 'rgba(0, 0, 0, 0.5)',
-    // })
-    
     this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
     this.sampleData = this.sampleData[0];
 
@@ -344,9 +339,6 @@ export default {
     }
 
     this.modifyName();
-    
-    // close loading
-    // loading.close();
     this.isLoading = false;
   },
 
@@ -380,25 +372,16 @@ export default {
     viewMap(model, uuid) {
       let route = this.$router.resolve({
         name: `data-maps-${model}-id`,
-        params: {
-          id: uuid,
-        }
+        params: { id: uuid }
       });
       window.open(route.href);
     },
 
-    // // download the file
-    // handleDownload() {
-    //   const path = `datasets/${this.sampleData.experiments[0].submitter_id}/${this.sampleData.filename}`;
-    //   const filepath = path.replaceAll("/", "&");
-    //   window.open(`${process.env.query_api_url}download/data/${filepath}`, "_self");
-    // },
-
     modifyName() {
       let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
       for (let i = 0; i < name_list.length; i++) {
-        let person_list = name_list[i].split(', ');
-        this.contributorName += person_list[1] + ' ' + person_list[0] + ", ";
+        let person_names = name_list[i].split(', ');
+        this.contributorName += person_names[1] + ' ' + person_names[0] + ", ";
       }
       this.contributorName = this.contributorName.slice(0, -2);
     },

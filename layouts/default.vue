@@ -2,13 +2,13 @@
   <div>
     <twelve-labours-header2>
       <template v-slot:logo>
-        <img class="header-logo" src="img/12-labours-logo-black.png" alt="Logo for 12 Labours">
+        <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours">
       </template>
     </twelve-labours-header2>
     <nuxt />
     <twelve-labours-footer :footerLinks="footerLinks">
       <template v-slot:logo>
-        <img class="footer-logo" src="img/12-labours-logo-primary.png" alt="Logo for 12 Labours">
+        <img class="footer-logo" :src="footerLogo" alt="Logo for 12 Labours">
       </template>
     </twelve-labours-footer>
   </div>
@@ -18,6 +18,8 @@
 export default {
   data: function() {
     return {
+      headerLogo: require('../static/img/12-labours-logo-black.png'),
+      footerLogo: require('../static/img/12-labours-logo-primary.png'),
       footerLinks: [
         {
           title: "terms-of-service",

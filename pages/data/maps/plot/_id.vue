@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
 import CopyLink from "../../../../components/Map/copyLink";
 import '@abi-software/scaffoldvuer/dist/scaffoldvuer.css';
+import fetchModel from "../fetchModel";
 
 export default {
   name: 'PlotViewer',
@@ -45,10 +45,9 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let data = await backendQuery.fetchGraphqlData('manifest', {}, `${this.$route.params.id}`, 100, 1);
-    data = data[0][0];
-    let dataset_id = data.experiments[0].submitter_id;
+    let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
     let filename = data.filename;
+    let dataset_id = data.experiments[0].submitter_id;
     this.source_url = `${process.env.query_api_url}data/download/datasets/${dataset_id}/${filename}`;
     this.metadata = eval("(" + data.supplemental_json_metadata + ")");
     let supplementPath = data.is_described_by;

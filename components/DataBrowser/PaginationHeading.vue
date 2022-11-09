@@ -2,12 +2,12 @@
   <el-row class="data-heading">
     <p v-show="totalCount">
       {{ totalCount }} Results | Showing
+      <pagination-menu 
+        :page-size="limit"
+        :pageSizeOptions="pageSizeOptions"
+        @update-page-size="updatePageSize"
+      />
     </p>
-    <pagination-menu 
-      :page-size="limit"
-      :pageSizeOptions="pageSizeOptions"
-      @update-page-size="updatePageSize"
-    />
     <pagination
       :total-count="totalCount"
       :page-size="limit"

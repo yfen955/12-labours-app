@@ -3,7 +3,7 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
       <!-- display categories -->
-      <div>
+      <div class="content-container">
         <h1>Browse categories</h1>
         <tab-nav class="categories-nav"
           :tabs="searchTypes"
@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 const searchTypes = [
   {
     label: 'Data',
@@ -74,31 +72,9 @@ export default {
     // update the category to the current category in the url
     this.category = this.$route.query.type;
     
-    // fetch the program
-    let program = "";
-    let path = `${process.env.query_api_url}program`;
-    await axios
-      .get(path)
-      .then((res) => {
-        program = res.data.program[0];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // fetch the project
-    let project = "";
-    path = `${process.env.query_api_url}project/${program}`;
-    await axios
-      .get(path)
-      .then((res) => {
-        project = res.data.project[0];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    
-    // update the payload
+    // fetch the program & project
+    let program = await this.$store.dispatch('fetchProgram');
+    let project = await this.$store.dispatch('fetchProject', program);
     this.payload = {
       program: program,
       project: project,
@@ -128,5 +104,9 @@ export default {
   el-tab-pane {
     width: 25%;
   }
+}
+.content-container {
+  border: 1px solid #E4E7ED;
+  padding: 0.5em 0.5em 0 0.5em;
 }
 </style>
