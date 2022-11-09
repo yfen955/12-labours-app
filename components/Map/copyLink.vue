@@ -36,5 +36,4 @@ export default {
   width: 20%;
   padding: 0.36em;
 }
-
 </style>

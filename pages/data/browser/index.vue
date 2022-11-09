@@ -3,7 +3,7 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
       <!-- display categories -->
-      <div>
+      <div class="content-container">
         <h1>Browse categories</h1>
         <tab-nav class="categories-nav"
           :tabs="searchTypes"
@@ -104,5 +104,9 @@ export default {
   el-tab-pane {
     width: 25%;
   }
+}
+.content-container {
+  border: 1px solid #E4E7ED;
+  padding: 0.5em 0.5em 0 0.5em;
 }
 </style>
