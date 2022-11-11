@@ -139,14 +139,10 @@ export default {
     async dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
-      if (val === 'tools') {}
-      else if (val === 'news') {}
-      else if (val === 'laboursInfo') {}
-      else {  // if val === dataset
+      if (val === 'dataset') {
         await this.fetchFilter();
         await this.fetchData();
       }
-
       this.isLoadingSearch = false;
     },
 

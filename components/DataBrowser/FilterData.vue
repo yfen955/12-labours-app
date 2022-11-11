@@ -25,6 +25,7 @@
         :title="filter.title"
       >
         <el-checkbox
+          :indeterminate="filter.isIndeterminate"
           class="selectAll"
           v-model="filter.checkAll"
           @change="handleCheckAllChange(filter.checkAll, index)"
@@ -34,7 +35,7 @@
         <hr class="checkbox-line" />
         <el-checkbox-group
           v-model="filter.selectedItem"
-          @change="handleCheckedCitiesChange(filter, index)"
+          @change="updateCheckAll(filter, index)"
         >
           <el-checkbox
             class="filter-selecter"
@@ -105,15 +106,13 @@ export default {
             filter_items: Object.keys(this.allFilterDict[key]),
             selectedItem: [],
             checkAll: true,
+            isIndeterminate: false,
           });
           count += 1;
           this.filters_dict_list.push(this.allFilterDict[key]);
           this.filters_selected_ids[key] = [];
         }
       }
-      else if (val === 'tools') {}
-      else if (val === 'news') {}
-      else if (val === 'laboursInfo') {}
 
       this.selectedItems = [];
       this.generateFiltersDict(this.filters_list);
@@ -135,9 +134,6 @@ export default {
         this.filteredData = result[0];
         this.newTotalCount = result[1];
       }
-      else if (this.$route.query.type === 'tools') {}
-      else if (this.$route.query.type === 'news') {}
-      else if (this.$route.query.type === 'laboursInfo') {}
 
       this.$emit('filter-data', this.filteredData, this.newTotalCount);
       this.isLoading = false;
@@ -150,19 +146,23 @@ export default {
       } else {
         this.filters_list[i].checkAll = true;
       }
+      this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
       if (refresh)
         this.handleChange();
     },
 
-    handleCheckedCitiesChange(filter, i) {
+    // update the checkAll state when the selected facets are changed
+    updateCheckAll(filter, i) {
       let checkedCount = filter.selectedItem.length;
       let allFacetsLength = filter.filter_items.length;
-      if (checkedCount === allFacetsLength) {
+      if (checkedCount === allFacetsLength || checkedCount === 0) {
         this.filters_list[i].checkAll = true;
+        this.filters_list[i].isIndeterminate = false;
         this.filters_list[i].selectedItem = [];
       } else {
         this.filters_list[i].checkAll = false;
+        this.filters_list[i].isIndeterminate = true;
       }
       this.handleChange();
     },
@@ -175,10 +175,14 @@ export default {
         if (index > -1) {
           this.filters_list[i].selectedItem.splice(index, 1);
           // update the 'select all' checkbox
-          if (this.filters_list[i].selectedItem.length === 0)
+          if (this.filters_list[i].selectedItem.length === 0) {
             this.filters_list[i].checkAll = true;
-          else
+            this.filters_list[i].isIndeterminate = false;
+          }
+          else {
             this.filters_list[i].checkAll = false;
+            this.filters_list[i].isIndeterminate = true;
+          }
         }
       }
 
@@ -272,6 +276,13 @@ export default {
 }
 .selectAll {
   margin: 0;
+}
+::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  &::before {
+    border: 0.2px solid $app-primary-color !important;
+    background-color: $app-primary-color;
+    top: 5px;
+  }
 }
 .checkbox-line {
   margin-top: 0.5em;

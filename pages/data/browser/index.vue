@@ -73,8 +73,12 @@ export default {
     this.category = this.$route.query.type;
     
     // fetch the program & project
-    let program = await this.$store.dispatch('fetchProgram');
-    let project = await this.$store.dispatch('fetchProject', program);
+    let program = this.$store.getters['getProgram'];
+    let project = this.$store.getters['getProject'];
+    if (!program || !project) {
+      program = await this.$store.dispatch('fetchProgram');
+      project = await this.$store.dispatch('fetchProject', program);
+    };
     this.payload = {
       program: program,
       project: project,
