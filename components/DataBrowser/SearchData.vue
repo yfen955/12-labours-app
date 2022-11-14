@@ -18,7 +18,7 @@
           </div>
           
           <el-button icon="el-icon-search" class="search-btn" @click="onSubmit()">
-            Search
+            <span class="display-ellipsis --1">Search</span>
           </el-button>
         </div>
       </el-form-item>
@@ -67,6 +67,9 @@ export default {
 <style scoped lang="scss">
 .search-container {
   margin-top: 1em;
+  margin-bottom: 0.5em;
+  border: 1px solid #E4E7ED;
+  padding: 0.5em;
 }
 .search-title {
   display: flex;
@@ -77,7 +80,6 @@ export default {
   position: relative;
   width: 100%;
   border-radius: .2rem;
-  margin-right: 0.5rem;
   
   ::v-deep .el-input__inner {
     width: 100%;
@@ -100,7 +102,12 @@ export default {
   }
 }
 .search-btn {
-  margin-left: 1em;
+  display: flex;
+  margin-left: 0.5em;
   height: 2.2em;
+  padding: 0.5em 1em 0.5em 1em;
+}
+::v-deep .el-form-item {
+  margin-bottom: 0;
 }
 </style>

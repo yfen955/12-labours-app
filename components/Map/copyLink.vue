@@ -5,7 +5,7 @@
     size='small'
     class="copy-btn"
   >
-    Copy the link
+    <span class="display-ellipsis --1">Copy the link</span>
   </el-button>
 </template>
 
@@ -28,10 +28,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .copy-btn {
-  margin-left: 60%;
+  margin-right: 5%;
   margin-top: 1em;
   margin-bottom: 1em;
+  width: 20%;
+  padding: 0.36em;
 }
 </style>

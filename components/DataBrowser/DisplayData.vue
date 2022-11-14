@@ -27,6 +27,7 @@
                     name: 'data-browser-dataset-id',
                     params: {
                       id: item.submitter_id,
+                      uuid: item.dataset_descriptions[0].id,
                     },
                     query: {
                       datasetTab: 'abstract',
@@ -55,52 +56,7 @@
           </span>
 
           <!-- display tools -->
-          <span v-if="$route.query.type === 'tools'">
-            <el-row>
-              <el-col :span="6">
-                <img :src="imgPlaceholder" v-if="!item.img" style="width: 90%">
-                <p v-else>{{ item.img }}</p>
-              </el-col>
-              <el-col :span="18" style="margin-bottom:1em;">
-                <el-row>
-                  <nuxt-link :to="{
-                    name: 'data-browser-dataset-id',
-                    params: {
-                      'program': `${payload.program}`,
-                      'project': `${payload.project}`,
-                      'format': `${payload.format}`
-                    }
-                  }">
-                    {{ item.id }}
-                  </nuxt-link>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Discover</strong></el-col>
-                  <el-col :span="16">{{ item.Discover }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Last modified</strong></el-col>
-                  <el-col :span="16">{{ item.Last_modified }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Note</strong></el-col>
-                  <el-col :span="16">{{ item.Note }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Organ</strong></el-col>
-                  <el-col :span="16">{{ item.Organ }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Published</strong></el-col>
-                  <el-col :span="16">{{ item.Published }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Species</strong></el-col>
-                  <el-col :span="16">{{ item.Species }}</el-col>
-                </el-row>
-              </el-col>
-            </el-row>
-          </span>
+          <span v-if="$route.query.type === 'tools'"></span>
           
           <!-- display news -->
           <span v-if="$route.query.type === 'news'"></span>
@@ -137,13 +93,6 @@ export default {
   },
 
   methods: {
-    // async downloadFile(id) {
-    //   window.open(
-    //     `${process.env.query_api_url}${this.payload.program}/${this.payload.project}/${id}/${this.payload.format}/download`,
-    //     "_self"
-    //   );
-    // },
-
     displayKeywords(keywords) {
       let result = "";
       let keywords_list = keywords.slice(2, -2).split("', '");

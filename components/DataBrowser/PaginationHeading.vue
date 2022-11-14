@@ -2,12 +2,12 @@
   <el-row class="data-heading">
     <p v-show="totalCount">
       {{ totalCount }} Results | Showing
+      <pagination-menu 
+        :page-size="limit"
+        :pageSizeOptions="pageSizeOptions"
+        @update-page-size="updatePageSize"
+      />
     </p>
-    <pagination-menu 
-      :page-size="limit"
-      :pageSizeOptions="pageSizeOptions"
-      @update-page-size="updatePageSize"
-    />
     <pagination
       :total-count="totalCount"
       :page-size="limit"
@@ -59,15 +59,15 @@ export default {
     },
 
     updatePageSize(val) {
+      this.limit = val === 'View All' ?  100 : val;
       this.$router.replace({
         path: '/data/browser',
         query: {
           type: this.$route.query.type,
           page: this.$route.query.page,
-          limit: val,
+          limit: this.limit,
         }
       })
-      this.limit = val === 'View All' ?  100 : val;
     }
   },
 }
