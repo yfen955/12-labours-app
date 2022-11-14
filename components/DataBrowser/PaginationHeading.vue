@@ -20,7 +20,7 @@
 <script>
 export default {
   name: "PaginationHeading",
-  props: [ "isLoadingSearch", "totalCount" ],
+  props: [ "totalCount" ],
   data: () => {
     return {
       limit: 5,
