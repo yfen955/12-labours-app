@@ -9,7 +9,7 @@
           <div class="top-heading">
             <h1>PROFILE</h1> 
           </div>
-          <div v-if="user"class="user-detail">
+          <div v-if="user" class="user-detail">
             <div>
               <div><h3>Title:</h3></div>
               <div><span>{{user.title}}</span></div>
@@ -155,7 +155,7 @@ export default {
         display:'Old Password', value:null,message:'',required:true  ,placeholder:'Enter old Password'
       },    
       newPassword:{
-        display:'New Password', value:null,message:'', required:true, format:'password', match:'newPassword2', minLength:8, maxLength:20, placeholder:'Enter new Password'
+        display:'New Password', value:null,message:'', required:true, format:'password', match:'newPassword2', minLength:8, maxLength:20, placeholder:'Enter new Password', compare: 'oldPassword'
       },
       newPassword2:{
         display:'Confirm Password', value:null,message:'', required:true, format:'password', match:'newPassword', minLength:8, maxLength:20, placeholder:'Re-enter new Password'
@@ -173,7 +173,8 @@ export default {
     fieldChange:function(fieldName){
       let field=this[fieldName]
       let fieldToMatch=this[field.match] 
-      let result=this.$validateElement(field,fieldToMatch)
+      let fieldToCompare=this[field.compare]
+      let result=this.$validateElement(field,fieldToMatch,fieldToCompare)
       field.message=result.strMessage
       this.updateValidity(fieldName,Boolean(field.message)) 
  
