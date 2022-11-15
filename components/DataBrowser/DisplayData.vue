@@ -18,7 +18,7 @@
           <span v-if="$route.query.type === 'dataset'">
             <el-row>
               <el-col :span="6">
-                <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img" style="width: 90%">
+                <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img" alt="image for the dataset" style="width: 90%">
                 <p v-else>{{ item.dataset_descriptions[0].img }}</p>
               </el-col>
               <el-col :span="18" style="margin-bottom: 1em">
@@ -95,11 +95,11 @@ export default {
   methods: {
     displayKeywords(keywords) {
       let result = "";
-      let keywords_list = keywords.slice(2, -2).split("', '");
-      for (let i = 0; i < keywords_list.length; i++) {
-        result += ", " + keywords_list[i];
-      }
-      result = result.slice(2);
+      // let keywords_list = keywords.slice(2, -2).split("', '");
+      // for (let i = 0; i < keywords_list.length; i++) {
+      //   result += ", " + keywords_list[i];
+      // }
+      // result = result.slice(2);
       return result;
     }
   },

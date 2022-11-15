@@ -12,8 +12,14 @@
 <script>
 export default {
   name: 'CopyLink',
+  data: () => {
+    return {
+      copied: false,
+    }
+  },
   methods: {
     copyLink() {
+      this.copied = true;
       let url = process.env.base_url + this.$router.currentRoute.fullPath;  // current url
       let inputNode = document.createElement('input');  // create a new input
       inputNode.value = url;  // set the value to the url

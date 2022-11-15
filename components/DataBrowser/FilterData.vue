@@ -55,7 +55,7 @@
 import backendQuery from '@/services/backendQuery';
 
 export default {
-  props:[ "searchContent", "file_type", "allFilterDict" ],
+  props:[ "searchContent", "allFilterDict" ],
 
   data: () => {
     return {
