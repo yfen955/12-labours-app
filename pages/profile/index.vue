@@ -152,7 +152,7 @@ export default {
   data: () => {
     return { 
       oldPassword:{
-        display:'Old Password', value:null,message:'',required:true  ,placeholder:'Enter old Password'
+        display:'Old Password', value:null,message:'',required:true  ,placeholder:'Enter old Password', compare: 'newPassword'
       },    
       newPassword:{
         display:'New Password', value:null,message:'', required:true, format:'password', match:'newPassword2', minLength:8, maxLength:20, placeholder:'Enter new Password', compare: 'oldPassword'
