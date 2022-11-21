@@ -143,7 +143,6 @@ export default {
         await this.fetchFilter();
         await this.fetchData();
       }
-
       this.isLoadingSearch = false;
     },
 
