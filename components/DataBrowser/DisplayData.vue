@@ -95,9 +95,8 @@ export default {
   methods: {
     displayKeywords(keywords) {
       let result = "";
-      let keywords_list = keywords.slice(2, -2).split("', '");
-      for (let i = 0; i < keywords_list.length; i++) {
-        result += ", " + keywords_list[i];
+      for (let i = 0; i < keywords.length; i++) {
+        result += ", " + keywords[i];
       }
       result = result.slice(2);
       return result;
