@@ -123,6 +123,16 @@ export default {
       this.isLoading = true;
       this.generateFiltersDict(this.filters_list);
 
+      console.log(this.$route);
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: {
+          type: this.$route.query.type,
+          page: 1,
+          limit: this.$route.query.limit,
+        }
+      })
+
       // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {

@@ -23,6 +23,7 @@
       <div v-if="error" class="err-message">
         {{ error }}
       </div>
+      <div v-else class="empty-box"></div>
     </div>
     
   </div>
@@ -106,6 +107,9 @@ h1 {
 }
 .err-message {
   text-align: center;
-  margin-bottom: 10em;
+  margin-bottom: 13.5em;
+}
+.empty-box {
+  padding-bottom: 15em;
 }
 </style>
