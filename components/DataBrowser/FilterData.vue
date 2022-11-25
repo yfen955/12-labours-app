@@ -68,6 +68,8 @@ export default {
       filters_dict: {},
       newTotalCount: 0,
       filter_id_list: [],
+      cancelFacet: false,
+      canceled_facet: ''
     };
   },
 
@@ -90,6 +92,21 @@ export default {
       handler() {
         this.$emit('isLoading', this.isLoading);
       }
+    },
+    'selectedItems': function(after, before) {
+      if (after.length < before.length) {
+        this.cancelFacet = true;
+        let different_list = before.filter(item => {
+          if (!after.includes(item))
+            return item;
+        })
+        this.canceled_facet = different_list[0];
+      }
+      else {
+        this.cancelFacet = false;
+        this.canceled_facet = null;
+      }
+      console.log(this.canceled_facet); // should run before 'generateFiltersDict(filter_list)' function
     },
   },
 
@@ -118,25 +135,26 @@ export default {
     async handleChange(filter) {
       this.isLoading = true;
 
-      if (filter.selectedItem.length > 0)
-        await this.generateFiltersDict(filter);
-      else
-        await this.generateFiltersDict();
-
-      // this.$router.push({
-      //   path: `${this.$route.path}`,
-      //   query: {
-      //     type: this.$route.query.type,
-      //     page: 1,
-      //     limit: this.$route.query.limit,
-      //   }
-      // })
-
       // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
       }
+
+      if (filter.selectedItem.length > 0 || this.selectedItems.length > 0)
+        await this.generateFiltersDict(filter);
+      else
+        await this.generateFiltersDict();
+
+      // update the url to page 1
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: {
+          type: this.$route.query.type,
+          page: 1,
+          limit: this.$route.query.limit,
+        }
+      })
 
       if (this.$route.query.type === 'dataset') {
         let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
@@ -210,10 +228,15 @@ export default {
       } else {
         let elements_list = this.allFilterDict.elements[filter_list.index];
         let result_list = [];
-        for (let key in elements_list) {
-          if (filter_list.selectedItem.includes(key)) {
-            result_list = result_list.concat(elements_list[key]); // need to be changed
+        if (filter_list.selectedItem.length > 0) {
+          for (let key in elements_list) {
+            if (filter_list.selectedItem.includes(key)) {
+              result_list = result_list.concat(elements_list[key]);
+            }
           }
+        } else {
+          console.log(this.canceled_facet); // run before 'selectedItems' is watched for any changes
+          result_list = result_list.concat(elements_list[this.canceled_facet]);
         }
         let filter = {};
         filter[filter_list.fieldName] = result_list;
@@ -225,14 +248,20 @@ export default {
         await axios
           .post(path, payload)
           .then((res) => {
-            this.filter_id_list = this.filter_id_list.concat(res.data);
+            if (this.cancelFacet) {
+              for (let i = 0; i < res.data.length; i++) {
+                const index = this.filter_id_list.indexOf(res.data[i]);
+                this.filter_id_list.splice(index, 1);
+              }
+            } else
+              this.filter_id_list = this.filter_id_list.concat(res.data);
             this.filters_dict["submitter_id"] = this.filter_id_list;
           })
           .catch((err) => {
             console.log(err);
           });
       }
-
+      console.log(this.filters_dict);
       this.$emit('filter-dict', this.filters_dict);
     }
   },
