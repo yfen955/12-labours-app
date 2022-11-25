@@ -108,30 +108,12 @@ export default {
     this.userTitle = this.user.title;
     this.profession.value = this.user.profession ? this.user.profession : null;
     this.institution.value = this.user.institution_name ? this.user.institution_name : null;
-    // 把filter这块变成一个function重复用
-    if (this.user.hospital_name) {
-      let hospitalId = this.hospitals.filter((item, index) => {
-        if (item.display === this.user.hospital_name)
-          return item.value;
-      })
-      this.hospital.value = hospitalId[0].value;
-    } else
-      this.hospital.value = null;
-    if (this.user.dhb_name) {
-      let dhbId;
-      dhbId = this.dhbs[0].options.filter((item, index) => {
-        if (item.display === this.user.dhb_name)
-          return item.value;
-      })
-      if (dhbId.length===0) {
-        dhbId = this.dhbs[1].options.filter((item, index) => {
-          if (item.display === this.user.dhb_name)
-            return item.value;
-        })
-      }
-      this.dhb.value = dhbId[0].value;
-    } else
-      this.dhb.value = null;
+    this.hospital.value = this.findId(this.user.hospital_name, this.hospitals);
+    for (let i = 0; i < this.dhbs.length; i++) {
+      this.dhb.value = this.findId(this.user.dhb_name, this.dhbs[i].options);
+      if (this.dhb.value)
+        break
+    }
   },
 
   async asyncData({$auth,redirect,$axios,query}) {
@@ -201,10 +183,9 @@ export default {
     async handleConfirm() {
       let userInfo = {
         userId: this.user.user_id,
-        userTypeName:this.userType,
         title:this.user.title,
-        firstName:this.user.first_name,
-        lastName:this.user.last_name,
+        firstName:this.contactInfoValues['firstName'],
+        lastName:this.contactInfoValues['lastName'],
         email:this.user.email,
         profession:this.profession.value,
         institutionId:this.institution.value,
@@ -223,6 +204,19 @@ export default {
         this.error = err.response ? err.response.data.message : err.message;
       }
     },
+
+    findId(val, value_list) {
+      if (val) {
+        let id = value_list.filter((item, index) => {
+          if (item.display === val) {
+            return item.value;
+          }
+        })
+        if (id.length > 0) 
+          return id[0].value;
+      }
+      return null;
+    }
   }
 }
 </script>

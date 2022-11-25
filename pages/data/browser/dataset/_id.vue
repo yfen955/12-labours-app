@@ -378,11 +378,11 @@ export default {
     },
 
     modifyName() {
-      let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
-      for (let i = 0; i < name_list.length; i++) {
-        let person_names = name_list[i].split(', ');
+      let name_list = this.sampleData.dataset_descriptions[0].contributor_name;
+      name_list.map(item => {
+        let person_names = item.split(', ');
         this.contributorName += person_names[1] + ' ' + person_names[0] + ", ";
-      }
+      })
       this.contributorName = this.contributorName.slice(0, -2);
     },
 

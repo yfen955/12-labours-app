@@ -54,6 +54,7 @@
 
 <script>
 import backendQuery from '@/services/backendQuery';
+import axios from 'axios';
 
 export default {
   props:[ "searchContent", "file_type", "allFilterDict" ],
@@ -66,8 +67,7 @@ export default {
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
-      filters_dict_list: [],
-      filters_selected_ids: {},
+      filter_id_list: [],
     };
   },
 
@@ -97,41 +97,40 @@ export default {
     async dataChange(val) {
       this.filters_list = [];
       if (val === 'dataset') {
-        let count = 0;
-        for (let key in this.allFilterDict) {
+        for (let i = 0; i < this.allFilterDict.size; i++) {
           this.filters_list.push({
-            index: count,
-            fieldName: "submitter_id",
-            title: key,
-            filter_items: Object.keys(this.allFilterDict[key]),
+            index: i,
+            node: this.allFilterDict.nodes[i],
+            fieldName: this.allFilterDict.fields[i],
+            title: this.allFilterDict.titles[i],
+            filter_items: Object.keys(this.allFilterDict.elements[i]),
             selectedItem: [],
             checkAll: true,
             isIndeterminate: false,
           });
-          count += 1;
-          this.filters_dict_list.push(this.allFilterDict[key]);
-          this.filters_selected_ids[key] = [];
         }
       }
-
       this.selectedItems = [];
-      this.generateFiltersDict(this.filters_list);
-
+      this.filter_id_list = [];
+      await this.generateFiltersDict();
     },
 
-    async handleChange() {
+    async handleChange(filter) {
       this.isLoading = true;
-      this.generateFiltersDict(this.filters_list);
 
-      console.log(this.$route);
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: {
-          type: this.$route.query.type,
-          page: 1,
-          limit: this.$route.query.limit,
-        }
-      })
+      if (filter.selectedItem.length > 0)
+        await this.generateFiltersDict(filter);
+      else
+        await this.generateFiltersDict();
+
+      // this.$router.push({
+      //   path: `${this.$route.path}`,
+      //   query: {
+      //     type: this.$route.query.type,
+      //     page: 1,
+      //     limit: this.$route.query.limit,
+      //   }
+      // })
 
       // combine all the items that be selected
       this.selectedItems = [];
@@ -174,7 +173,7 @@ export default {
         this.filters_list[i].checkAll = false;
         this.filters_list[i].isIndeterminate = true;
       }
-      this.handleChange();
+      this.handleChange(filter);
     },
 
     // if a tag is closed, it will call this function
@@ -205,20 +204,35 @@ export default {
       this.handleChange();
     },
 
-    generateFiltersDict(currentList) {
-      this.filters_dict = {};
-      currentList.forEach((data, index) => {
-        if (data.selectedItem.length !== 0) {
-          let id_list = [];
-          data.selectedItem.forEach((item, i) => {
-            let id_dict = this.filters_dict_list[index];
-            id_list = id_list.concat(id_dict[item]);
-            return id_list;
-          })
-          this.filters_dict[data.title] = id_list;
+    async generateFiltersDict(filter_list) {
+      if (!filter_list) {
+        this.filters_dict = {};
+      } else {
+        let elements_list = this.allFilterDict.elements[filter_list.index];
+        let result_list = [];
+        for (let key in elements_list) {
+          if (filter_list.selectedItem.includes(key)) {
+            result_list = result_list.concat(elements_list[key]); // need to be changed
+          }
         }
-      })
-      
+        let filter = {};
+        filter[filter_list.fieldName] = result_list;
+        let payload = {
+          node: filter_list.node,
+          filter: filter
+        }
+        const path = `${process.env.query_api_url}/filter/argument`;
+        await axios
+          .post(path, payload)
+          .then((res) => {
+            this.filter_id_list = this.filter_id_list.concat(res.data);
+            this.filters_dict["submitter_id"] = this.filter_id_list;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
       this.$emit('filter-dict', this.filters_dict);
     }
   },

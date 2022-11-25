@@ -10,7 +10,7 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
     limit: parseInt(limit),
     page: parseInt(page),
   };
-  const path = `${process.env.query_api_url}/graphql`;
+  const path = `${process.env.query_api_url}/graphql/pagination`;
   await axios
     .post(path, payload)
     .then((res) => {

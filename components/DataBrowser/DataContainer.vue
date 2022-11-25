@@ -125,9 +125,9 @@ export default {
     },
 
     async fetchFilter() {
-      const newPath = `${process.env.query_api_url}/filters`;
+      const newPath = `${process.env.query_api_url}/filter`;
       await axios
-        .post(newPath, this.payload)
+        .get(newPath)
         .then((res) => {
           this.allFilterDict = res.data;
         })
