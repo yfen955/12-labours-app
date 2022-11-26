@@ -107,7 +107,7 @@ export default {
         grantType: 'authorization_code', 
         endpoints: {
           //token: `${process.env.API_URL}/user/google/login`, 
-          userInfo: `${process.env.API_URL}/user/profile` 
+          userInfo: `${process.env.API_URL}/user/local/profile` 
         },
         token: {
           property:'access_token',
@@ -130,7 +130,7 @@ export default {
         },
         endpoints: {
           login: { url: '/user/local/login', method: 'post'},
-          user: { url: '/user/profile', method: 'get'}
+          user: { url: '/user/local/profile', method: 'get'}
         },
       }
     },
