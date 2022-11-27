@@ -133,7 +133,7 @@ export default {
         );
       }
 
-      if (!filter || filter.selectedItem.length === 0) {
+      if (!filter) {
         await this.generateFiltersDict();
       } else {
         await this.generateFiltersDict(filter);
@@ -175,7 +175,7 @@ export default {
       }
       this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
-      if (refresh) this.handleChange();
+      if (refresh) this.handleChange(this.filters_list[i]);
     },
 
     // update the checkAll state when the selected facets are changed
@@ -220,6 +220,8 @@ export default {
     async generateFiltersDict(filter_obj) {
       if (!filter_obj) {
         this.filters_dict = {};
+      } else if (filter_obj.selectedItem.length === 0) {
+        this.filter_id_list[filter_obj.index] = [];
       } else {
         const elements_list = this.allFilterDict.elements[filter_obj.index];
         let result_list = [];
@@ -244,7 +246,6 @@ export default {
             console.log(err);
           });
       }
-
       const mergedList = [].concat.apply(
         [],
         this.filter_id_list.filter((ele) => ele)
