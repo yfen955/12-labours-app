@@ -49,7 +49,7 @@ export default {
   methods: {
     async onSubmit() {
       this.isLoading = true;
-      let result = await backendQuery.fetchGraphqlData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
       let matchData = result[0];
       let newTotalCount = result[1];
       this.$emit('matchData', matchData, newTotalCount);

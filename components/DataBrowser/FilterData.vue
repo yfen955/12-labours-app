@@ -98,6 +98,7 @@ export default {
       this.filters_list = [];
       this.filter_id_list = [];
       this.selectedItems = [];
+      console.log(this.allFilterDict);
       if (val === 'dataset') {
         for (let i = 0; i < this.allFilterDict.size; i++) {
           this.filters_list.push({
@@ -145,7 +146,7 @@ export default {
       })
 
       if (this.$route.query.type === 'dataset') {
-        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
+        let result = await backendQuery.fetchPaginationData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
         this.filteredData = result[0];
         this.newTotalCount = result[1];
       }
