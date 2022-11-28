@@ -28,7 +28,7 @@
           :indeterminate="filter.isIndeterminate"
           class="selectAll"
           v-model="filter.checkAll"
-          @change="handleCheckAllChange(filter.checkAll, index)"
+          @change="handleCheckAllChange(filter, index)"
         >
           Select all
         </el-checkbox>
@@ -57,7 +57,7 @@ import backendQuery from '@/services/backendQuery';
 import axios from 'axios';
 
 export default {
-  props:[ "searchContent", "file_type", "allFilterDict" ],
+  props: [ "searchContent", "file_type", "allFilterDict" ],
 
   data: () => {
     return {
@@ -68,8 +68,6 @@ export default {
       filters_dict: {},
       newTotalCount: 0,
       filter_id_list: [],
-      cancelFacet: false,
-      canceled_facet: ''
     };
   },
 
@@ -93,26 +91,13 @@ export default {
         this.$emit('isLoading', this.isLoading);
       }
     },
-    'selectedItems': function(after, before) {
-      if (after.length < before.length) {
-        this.cancelFacet = true;
-        let different_list = before.filter(item => {
-          if (!after.includes(item))
-            return item;
-        })
-        this.canceled_facet = different_list[0];
-      }
-      else {
-        this.cancelFacet = false;
-        this.canceled_facet = null;
-      }
-      console.log(this.canceled_facet); // should run before 'generateFiltersDict(filter_list)' function
-    },
   },
 
   methods: {
     async dataChange(val) {
       this.filters_list = [];
+      this.filter_id_list = [];
+      this.selectedItems = [];
       if (val === 'dataset') {
         for (let i = 0; i < this.allFilterDict.size; i++) {
           this.filters_list.push({
@@ -125,15 +110,18 @@ export default {
             checkAll: true,
             isIndeterminate: false,
           });
+          this.filter_id_list.push([]);
         }
       }
-      this.selectedItems = [];
-      this.filter_id_list = [];
-      await this.generateFiltersDict();
+      this.generateFiltersDict();
     },
 
     async handleChange(filter) {
       this.isLoading = true;
+
+      if (this.selectedItems.length === 0) {
+        this.filter_id_list = [];
+      }
 
       // combine all the items that be selected
       this.selectedItems = [];
@@ -141,10 +129,10 @@ export default {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
       }
 
-      if (filter.selectedItem.length > 0 || this.selectedItems.length > 0)
-        await this.generateFiltersDict(filter);
-      else
+      if (!filter)
         await this.generateFiltersDict();
+      else
+        await this.generateFiltersDict(filter);
 
       // update the url to page 1
       this.$router.push({
@@ -166,9 +154,9 @@ export default {
       this.isLoading = false;
     },
 
-    handleCheckAllChange(val, i) {
+    handleCheckAllChange(filter, i) {
       let refresh = this.filters_list[i].selectedItem.length === 0 ? false : true;
-      if (val) {
+      if (filter.checkAll) {
         this.filters_list[i].selectedItem = [];
       } else {
         this.filters_list[i].checkAll = true;
@@ -176,7 +164,7 @@ export default {
       this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
       if (refresh)
-        this.handleChange();
+        this.handleChange(filter);
     },
 
     // update the checkAll state when the selected facets are changed
@@ -184,6 +172,7 @@ export default {
       let checkedCount = filter.selectedItem.length;
       let allFacetsLength = filter.filter_items.length;
       if (checkedCount === allFacetsLength || checkedCount === 0) {
+        this.filter_id_list[i] = [];
         this.filters_list[i].checkAll = true;
         this.filters_list[i].isIndeterminate = false;
         this.filters_list[i].selectedItem = [];
@@ -203,10 +192,10 @@ export default {
           this.filters_list[i].selectedItem.splice(index, 1);
           // update the 'select all' checkbox
           if (this.filters_list[i].selectedItem.length === 0) {
+            this.filter_id_list[i] = [];
             this.filters_list[i].checkAll = true;
             this.filters_list[i].isIndeterminate = false;
-          }
-          else {
+          } else {
             this.filters_list[i].checkAll = false;
             this.filters_list[i].isIndeterminate = true;
           }
@@ -225,18 +214,15 @@ export default {
     async generateFiltersDict(filter_list) {
       if (!filter_list) {
         this.filters_dict = {};
+      } else if (filter_list.selectedItem.length === 0) {
+        this.filter_id_list[filter_list.index] = [];
       } else {
         let elements_list = this.allFilterDict.elements[filter_list.index];
         let result_list = [];
-        if (filter_list.selectedItem.length > 0) {
-          for (let key in elements_list) {
-            if (filter_list.selectedItem.includes(key)) {
-              result_list = result_list.concat(elements_list[key]);
-            }
+        for (let key in elements_list) {
+          if (filter_list.selectedItem.includes(key)) {
+            result_list = result_list.concat(elements_list[key]);
           }
-        } else {
-          console.log(this.canceled_facet); // run before 'selectedItems' is watched for any changes
-          result_list = result_list.concat(elements_list[this.canceled_facet]);
         }
         let filter = {};
         filter[filter_list.fieldName] = result_list;
@@ -248,20 +234,18 @@ export default {
         await axios
           .post(path, payload)
           .then((res) => {
-            if (this.cancelFacet) {
-              for (let i = 0; i < res.data.length; i++) {
-                const index = this.filter_id_list.indexOf(res.data[i]);
-                this.filter_id_list.splice(index, 1);
-              }
-            } else
-              this.filter_id_list = this.filter_id_list.concat(res.data);
-            this.filters_dict["submitter_id"] = this.filter_id_list;
+            this.filter_id_list[filter_list.index] = res.data;
           })
           .catch((err) => {
             console.log(err);
           });
       }
-      console.log(this.filters_dict);
+      const mergedList = [].concat.apply([], this.filter_id_list.filter((ele) => ele));
+      if (mergedList.length === 0) {
+        this.filters_dict = {};
+      } else {
+        this.filters_dict["submitter_id"] = mergedList;
+      }
       this.$emit('filter-dict', this.filters_dict);
     }
   },
