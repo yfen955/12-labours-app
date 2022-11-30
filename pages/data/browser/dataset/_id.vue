@@ -349,7 +349,7 @@ export default {
             query: {
               type: 'dataset',
               page: 1,
-              limit: 5,
+              limit: 10,
             }
           },
           label: 'Data Browser'
@@ -408,7 +408,7 @@ export default {
         query: {
           type: 'dataset',
           page: 1,
-          limit: 5,
+          limit: 10,
         }
       })
     },
@@ -454,7 +454,7 @@ export default {
         query: {
           type: 'dataset',
           page: 1,
-          limit: 5,
+          limit: 10,
           facets: id
         }
       })

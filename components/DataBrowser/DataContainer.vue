@@ -2,16 +2,14 @@
   <div>
     <span v-if="$route.query.type === 'dataset'">
       <SearchData
-        :currentFilterDict="currentFilterDict"
-        v-on:matchData="updateModifiedData"
-        v-on:search-content="updateSearchContent"
+        v-on:search_list="updateSearchedIds"
         v-on:isLoading="updateLoading"
       />
       <el-row :gutter="24">
         <el-col :span="6" class="facet-menu">
           <FilterData
             :allFilterDict="allFilterDict"
-            :searchContent="searchContent"
+            :searched_ids="searched_ids"
             v-on:filter-data="updateModifiedData"
             v-on:filter-dict="updateFilterDict"
             v-on:isLoading="updateLoading"
@@ -91,7 +89,7 @@ export default {
       currentFilterDict: {},
       file_type: [],
       errorMessage: '',
-      searchContent: "",
+      searched_ids: {},
     }
   },
 
@@ -113,16 +111,12 @@ export default {
     '$route.query.limit': function() {
       this.fetchData();
     },
-
-    'currentFilterDict': function() {
-      this.fetchData();
-    }
   },
 
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searched_ids, this.$route.query.limit, this.$route.query.page);
       this.currentData = result[0];
       this.totalCount = result[1];
       this.isLoadingSearch = false;
@@ -158,14 +152,15 @@ export default {
 
     updateFilterDict(val) {
       this.currentFilterDict = val;
+      this.fetchData();
     },
 
-    updateSearchContent(val) {
-      this.searchContent = val;
-    },
-
-    updateTotalNum(val) {
-      this.updateTotalNum = val;
+    updateSearchedIds(val) {
+      if (val.length > 0)
+        this.searched_ids['submitter_id'] = val;
+      else
+        this.searched_ids = {};
+      this.fetchData();
     },
 
     updateLoading(val) {

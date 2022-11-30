@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
+import axios from "axios";
 
 export default {
   props: [ "currentFilterDict" ],
@@ -36,6 +36,11 @@ export default {
       isLoading: false,
       searchContent: '',
     }
+  },
+
+  created: function() {
+    this.searchContent = this.$route.query.search;
+    this.onSubmit();
   },
 
   watch: {
@@ -49,10 +54,28 @@ export default {
   methods: {
     async onSubmit() {
       this.isLoading = true;
-      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page);
-      let matchData = result[0];
-      let newTotalCount = result[1];
-      this.$emit('matchData', matchData, newTotalCount);
+      let matched_id_list = [];
+      let payload = {
+        search: this.searchContent,
+      };
+      const path = `${process.env.query_api_url}/search`;
+      await axios
+        .post(path, payload)
+        .then((res) => {
+          matched_id_list = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$emit('search_list', matched_id_list);
+
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: {
+          ...this.$route.query,
+          search: this.searchContent
+        }
+      })
       this.isLoading = false;
     },
 

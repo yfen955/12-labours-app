@@ -57,7 +57,7 @@ import backendQuery from '@/services/backendQuery';
 import axios from 'axios';
 
 export default {
-  props: [ "searchContent", "file_type", "allFilterDict" ],
+  props: [ "searched_ids", "file_type", "allFilterDict" ],
 
   data: () => {
     return {
@@ -184,7 +184,7 @@ export default {
       })
 
       if (this.$route.query.type === 'dataset') {
-        let result = await backendQuery.fetchPaginationData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
+        let result = await backendQuery.fetchPaginationData('experiment', this.filters_dict, this.searched_ids, this.$route.query.limit, 1);
         this.filteredData = result[0];
         this.newTotalCount = result[1];
       }
