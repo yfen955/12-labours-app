@@ -106,13 +106,17 @@ export default {
       this.dataChange(val);
     },
 
-    '$route.query.page': function(val) {
+    '$route.query.page': function() {
       this.fetchData();
     },
     
-    '$route.query.limit': function(val) {
+    '$route.query.limit': function() {
       this.fetchData();
     },
+
+    'currentFilterDict': function() {
+      this.fetchData();
+    }
   },
 
   methods: {

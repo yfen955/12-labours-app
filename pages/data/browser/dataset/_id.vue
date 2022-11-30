@@ -88,6 +88,13 @@
                   </ul>
                 </div>
               </el-col>
+              <hr>
+              <el-col>
+                <span class="card-title">test filter</span>
+                <div class="card-content">
+                  <el-button @click="goWithFacet('Scaffold')"><span class="display-ellipsis --1">Scaffold</span></el-button>
+                </div>
+              </el-col>
             </div>
           </el-card>
         </el-col>
@@ -366,13 +373,13 @@ export default {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await this.fetch_data('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`}, '');
+    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
     this.sampleData = this.sampleData[0];
 
     let scaffold = {
       additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]
     };
-    this.scaffold_manifest_data = await this.fetch_data('manifest', scaffold, `${this.$route.params.id}`);
+    this.scaffold_manifest_data = await backendQuery.fetchQueryData('manifest', scaffold, `${this.$route.params.id}`);
     if (this.scaffold_manifest_data.length === 0) {
       this.has_scaffold = false
     } else {
@@ -382,7 +389,7 @@ export default {
     let plot = {
       additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
     };
-    this.plot_manifest_data = await this.fetch_data('manifest', plot, `${this.$route.params.id}`);
+    this.plot_manifest_data = await backendQuery.fetchQueryData('manifest', plot, `${this.$route.params.id}`);
     if (this.plot_manifest_data.length === 0) {
       this.has_plot = false
     } else {
@@ -394,11 +401,6 @@ export default {
   },
 
   methods: {
-    async fetch_data(nodeName, filter_dict, search_content) {
-      let result = await backendQuery.fetchQueryData(nodeName, filter_dict, search_content);
-      return result;
-    },
-
     // go back to the data browser for datasets
     goToDataset() {
       this.$router.push({
@@ -442,6 +444,20 @@ export default {
       let index = name_list.length - 1;
       let fileName = name_list[index];
       return fileName;
+    },
+
+    goWithFacet(facet) {
+      let id_list = this.$store.getters['getFacetId'];
+      let id = id_list.indexOf(facet);
+      this.$router.push({
+        path:'/data/browser',
+        query: {
+          type: 'dataset',
+          page: 1,
+          limit: 5,
+          facets: id
+        }
+      })
     }
   },
 }

@@ -24,7 +24,7 @@ async function fetchPaginationData(node, filter, search, limit, page) {
   return new Array(fetched_data, totalNum);
 }
 
-async function fetchQueryData(node, filter, search) {
+async function fetchQueryData(node, filter, search = '') {
   let fetched_data = [];
   let payload = {
     node: node,
