@@ -18,7 +18,7 @@
               </el-input>
               <div class="error">{{email.message}}</div>
             </el-form-item> 
-            <el-form-item :required="password.required" :label="password.display">          
+            <el-form-item :required="password.required" :label="password.display">  
               <el-input 
                 v-model="password.value" 
                 @blur="fieldChange('password')" 
@@ -27,6 +27,7 @@
                 type="password">
               </el-input>
               <div class="error">{{password.message}}</div>
+              <nuxt-link to="/password-reset" class="password-reset-link">Forgot password?</nuxt-link>
             </el-form-item> 
             <div class="nav-button"><!--native-type="submit"  @click="localSignIn"-->
               <el-button :disabled="submitDisabled" @click="localSignIn">
@@ -147,10 +148,6 @@ export default {
     }
   }
 
-  .nav-button{
-    padding-top:1rem;
-  }
-
   .signup-link{
     font-size:0.75rem;
   }
@@ -161,5 +158,10 @@ export default {
     @media only screen and (max-width:  $viewport-sm) {
       padding: 0.5rem 0 2rem 0;
     }
+  }
+
+  .password-reset-link {
+    margin: 0;
+    font-size: 1em;
   }
 </style>

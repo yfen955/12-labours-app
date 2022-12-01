@@ -4,4 +4,4 @@ node_modules
 
 static/docs
 
-package-lock.json
+coverage

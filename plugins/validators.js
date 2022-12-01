@@ -1,12 +1,17 @@
 
 
-function validateElement(element,elementToMatch)
+function validateElement(element,elementToMatch,elementToCompare)
 {
   let strMessage=null
   let matchFlag=false
 
   if(element.required)
     strMessage= element.value ? null : element.display + " is mandatory"
+
+  if(element.compare){
+    strMessage=elementToCompare.value===element.value ? "Do not use the same password" : null
+    if(strMessage) return{strMessage,matchFlag}
+  }
 
   if(element.value){
     if(element.format){
@@ -60,5 +65,5 @@ function isValidPhone(phone){
 
 
 export default (_, inject) => {
-  inject('validateElement', (element,elementToMatch) => {return validateElement(element,elementToMatch)})
+  inject('validateElement', (element,elementToMatch,elementToCompare) => {return validateElement(element,elementToMatch,elementToCompare)})
 }
