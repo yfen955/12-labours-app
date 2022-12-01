@@ -71,7 +71,7 @@ export default {
         display:'New Password', value:null,message:'', required:true, format:'password', match:'newPassword2', minLength:8, maxLength:20, placeholder:'Enter new Password', compare: 'oldPassword'
       },
       newPassword2:{
-        display:'Confirm Password', value:null,message:'', required:true, format:'password', match:'newPassword', minLength:8, maxLength:20, placeholder:'Re-enter new Password'
+        display:'Confirm New Password', value:null,message:'', required:true, format:'password', match:'newPassword', minLength:8, maxLength:20, placeholder:'Re-enter new Password'
       },
       invalidFields:['oldPassword','newPassword','newPassword2'],
       submitDisabled:true,

@@ -123,7 +123,6 @@ export default {
       this.isLoading = true;
       this.generateFiltersDict(this.filters_list);
 
-      console.log(this.$route);
       this.$router.push({
         path: `${this.$route.path}`,
         query: {
