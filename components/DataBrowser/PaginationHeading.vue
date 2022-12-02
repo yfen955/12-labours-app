@@ -23,9 +23,9 @@ export default {
   props: [ "isLoadingSearch", "totalCount" ],
   data: () => {
     return {
-      limit: 5,
+      limit: 10,
       currentPage: 1,
-      pageSizeOptions: [5, 10, 20, 50, 'View All']
+      pageSizeOptions: [10, 20, 50, 'View All']
     }
   },
 
@@ -64,7 +64,7 @@ export default {
         path: '/data/browser',
         query: {
           type: this.$route.query.type,
-          page: this.$route.query.page,
+          page: 1,
           limit: this.limit,
         }
       })

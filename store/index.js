@@ -1,6 +1,7 @@
 export const state = () => ({
   program: '',
   project: '',
+  facets_id_list: [],
 });
 
 export const getters = {
@@ -10,6 +11,10 @@ export const getters = {
 
   getProject(state) {
     return state.project;
+  },
+
+  getFacetId(state) {
+    return state.facets_id_list;
   }
 }
 
@@ -20,6 +25,10 @@ export const mutations = {
 
   setProject(state, text) {
     state.project = text;
+  },
+
+  setFacetIds(state, text) {
+    state.facets_id_list = text;
   },
 };
 
@@ -37,6 +46,10 @@ export const actions = {
     commit('setProject', data.project[0]);
     return data.project[0];
   },
+
+  getFacetIds({commit}, facetIds) {
+    commit('setFacetIds', facetIds);
+  }
 }
 
 export default {

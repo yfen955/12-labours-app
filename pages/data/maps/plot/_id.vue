@@ -1,7 +1,7 @@
 <template>
   <div class="container-default">
     <div class="border-container">
-      <div class="title-container">
+      <div class="title-box">
         <h1>Plot Viewer</h1>
         <CopyLink />
       </div>
@@ -61,8 +61,11 @@ export default {
 .border-container {
   border: 1px solid #E4E7ED;
 }
-.title-container {
+.title-box {
   display: flex;
+  justify-content: space-between;
+  margin: .5em 0 .5em;
+  
   h1 {
     margin-top: .5em;
     margin-left: 1em;
