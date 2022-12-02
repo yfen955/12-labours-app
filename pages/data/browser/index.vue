@@ -5,7 +5,7 @@
       <!-- display categories -->
       <div class="content-container">
         <h1>Browse categories</h1>
-        <tab-nav class="categories-nav"
+        <tab-nav class="category-nav"
           :tabs="searchTypes"
           :activeTab="category"
           v-on:tabClick="changeCategory"
@@ -24,7 +24,7 @@
 <script>
 const searchTypes = [
   {
-    label: 'Data',
+    label: 'Find Data',
     name: 'dataset',
   },
   {
@@ -103,14 +103,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.categories-nav {
-  margin-top: 1em;
-  el-tab-pane {
-    width: 25%;
-  }
-}
 .content-container {
   border: 1px solid #E4E7ED;
-  padding: 0.5em 0.5em 0 0.5em;
+  padding: 1rem 1rem 0 1rem;
+  min-width: 13rem;
+  .category-nav {
+    margin-top: 1rem;
+  }
 }
 </style>
