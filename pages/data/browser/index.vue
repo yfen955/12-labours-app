@@ -103,6 +103,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.container-default{
+  min-height: 100vh;
+}
 .content-container {
   border: 1px solid #E4E7ED;
   padding: 1rem 1rem 0 1rem;

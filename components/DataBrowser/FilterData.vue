@@ -317,7 +317,7 @@ hr {
 .checkbox-line {
   margin: 0.5rem 0 0.5rem 0;
 }
-.filter-selector{
+.filter-selector {
   margin: 0;
   width: 100%;
 }

@@ -153,7 +153,6 @@ export default {
 
 <style scoped lang="scss">
 .data-container {
-  min-height: 100vh;
   min-width: 15rem;
   gap: 1rem;
   @media only screen and (min-width: $viewport-sm) {

@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.pagination-container{
+.pagination-container {
   display: flex;
   justify-content: space-between;
   align-items: center;

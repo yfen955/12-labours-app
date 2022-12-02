@@ -11,7 +11,6 @@
         <div
           v-for="(item, index) in dataDetails"
           :key="index"
-          :gutter="20"
         >
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
@@ -110,17 +109,17 @@ export default {
       overflow: auto;
       white-space: normal;
     }
-  .element{
+  .element {
     display: flex;
     align-items:flex-start;
     @media only screen and (max-width: 37rem) {
       width: 27rem;
     }
     padding: 1rem;
-    img, p{
+    img, p {
       width: 10rem
     }
-    .content{
+    .content {
       margin-left: 1rem;
     }
   }
@@ -128,7 +127,6 @@ export default {
 hr {
   border: 1px solid #E4E7ED;
 }
-
 .no-result {
   height: 10em;
   margin: 1.5em;
