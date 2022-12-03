@@ -455,15 +455,12 @@ export default {
   .left-column {
     order: 1;
     min-width: 15rem;
-    @media only screen and (max-width: $viewport-sm) {
-      margin: 2rem 0 0 0;
-    }
     .image-container {
       text-align: center;
       img {
         width: 10rem;
         @media only screen and (max-width: $viewport-sm) {
-          width: 15rem;
+          width: 13rem;
         }
       }
       .left-top-btn {
@@ -515,6 +512,9 @@ export default {
     }
     .detail-container{
       margin-top: 2rem;
+      @media only screen and (max-width: $viewport-sm) {
+        margin-bottom: 2rem;
+      }
     }
   }
 }
