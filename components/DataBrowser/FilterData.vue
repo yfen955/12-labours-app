@@ -305,8 +305,15 @@ export default {
 
 <style scoped lang="scss">
 .filter-container {
+  @media only screen and (min-width: $viewport-md) {
+    width: 20rem;
+    @media only screen and (min-width: $viewport-lg) {
+      width: 25rem
+    }
+  }
   min-width: 15rem;
   border: 1px solid #E4E7ED;
+  margin-top: 1rem;
 }
 h4, h5 {
   margin: 1rem;

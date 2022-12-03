@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="dataDetails.length > 0">
+    <div v-if="(dataDetails.length > 0)">
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
@@ -48,7 +48,7 @@
                 </div>
               </section>
             </section>
-              <hr/>
+            <hr/>
           </span>
 
           <!-- display tools -->
@@ -106,12 +106,12 @@ export default {
   padding: 1rem;
   min-width: 13rem;
   @media only screen and (max-width: $viewport-sm) {
-      overflow: auto;
-      white-space: normal;
-    }
+    overflow: auto;
+    white-space: normal;
+  }
   .element {
     display: flex;
-    align-items:flex-start;
+    align-items: flex-start;
     @media only screen and (max-width: 37rem) {
       width: 27rem;
     }
@@ -128,15 +128,13 @@ hr {
   border: 1px solid #E4E7ED;
 }
 .no-result {
-  height: 10em;
-  margin: 1.5em;
+  margin: 1rem;
   p {
     color: #E4E7ED;
-    font-size: 2em;
-    text-align: center;
+    font-size: 2rem;
   }
 }
 .title-link {
-  font-size: 1em;
+  font-size: 1.5rem;
 }
 </style>

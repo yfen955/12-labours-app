@@ -1,56 +1,58 @@
 <template>
   <div class="page-outer">
-    <div class="flex-box">
+    <div class="content-container">
       <NavBar />
       <div class="profile container-default">
         <div class="top-heading">
           <h1>PROFILE</h1> 
         </div>
-        <div v-if="user" class="user-detail">
+        <div class="center">
+          <div v-if="user" class="user-detail">
           <div>
-            <div><h3>Title:</h3></div>
-            <div><span>{{user.title}}</span></div>
+            <h3>Title:</h3>
+            <span>{{user.title}}</span>
           </div>
           <div>
-            <div><h3>Email:</h3></div>
-            <div><span>{{user.email}}</span></div>
+            <h3>Email:</h3>
+            <span>{{user.email}}</span>
           </div>
           <div>
-            <div><h3>First Name:</h3></div>
-            <div><span>{{user.first_name}}</span></div>
+            <h3>First Name:</h3>
+            <span>{{user.first_name}}</span>
           </div>           
           <div>
-            <div><h3>Last Name:</h3></div>
-            <div><span>{{user.last_name}}</span></div>
+            <h3>Last Name:</h3>
+            <span>{{user.last_name}}</span>
           </div>
           <div>
-            <div><h3>User Type:</h3></div>
-            <div><span>{{user.type_name}}</span></div>
+            <h3>User Type:</h3>
+            <span>{{user.type_name}}</span>
           </div>
           <div v-if="user.type_name=='Clinician' || user.type_name=='Researcher'">
-            <div><h3>Profession:</h3></div>
-            <div><span>{{user.profession}}</span></div>
+            <h3>Profession:</h3>
+            <span>{{user.profession}}</span>
           </div>
           <div v-if="user.type_name=='Patient'">
-            <div><h3>NHI:</h3></div>
-            <div><span>{{user.nhi}}</span></div>
+            <h3>NHI:</h3>
+            <span>{{user.nhi}}</span>
           </div>
           <div v-if="user.type_name=='Clinician'">
-            <div><h3>HPI:</h3></div>
-            <div><span>{{user.hpi}}</span></div>
+            <h3>HPI:</h3>
+            <span>{{user.hpi}}</span>
           </div> 
           <div v-if="user.dhb_name">
-            <div><h3>DHB:</h3></div>
-            <div><span>{{user.dhb_name}}</span></div>
+            <h3>DHB:</h3>
+            <span>{{user.dhb_name}}</span>
           </div>
           <div v-if="user.hospital_name">
-            <div><h3>Hospital:</h3></div>
-            <div><span>{{user.hospital_name}}</span></div>
+            <h3>Hospital:</h3>
+            <span>{{user.hospital_name}}</span>
           </div>  
           <div v-if="user.institution_name">
-            <div><h3>Institution:</h3></div>
-            <div><span>{{user.institution_name}}</span></div>
+            <h3>Institution:</h3>
+            <span>{{user.institution_name}}</span>
           </div>                                                                            
+        </div>
         </div>
       </div>
       <div class="signup-picture"></div>
@@ -79,42 +81,37 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .box{
-    padding:0.5rem 0rem 2rem 0rem;
-    @media only screen and (max-width:  $viewport-sm) {
-      padding:0.5rem 0rem 0.5rem 0;
+  .content-container {
+    min-width: 15rem;
+    min-height: 80vh;
+    @media only screen and (min-width: 37rem) {
+      display:flex;
     }
   }
-
-  .profile{
+  
+  .profile {
     width:50%;
-    @media only screen and (max-width:  $viewport-sm) {
+    @media only screen and (max-width: $viewport-md) {
       width:100%;
     }
     box-sizing:border-box;
   }
 
-  .user-detail{
+  .user-detail {
     div{
-      margin:0.5rem;
+      margin:1rem;
       display:flex;
-      column-gap:0.5rem;
-      > div:first-child {
-        display:flex;
-        justify-content: flex-end;
-        width:30%;
+      h3 {
+        justify-content: space-between;
+        align-items: center;
+        min-width: 10rem;
       }
-      > div:nth-of-type(2) {
-        width:70%;
-      }
-      @media only screen and (max-width:  $viewport-sm) {
-        display-direction:vertical;
-        row-gap:0.2rem;
+      @media only screen and (max-width: 27rem) {
+        flex-direction: column;
+        span {
+          margin-top: 1rem;
+        }
       }
     }
-  }
-  
-  .flex-box {
-    height: 30em;
   }
 </style>

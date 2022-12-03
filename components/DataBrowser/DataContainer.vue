@@ -154,7 +154,7 @@ export default {
 <style scoped lang="scss">
 .data-container {
   min-width: 15rem;
-  gap: 1rem;
+  gap: 2rem;
   @media only screen and (min-width: $viewport-sm) {
     display: flex;
   }
