@@ -24,7 +24,7 @@
             <el-form-item :required="profession.required" :label="profession.display" v-if="userType=='researcher' || userType=='clinician'" >
               <el-input 
                 v-model="profession.value" 
-                @blur="fieldChange('profession')" 
+                @input="fieldChange('profession')" 
                 :placeholder="profession.placeholder"
                 :maxlength="profession.maxLength">
               </el-input>

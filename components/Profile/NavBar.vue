@@ -3,22 +3,21 @@
     <h4>Your Account</h4>
     <el-menu
       :default-active="$route.path"
-      :router="true"
       class="el-menu-vertical-demo"
     >
-      <el-menu-item index="/profile">
+      <el-menu-item index="/profile" @click="handleChange('/profile')">
         <i class="el-icon-location"></i>
         <span slot="title">View Profile</span>
       </el-menu-item>
-      <el-menu-item index="/profile/edit">
+      <el-menu-item index="/profile/edit" @click="handleChange('/profile/edit')">
         <i class="el-icon-menu"></i>
         <span slot="title">Edit Profile</span>
       </el-menu-item>
-      <el-menu-item index="/profile/password" :disabled="strategy!='local'">
+      <el-menu-item index="/profile/password" :disabled="strategy!='local'" @click="handleChange('/profile/password')">
         <i class="el-icon-document"></i>
         <span slot="title">Change Password</span>
       </el-menu-item>
-      <el-menu-item index="/profile/delete">
+      <el-menu-item index="/profile/delete" @click="handleChange('/profile/delete')">
         <i class="el-icon-setting"></i>
         <span slot="title">Delete Account</span>
       </el-menu-item>
@@ -36,6 +35,16 @@ export default {
       return this.$store.state.auth.strategy;
     }
   },
+
+  methods: {
+    handleChange(path) {
+      if (this.$route.path != path) {
+        this.$router.push({
+          path: path,
+        })
+      }
+    }
+  }
 }
 </script>
 

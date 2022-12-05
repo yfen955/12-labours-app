@@ -22,7 +22,7 @@
             <el-form-item v-if="strategy=='local'" :required="password.required" :label="password.display" >
               <el-input 
                 v-model="password.value" 
-                @blur="fieldChange('password')" 
+                @input="fieldChange('password')" 
                 :maxlength="password.maxLength" 
                 :placeholder="password.placeholder"
                 autocomplete="off" 
@@ -32,7 +32,7 @@
             <el-form-item v-if="strategy=='local'" :required="confirmPassword.required" :label="confirmPassword.display">
               <el-input 
                 v-model="confirmPassword.value" 
-                @blur="fieldChange('confirmPassword')" 
+                @input="fieldChange('confirmPassword')" 
                 :maxlength="confirmPassword.maxLength" 
                 :placeholder="confirmPassword.placeholder"
                 autocomplete="off" 
@@ -43,7 +43,7 @@
             <el-form-item :required="profession.required" :label="profession.display" v-if="userType=='researcher' || userType=='clinician'" >
               <el-input 
                 v-model="profession.value" 
-                @blur="fieldChange('profession')" 
+                @input="fieldChange('profession')" 
                 :placeholder="profession.placeholder"
                 :maxlength="profession.maxLength">
               </el-input>
@@ -69,21 +69,21 @@
                 maxlength=3 
                 placeholder="XXX" 
                 class="short --3digits"
-                @blur="multiValueField('hpi')">
+                @input="multiValueField('hpi')">
               </el-input> &mdash;
               <el-input 
                 v-model="hpi.splitValues[1]" 
                 maxlength=3 
                 placeholder="XXX" 
                 class="short --3digits" 
-                @blur="multiValueField('hpi')">
+                @input="multiValueField('hpi')">
               </el-input> &mdash;
               <el-input 
                 v-model="hpi.splitValues[2]" 
                 maxlength=1 
                 placeholder="X" 
                 class="short --1digit" 
-                @blur="multiValueField('hpi')">
+                @input="multiValueField('hpi')">
               </el-input>
               <div class="error">
                 {{hpi.message}}
@@ -107,21 +107,21 @@
                 maxlength=3 
                 placeholder="XXX" 
                 class="short --3digits" 
-                @blur="multiValueField('nhi')">
+                @input="multiValueField('nhi')">
               </el-input> &mdash;
               <el-input 
                 v-model="nhi.splitValues[1]" 
                 maxlength=2 
                 placeholder="XX" 
                 class="short --2digits" 
-                @blur="multiValueField('nhi')">
+                @input="multiValueField('nhi')">
               </el-input> &mdash;
               <el-input 
                 v-model="nhi.splitValues[2]" 
                 maxlength=2 
                 placeholder="XX" 
                 class="short --2digits" 
-                @blur="multiValueField('nhi')">
+                @input="multiValueField('nhi')">
               </el-input>
               <div class="error">
                 {{nhi.message}}

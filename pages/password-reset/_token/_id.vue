@@ -6,7 +6,7 @@
         <el-form-item :required="password.required" :label="password.display"> 
           <el-input 
             v-model="password.value" 
-            @blur="fieldChange('password')" 
+            @input="fieldChange('password')" 
             :placeholder="password.placeholder"
             type="password"
           />
@@ -17,7 +17,7 @@
         <el-form-item :required="confirmPassword.required" :label="confirmPassword.display"> 
           <el-input 
             v-model="confirmPassword.value" 
-            @blur="fieldChange('confirmPassword')" 
+            @input="fieldChange('confirmPassword')" 
             :placeholder="confirmPassword.placeholder"
             type="password"
           />

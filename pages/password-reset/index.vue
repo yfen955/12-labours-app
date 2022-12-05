@@ -9,7 +9,7 @@
         <el-form-item :required="email.required" :label="email.label"> 
           <el-input 
             v-model="email.value" 
-            @blur="fieldChange()" 
+            @input="fieldChange()" 
             placeholder="Enter Email"
           />
         </el-form-item>
@@ -48,6 +48,10 @@ export default {
       submitDisabled: true,
     }
   },
+
+  // watch: {
+
+  // },
 
   methods: {
     fieldChange() {

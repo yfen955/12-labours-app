@@ -8,14 +8,14 @@
         No filters applied
       </span>
       <el-tag
-        v-for="(facet, index) in selectedItems"
-        :key="index"
+        v-for="facetId in selectedItems"
+        :key="facetId"
         class="tags"
         disable-transitions
         closable
-        @close="deselectFacet(facet)"
+        @close="deselectFacet(facets_id_list[facetId])"
       >
-        <span v-if="facet !== 'NA'">{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
+        <span>{{ facets_id_list[facetId][0].toUpperCase() + facets_id_list[facetId].slice(1) }}</span>
       </el-tag>
     </el-card>
     <el-collapse>
@@ -28,7 +28,7 @@
           :indeterminate="filter.isIndeterminate"
           class="selectAll"
           v-model="filter.checkAll"
-          @change="handleCheckAllChange(filter.checkAll, index)"
+          @change="handleCheckAllChange(filter, index)"
         >
           Select all
         </el-checkbox>
@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
+import axios from 'axios';
 
 export default {
-  props:[ "searchContent", "file_type", "allFilterDict" ],
+  props: [ "searched_ids", "file_type", "allFilterDict" ],
 
   data: () => {
     return {
@@ -66,8 +66,8 @@ export default {
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
-      filters_dict_list: [],
-      filters_selected_ids: {},
+      filter_id_list: [],
+      facets_id_list: [],
     };
   },
 
@@ -96,61 +96,98 @@ export default {
   methods: {
     async dataChange(val) {
       this.filters_list = [];
+      this.filter_id_list = [];
+      
       if (val === 'dataset') {
-        let count = 0;
-        for (let key in this.allFilterDict) {
+        for (let i = 0; i < this.allFilterDict.size; i++) {
           this.filters_list.push({
-            index: count,
-            fieldName: "submitter_id",
-            title: key,
-            filter_items: Object.keys(this.allFilterDict[key]),
+            index: i,
+            node: this.allFilterDict.nodes[i],
+            fieldName: this.allFilterDict.fields[i],
+            title: this.allFilterDict.titles[i],
+            filter_items: Object.keys(this.allFilterDict.elements[i]),
             selectedItem: [],
             checkAll: true,
             isIndeterminate: false,
           });
-          count += 1;
-          this.filters_dict_list.push(this.allFilterDict[key]);
-          this.filters_selected_ids[key] = [];
+          this.filter_id_list.push([]);
+        }
+        if (this.allFilterDict.ids) {
+          this.facets_id_list = this.allFilterDict.ids;
+          this.$store.dispatch('getFacetIds', this.facets_id_list);
+
+          if (this.$route.query.facets) {
+            let id_list = this.$route.query.facets.split(',');
+            id_list = id_list.map(item => {
+              return parseInt(item)
+            })
+            this.selectedItems = id_list;
+            for (let i = 0; i < id_list.length; i++) {
+              let facet = this.facets_id_list[id_list[i]];
+              this.filters_list.map((val) => {
+                let index = val.filter_items.indexOf(facet);
+                if (index > -1) {
+                  val.selectedItem.push(val.filter_items[index]);
+                  if (val.selectedItem.length === val.filter_items.length) {
+                    val.selectedItem = [];
+                    val.checkAll = true;
+                    val.isIndeterminate = false;
+                    this.handleChange(val);
+                  } else {
+                    val.checkAll = false;
+                    val.isIndeterminate = true;
+                    this.generateFiltersDict(val);
+                  }
+                }
+              })
+            }
+          } else {
+            this.selectedItems = [];
+            this.generateFiltersDict();
+          }
         }
       }
-
-      this.selectedItems = [];
-      this.generateFiltersDict(this.filters_list);
-
     },
 
-    async handleChange() {
+    async handleChange(filter) {
       this.isLoading = true;
-      this.generateFiltersDict(this.filters_list);
 
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: {
-          type: this.$route.query.type,
-          page: 1,
-          limit: this.$route.query.limit,
-        }
-      })
+      if (this.selectedItems.length === 0) {
+        this.filter_id_list = [];
+      }
 
       // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
-        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+        let selected_ids = this.findFacetIds(this.filters_list[i].selectedItem);
+        this.selectedItems = this.selectedItems.concat(selected_ids);
       }
 
-      if (this.$route.query.type === 'dataset') {
-        let result = await backendQuery.fetchGraphqlData('experiment', this.filters_dict, this.searchContent, this.$route.query.limit, 1);
-        this.filteredData = result[0];
-        this.newTotalCount = result[1];
-      }
+      if (!filter)
+        await this.generateFiltersDict();
+      else
+        await this.generateFiltersDict(filter);
 
-      this.$emit('filter-data', this.filteredData, this.newTotalCount);
+      // update the url to page 1
+      let query = {
+        type: this.$route.query.type,
+        page: 1,
+        limit: this.$route.query.limit,
+      };
+      if (this.selectedItems.length > 0) {
+        query.facets = this.selectedItems.toString();
+      }
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: query
+      })
+
       this.isLoading = false;
     },
 
-    handleCheckAllChange(val, i) {
+    handleCheckAllChange(filter, i) {
       let refresh = this.filters_list[i].selectedItem.length === 0 ? false : true;
-      if (val) {
+      if (filter.checkAll) {
         this.filters_list[i].selectedItem = [];
       } else {
         this.filters_list[i].checkAll = true;
@@ -158,7 +195,7 @@ export default {
       this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
       if (refresh)
-        this.handleChange();
+        this.handleChange(filter);
     },
 
     // update the checkAll state when the selected facets are changed
@@ -166,6 +203,7 @@ export default {
       let checkedCount = filter.selectedItem.length;
       let allFacetsLength = filter.filter_items.length;
       if (checkedCount === allFacetsLength || checkedCount === 0) {
+        this.filter_id_list[i] = [];
         this.filters_list[i].checkAll = true;
         this.filters_list[i].isIndeterminate = false;
         this.filters_list[i].selectedItem = [];
@@ -173,7 +211,7 @@ export default {
         this.filters_list[i].checkAll = false;
         this.filters_list[i].isIndeterminate = true;
       }
-      this.handleChange();
+      this.handleChange(filter);
     },
 
     // if a tag is closed, it will call this function
@@ -185,10 +223,10 @@ export default {
           this.filters_list[i].selectedItem.splice(index, 1);
           // update the 'select all' checkbox
           if (this.filters_list[i].selectedItem.length === 0) {
+            this.filter_id_list[i] = [];
             this.filters_list[i].checkAll = true;
             this.filters_list[i].isIndeterminate = false;
-          }
-          else {
+          } else {
             this.filters_list[i].checkAll = false;
             this.filters_list[i].isIndeterminate = true;
           }
@@ -197,28 +235,59 @@ export default {
 
       // update the selectedItems list
       for (let i = 0; i < this.filters_list.length; i++) {
-        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+        let selected_ids = this.findFacetIds(this.filters_list[i].selectedItem);
+        this.selectedItems = this.selectedItems.concat(selected_ids);
       }
 
       // after update the selectedItem, hangle the change to fetch data
       this.handleChange();
     },
 
-    generateFiltersDict(currentList) {
-      this.filters_dict = {};
-      currentList.forEach((data, index) => {
-        if (data.selectedItem.length !== 0) {
-          let id_list = [];
-          data.selectedItem.forEach((item, i) => {
-            let id_dict = this.filters_dict_list[index];
-            id_list = id_list.concat(id_dict[item]);
-            return id_list;
-          })
-          this.filters_dict[data.title] = id_list;
+    async generateFiltersDict(filter_list) {
+      if (!filter_list) {
+        this.filters_dict = {};
+      } else if (filter_list.selectedItem.length === 0) {
+        this.filter_id_list[filter_list.index] = [];
+      } else {
+        let elements_list = this.allFilterDict.elements[filter_list.index];
+        let result_list = [];
+        for (let key in elements_list) {
+          if (filter_list.selectedItem.includes(key)) {
+            result_list = result_list.concat(elements_list[key]);
+          }
         }
-      })
-      
+        let filter = {};
+        filter[filter_list.fieldName] = result_list;
+        let payload = {
+          node: filter_list.node,
+          filter: filter
+        }
+        
+        const path = `${process.env.query_api_url}/filter/argument`;
+        await axios
+          .post(path, payload)
+          .then((res) => {
+            this.filter_id_list[filter_list.index] = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      const mergedList = [].concat.apply([], this.filter_id_list.filter((ele) => ele));
+      if (mergedList.length === 0) {
+        this.filters_dict = {};
+      } else {
+        this.filters_dict["submitter_id"] = mergedList;
+      }
       this.$emit('filter-dict', this.filters_dict);
+    },
+
+    findFacetIds(facets_list) {
+      let result_list = facets_list.map(item => {
+        let index = this.facets_id_list.indexOf(item);
+        return index;
+      })
+      return result_list
     }
   },
 }
