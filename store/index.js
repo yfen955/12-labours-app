@@ -32,6 +32,8 @@ export const mutations = {
   setFacetIds(state, text) {
     state.facets_id_list = text;
   },
+
+  
 };
 
 export const actions = {
@@ -59,6 +61,10 @@ export const actions = {
         console.log(err);
       });
   },
+
+  setFacets({commit}, facetIds) {
+    commit('setFacetIds', facetIds);
+  }
 }
 
 export default {

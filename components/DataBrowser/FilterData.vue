@@ -16,7 +16,7 @@
           closable
           @close="deselectFacet(facets_id_list[facetId])"
         >
-          <span>{{ facets_id_list[facetId][0].toUpperCase() + facets_id_list[facetId].slice(1) }}</span>
+          <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
         </el-tag>
       </el-card>
       <el-collapse>
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
 import axios from 'axios';
 
 export default {
@@ -117,16 +116,12 @@ export default {
         }
         if (this.allFilterDict.ids) {
           this.facets_id_list = this.allFilterDict.ids;
-          this.$store.dispatch('getFacetIds', this.facets_id_list);
+          this.$store.dispatch('setFacets', this.facets_id_list);
 
           if (this.$route.query.facets) {
-            let id_list = this.$route.query.facets.split(',');
-            id_list = id_list.map(item => {
-              return parseInt(item)
-            })
-            this.selectedItems = id_list;
-            for (let i = 0; i < id_list.length; i++) {
-              let facet = this.facets_id_list[id_list[i]];
+            this.selectedItems = this.$route.query.facets.split(',');
+            for (let i = 0; i < this.selectedItems.length; i++) {
+              let facet = this.selectedItems[i];
               this.filters_list.map((val) => {
                 let index = val.filter_items.indexOf(facet);
                 if (index > -1) {
@@ -162,8 +157,7 @@ export default {
       // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
-        let selected_ids = this.findFacetIds(this.filters_list[i].selectedItem);
-        this.selectedItems = this.selectedItems.concat(selected_ids);
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
       }
 
       if (!filter)
@@ -171,7 +165,7 @@ export default {
       else
         await this.generateFiltersDict(filter);
 
-      // update the url to page 1
+      // update the url to page 1, and add selected facets
       let query = {
         type: this.$route.query.type,
         page: 1,
@@ -238,8 +232,7 @@ export default {
 
       // update the selectedItems list
       for (let i = 0; i < this.filters_list.length; i++) {
-        let selected_ids = this.findFacetIds(this.filters_list[i].selectedItem);
-        this.selectedItems = this.selectedItems.concat(selected_ids);
+        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
       }
 
       // after update the selectedItem, hangle the change to fetch data
@@ -284,14 +277,6 @@ export default {
       }
       this.$emit('filter-dict', this.filters_dict);
     },
-
-    findFacetIds(facets_list) {
-      let result_list = facets_list.map(item => {
-        let index = this.facets_id_list.indexOf(item);
-        return index;
-      })
-      return result_list
-    }
   },
 }
 </script>
