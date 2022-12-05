@@ -55,7 +55,7 @@ export default {
         },
         {
           to: { name: 'data' },
-          label: 'DATA & MODELS'
+          label: 'Data & Models'
         },
       ],
       searchTypes,

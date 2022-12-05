@@ -1,6 +1,7 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
+    <!-- <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" /> -->
+    <BreadcrumbTrail :breadcrumb="breadcrumb" :title="sampleData.title" />
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -276,6 +277,7 @@
 
 <script>
 import backendQuery from '@/services/backendQuery';
+import BreadcrumbTrail from '../../../../components/DesignComponent/BreadcrumbTrail.vue'
 
 const datasetTabs = [
   {
@@ -309,6 +311,7 @@ const datasetTabs = [
 ]
 
 export default {
+  components: {BreadcrumbTrail},
   name: "DataDetails",
   props: [ 'id' ],
   data: () => {
@@ -316,11 +319,11 @@ export default {
       breadcrumb: [
         {
           to: { name: 'index' },
-          label: 'HOME'
+          label: 'Home'
         },
         {
           to: { name: 'data' },
-          label: 'DATA & MODELS'
+          label: 'Data & Models'
         },
         {
           to: {
@@ -331,7 +334,7 @@ export default {
               limit: 10,
             }
           },
-          label: 'DATA BROWSER'
+          label: 'Data Browser'
         },
       ],
       isLoading: false,
@@ -354,7 +357,6 @@ export default {
 
     this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
     this.sampleData = this.sampleData[0];
-    this.pageTitle= this.sampleData.title
 
     let scaffold = {
       additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]
