@@ -104,7 +104,7 @@ export default {
       h3 {
         justify-content: space-between;
         align-items: center;
-        min-width: 10rem;
+        min-width: 7rem;
       }
       @media only screen and (max-width: 27rem) {
         flex-direction: column;

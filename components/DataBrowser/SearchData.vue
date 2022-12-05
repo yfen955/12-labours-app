@@ -97,7 +97,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media only screen and (max-width: 37rem) {
+  @media only screen and (max-width: $viewport-sm) {
     align-items: flex-end;
     flex-direction: column;
   }

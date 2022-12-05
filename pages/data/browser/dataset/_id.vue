@@ -313,7 +313,6 @@ export default {
   props: [ 'id' ],
   data: () => {
     return {
-      pageTitle: 'Dataset',
       breadcrumb: [
         {
           to: { name: 'index' },
@@ -355,6 +354,7 @@ export default {
 
     this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
     this.sampleData = this.sampleData[0];
+    this.pageTitle= this.sampleData.title
 
     let scaffold = {
       additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]

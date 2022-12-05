@@ -104,7 +104,6 @@ export default {
 .data-container {
   border: 1px solid #E4E7ED;
   padding: 1rem;
-  min-width: 13rem;
   @media only screen and (max-width: $viewport-sm) {
     overflow: auto;
     white-space: normal;
@@ -126,6 +125,9 @@ export default {
 }
 hr {
   border: 1px solid #E4E7ED;
+  @media only screen and (max-width: 37rem) {
+    width: 27rem
+  }
 }
 .no-result {
   margin: 1rem;

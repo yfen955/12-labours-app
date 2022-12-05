@@ -158,5 +158,8 @@ export default {
   @media only screen and (min-width: $viewport-sm) {
     display: flex;
   }
+  @media only screen and (max-width: $viewport-md) {
+    gap: 1rem;
+  }
 }
 </style>
