@@ -45,10 +45,12 @@
                   <el-col :span="16">{{ displayKeywords(item.dataset_descriptions[0].keywords) }}</el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="8"><strong>Samples</strong></el-col>
-                  <el-col :span="16">
-                    {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
-                  </el-col>
+                  <div v-if="item.dataset_descriptions[0].number_of_samples>0||item.dataset_descriptions[0].number_of_subjects>0">
+                    <el-col :span="8"><strong>Samples</strong></el-col>
+                    <el-col :span="16">
+                      {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
+                    </el-col>
+                  </div>
                 </el-row>
               </el-col>
             </el-row>
@@ -95,9 +97,8 @@ export default {
   methods: {
     displayKeywords(keywords) {
       let result = "";
-      let keywords_list = keywords.slice(2, -2).split("', '");
-      for (let i = 0; i < keywords_list.length; i++) {
-        result += ", " + keywords_list[i];
+      for (let i = 0; i < keywords.length; i++) {
+        result += ", " + keywords[i];
       }
       result = result.slice(2);
       return result;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
 
     <!-- loading -->
@@ -88,6 +88,13 @@
                   </ul>
                 </div>
               </el-col>
+              <hr>
+              <el-col>
+                <span class="card-title">test filter</span>
+                <div class="card-content">
+                  <el-button @click="goWithFacet('Scaffold')"><span class="display-ellipsis --1">Scaffold</span></el-button>
+                </div>
+              </el-col>
             </div>
           </el-card>
         </el-col>
@@ -96,7 +103,7 @@
         <el-col :span="18">
           <!-- title & description -->
           <el-card shadow="never">
-            <h1>{{sampleData.dataset_descriptions[0].title}}</h1>
+            <h1>{{sampleData.title}}</h1>
             <br>
             <el-row :gutter="20">
               <el-col :span="18">
@@ -105,8 +112,7 @@
                 </div>
                 <hr>
                 <div class="text item">
-                  <!-- <b>Description:</b> {{ sampleData.description }} -->
-                  <b>Description:</b> 
+                  <b>Description:</b><!--  {{ sampleData.description }} -->
                 </div>
               </el-col>
               <el-col :span="6">
@@ -158,19 +164,63 @@
               :activeTab="currentTab"
               v-on:tabClick="changeTab"
             />
-            <span v-if="$route.query.datasetTab === 'abstract'">
-              abstract
+
+            <!-- abstract content -->
+            <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
+              <p><b>Study Purpose:</b></p>
+              <p><b>Completeness:</b></p>
+              <p><b>Primary vs derivative data:</b></p>
+              <p><b>Important Notes:</b></p>
+              <hr>
+              <h2>Metadata</h2>
+              <p><b>Experimental Design:</b></p>
+              <p class="indent"><b>Protocol Links:</b></p>
+              <p class="indent"><b>Experimental Approach:</b></p>
+              <p><b>Subject Information:</b></p>
+              <p class="indent"><b>Anatomical structure:</b></p>
+              <p class="indent"><b>Species:</b></p>
+              <p class="indent"><b>Sex:</b></p>
+              <p class="indent"><b>Age range:</b></p>
+              <div v-if="sampleData.number_of_samples>0||sampleData.number_of_subjects>0">
+                <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
+              </div>
+              <div v-else>
+                <p class="indent"><b>Number of samples:</b> N/A</p>
+              </div>
             </span>
-            <span v-if="$route.query.datasetTab === 'about'">
-              about
+            
+            <!-- about content -->
+            <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
+              <h2>About this dataset</h2>
+              <p><b>Title:</b> {{sampleData.title}}</p>
+              <p><b>First Published:</b></p>
+              <p><b>Last Published:</b></p>
+              <hr>
+              <p><b>Contact Author:</b></p>
+              <hr>
+              <p><b>Award(s):</b></p>
+              <hr>
+              <p><b>Associated project(s):</b></p>
+              <p><b>Institution(s):</b></p>
+              <hr>
+              <h2>About this version</h2>
+              <p><b>Version 3 Revision 1:</b></p>
+              <p><b>Dataset DOI:</b></p>
             </span>
-            <span v-if="$route.query.datasetTab === 'cite'">
-              cite
+            
+            <!-- cite content -->
+            <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
+              <h2>Dataset Citation</h2>
+              <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of SPARC datasets. To make it easy, the SPARC Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
             </span>
-            <span v-if="$route.query.datasetTab === 'files'">
+            
+            <!-- files content -->
+            <span v-if="$route.query.datasetTab === 'files'" class="tab-content">
               files
             </span>
-            <span v-if="$route.query.datasetTab === 'gallery'">
+            
+            <!-- gallery content -->
+            <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
               <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
                 <!-- view Scaffold -->
                 <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
@@ -227,10 +277,14 @@
                 </el-carousel-item>
               </el-carousel>
             </span>
-            <span v-if="$route.query.datasetTab === 'references'">
+            
+            <!-- references content -->
+            <span v-if="$route.query.datasetTab === 'references'" class="tab-content">
               references
             </span>
-            <span v-if="$route.query.datasetTab === 'versions'">
+            
+            <!-- versions content -->
+            <span v-if="$route.query.datasetTab === 'versions'" class="tab-content">
               versions
             </span>
           </el-card>
@@ -295,7 +349,7 @@ export default {
             query: {
               type: 'dataset',
               page: 1,
-              limit: 5,
+              limit: 10,
             }
           },
           label: 'Data Browser'
@@ -319,19 +373,23 @@ export default {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await this.fetch_data('experiment', {submitter_id: [this.$route.params.id]}, "");
+    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
     this.sampleData = this.sampleData[0];
 
-    let scaffold = {additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]};
-    this.scaffold_manifest_data = await this.fetch_data('manifest', scaffold, `${this.$route.params.id}`);
+    let scaffold = {
+      additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]
+    };
+    this.scaffold_manifest_data = await backendQuery.fetchQueryData('manifest', scaffold, `${this.$route.params.id}`);
     if (this.scaffold_manifest_data.length === 0) {
       this.has_scaffold = false
     } else {
       this.has_scaffold = true
     }
 
-    let plot = {additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]};
-    this.plot_manifest_data = await this.fetch_data('manifest', plot, `${this.$route.params.id}`);
+    let plot = {
+      additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
+    };
+    this.plot_manifest_data = await backendQuery.fetchQueryData('manifest', plot, `${this.$route.params.id}`);
     if (this.plot_manifest_data.length === 0) {
       this.has_plot = false
     } else {
@@ -343,11 +401,6 @@ export default {
   },
 
   methods: {
-    async fetch_data(nodeName, filter_dict, searchContent) {
-      let result = await backendQuery.fetchGraphqlData(nodeName, filter_dict, searchContent, 100, 1);
-      return result[0];
-    },
-
     // go back to the data browser for datasets
     goToDataset() {
       this.$router.push({
@@ -355,7 +408,7 @@ export default {
         query: {
           type: 'dataset',
           page: 1,
-          limit: 5,
+          limit: 10,
         }
       })
     },
@@ -378,11 +431,11 @@ export default {
     },
 
     modifyName() {
-      let name_list = this.sampleData.dataset_descriptions[0].contributor_name.slice(2, -2).split("', '");
-      for (let i = 0; i < name_list.length; i++) {
-        let person_names = name_list[i].split(', ');
+      let name_list = this.sampleData.contributor_name;
+      name_list.map(item => {
+        let person_names = item.split(', ');
         this.contributorName += person_names[1] + ' ' + person_names[0] + ", ";
-      }
+      })
       this.contributorName = this.contributorName.slice(0, -2);
     },
 
@@ -391,6 +444,20 @@ export default {
       let index = name_list.length - 1;
       let fileName = name_list[index];
       return fileName;
+    },
+
+    goWithFacet(facet) {
+      let id_list = this.$store.getters['getFacetId'];
+      let id = id_list.indexOf(facet);
+      this.$router.push({
+        path:'/data/browser',
+        query: {
+          type: 'dataset',
+          page: 1,
+          limit: 10,
+          facets: id
+        }
+      })
     }
   },
 }
@@ -452,6 +519,7 @@ hr {
 }
 .medium {
   height: 270px;
+  line-height: 1.5em;
 
   .model-name {
     width: 100%;
@@ -466,5 +534,17 @@ hr {
 .model-button {
   margin-top: .5em;
 }
-
+h2 {
+  margin: 0.5em 0 0.5em;
+  font-size: 1.5em;
+}
+.tab-content {
+  line-height: 2.5em;
+  hr {
+    margin: 0.5em 0 0.5em;
+  }
+}
+.indent {
+  text-indent: 2em;
+}
 </style>

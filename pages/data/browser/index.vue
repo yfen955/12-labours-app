@@ -76,8 +76,9 @@ export default {
     let program = this.$store.getters['getProgram'];
     let project = this.$store.getters['getProject'];
     if (!program || !project) {
-      program = await this.$store.dispatch('fetchProgram');
-      project = await this.$store.dispatch('fetchProject', program);
+      await this.$store.dispatch('fetchPayload');
+      program = this.$store.getters['getProgram'];
+      project = this.$store.getters['getProject'];
     };
     this.payload = {
       program: program,
