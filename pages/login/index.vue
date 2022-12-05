@@ -13,7 +13,7 @@
             <el-form-item :required="email.required" :label="email.display">
               <el-input 
                 v-model="email.value" 
-                @blur="fieldChange('email')" 
+                @input="fieldChange('email')" 
                 placeholder="Enter email">
               </el-input>
               <div class="error">{{email.message}}</div>
@@ -21,7 +21,7 @@
             <el-form-item :required="password.required" :label="password.display">  
               <el-input 
                 v-model="password.value" 
-                @blur="fieldChange('password')" 
+                @input="fieldChange('password')" 
                 placeholder="Enter password"
                 autocomplete="off" 
                 type="password">

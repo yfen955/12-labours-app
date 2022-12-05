@@ -14,7 +14,7 @@
             <el-form-item :required="oldPassword.required" :label="oldPassword.display">
               <el-input 
                 v-model="oldPassword.value" 
-                @blur="fieldChange('oldPassword')" 
+                @input="fieldChange('oldPassword')" 
                 :placeholder="oldPassword.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -24,7 +24,7 @@
             <el-form-item :required="newPassword.required" :label="newPassword.display">          
               <el-input 
                 v-model="newPassword.value" 
-                @blur="fieldChange('newPassword')" 
+                @input="fieldChange('newPassword')" 
                 :placeholder="newPassword.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -34,7 +34,7 @@
             <el-form-item :required="newPassword2.required" :label="newPassword2.display">          
               <el-input 
                 v-model="newPassword2.value" 
-                @blur="fieldChange('newPassword2')" 
+                @input="fieldChange('newPassword2')" 
                 :placeholder="newPassword2.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -71,7 +71,7 @@ export default {
         display:'New Password', value:null,message:'', required:true, format:'password', match:'newPassword2', minLength:8, maxLength:20, placeholder:'Enter new Password', compare: 'oldPassword'
       },
       newPassword2:{
-        display:'Confirm Password', value:null,message:'', required:true, format:'password', match:'newPassword', minLength:8, maxLength:20, placeholder:'Re-enter new Password'
+        display:'Confirm New Password', value:null,message:'', required:true, format:'password', match:'newPassword', minLength:8, maxLength:20, placeholder:'Re-enter new Password'
       },
       invalidFields:['oldPassword','newPassword','newPassword2'],
       submitDisabled:true,

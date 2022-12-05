@@ -207,7 +207,4 @@ export default {
     border: 1px solid $app-primary-color !important;
   }
 }
-// ::-webkit-scrollbar {
-//   width: 20px;
-// }
 </style>

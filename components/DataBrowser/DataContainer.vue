@@ -9,7 +9,6 @@
         <FilterData
             :allFilterDict="allFilterDict"
             :searched_ids="searched_ids"
-            v-on:filter-data="updateModifiedData"
             v-on:filter-dict="updateFilterDict"
             v-on:isLoading="updateLoading"
           />
@@ -115,20 +114,13 @@ export default {
         });
     },
 
-    async dataChange(val) {
+    dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
       if (val === 'dataset') {
-        await this.fetchFilter();
-        await this.fetchData();
+        this.fetchFilter();
       }
       this.isLoadingSearch = false;
-    },
-
-    // update the data after they change
-    updateModifiedData(data, total) {
-      this.currentData = data;
-      this.totalCount = total;
     },
 
     updateFilterDict(val) {
