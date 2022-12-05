@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const state = () => ({
   program: '',
   project: '',
@@ -33,23 +35,30 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchProgram({commit}) {
-    let path = `${process.env.query_api_url}/program`;
-    let data = await this.$axios.$get(path);
-    commit('setProgram', data.program[0]);
-    return data.program[0];
+  async fetchPayload({commit}) {
+    let program, project;
+    let programPath = `${process.env.query_api_url}/program`;
+    await axios
+      .get(programPath)
+      .then((res) => {
+        program = res.data.program[0];
+        commit('setProgram', program);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+    let projectPath = `${process.env.query_api_url}/project/${program}`;
+    await axios
+      .get(projectPath)
+      .then((res) => {
+        project = res.data.project[0];
+        commit('setProject', project);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
-
-  async fetchProject({commit}, program) {
-    let path = `${process.env.query_api_url}/project/${program}`;
-    let data = await this.$axios.$get(path);
-    commit('setProject', data.project[0]);
-    return data.project[0];
-  },
-
-  getFacetIds({commit}, facetIds) {
-    commit('setFacetIds', facetIds);
-  }
 }
 
 export default {

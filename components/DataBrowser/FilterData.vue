@@ -183,13 +183,6 @@ export default {
         query: query
       })
 
-      if (this.$route.query.type === 'dataset') {
-        let result = await backendQuery.fetchPaginationData('experiment', this.filters_dict, this.searched_ids, this.$route.query.limit, 1);
-        this.filteredData = result[0];
-        this.newTotalCount = result[1];
-      }
-
-      this.$emit('filter-data', this.filteredData, this.newTotalCount);
       this.isLoading = false;
     },
 
