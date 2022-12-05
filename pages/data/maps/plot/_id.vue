@@ -1,22 +1,23 @@
 <template>
-  <div class="container-default">
-    <div class="border-container">
-      <div class="title-box">
-        <h1>Plot Viewer</h1>
-        <CopyLink />
-      </div>
-      
-      <client-only placeholder="Loading Plot ...">
-        <div class="plot-container">
-          <plot-vuer
-            :data-source="{ url: source_url }"
-            :metadata="metadata"
-            :supplemental-data="supplemental_data"
-          />
+  <div class="page-outer">
+    <div class="container-default">
+      <div class="model-container">
+        <div class="model-title">
+          <h1>Plot Viewer</h1>
+          <CopyLink />
         </div>
-      </client-only>
+
+        <client-only placeholder="Loading Plot ...">
+          <div class="plot-container">
+            <plot-vuer
+              :data-source="{ url: source_url }"
+              :metadata="metadata"
+              :supplemental-data="supplemental_data"
+            />
+          </div>
+        </client-only>
+      </div>
     </div>
-    
   </div>
 </template>
 
@@ -58,18 +59,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.border-container {
-  border: 1px solid #E4E7ED;
+// .model-container {
+//   border: 1px solid #E4E7ED;
+//   min-width: 15rem;
+// }
+// .model-title {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   @media only screen and (max-width: $viewport-sm) {
+//     flex-direction: column;
+//   }
+//   margin: 1rem 2rem 1rem 2rem;
+// }
+.plot-container {
+  height: 70vh;
 }
-.title-box {
-  display: flex;
-  justify-content: space-between;
-  margin: .5em 0 .5em;
-  
-  h1 {
-    margin-top: .5em;
-    margin-left: 1em;
-  }
-}
-
 </style>

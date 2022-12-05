@@ -1,18 +1,21 @@
 <template>
-  <div class="container-default">
-    <div class="model-container">
-      <div class="title-box">
-        <h1>Scaffold Viewer</h1>
-        <CopyLink />
-      </div>
-      
-      <client-only placeholder="Loading Scaffold ...">
-        <div class="scaffoldvuer-container">
-            <ScaffoldVuer v-if="!isLoading" :url='url' style="height:90%" />
+  <div class="page-outer">
+    <div class="container-default">
+      <div class="model-container">
+        <div class="model-title">
+          <h1>Scaffold Viewer</h1>
+          <CopyLink />
         </div>
-      </client-only>
+        
+        <client-only placeholder="Loading Scaffold ...">
+          <div class="scaffold-container">
+              <ScaffoldVuer 
+                v-if="!isLoading" 
+                :url='url'/>
+          </div>
+        </client-only>
+      </div>
     </div>
-    
   </div>
 </template>
 
@@ -49,26 +52,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.model-container {
-  border: 1px solid #E4E7ED;
-}
-.title-box {
-  display: flex;
-  justify-content: space-between;
-  margin: .5em 0 .5em;
-  
-  h1 {
-    margin-top: .5em;
-    margin-left: 1em;
-  }
-}
-.scaffoldvuer-container {
-  height: 90vh;
-  max-width: calc(100% - 48px);
-  left: 24px;
-  overflow: hidden;
-  position: relative;
-}
 ::v-deep .el-loading-text {
     color: $app-primary-color !important;
   }
@@ -76,8 +59,8 @@ export default {
   border-color: $app-primary-color !important;
   &::after {
     transform: rotate(45deg) scale(1) !important;
-    left: 0.3em !important;
-    top: 0.1em !important;
+    left: 0.3rem !important;
+    top: 0.1rem !important;
   }
 }
 ::v-deep .region-tree-node {

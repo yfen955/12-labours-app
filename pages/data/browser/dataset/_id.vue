@@ -1,7 +1,6 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -202,7 +201,7 @@
               </el-button>
             </div>
             <div>
-              <el-button class="left-top-btn">
+              <el-button class="left-top-btn secondary">
                 <span class="display-ellipsis --1">Cite Dataset</span>
               </el-button>
             </div>
@@ -219,35 +218,35 @@
               <hr>
               <div class="card-content">
                 <span class="card-title">TYPE:</span><br/>
-                <el-button @click="goToDataset">
+                <el-button @click="goToDataset" class="secondary">
                   <span class="display-ellipsis --1">Dataset</span>
                 </el-button>
               </div>
               <hr>
               <div class="card-content">
                 <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
-                <el-button>
+                <el-button class="secondary">
                   <span class="display-ellipsis --1">COLON</span>
                 </el-button>
               </div>
               <hr>
               <div class="card-content">
                 <span class="card-title">SPECIES:</span><br/>
-                <el-button>
+                <el-button class="secondary">
                   <span class="display-ellipsis --1">MOUSE</span>
                 </el-button>
               </div>
               <hr>
               <div class="card-content">
                 <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
-                <el-button>
+                <el-button class="secondary">
                   <span class="display-ellipsis --1">ANATOMY</span>
                 </el-button>
               </div>
               <hr>
               <div class="card-content">
                 <span class="card-title">SEX:</span><br/>
-                <el-button>
+                <el-button class="secondary">
                   <span class="display-ellipsis --1">MALE</span><br/>
                 </el-button>
               </div>
@@ -263,7 +262,7 @@
               <hr>
               <div class="card-content">
                 <span class="card-title">test filter:</span><br/>
-                <el-button @click="goWithFacet('Scaffold')">
+                <el-button @click="goWithFacet('Scaffold')" class="secondary">
                   <span class="display-ellipsis --1">Scaffold</span>
                 </el-button>
               </div>
