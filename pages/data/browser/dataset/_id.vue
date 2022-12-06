@@ -1,7 +1,6 @@
 <template>
   <div class="page-outer">
-    <!-- <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" /> -->
-    <BreadcrumbTrail :breadcrumb="breadcrumb" :title="sampleData.title" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" />
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -277,7 +276,6 @@
 
 <script>
 import backendQuery from '@/services/backendQuery';
-import BreadcrumbTrail from '../../../../components/DesignComponent/BreadcrumbTrail.vue'
 
 const datasetTabs = [
   {
@@ -311,7 +309,6 @@ const datasetTabs = [
 ]
 
 export default {
-  components: {BreadcrumbTrail},
   name: "DataDetails",
   props: [ 'id' ],
   data: () => {

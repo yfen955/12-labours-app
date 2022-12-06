@@ -9,12 +9,12 @@
           No filters applied
         </span>
         <el-tag
-          v-for="facetId in selectedItems"
-          :key="facetId"
+          v-for="facet in selectedItems"
+          :key="facet"
           class="tags"
           disable-transitions
           closable
-          @close="deselectFacet(facets_id_list[facetId])"
+          @close="deselectFacet(facet)"
         >
           <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
         </el-tag>
