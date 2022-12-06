@@ -130,9 +130,24 @@ hr {
   }
 }
 .no-result {
+  height: 10rem;
   margin: 1rem;
+  white-space: nowrap;
+  text-align: center;
+  @media only screen and (min-width: $viewport-sm) {
+    padding: 0 10rem 0 10rem;
+    @media only screen and (min-width: $viewport-md) {
+      padding: 0 15rem 0 15rem;
+      @media only screen and (min-width: 77rem) {
+        padding: 0 20rem 0 20rem;
+        @media only screen and (min-width: 90rem) {
+          padding: 0 25rem 0 25rem;
+        }
+      }
+    }
+  }
   p {
-    color: #E4E7ED;
+    color: #e4e7ed;
     font-size: 2rem;
   }
 }

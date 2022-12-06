@@ -124,7 +124,6 @@ export default {
       if (val === 'dataset') {
         this.fetchFilter();
       }
-      this.isLoadingSearch = false;
     },
 
     updateFilterDict(val) {

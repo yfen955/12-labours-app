@@ -110,8 +110,15 @@ export default {
   border: 1px solid #E4E7ED;
   padding: 1rem 1rem 0 1rem;
   min-width: 13rem;
+  
   .category-nav {
     margin-top: 1rem;
+  }
+}
+.container-default {
+  @media only screen and (min-width: calc($viewport-lg - 20rem)) {
+    margin: auto;
+    width: 85rem;
   }
 }
 </style>

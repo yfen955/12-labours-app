@@ -39,7 +39,6 @@ export default {
 
   created: function() {
     this.searchContent = this.$route.query.search;
-    this.onSubmit();
   },
 
   watch: {
@@ -68,13 +67,23 @@ export default {
         });
       this.$emit('search_list', matched_id_list);
 
+      // update the page and search content in the url
+      let query = {
+        type: this.$route.query.type,
+        page: 1,
+        limit: this.$route.query.limit,
+      };
+      if (this.$route.query.facets) {
+        query.facets = this.$route.query.facets;
+      }
+      if (this.searchContent !== '') {
+        query.search = this.searchContent;
+      }
       this.$router.push({
         path: `${this.$route.path}`,
-        query: {
-          ...this.$route.query,
-          search: this.searchContent
-        }
+        query: query
       })
+      console.log(this.$route);
       this.isLoading = false;
     },
 
