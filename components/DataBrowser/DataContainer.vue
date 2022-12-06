@@ -6,12 +6,15 @@
         v-on:isLoading="updateLoading"
       />
       <div class="data-container">
-        <FilterData
+        <div>
+          <FilterData
             :allFilterDict="allFilterDict"
             :searched_ids="searched_ids"
             v-on:filter-dict="updateFilterDict"
             v-on:isLoading="updateLoading"
           />
+        </div>
+        <div>
           <DisplayData
             v-loading="isLoadingSearch"
             element-loading-text="Loading..."
@@ -21,6 +24,7 @@
             :payload="payload"
             :totalCount="totalCount"
           />
+        </div>
       </div>
     </span>
 

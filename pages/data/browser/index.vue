@@ -26,7 +26,7 @@
 <script>
 const searchTypes = [
   {
-    label: 'Find Data',
+    label: 'Data',
     name: 'dataset',
   },
   {
