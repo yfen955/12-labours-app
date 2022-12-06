@@ -157,10 +157,4 @@ export default {
     gap: 1rem;
   }
 }
-::v-deep .el-loading-mask {
-  @media only screen and (min-width: $viewport-sm) {
-    position: relative;
-    left: 200%;
-  }
-}
 </style>
