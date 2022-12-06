@@ -1,24 +1,22 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <div class="center">
-      <div class="container-default">
-        <!-- display categories -->
-        <section class="category-container">
-          <h1>Browse categories</h1>
-          <tab-nav class="category-nav"
-            :tabs="searchTypes"
-            :activeTab="category"
-            v-on:tabClick="changeCategory"
-          />
-        </section>
-        <!-- data container -->
-        <DataContainer
-          v-if="!isLoadingSearch"
-          :category="category"
-          :payload="payload"
+    <div class="container-default">
+      <!-- display categories -->
+      <section class="category-container">
+        <h1>Browse categories</h1>
+        <tab-nav class="category-nav"
+          :tabs="searchTypes"
+          :activeTab="category"
+          v-on:tabClick="changeCategory"
         />
-      </div>
+      </section>
+      <!-- data container -->
+      <DataContainer
+        v-if="!isLoadingSearch"
+        :category="category"
+        :payload="payload"
+      />
     </div>
   </div>
 </template>
@@ -118,7 +116,7 @@ export default {
 .container-default {
   @media only screen and (min-width: calc($viewport-lg - 20rem)) {
     margin: auto;
-    width: 85rem;
+    width: 90rem;
   }
 }
 </style>
