@@ -2,8 +2,8 @@
   <div class="search-container">
     <el-form label-position="top" v-model="searchContent" @submit.native.prevent>
       <el-form-item label="Search within category">
-        <div class="search-title">
-          <div class="input-wrap">
+        <div class="search">
+          <div class="input-box">
             <el-input
               v-model="searchContent"
               placeholder="Enter search criteria"
@@ -11,12 +11,11 @@
             />
             <el-button
               v-if="searchContent"
-              class="btn-clear-search"
+              class="clear-search-btn"
               icon="el-icon-close"
               @click="clearSearch"
             />
           </div>
-          
           <el-button icon="el-icon-search" class="search-btn" @click="onSubmit()">
             <span class="display-ellipsis --1">Search</span>
           </el-button>
@@ -89,46 +88,49 @@ export default {
 
 <style scoped lang="scss">
 .search-container {
-  margin-top: 1em;
-  margin-bottom: 0.5em;
+  min-width: 13rem;
+  margin: 1rem 0 1rem 0;
   border: 1px solid #E4E7ED;
-  padding: 0.5em;
+  padding: 1rem;
 }
-.search-title {
+.search {
   display: flex;
-  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (max-width: $viewport-sm) {
+    align-items: flex-end;
+    flex-direction: column;
+  }
 }
-.input-wrap {
-  display: flex;
-  position: relative;
+.input-box {
   width: 100%;
-  border-radius: .2rem;
-  
+  min-width: 13rem;
+  position: relative;
   ::v-deep .el-input__inner {
     width: 100%;
   }
-}
-.btn-clear-search {
-  color: black;
+  .clear-search-btn {
+  color: #000000;
   background: none;
   border: none;
-  cursor: pointer;
   height: 100%;
-  outline: none;
-  padding: .5em;
+  padding: 0.5rem;
   position: absolute;
   right: 0;
   top: 0;
   &:hover,
   &:active {
-    opacity: 0.75;
+    opacity: 0.5;
   }
+}
 }
 .search-btn {
   display: flex;
-  margin-left: 0.5em;
-  height: 2.2em;
-  padding: 0.5em 1em 0.5em 1em;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem 0 1rem;
 }
 ::v-deep .el-form-item {
   margin-bottom: 0;

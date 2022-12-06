@@ -1,20 +1,22 @@
 <template>
-  <el-row class="data-heading">
-    <p v-show="totalCount">
+  <div class="pagination-container">
+    <div v-show="totalCount">
       {{ totalCount }} Results | Showing
       <pagination-menu 
         :page-size="limit"
         :pageSizeOptions="pageSizeOptions"
         @update-page-size="updatePageSize"
       />
-    </p>
-    <pagination
-      :total-count="totalCount"
-      :page-size="limit"
-      :selected="currentPage"
-      @select-page="handleCurrentChange"
-    />
-  </el-row>
+    </div>
+    <div>
+      <pagination
+        :total-count="totalCount"
+        :page-size="limit"
+        :selected="currentPage"
+        @select-page="handleCurrentChange"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -74,19 +76,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.data-heading {
-  align-items: center;
+.pagination-container {
   display: flex;
   justify-content: space-between;
-  @media screen and (max-width: 28em) {
+  align-items: center;
+  @media only screen and (max-width: $viewport-sm) {
+    margin-top: 1rem;
     flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 0;
-  }
-  p {
-    font-size: 0.875em;
-    flex-shrink: 0;
-    margin-left: 0;
   }
 }
 </style>

@@ -4,7 +4,7 @@
     <div class="detail-container">
       <div class="vertical-flex"> 
         <div class="image-frame">         
-          <img :src="eventItem.image.url" class="event-image"></img>  
+          <img :src="eventItem.image.url" class="event-image" />  
         </div>       
         <div class="event-title">
           <h1>{{eventItem.title}}</h1>

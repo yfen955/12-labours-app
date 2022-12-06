@@ -1,7 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" />
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -11,160 +10,61 @@
       class="loading-container"
     ></div>
 
-    <div class="container-default" v-if="!isLoading">
-      <el-row :gutter="20">
+    <div class="center">
+      <div class="container-default" v-if="!isLoading">
 
-        <!-- left column -->
-        <el-col :span="6">
-          <!-- image -->
-          <el-card shadow="never" class="img-container">
-            <div class="text item">
-              <img :src="imgPlaceholder" alt="image" style="width: 90%">
-            </div>
-            <div class="text item">
-              <el-button><span class="display-ellipsis --1">Get Dataset</span></el-button>
-            </div>
-            <div class="text item">
-              <el-button><span class="display-ellipsis --1">Cite Dataset</span></el-button>
-            </div>
-          </el-card>
-          <br>
-
-          <!-- related information -->
-          <el-card shadow="never">
-            <div slot="header" class="clearfix">
-              <b>Search related datasets</b>
-            </div>
-            <div class="text item">
-              <el-col>
-                <span class="card-title">PROJECT:</span>
-                <div class="card-content">
-                  Anatomic-Functional Mapping of Enteric Neural Circuits
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">TYPE:</span>
-                <div class="card-content">
-                  <el-button @click="goToDataset"><span class="display-ellipsis --1">Dataset</span></el-button>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">ANATOMICAL STRUCTURE:</span>
-                <div class="card-content">
-                  <el-button><span class="display-ellipsis --1">COLON</span></el-button>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">SPECIES:</span>
-                <div class="card-content">
-                  <el-button><span class="display-ellipsis --1">MOUSE</span></el-button>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">EXPERIMENTAL APPROACH:</span>
-                <div class="card-content">
-                  <el-button><span class="display-ellipsis --1">ANATOMY</span></el-button>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">SEX:</span>
-                <div class="card-content">
-                  <el-button><span class="display-ellipsis --1">MALE</span></el-button>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">CONTRIBUTORS:</span>
-                <div class="card-content">
-                  <ul>
-                    <li v-for="i in 4" :key="i">
-                      dummy item {{ i }}
-                    </li>
-                  </ul>
-                </div>
-              </el-col>
-              <hr>
-              <el-col>
-                <span class="card-title">test filter</span>
-                <div class="card-content">
-                  <el-button @click="goWithFacet('Scaffold')"><span class="display-ellipsis --1">Scaffold</span></el-button>
-                </div>
-              </el-col>
-            </div>
-          </el-card>
-        </el-col>
-
-        <!-- right column -->
-        <el-col :span="18">
-          <!-- title & description -->
-          <el-card shadow="never">
+        <div class="right-column">
+          <el-card shadow="never" class="description-container">
             <h1>{{sampleData.title}}</h1>
-            <br>
-            <el-row :gutter="20">
-              <el-col :span="18">
-                <div class="text item">
-                  <b>Contributors: {{contributorName}}</b>
-                </div>
+            <div class="information-top">
+              <section class="description">
+                <p>
+                  <b>Contributors: </b>
+                  {{contributorName}}
+                </p>
                 <hr>
-                <div class="text item">
-                  <b>Description:</b><!--  {{ sampleData.description }} -->
-                </div>
-              </el-col>
-              <el-col :span="6">
-                <el-card shadow="never">
-                  <div class="text item small">
-                    <b>Viewing version:</b> 1.0
-                  </div>
-                  <div class="text item small">
-                    DOI: 10.26275/umgm-rzar
-                  </div>
-                  <div class="text item small">
-                    August 10, 2022
-                  </div>
-                  <div class="text item small">
-                    <i class="el-icon-document-copy"></i> 2532 files
-                  </div>
-                  <div class="text item small">
-                    <i class="el-icon-files"></i> 14.88 GB
-                  </div>
-                  <div class="text item small">
-                    <b>Latest version:</b> 1.0
-                  </div>
-                  <div class="text item small">
-                    August 10, 2022
-                  </div>
-                  <div class="text item small">
-                    View other versions
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-            <br>
+                <p>
+                  <b>Description: </b>
+                  <!-- {{ sampleData.description }} -->
+                </p> 
+              </section>
+              <el-card shadow="never" class="version">
+                <p>
+                  <b>Viewing version:</b> 1.0
+                </p>
+                <p>DOI: 10.26275/umgm-rzar</p>
+                <p>August 10, 2022</p>
+                <p>
+                  <i class="el-icon-document-copy"></i> 2532 files
+                </p>
+                <p>
+                  <i class="el-icon-files"></i> 14.88 GB
+                </p>
+                <p>
+                  <b>Latest version:</b> 1.0
+                </p>
+                <p>August 10, 2022</p>
+                <p>View other versions</p>
+              </el-card>
+            </div>
             <hr>
-            <div class="inline-block">
-              <div class="text item">
+            <div class="information-bottom">
+              <p class="usage">
                 <b>Usage Rights:</b> CC-BY-4.0
-              </div>
-              <div class="text item right-item">
+              </p>
+              <p class="download">
                 <b>Downloads:</b> 0
-              </div>
+              </p>
             </div>
           </el-card>
-          <br>
-
-          <!-- details -->
-          <el-card shadow="never">
+  
+          <el-card shadow="never" class="detail-container">
             <tab-nav class="categories-nav"
               :tabs="datasetTabs"
               :activeTab="currentTab"
               v-on:tabClick="changeTab"
             />
-
+  
             <!-- abstract content -->
             <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
               <p><b>Study Purpose:</b></p>
@@ -224,7 +124,7 @@
               <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
                 <!-- view Scaffold -->
                 <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
-                  <el-card class="medium">
+                  <el-card class="carousel">
                     <img :src="imgPlaceholder" alt="image" class="model-image">
                     <p><b>Scaffold</b></p>
                     <el-popover
@@ -241,10 +141,10 @@
                     </div>
                   </el-card>
                 </el-carousel-item>
-
+  
                 <!-- view Flatmap -->
                 <el-carousel-item>
-                  <el-card class="medium">
+                  <el-card class="carousel">
                     <img :src="imgPlaceholder" alt="image" class="model-image">
                     <p><b>Flatmap</b></p>
                     <p>Mouse</p>
@@ -255,10 +155,10 @@
                     </div>
                   </el-card>
                 </el-carousel-item>
-
+  
                 <!-- view Plot -->
                 <el-carousel-item v-show="has_plot" v-for="item in plot_manifest_data" :key="item.id">
-                  <el-card class="medium">
+                  <el-card class="carousel">
                     <i class="el-icon-data-analysis"></i>
                     <p><b>Plot</b></p>
                     <el-popover
@@ -288,8 +188,88 @@
               versions
             </span>
           </el-card>
-        </el-col>
-      </el-row>
+        </div>
+
+        <div class="left-column">
+          <el-card shadow="never" class="image-container">
+            <div>
+              <img :src="imgPlaceholder" alt="image"/>
+            </div>
+            <div>
+              <el-button class="left-top-btn">
+                <span class="display-ellipsis --1">Get Dataset</span>
+              </el-button>
+            </div>
+            <div>
+              <el-button class="left-top-btn secondary">
+                <span class="display-ellipsis --1">Cite Dataset</span>
+              </el-button>
+            </div>
+          </el-card>
+  
+          <el-card shadow="never" class="related-container">
+            <h4 class="clearfix">Search related datasets</h4>
+            <hr>
+            <section>
+              <div class="card-content">
+                <span class="card-title">PROJECT:</span><br/>
+                Anatomic-Functional Mapping of Enteric Neural Circuits
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">TYPE:</span><br/>
+                <el-button @click="goToDataset" class="secondary">
+                  <span class="display-ellipsis --1">Dataset</span>
+                </el-button>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
+                <el-button class="secondary">
+                  <span class="display-ellipsis --1">COLON</span>
+                </el-button>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">SPECIES:</span><br/>
+                <el-button class="secondary">
+                  <span class="display-ellipsis --1">MOUSE</span>
+                </el-button>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
+                <el-button class="secondary">
+                  <span class="display-ellipsis --1">ANATOMY</span>
+                </el-button>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">SEX:</span><br/>
+                <el-button class="secondary">
+                  <span class="display-ellipsis --1">MALE</span><br/>
+                </el-button>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">CONTRIBUTORS:</span><br/>
+                <ul>
+                  <li v-for="i in 4" :key="i">
+                    dummy item {{ i }}
+                  </li>
+                </ul>
+              </div>
+              <hr>
+              <div class="card-content">
+                <span class="card-title">test filter:</span><br/>
+                <el-button @click="goWithFacet('Scaffold')" class="secondary">
+                  <span class="display-ellipsis --1">Scaffold</span>
+                </el-button>
+              </div>
+            </section>
+          </el-card>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -333,7 +313,6 @@ export default {
   props: [ 'id' ],
   data: () => {
     return {
-      pageTitle: `Dataset`,
       breadcrumb: [
         {
           to: { name: 'index' },
@@ -341,7 +320,7 @@ export default {
         },
         {
           to: { name: 'data' },
-          label: 'DATA & MODELS'
+          label: 'Data & Models'
         },
         {
           to: {
@@ -465,20 +444,88 @@ export default {
 
 <style scoped lang="scss">
 .loading-container {
-  height: 30em;
+  min-height: 100vh;
 }
-.img-container {
-  text-align: center;
+.container-default {
+  @media only screen and (min-width: $viewport-sm) {
+    display: flex;
+  }
+  .left-column {
+    order: 1;
+    min-width: 15rem;
+    .image-container {
+      text-align: center;
+      img {
+        width: 10rem;
+        @media only screen and (max-width: $viewport-sm) {
+          width: 13rem;
+        }
+      }
+      .left-top-btn {
+        margin: 1rem 0 0 0;
+      }
+    }
+    .related-container {
+      margin-top: 2rem;
+      .card-title {
+        font-size: 1.5rem;
+      }
+      .card-content {
+        margin: 1rem 0.5rem 1rem 0.5rem;
+      }
+    }
+  }
+  .right-column {
+    order: 2;
+    min-width: 15rem;
+    @media only screen and (min-width: $viewport-sm) {
+      margin-left: 2rem;
+      width: 70rem;
+    }
+    .description-container {
+      padding: 1rem;
+      .information-top {
+        @media only screen and (min-width: $viewport-md) {
+          display: flex;
+          justify-content: space-between;
+        }
+        .description {
+          margin: 1rem 1rem 1rem 0;
+          width: fit-content;
+        }
+        .version {
+          width: fit-content;
+        }
+      }
+      .information-bottom {
+        margin: 1rem 0 1rem 0;
+        display: flex;
+        .usage {
+          margin-left: 0;
+        }
+        .download {
+          margin-right: 0;
+        }
+      }
+    }
+    .detail-container{
+      margin-top: 2rem;
+      @media only screen and (max-width: $viewport-sm) {
+        margin-bottom: 2rem;
+      }
+    }
+  }
 }
-.text {
-  font-size: 1em;
+hr {
+  border: 0.5px solid #E4E7ED;
+  margin: 1rem 0 1rem 0;
 }
-.item {
-  margin-bottom: 18px;
+p {
+  font-size: 1rem;
 }
-.small {
-  font-size: .8em;
-  margin: 0;
+h2 {
+  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1.5rem;
 }
 .clearfix:before,
 .clearfix:after {
@@ -486,65 +533,36 @@ export default {
   content: "";
 }
 .clearfix:after {
-  clear: both
-}
-.card-title {
-  font-size: 1.3em;
-}
-.card-content {
-  margin-top: .5em;
-  margin-bottom: .5em;
-}
-.gallery-container {
-  margin-top: 1em;
-  text-align: center;
-}
-hr {
-  border: .5px solid #E4E7ED;
-}
-.inline-block {
-  display: flex;
-  margin-bottom: 0;
-  .right-item {
-    margin-left: 62%;
-  }
+  clear: both;
 }
 .el-icon-data-analysis {
-  font-size: 5em;
+  font-size: 5rem;
 }
 .el-carousel__item {
-  margin-top: 1em;
-  margin-left: calc((50% - 270px) / 2);
-  width: 270px;
+  margin-top: 1rem;
+  margin-left: calc((50% - 17rem) / 2);
+  width: 17rem;
 }
-.medium {
-  height: 270px;
-  line-height: 1.5em;
-
+.carousel {
+  height: 17.5rem;
+  line-height: 1.5rem;
   .model-name {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-.model-image {
-  width: 70%;
-}
-.model-button {
-  margin-top: .5em;
-}
-h2 {
-  margin: 0.5em 0 0.5em;
-  font-size: 1.5em;
-}
-.tab-content {
-  line-height: 2.5em;
-  hr {
-    margin: 0.5em 0 0.5em;
+  .model-image {
+    width: 10rem;
+  }
+  .model-button {
+    margin-top: 1rem;
   }
 }
-.indent {
-  text-indent: 2em;
+.tab-content {
+  line-height: 2rem;
+  .indent {
+    text-indent: 2rem;
+  }
 }
 </style>

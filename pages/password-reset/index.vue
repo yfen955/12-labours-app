@@ -1,31 +1,33 @@
 <template>
   <div class="page-outer">
-    <div v-if="message" class="container-default msg-box flex-box">
-      {{ message }}
-    </div>
-    <div v-else>
-      <h1>Reset your password</h1>
-      <el-form label-position="top" class="psd-form">
-        <el-form-item :required="email.required" :label="email.label"> 
-          <el-input 
-            v-model="email.value" 
-            @input="fieldChange()" 
-            placeholder="Enter Email"
-          />
-        </el-form-item>
-        <el-form-item> 
-          <div class="error">{{ email.message }}</div>
-        </el-form-item>
-        <el-button :disabled="submitDisabled" @click="sendEmail()">
-          Send password reset email 
-        </el-button>
-      </el-form>
-      <div v-if="error" class="err-message">
-        {{ error }}
+    <div class="container-default">
+      <div v-if="message" class="msg-box">
+        {{ message }}
       </div>
-      <div v-else class="empty-box"></div>
-    </div>
-    
+      <div v-else>
+        <div>
+          <h1>Reset your password</h1>
+          <el-form label-position="top" class="pwd-form">
+            <el-form-item :required="email.required" :label="email.label"> 
+              <el-input 
+                v-model="email.value" 
+                @input="fieldChange()" 
+                placeholder="Enter Email"
+              />
+            </el-form-item>
+            <el-form-item> 
+              <div class="error">{{ email.message }}</div>
+            </el-form-item>
+            <el-button :disabled="submitDisabled" @click="sendEmail()">
+              <p>Send reset email</p>
+            </el-button>
+          </el-form>
+        </div>
+        <div v-if="error" class="err-message">
+          {{ error }}
+        </div>
+      </div>
+    </div>  
   </div>
 </template>
 
@@ -83,37 +85,37 @@ export default {
 <style scoped lang="scss">
 h1 {
   text-align: center;
+  white-space: nowrap;
 }
-.psd-form {
+.pwd-form {
   margin: auto;
-  margin-top: 2em;
-  margin-bottom: 1em;
-  max-width: 25em;
-  padding: 1em;
+  margin-top: 2rem;
+  max-width: 25rem;
+  min-width: 13rem;
+  padding: 1rem;
   border: 1px solid #E4E7ED;
   background-color: $background;
+  @media only screen and (max-width:  $viewport-sm) {
+    p {
+      font-size: 0.75rem;
+    }
+  }
 
   ::v-deep .el-input__inner {
     width: 100%;
   }
-
   ::v-deep .el-form-item {
-    margin-bottom: 0.5em;
+    margin-bottom: 1rem;
   }
 }
 .msg-box{
-  justify-content:center;
+  text-align:center;
   font-size: 1.5em;
-  padding:8rem 1rem 20rem 1rem;
-  @media only screen and (max-width:  $viewport-sm) {
-    padding:2rem 1rem 2rem 1rem;
-  }
+  margin: 10rem 0 0 0;
+  min-width: 13rem;
 }
 .err-message {
+  margin-top: 2rem;
   text-align: center;
-  margin-bottom: 13.5em;
-}
-.empty-box {
-  padding-bottom: 15em;
 }
 </style>

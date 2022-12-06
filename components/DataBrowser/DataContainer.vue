@@ -5,16 +5,16 @@
         v-on:search_list="updateSearchedIds"
         v-on:isLoading="updateLoading"
       />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
+      <div class="data-container">
+        <div>
           <FilterData
             :allFilterDict="allFilterDict"
             :searched_ids="searched_ids"
             v-on:filter-dict="updateFilterDict"
             v-on:isLoading="updateLoading"
           />
-        </el-col>
-        <el-col :span="18">
+        </div>
+        <div>
           <DisplayData
             v-loading="isLoadingSearch"
             element-loading-text="Loading..."
@@ -24,47 +24,32 @@
             :payload="payload"
             :totalCount="totalCount"
           />
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </span>
 
     <!-- display tools -->
     <span v-if="$route.query.type === 'tools'">
       <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
+      <div class="data-container">
+        <FilterData />
+      </div>
     </span>
 
     <!-- display news -->
     <span v-if="$route.query.type === 'news'">
       <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
+      <div class="data-container">
+        <FilterData />
+      </div>
     </span>
 
     <!-- display laboursInfo -->
     <span v-if="$route.query.type === 'laboursInfo'">
       <SearchData />
-      <el-row :gutter="24">
-        <el-col :span="6" class="facet-menu">
-          <FilterData />
-        </el-col>
-        <el-col :span="18">
-          <!-- <DisplayData /> -->
-        </el-col>
-      </el-row>
+      <div class="data-container">
+        <FilterData />
+      </div>
     </span>
   </div>
 </template>
@@ -163,7 +148,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.facet-menu {
-  margin-top: 1em;
+.data-container {
+  min-width: 15rem;
+  gap: 2rem;
+  @media only screen and (min-width: $viewport-sm) {
+    display: flex;
+  }
+  @media only screen and (max-width: $viewport-md) {
+    gap: 1rem;
+  }
 }
 </style>

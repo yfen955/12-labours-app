@@ -30,10 +30,6 @@ export default {
 
 <style scoped lang="scss">
 .copy-btn {
-  margin-right: 5%;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  width: 20%;
-  padding: 0.36em;
+  border: none;
 }
 </style>

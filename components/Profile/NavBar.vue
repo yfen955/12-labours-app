@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nav-container">
     <h4>Your Account</h4>
     <el-menu
       :default-active="$route.path"
@@ -49,12 +49,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.nav-container {
+  min-width: 15rem;
+}
 h4 {
-  padding-top: 2em;
+  padding-top: 2rem;
   text-align: center;
 }
 .el-menu {
-  padding-top: 1em;
+  margin-top: 1rem;
   border: none;
 }
 .el-menu-item {

@@ -1,54 +1,56 @@
 <template>
-  <div class="white-background">
-    <h4>Refine results</h4>
-    <hr />
-    <h5>Filters applied</h5>
-    <el-card shadow="never" class="facet-card">
-      <span v-if="selectedItems.length === 0" class="no-facets">
-        No filters applied
-      </span>
-      <el-tag
-        v-for="facet in selectedItems"
-        :key="facet"
-        class="tags"
-        disable-transitions
-        closable
-        @close="deselectFacet(facet)"
-      >
-        <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
-      </el-tag>
-    </el-card>
-    <el-collapse>
-      <el-collapse-item
-        v-for="(filter, index) in filters_list"
-        :key="index"
-        :title="filter.title"
-      >
-        <el-checkbox
-          :indeterminate="filter.isIndeterminate"
-          class="selectAll"
-          v-model="filter.checkAll"
-          @change="handleCheckAllChange(filter, index)"
+  <div>
+    <div class="filter-container">
+      <h4>Refine results</h4>
+      <hr />
+      <h5>Filters applied</h5>
+      <el-card shadow="never" class="facet-card">
+        <span v-if="selectedItems.length === 0" class="no-facets">
+          No filters applied
+        </span>
+        <el-tag
+          v-for="facet in selectedItems"
+          :key="facet"
+          class="tags"
+          disable-transitions
+          closable
+          @close="deselectFacet(facet)"
         >
-          Select all
-        </el-checkbox>
-        <hr class="checkbox-line" />
-        <el-checkbox-group
-          v-model="filter.selectedItem"
-          @change="updateCheckAll(filter, index)"
+          <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
+        </el-tag>
+      </el-card>
+      <el-collapse>
+        <el-collapse-item
+          v-for="(filter, index) in filters_list"
+          :key="index"
+          :title="filter.title"
         >
           <el-checkbox
-            class="filter-selecter"
-            v-for="(type, index) in filter.filter_items"
-            v-show="type !== 'NA'"
-            :key="index"
-            :label="type"
+            :indeterminate="filter.isIndeterminate"
+            class="filter-selector"
+            v-model="filter.checkAll"
+            @change="handleCheckAllChange(filter, index)"
           >
-            {{ type[0].toUpperCase() + type.slice(1) }}
+            Select all
           </el-checkbox>
-        </el-checkbox-group>
-      </el-collapse-item>
-    </el-collapse>
+          <hr class="checkbox-line" />
+          <el-checkbox-group
+            v-model="filter.selectedItem"
+            @change="updateCheckAll(filter, index)"
+          >
+            <el-checkbox
+              class="filter-selector"
+              v-for="(type, index) in filter.filter_items"
+              v-show="type !== 'NA'"
+              :key="index"
+              :label="type"
+            >
+              {{ type[0].toUpperCase() + type.slice(1) }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-collapse-item>
+      </el-collapse>
+    </div>
   </div>
 </template>
 
@@ -280,50 +282,51 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.white-background {
-  background-color: white;
-  border: 1px solid #E4E7ED; // lineColor2
-  h4 {
-    line-height: 1rem;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin: 0.5em;
-  };
-  h5 {
-    line-height: 1rem;
-    font-weight: 600;
-    font-size: 1rem;
-    margin: 0.9em;
-  };
-  hr {
-    border: none;
-    border-bottom: 1px solid #E4E7ED;
+.filter-container {
+  @media only screen and (min-width: $viewport-md) {
+    width: 20rem;
+    @media only screen and (min-width: $viewport-lg) {
+      width: 25rem
+    }
   }
+  min-width: 15rem;
+  border: 1px solid #E4E7ED;
+  margin-top: 1rem;
 }
-.filter-selecter{
+h4, h5 {
+  margin: 1rem;
+};
+hr {
+  border: 0.5px solid #E4E7ED;
+}
+.checkbox-line {
+  margin: 0.5rem 0 0.5rem 0;
+}
+.filter-selector {
   margin: 0;
   width: 100%;
 }
 .facet-card {
-  height: 5em;
-  margin: 0.8em;
+  height: 5rem;
+  margin: 1rem;
   overflow-y: auto;
   .no-facets {
     font-style: italic;
     opacity: 0.5;
+    font-size: 1rem;
   }
   .tags {
     color: $app-primary-color;
   }
 }
 ::v-deep .el-card__body {
-  padding: 0.5em;
+  padding: 0.5rem;
 }
 ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
   &::after {
     transform: rotate(45deg) scale(1) !important;
-    left: 0.3em !important;
-    top: 0.1em !important;
+    left: 0.3rem !important;
+    top: 0.1rem !important;
   }
 }
 ::v-deep .el-checkbox.is-checked {
@@ -332,25 +335,17 @@ export default {
   }
 }
 ::v-deep .el-checkbox__inner {
-  width: 1em;
-  height: 1em;
+  width: 1rem;
+  height: 1rem;
 }
 ::v-deep .el-collapse-item__header {
   font: normal normal 550 1rem/1rem Arimo;
 }
-.selectAll {
-  margin: 0;
-}
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   &::before {
-    border: 0.2px solid $app-primary-color !important;
+    border-bottom: 0.01rem solid $app-primary-color;
     background-color: $app-primary-color;
-    top: 5px;
+    top: 0.375rem;
   }
-}
-.checkbox-line {
-  margin-top: 0.5em;
-  margin-bottom: 0;
-  border: 0.5px solid #cecece !important;
 }
 </style>

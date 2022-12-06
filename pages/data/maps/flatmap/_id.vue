@@ -1,25 +1,25 @@
 <template>
-  <div class="container-default">
-    <div class="model-container">
-      <div class="title-box">
-        <h1>Flatmap Viewer</h1>
-        <CopyLink />
-      </div>
-      
-      <client-only placeholder="Loading Flatmap ...">
-        <div class="flatmap-container">
-          <FlatmapVuer
-            :entry="taxo"
-            :name="taxo"
-            :display-minimap="false"
-            :flatmap-a-p-i="flatmapAPI"
-            @ready="flatmapReady"
-            height="90%"
-          />
+  <div class="page-outer">
+    <div class="container-default">
+      <div class="model-container">
+        <div class="model-title">
+          <h1>Flatmap Viewer</h1>
+          <CopyLink />
         </div>
-      </client-only>
+
+        <client-only placeholder="Loading Flatmap ...">
+          <div class="flatmap-container">
+            <FlatmapVuer
+              :entry="taxo"
+              :name="taxo"
+              :display-minimap="false"
+              :flatmap-a-p-i="flatmapAPI"
+              @ready="flatmapReady"
+            />
+          </div>
+        </client-only>
+      </div>
     </div>
-    
   </div>
 </template>
 
@@ -65,29 +65,13 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.model-container {
-  border: 1px solid #E4E7ED;
-}
-.title-box {
-  display: flex;
-  justify-content: space-between;
-  margin: .5em 0 .5em;
-  
-  h1 {
-    margin-top: .5em;
-    margin-left: 1em;
-  }
-}
-</style>
-
 <style lang="scss">
 .el-checkbox__input.is-checked .el-checkbox__inner {
   border-color: $app-primary-color !important;
   &::after {
     transform: rotate(45deg) scale(1) !important;
-    left: 0.3em !important;
-    top: 0.1em !important;
+    left: 0.3rem !important;
+    top: 0.1rem !important;
   }
 }
 .el-icon-arrow-left {
@@ -97,11 +81,8 @@ export default {
   color: $app-primary-color !important;
 }
 .flatmap-container {
-  margin: .5em;
-  height: 90vh;
-  max-width: calc(100% - 48px);
-  overflow: hidden;
-  padding-left: 12px;
+  // height: 70vh;
+  // overflow: hidden;
   @import '~@abi-software/flatmapvuer/dist/flatmapvuer';
 
   span {
@@ -111,7 +92,7 @@ export default {
     color: $app-primary-color !important;
   }
   .el-checkbox__input.is-checked+span.el-checkbox__label {
-    font-size: .5rem;
+    font-size: 0.5rem;
   }
 
   .flatmap-container {
@@ -129,8 +110,8 @@ export default {
     }
 
     .backgroundControl {
-      margin-top: .5em;
-    margin-bottom: .5em;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     .background-popper.el-popper[x-placement^=top] .popper__arrow {
       border-top-color: $app-primary-color !important;
@@ -209,18 +190,19 @@ export default {
       }
     }
   }
+
   .el-radio__input.is-checked+span.el-radio__label, .el-radio__input.is-disabled+span.el-radio__label, .el-radio__label {
-    font-size: 1em;
-  }
-  .el-radio__input.is-checked .el-radio__inner {
-    width: 1em;
-    height: 1em;
-    &::after {
-      width: .7em;
-      height: .7em;
-    }
+    font-size: 1rem;
   }
 
+  .el-radio__input.is-checked .el-radio__inner {
+    width: 1rem;
+    height: 1rem;
+    &::after {
+      width: .7rem;
+      height: .7rem;
+    }
+  }
   .tooltip-container {
     border: 1px solid $app-primary-color !important;
   }

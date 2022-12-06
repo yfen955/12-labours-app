@@ -1,22 +1,24 @@
 <template>
-  <div>
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <div class="container-default">
-      <!-- display categories -->
-      <div class="content-container">
-        <h1>Browse categories</h1>
-        <tab-nav class="categories-nav"
-          :tabs="searchTypes"
-          :activeTab="category"
-          v-on:tabClick="changeCategory"
+    <div class="center">
+      <div class="container-default">
+        <!-- display categories -->
+        <section class="category-container">
+          <h1>Browse categories</h1>
+          <tab-nav class="category-nav"
+            :tabs="searchTypes"
+            :activeTab="category"
+            v-on:tabClick="changeCategory"
+          />
+        </section>
+        <!-- data container -->
+        <DataContainer
+          v-if="!isLoadingSearch"
+          :category="category"
+          :payload="payload"
         />
       </div>
-      <!-- data container -->
-      <DataContainer
-        v-if="!isLoadingSearch"
-        :category="category"
-        :payload="payload"
-      />
     </div>
   </div>
 </template>
@@ -53,7 +55,7 @@ export default {
         },
         {
           to: { name: 'data' },
-          label: 'DATA & MODELS'
+          label: 'Data & Models'
         },
       ],
       searchTypes,
@@ -104,14 +106,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.categories-nav {
-  margin-top: 1em;
-  el-tab-pane {
-    width: 25%;
-  }
-}
-.content-container {
+.category-container {
   border: 1px solid #E4E7ED;
-  padding: 0.5em 0.5em 0 0.5em;
+  padding: 1rem 1rem 0 1rem;
+  min-width: 13rem;
+  .category-nav {
+    margin-top: 1rem;
+  }
 }
 </style>
