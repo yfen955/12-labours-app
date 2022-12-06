@@ -120,21 +120,24 @@ export default {
 
           if (this.$route.query.facets) {
             this.selectedItems = this.$route.query.facets.split(',');
+            let finished = false;
             for (let i = 0; i < this.selectedItems.length; i++) {
               let facet = this.selectedItems[i];
               this.filters_list.map((val) => {
                 let index = val.filter_items.indexOf(facet);
                 if (index > -1) {
                   val.selectedItem.push(val.filter_items[index]);
+                  if (i === this.selectedItems.length - 1)
+                    finished = true;
                   if (val.selectedItem.length === val.filter_items.length) {
                     val.selectedItem = [];
                     val.checkAll = true;
                     val.isIndeterminate = false;
-                    this.handleChange(val);
+                    this.handleChange(val, finished);
                   } else {
                     val.checkAll = false;
                     val.isIndeterminate = true;
-                    this.generateFiltersDict(val);
+                    this.generateFiltersDict(val, finished);
                   }
                 }
               })
@@ -147,7 +150,7 @@ export default {
       }
     },
 
-    async handleChange(filter) {
+    async handleChange(filter, finished) {
       this.isLoading = true;
 
       if (this.selectedItems.length === 0) {
@@ -163,9 +166,9 @@ export default {
       if (!filter)
         await this.generateFiltersDict();
       else
-        await this.generateFiltersDict(filter);
+        await this.generateFiltersDict(filter, finished);
 
-      // update the url to page 1, and add selected facets
+      // update the page and selected facets in the url
       let query = {
         type: this.$route.query.type,
         page: 1,
@@ -174,6 +177,8 @@ export default {
       if (this.selectedItems.length > 0) {
         query.facets = this.selectedItems.toString();
       }
+      if (this.$route.query.search)
+        query.search = this.$route.query.search;
       this.$router.push({
         path: `${this.$route.path}`,
         query: query
@@ -239,7 +244,7 @@ export default {
       this.handleChange();
     },
 
-    async generateFiltersDict(filter_list) {
+    async generateFiltersDict(filter_list, finished) {
       if (!filter_list) {
         this.filters_dict = {};
       } else if (filter_list.selectedItem.length === 0) {
@@ -275,7 +280,9 @@ export default {
       } else {
         this.filters_dict["submitter_id"] = mergedList;
       }
-      this.$emit('filter-dict', this.filters_dict);
+
+      if (finished != false)
+        this.$emit('filter-dict', this.filters_dict);
     },
   },
 }

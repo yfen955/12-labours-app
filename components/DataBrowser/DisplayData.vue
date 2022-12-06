@@ -130,10 +130,13 @@ hr {
   }
 }
 .no-result {
+  height: 10rem;
   margin: 1rem;
+  width: 100%;
   p {
     color: #E4E7ED;
     font-size: 2rem;
+    text-align: center;
   }
 }
 .title-link {
