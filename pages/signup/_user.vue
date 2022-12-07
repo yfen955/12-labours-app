@@ -2,7 +2,7 @@
   <div class="page-outer">
     <div class="flex-box">
       <div class="signup container-default vertical-flex">
-        <div class="top-heading">
+        <div class="signup__title top-heading">
           <h1>SIGN UP</h1>
         </div>
         <div class="fields flex-box">
@@ -346,9 +346,13 @@ export default {
 
 <style scoped lang="scss">
   .signup{
+    min-height: 82.5vh;
     width:50%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
+    }
+    &__title{
+      padding:1rem;
     }
     align-items:center;
     box-sizing:border-box;

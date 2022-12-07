@@ -132,7 +132,7 @@ export default {
 
   .login{
     width:50%;
-    min-height: 80vh;
+    min-height: 82.5vh;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }

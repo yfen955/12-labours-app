@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <div class="content-container">
+    <div class="profile-container">
       <NavBar />
       <div class="profile container-default">
         <div class="top-heading">
@@ -160,20 +160,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.content-container {
-  min-width: 15rem;
-  min-height: 80vh;
-  @media only screen and (min-width: 37rem) {
-    display:flex;
-  }
-}
-.profile{
-  width:50%;
-  @media only screen and (max-width:  $viewport-md) {
-    width:100%;
-  }
-  box-sizing:border-box;
-}
 .fields{
   width:100%;
   justify-content:center;
@@ -183,7 +169,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media only screen and (max-width:  $viewport-md) {
+  @media only screen and (max-width: $viewport-md) {
     width:100%;
   }
 }

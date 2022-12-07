@@ -1,15 +1,7 @@
 
 .page-outer{
   width:100%;
-  min-height: 80vh;
-}
-
-.center {
-  @media only screen and (min-width: $viewport-lg) {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
+  min-height: 82.5vh;
 }
 
 .container-default{
@@ -199,4 +191,20 @@ a {
     height: 70vh;
     overflow: hidden;
   }
+}
+
+.profile-container {
+  min-width: 15rem;
+  min-height: 82.5vh;
+  @media only screen and (min-width: 37rem) {
+    display:flex;
+  }
+}
+
+.profile{
+  width:50%;
+  @media only screen and (max-width: $viewport-md) {
+    width:100%;
+  }
+  box-sizing:border-box;
 }
