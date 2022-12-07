@@ -58,11 +58,10 @@
 import axios from 'axios';
 
 export default {
-  props: [ "searched_ids", "file_type", "allFilterDict" ],
+  props: [ "searched_ids", "allFilterDict" ],
 
   data: () => {
     return {
-      isLoading: false,
       filters_list: [],
       selectedItems: [],
       filteredData: [],
@@ -86,11 +85,6 @@ export default {
     'allFilterDict': {
       handler() {
         this.dataChange(this.$route.query.type);
-      }
-    },
-    'isLoading': {
-      handler() {
-        this.$emit('isLoading', this.isLoading);
       }
     },
   },
@@ -151,8 +145,6 @@ export default {
     },
 
     async handleChange(filter, finished) {
-      this.isLoading = true;
-
       if (this.selectedItems.length === 0) {
         this.filter_id_list = [];
       }
@@ -183,8 +175,6 @@ export default {
         path: `${this.$route.path}`,
         query: query
       })
-
-      this.isLoading = false;
     },
 
     handleCheckAllChange(filter, i) {

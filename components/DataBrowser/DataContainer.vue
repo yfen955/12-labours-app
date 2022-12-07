@@ -3,7 +3,6 @@
     <span v-if="$route.query.type === 'dataset'">
       <SearchData
         v-on:search_list="updateSearchedIds"
-        v-on:isLoading="updateLoading"
       />
       <div class="data-container">
         <div>
@@ -11,7 +10,6 @@
             :allFilterDict="allFilterDict"
             :searched_ids="searched_ids"
             v-on:filter-dict="updateFilterDict"
-            v-on:isLoading="updateLoading"
           />
         </div>
         <div>
