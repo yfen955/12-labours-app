@@ -193,7 +193,6 @@ export default {
         dhbId:this.dhb.value,
         googleId: (this.googleProfile && this.googleProfile.googleId) ? this.googleProfile.googleId : null
       };
-      console.log(userInfo);
       try {
         const path = '/user/local/profile/update';
         let response = await this.$axios.post(path, {userInfo: userInfo});
