@@ -83,7 +83,6 @@ export default {
         path: `${this.$route.path}`,
         query: query
       })
-      console.log(this.$route);
       this.isLoading = false;
     },
 

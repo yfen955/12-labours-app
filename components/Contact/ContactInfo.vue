@@ -1,7 +1,7 @@
 <template>
   <div :class="showBg?'form-section':''"> 
     <el-form-item v-if="title.visible" :required="title.required" :label="title.display">
-      <el-select class="--sm" v-model="title.value" :placeholder="title.placeholder" @input="selectInput('title')">
+      <el-select class="--sm" v-model="title.value" :placeholder="title.placeholder" @input="selectChange('title')">
         <el-option label="Dr" value="Dr"></el-option>
         <el-option label="Mr" value="Mr"></el-option>
         <el-option label="Miss" value="Miss"></el-option>
@@ -10,23 +10,23 @@
       </el-select>
     </el-form-item>
     <el-form-item v-if="firstName.visible" :required="firstName.required" :label="firstName.display">
-      <el-input v-model="firstName.value" @input="fieldInput('firstName')" :maxlength="firstName.maxLength" :placeholder="firstName.placeholder" :disabled="firstName.disabled"></el-input>
+      <el-input v-model="firstName.value" @input="fieldChange('firstName')" :maxlength="firstName.maxLength" :placeholder="firstName.placeholder" :disabled="firstName.disabled"></el-input>
       <div class="error">{{firstName.message}}</div>
     </el-form-item>
     <el-form-item v-if="lastName.visible" :required="lastName.required" :label="lastName.display">
-      <el-input v-model="lastName.value" @input="fieldInput('lastName')" :maxlength="lastName.maxLength" :placeholder="lastName.placeholder" :disabled="lastName.disabled"></el-input>
+      <el-input v-model="lastName.value" @input="fieldChange('lastName')" :maxlength="lastName.maxLength" :placeholder="lastName.placeholder" :disabled="lastName.disabled"></el-input>
       <div class="error">{{lastName.message}}</div>
     </el-form-item>
     <el-form-item v-if="phone.visible" :required="phone.required" :label="phone.display">
-      <el-input v-model="phone.value" @input="fieldInput('phone')" :maxlength="phone.maxLength" :placeholder="phone.placeholder" :disabled="phone.disabled"></el-input>
+      <el-input v-model="phone.value" @input="fieldChange('phone')" :maxlength="phone.maxLength" :placeholder="phone.placeholder" :disabled="phone.disabled"></el-input>
       <div class="error">{{phone.message}}</div>
     </el-form-item>
     <el-form-item v-if="email.visible" :required="email.required" :label="email.display">
-      <el-input v-model="email.value" @input="fieldInput('email')" :maxlength="email.maxLength" :placeholder="email.placeholder" :disabled="email.disabled"></el-input>
+      <el-input v-model="email.value" @input="fieldChange('email')" :maxlength="email.maxLength" :placeholder="email.placeholder" :disabled="email.disabled"></el-input>
       <div class="error">{{email.message}}</div>
     </el-form-item> 
     <el-form-item v-if="confirmEmail.visible" :required="confirmEmail.required" :label="confirmEmail.display">
-      <el-input v-model="confirmEmail.value" @input="fieldInput('confirmEmail')" :maxlength="confirmEmail.maxLength" :placeholder="confirmEmail.placeholder" :disabled="confirmEmail.disabled"></el-input>
+      <el-input v-model="confirmEmail.value" @input="fieldChange('confirmEmail')" :maxlength="confirmEmail.maxLength" :placeholder="confirmEmail.placeholder" :disabled="confirmEmail.disabled"></el-input>
       <div class="error">{{confirmEmail.message}}</div>
     </el-form-item>
   </div>
@@ -92,22 +92,22 @@ export default {
   },
 
   methods: {
-    fieldInput: function(name) {
+    fieldChange: function(name) {
       let field=this[name]
       let fieldToMatch=this[field.match] 
       let result=this.$validateElement(field,fieldToMatch)
       field.message=result.strMessage
       if(result.matchFlag){
         fieldToMatch.message=null
-        this.emitFieldInput(field.match,fieldToMatch.value,false)
+        this.emitFieldChange(field.match,fieldToMatch.value,false)
       } 
-      this.emitFieldInput(name,field.value,Boolean(field.message))
+      this.emitFieldChange(name,field.value,Boolean(field.message))
     },
-    selectInput:function(name){
+    selectChange:function(name){
       let field=this[name]
-      this.emitFieldInput(name,field.value,false)
+      this.emitFieldChange(name,field.value,false)
     },
-    emitFieldInput:function(name,value,isInvalid){
+    emitFieldChange:function(name,value,isInvalid){
       this.$emit('field-input', {fieldName:name,fieldValue:value,invalid:isInvalid})
     },
   },
@@ -117,23 +117,23 @@ export default {
 
     this.firstName= {...this.firstName ,...this.firstNameData}
     if(this.firstName.value && this.firstName.visible)
-      this.fieldInput('firstName')
+      this.fieldChange('firstName')
 
     this.lastName= {...this.lastName ,...this.lastNameData}
     if(this.lastName.visible && this.lastName.value)
-      this.fieldInput('lastName')
+      this.fieldChange('lastName')
 
     this.phone= {...this.phone ,...this.phoneData}
     if(this.phone.visible && this.phone.value)
-      this.fieldInput('phone')
+      this.fieldChange('phone')
 
     this.email= {...this.email ,...this.emailData}
     if(this.email.visible && this.email.value)
-      this.fieldInput('email')
+      this.fieldChange('email')
 
     this.confirmEmail= {...this.confirmEmail ,...this.confirmEmailData}
     if(this.confirmEmail.visible && this.confirmEmail.value)
-      this.fieldInput('confirmEmail')
+      this.fieldChange('confirmEmail')
   }
 }
 </script>
