@@ -107,7 +107,7 @@ export default {
     this.userType = this.user.type_name.toLowerCase();
     this.userTitle = this.user.title;
     this.profession.value = this.user.profession ? this.user.profession : null;
-    this.institution.value = this.user.institution_name ? this.user.institution_name : null;
+    this.institution.value = this.user.institution_name ? this.findId(this.user.institution_name, this.institutions) : null;
     this.hospital.value = this.findId(this.user.hospital_name, this.hospitals);
     for (let i = 0; i < this.dhbs.length; i++) {
       this.dhb.value = this.findId(this.user.dhb_name, this.dhbs[i].options);
@@ -193,6 +193,7 @@ export default {
         dhbId:this.dhb.value,
         googleId: (this.googleProfile && this.googleProfile.googleId) ? this.googleProfile.googleId : null
       };
+      console.log(userInfo);
       try {
         const path = '/user/local/profile/update';
         let response = await this.$axios.post(path, {userInfo: userInfo});
