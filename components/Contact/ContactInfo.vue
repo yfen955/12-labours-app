@@ -108,7 +108,7 @@ export default {
       this.emitFieldChange(name,field.value,false)
     },
     emitFieldChange:function(name,value,isInvalid){
-      this.$emit('field-input', {fieldName:name,fieldValue:value,invalid:isInvalid})
+      this.$emit('field-change', {fieldName:name,fieldValue:value,invalid:isInvalid})
     },
   },
   
