@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="header-container">
-      <button class="nav__mobile-menu" @click="openMobileNav">
+      <button class="nav-side-menu" @click="openMobileNav">
         <svgicon name="hamburger" height="40" width="40"/>
       </button>
       <div class="logo">
@@ -45,22 +45,24 @@
           </div>-->
         </div>
       </div>
-      <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex"> 
-        <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
-        <component :is="linkComponent" to="/profile">
-          <el-button>Account</el-button>
-        </component>
-        <component :is="linkComponent" @click.native="signout" to="/">
-          Log out
-        </component>
-      </div>
-      <div v-else  class="login vertical-flex"> 
-        <component :is="linkComponent" to="/login">
-          <el-button>Login</el-button>
-        </component>
-        <component :is="linkComponent" to="/signup">
-          Sign up Here
-        </component>
+      <div>
+        <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex"> 
+          <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
+          <component :is="linkComponent" to="/profile">
+            <el-button>Account</el-button>
+          </component>
+          <component :is="linkComponent" @click.native="signout" to="/">
+            Log out
+          </component>
+        </div>
+        <div v-else  class="login vertical-flex"> 
+          <component :is="linkComponent" to="/login">
+            <el-button>Login</el-button>
+          </component>
+          <component :is="linkComponent" to="/signup">
+            Sign up Here
+          </component>
+        </div>
       </div>
     </div>
   </div>
@@ -282,24 +284,22 @@ export default {
 
 .header-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   background-color: $cochlear;
   height:6.25rem;
-  padding:0 3.75rem;
-  column-gap:2rem;
-  align-items: center;
+  padding:0.5rem 2rem 0.5rem 2rem;
   @media only screen and (max-width: $viewport-md){
-    padding:0 2rem;
+    padding:0 1rem 0rem 1rem;
   }   
 }
 
 .logo
 {
-  display:flex;
-  align-items:center;
   height: 6.25rem;   
-  width: 7.3rem;  
-  white-space: nowrap;
+  width: 7.25rem;  
+  min-width: 7.25rem;  
   @media only screen and (max-width: $viewport-md){
     display:none;
   }
@@ -308,11 +308,10 @@ export default {
 .navigation {
   
   ul {
-    padding:0;
-    margin:0 0 0.5rem 0;
+    padding:0 2rem 0 2rem;
     display: flex;
-    align-items:center;
-    column-gap:3rem;
+    align-items: center;
+    column-gap: 4rem;
 
     li {
       display: inline;
@@ -339,7 +338,7 @@ export default {
       left: 0;
       top:0;
       position: fixed;
-      z-index: 9998;
+      z-index: 9999;
 
       &.open {
         display: flex;
@@ -349,9 +348,7 @@ export default {
     }
     ul {
       flex-direction: column;
-      row-gap:0.5rem;
-      height: calc(100% - 210px);
-      overflow-y: auto;
+      row-gap:1rem;
 
       //For Firefox
       /*scrollbar-width: thin;
@@ -360,24 +357,12 @@ export default {
   }
 }  
 
-.login{
-  margin-left: auto;
-  text-align:center;
-  span#welcome{
-    font-size:0.8rem;
-    font-style: italic;
-  }
-}
-
-.nav__mobile-menu {
+.nav-side-menu {
   background: none;
   border: none;
   display: none;
-  margin: 0px;
-  outline: none;
-  //transform: translate(0.75rem, -0.5rem);
-  -webkit-appearance: none;
-  position:fixed;
+  // -webkit-appearance: none;
+  position: relative;
   @media only screen and (max-width: $viewport-md) {
     & {
       display: block;
@@ -400,21 +385,18 @@ export default {
     display:block;
     height: 3rem;   
     width: 3rem;  
-    white-space: nowrap;
     padding:0.25rem
   }
 }
 
-.menu-footer{
-  display:none;
-  @media only screen and (max-width: $viewport-md) {
-    display:block;
-    width:100%;
-    position:absolute;
-    bottom:0;
-    z-index: 9999;
+.login{
+    margin-left: auto;
+    text-align:center;
+    right: 0;
+    span#welcome{
+      font-size:0.8rem;
+      font-style: italic;
+    }
   }
-}
-
 </style>
 

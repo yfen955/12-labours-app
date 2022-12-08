@@ -1,6 +1,7 @@
 
 .page-outer{
   width:100%;
+  min-height: 82.5vh;
 }
 
 .container-default{
@@ -158,7 +159,6 @@ p a{
 .signup-picture{
   width:50%;
   border: 1px solid #707070;
-  //height: 60rem;
   height:auto;
   background-image:
   linear-gradient(217deg, #00467FE0 0%, #0080A7B0 53%, #0080A7B0 60%, #00467FDE 100%),
@@ -173,4 +173,38 @@ p a{
 
 a {
   text-decoration: none !important;
+}
+
+.model-container {
+  border: 1px solid #E4E7ED;
+  min-width: 15rem;
+  .model-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media only screen and (max-width: $viewport-sm) {
+      flex-direction: column;
+    }
+    margin: 1rem 2rem 1rem 2rem;
+  }
+  .scaffold-container, .plot-container, .flatmap-container {
+    height: 70vh;
+    overflow: hidden;
+  }
+}
+
+.profile-container {
+  min-width: 15rem;
+  min-height: 82.5vh;
+  @media only screen and (min-width: 37rem) {
+    display:flex;
+  }
+}
+
+.profile{
+  width:50%;
+  @media only screen and (max-width: $viewport-md) {
+    width:100%;
+  }
+  box-sizing:border-box;
 }

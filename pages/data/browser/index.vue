@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
       <!-- display categories -->
-      <div class="content-container">
+      <section class="category-container">
         <h1>Browse categories</h1>
-        <tab-nav class="categories-nav"
+        <tab-nav class="category-nav"
           :tabs="searchTypes"
           :activeTab="category"
           v-on:tabClick="changeCategory"
         />
-      </div>
+      </section>
       <!-- data container -->
       <DataContainer
         v-if="!isLoadingSearch"
@@ -53,7 +53,7 @@ export default {
         },
         {
           to: { name: 'data' },
-          label: 'DATA & MODELS'
+          label: 'Data & Models'
         },
       ],
       searchTypes,
@@ -76,8 +76,9 @@ export default {
     let program = this.$store.getters['getProgram'];
     let project = this.$store.getters['getProject'];
     if (!program || !project) {
-      program = await this.$store.dispatch('fetchProgram');
-      project = await this.$store.dispatch('fetchProject', program);
+      await this.$store.dispatch('fetchPayload');
+      program = this.$store.getters['getProgram'];
+      project = this.$store.getters['getProject'];
     };
     this.payload = {
       program: program,
@@ -103,14 +104,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.categories-nav {
-  margin-top: 1em;
-  el-tab-pane {
-    width: 25%;
+.category-container {
+  border: 1px solid #E4E7ED;
+  padding: 1rem 1rem 0 1rem;
+  min-width: 13rem;
+  
+  .category-nav {
+    margin-top: 1rem;
   }
 }
-.content-container {
-  border: 1px solid #E4E7ED;
-  padding: 0.5em 0.5em 0 0.5em;
+.container-default {
+  @media only screen and (min-width: calc($viewport-lg - 20rem)) {
+    margin: auto;
+    width: 90rem;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <div class="flex-box">
+    <div class="profile-container">
       <NavBar />
       <div class="profile container-default" :class="strategy=='google'?'shaded':''">
         <div class="top-heading">
@@ -79,13 +79,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.profile{
-  width:50%;
-  @media only screen and (max-width:  $viewport-sm) {
-    width:100%;
-  }
-  box-sizing:border-box;
-}
 .fields{
   width:100%;
   justify-content:center;

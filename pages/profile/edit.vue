@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <div class="flex-box">
+    <div class="profile-container">
       <NavBar />
       <div class="profile container-default">
         <div class="top-heading">
@@ -24,7 +24,7 @@
             <el-form-item :required="profession.required" :label="profession.display" v-if="userType=='researcher' || userType=='clinician'" >
               <el-input 
                 v-model="profession.value" 
-                @blur="fieldChange('profession')" 
+                @input="fieldChange('profession')" 
                 :placeholder="profession.placeholder"
                 :maxlength="profession.maxLength">
               </el-input>
@@ -222,13 +222,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.profile{
-  width:50%;
-  @media only screen and (max-width:  $viewport-sm) {
-    width:100%;
-  }
-  box-sizing:border-box;
-}
 .fields{
   width:100%;
   justify-content:center;

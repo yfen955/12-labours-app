@@ -93,6 +93,7 @@ export default {
   @import '@/assets/google.scss';
 
   .signup{
+    min-height: 82.5vh;
     width:50%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
@@ -100,10 +101,7 @@ export default {
     align-items:center;
     box-sizing:border-box;
     &__title{
-      padding-top:6.25rem;
-      @media only screen and (max-width:  $viewport-sm) {
-        padding-top:2rem;
-      }
+      padding:1rem;
     }
     &__text{
       padding:1rem;
