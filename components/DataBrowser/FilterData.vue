@@ -272,11 +272,17 @@ export default {
             console.log(err);
           });
       }
-      const mergedList = [].concat.apply([], this.filter_id_list.filter((ele) => ele));
-      if (mergedList.length === 0) {
+      
+      let empty = true;
+      for (let i = 0; i < this.filter_id_list.length; i++) {
+        if (this.filter_id_list[i].length > 0)
+          empty = false;
+          break;
+      }
+      if (empty) {
         this.filters_dict = {};
       } else {
-        this.filters_dict["submitter_id"] = mergedList;
+        this.filters_dict["submitter_id"] = this.filter_id_list;
       }
 
       if (finished != false)
