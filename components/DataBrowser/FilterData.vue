@@ -275,9 +275,13 @@ export default {
       
       let empty = true;
       for (let i = 0; i < this.filter_id_list.length; i++) {
-        if (this.filter_id_list[i].length > 0)
+        if (!this.filter_id_list[i]) {
+          this.filter_id_list[i] = [];
+        }
+        if (this.filter_id_list[i].length > 0) {
           empty = false;
           break;
+        }
       }
       if (empty) {
         this.filters_dict = {};
