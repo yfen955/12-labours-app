@@ -4,6 +4,7 @@
       <h4>Refine results</h4>
       <hr />
       <h5>Filters applied</h5>
+      
       <el-card shadow="never" class="facet-card">
         <span v-if="selectedItems.length === 0" class="no-facets">
           No filters applied
@@ -19,6 +20,23 @@
           <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
         </el-tag>
       </el-card>
+
+      <!-- switch relation -->
+      <div class="relation-container">
+        <h5>Filters relation</h5>
+        <div class="filter-switch">
+          <p>OR</p>
+          <el-switch
+            v-model="relation"
+            active-color="$app-primary-color"
+            inactive-color="$background"
+            @change="handleSwitch"
+          >
+          </el-switch>
+          <p>AND</p>
+        </div>
+      </div>
+      
       <el-collapse>
         <el-collapse-item
           v-for="(filter, index) in filters_list"
@@ -68,11 +86,15 @@ export default {
       filters_dict: {},
       newTotalCount: 0,
       filter_id_list: [],
-      facets_id_list: [],
+      selected_facets_list: [],
+      relation: true,
     };
   },
 
   created: function() {
+    if (this.$route.query.relation)
+      this.relation = this.$route.query.relation === 'and' ? true : false;
+
     this.dataChange(this.$route.query.type);
   },
 
@@ -109,8 +131,8 @@ export default {
           this.filter_id_list.push([]);
         }
         if (this.allFilterDict.ids) {
-          this.facets_id_list = this.allFilterDict.ids;
-          this.$store.dispatch('setFacets', this.facets_id_list);
+          this.selected_facets_list = this.allFilterDict.ids;
+          this.$store.dispatch('setFacets', this.selected_facets_list);
 
           if (this.$route.query.facets) {
             this.selectedItems = this.$route.query.facets.split(',');
@@ -160,21 +182,7 @@ export default {
       else
         await this.generateFiltersDict(filter, finished);
 
-      // update the page and selected facets in the url
-      let query = {
-        type: this.$route.query.type,
-        page: 1,
-        limit: this.$route.query.limit,
-      };
-      if (this.selectedItems.length > 0) {
-        query.facets = this.selectedItems.toString();
-      }
-      if (this.$route.query.search)
-        query.search = this.$route.query.search;
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: query
-      })
+      this.updateURL();
     },
 
     handleCheckAllChange(filter, i) {
@@ -254,7 +262,7 @@ export default {
           filter: filter
         }
         
-        const path = `${process.env.query_api_url}/filter/argument`;
+        const path = `${process.env.query_api_url}/filter/dataset`;
         await axios
           .post(path, payload)
           .then((res) => {
@@ -274,6 +282,30 @@ export default {
       if (finished != false)
         this.$emit('filter-dict', this.filters_dict);
     },
+
+    // update the page, selected facets & relation in the url
+    updateURL() {
+      let query = {
+        type: this.$route.query.type,
+        page: 1,
+        limit: this.$route.query.limit,
+      };
+      if (this.selectedItems.length > 0) {
+        query.facets = this.selectedItems.toString();
+        query.relation = this.relation ? 'and' : 'or';
+      }
+      if (this.$route.query.search)
+        query.search = this.$route.query.search;
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: query
+      })
+    },
+
+    handleSwitch(val) {
+      this.updateURL();
+      this.$emit('relation', val);
+    }
   },
 }
 </script>
@@ -289,6 +321,22 @@ export default {
   min-width: 15rem;
   border: 1px solid #E4E7ED;
   margin-top: 1rem;
+}
+.relation-container {
+  border-top: 0.5px solid #E4E7ED;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.filter-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem;
+}
+::v-deep .el-switch {
+  margin-left: .5rem;
+  margin-right: .5rem;
 }
 h4, h5 {
   margin: 1rem;

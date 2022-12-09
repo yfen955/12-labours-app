@@ -10,6 +10,7 @@
             :allFilterDict="allFilterDict"
             :searched_ids="searched_ids"
             v-on:filter-dict="updateFilterDict"
+            v-on:relation="updateRelation"
           />
         </div>
         <div>
@@ -72,6 +73,7 @@ export default {
       file_type: [],
       errorMessage: '',
       searched_ids: {},
+      relation: 'and',
     }
   },
 
@@ -98,7 +100,7 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searched_ids, this.$route.query.limit, this.$route.query.page);
+      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searched_ids, this.$route.query.limit, this.$route.query.page, this.relation);
       this.currentData = result[0];
       this.totalCount = result[1];
       this.isLoadingSearch = false;
@@ -139,6 +141,14 @@ export default {
 
     updateLoading(val) {
       this.isLoadingSearch = val;
+    },
+
+    updateRelation(val) {
+      if (val)
+        this.relation = 'and';
+      else
+        this.relation = 'or';
+      this.fetchData();
     }
   },
 }

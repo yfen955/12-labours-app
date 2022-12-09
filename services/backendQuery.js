@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function fetchPaginationData(node, filter, search, limit, page) {
+async function fetchPaginationData(node, filter, search, limit, page, relation) {
   let fetched_data = [];
   let totalNum = 0;
   let payload = {
@@ -9,6 +9,7 @@ async function fetchPaginationData(node, filter, search, limit, page) {
     search: search,
     limit: parseInt(limit),
     page: parseInt(page),
+    relation: relation
   };
   const path = `${process.env.query_api_url}/graphql/pagination`;
   await axios
