@@ -453,14 +453,14 @@ export default {
   }
   .left-column {
     order: 1;
+    @media only screen and (min-width: $viewport-sm) {
+      max-width: 20rem;
+    }
     min-width: 15rem;
     .image-container {
       text-align: center;
       img {
-        width: 10rem;
-        @media only screen and (max-width: $viewport-sm) {
-          width: 13rem;
-        }
+        width: 13rem;
       }
       .left-top-btn {
         margin: 1rem 0 0 0;
