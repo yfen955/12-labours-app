@@ -1,15 +1,17 @@
 <template>      
-  <div class="outer-page">
+  <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <section-with-image :title="pageTitle">
       <div v-if="error.statusCode==404">
-        <p>I’m sorry but we can’t find what you have been looking for. </p>
+        <p>I'm sorry but we can't find what you have been looking for. </p>
         <p>Maybe the page has moved - we suggest visiting the homepage to help you discover what you are looking for.</p>
       </div>
       <div v-else>
-        <p><h3>Unexpected Error occured </h3><p>
-        <p><b>Error Code: {{error.statusCode}} </b> <br/>
-        {{error.message}} </p>
+        <h3>Unexpected Error occurred</h3>
+        <p>
+          <b>Error Code: {{error.statusCode}}</b><br/>
+          {{error.message}}
+        </p>
       </div>
       <nuxt-link to="/">
         <el-button>Visit the Home Page</el-button>

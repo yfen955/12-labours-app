@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function fetchGraphqlData(node, filter, search, limit, page) {
+async function fetchPaginationData(node, filter, search, limit, page) {
   let fetched_data = [];
   let totalNum = 0;
   let payload = {
@@ -10,7 +10,7 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
     limit: parseInt(limit),
     page: parseInt(page),
   };
-  const path = `${process.env.query_api_url}/graphql`;
+  const path = `${process.env.query_api_url}/graphql/pagination`;
   await axios
     .post(path, payload)
     .then((res) => {
@@ -22,6 +22,25 @@ async function fetchGraphqlData(node, filter, search, limit, page) {
       fetched_data = [];
     });
   return new Array(fetched_data, totalNum);
+}
+
+async function fetchQueryData(node, filter, search = '') {
+  let fetched_data = [];
+  let payload = {
+    node: node,
+    filter: filter,
+    search: search
+  };
+  const path = `${process.env.query_api_url}/graphql/query`;
+  await axios
+    .post(path, payload)
+    .then((res) => {
+      fetched_data = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return fetched_data;
 }
 
 async function getSingleData(uuid, programName, projectName) {
@@ -44,6 +63,7 @@ async function getSingleData(uuid, programName, projectName) {
 }
 
 export default {
-  fetchGraphqlData,
+  fetchPaginationData,
+  fetchQueryData,
   getSingleData
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <div class="flex-box">
+    <div class="profile-container">
       <NavBar />
       <div class="profile container-default">
         <div class="top-heading">
@@ -24,7 +24,7 @@
             <el-form-item :required="profession.required" :label="profession.display" v-if="userType=='researcher' || userType=='clinician'" >
               <el-input 
                 v-model="profession.value" 
-                @blur="fieldChange('profession')" 
+                @input="fieldChange('profession')" 
                 :placeholder="profession.placeholder"
                 :maxlength="profession.maxLength">
               </el-input>
@@ -107,7 +107,7 @@ export default {
     this.userType = this.user.type_name.toLowerCase();
     this.userTitle = this.user.title;
     this.profession.value = this.user.profession ? this.user.profession : null;
-    this.institution.value = this.user.institution_name ? this.user.institution_name : null;
+    this.institution.value = this.user.institution_name ? this.findId(this.user.institution_name, this.institutions) : null;
     this.hospital.value = this.findId(this.user.hospital_name, this.hospitals);
     for (let i = 0; i < this.dhbs.length; i++) {
       this.dhb.value = this.findId(this.user.dhb_name, this.dhbs[i].options);
@@ -222,13 +222,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.profile{
-  width:50%;
-  @media only screen and (max-width:  $viewport-sm) {
-    width:100%;
-  }
-  box-sizing:border-box;
-}
 .fields{
   width:100%;
   justify-content:center;

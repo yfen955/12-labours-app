@@ -1,28 +1,24 @@
 <template>
   <div>
-    <div v-if="dataDetails.length > 0">
+    <div v-if="(dataDetails.length > 0)">
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
       />
       <!-- data details -->
-      <el-row class="data-container">
-        <el-row
+      <div class="data-container">
+        <div
           v-for="(item, index) in dataDetails"
           :key="index"
-          :gutter="20"
-          class="data-details"
         >
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
-            <el-row>
-              <el-col :span="6">
-                <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img" style="width: 90%">
-                <p v-else>{{ item.dataset_descriptions[0].img }}</p>
-              </el-col>
-              <el-col :span="18" style="margin-bottom: 1em">
-                <el-row>
+            <section class="element">
+              <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img">
+              <p v-else>{{ item.dataset_descriptions[0].img }}</p>
+              <section class="content">
+                <div>
                   <nuxt-link class="title-link" :to="{
                     name: 'data-browser-dataset-id',
                     params: {
@@ -35,26 +31,24 @@
                   }">
                     {{ item.dataset_descriptions[0].title }}
                   </nuxt-link>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Organ</strong></el-col>
-                  <el-col :span="16">{{ item.dataset_descriptions[0].study_organ_system }}</el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><strong>Keywords</strong></el-col>
-                  <el-col :span="16">{{ displayKeywords(item.dataset_descriptions[0].keywords) }}</el-col>
-                </el-row>
-                <el-row>
-                  <div v-if="item.dataset_descriptions[0].number_of_samples>0&&item.dataset_descriptions[0].number_of_subjects>0">
-                    <el-col :span="8"><strong>Samples</strong></el-col>
-                    <el-col :span="16">
-                      {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
-                    </el-col>
+                </div>
+                <div>
+                  <strong>Organ</strong>
+                  {{ item.dataset_descriptions[0].study_organ_system }}
+                </div>
+                <div>
+                  <strong>Keywords</strong>
+                  {{ displayKeywords(item.dataset_descriptions[0].keywords) }}
+                </div>
+                <div>
+                  <div v-if="item.dataset_descriptions[0].number_of_samples>0||item.dataset_descriptions[0].number_of_subjects>0">
+                    <strong>Samples</strong>
+                    {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
                   </div>
-                </el-row>
-              </el-col>
-            </el-row>
-            
+                </div>
+              </section>
+            </section>
+            <hr/>
           </span>
 
           <!-- display tools -->
@@ -65,10 +59,9 @@
 
           <!-- display 12 labours information -->
           <span v-if="$route.query.type === 'laboursInfo'"></span>
-          
-          <hr />
-        </el-row>
-      </el-row>
+
+        </div>
+      </div>
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
@@ -109,26 +102,56 @@ export default {
 
 <style scoped lang="scss">
 .data-container {
-  border: 1px solid #ececee;
-  padding: 1em;
-}
-.data-details {
-  padding: 1em 1em 0 1em;
+  border: 1px solid #E4E7ED;
+  padding: 1rem;
+  @media only screen and (max-width: $viewport-sm) {
+    overflow: auto;
+    white-space: normal;
+  }
+  .element {
+    display: flex;
+    align-items: flex-start;
+    @media only screen and (max-width: 37rem) {
+      width: 27rem;
+    }
+    padding: 1rem;
+    img, p {
+      width: 10rem
+    }
+    .content {
+      margin-left: 1rem;
+    }
+  }
 }
 hr {
   border: 1px solid #E4E7ED;
-  margin-bottom: 0;
+  @media only screen and (max-width: 37rem) {
+    width: 27rem
+  }
 }
 .no-result {
-  height: 10em;
-  margin: 1.5em;
+  height: 10rem;
+  margin: 1rem;
+  white-space: nowrap;
+  text-align: center;
+  @media only screen and (min-width: $viewport-sm) {
+    padding: 0 10rem 0 10rem;
+    @media only screen and (min-width: $viewport-md) {
+      padding: 0 15rem 0 15rem;
+      @media only screen and (min-width: 77rem) {
+        padding: 0 20rem 0 20rem;
+        @media only screen and (min-width: 90rem) {
+          padding: 0 25rem 0 25rem;
+        }
+      }
+    }
+  }
   p {
-    color: #E4E7ED;
-    font-size: 2em;
-    text-align: center;
+    color: #e4e7ed;
+    font-size: 2rem;
   }
 }
 .title-link {
-  font-size: 1em;
+  font-size: 1.5rem;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div :class="showBg?'form-section':''"> 
     <el-form-item v-if="title.visible" :required="title.required" :label="title.display">
-      <el-select class="--sm" v-model="title.value" :placeholder="title.placeholder" @change="selectChange('title')">
+      <el-select class="--sm" v-model="title.value" :placeholder="title.placeholder" @input="selectChange('title')">
         <el-option label="Dr" value="Dr"></el-option>
         <el-option label="Mr" value="Mr"></el-option>
         <el-option label="Miss" value="Miss"></el-option>
@@ -10,23 +10,23 @@
       </el-select>
     </el-form-item>
     <el-form-item v-if="firstName.visible" :required="firstName.required" :label="firstName.display">
-      <el-input v-model="firstName.value" @change="fieldChange('firstName')" :maxlength="firstName.maxLength" :placeholder="firstName.placeholder" :disabled="firstName.disabled"></el-input>
+      <el-input v-model="firstName.value" @input="fieldChange('firstName')" :maxlength="firstName.maxLength" :placeholder="firstName.placeholder" :disabled="firstName.disabled"></el-input>
       <div class="error">{{firstName.message}}</div>
     </el-form-item>
     <el-form-item v-if="lastName.visible" :required="lastName.required" :label="lastName.display">
-      <el-input v-model="lastName.value" @change="fieldChange('lastName')" :maxlength="lastName.maxLength" :placeholder="lastName.placeholder" :disabled="lastName.disabled"></el-input>
+      <el-input v-model="lastName.value" @input="fieldChange('lastName')" :maxlength="lastName.maxLength" :placeholder="lastName.placeholder" :disabled="lastName.disabled"></el-input>
       <div class="error">{{lastName.message}}</div>
     </el-form-item>
     <el-form-item v-if="phone.visible" :required="phone.required" :label="phone.display">
-      <el-input v-model="phone.value" @blur="fieldChange('phone')" :maxlength="phone.maxLength" :placeholder="phone.placeholder" :disabled="phone.disabled"></el-input>
+      <el-input v-model="phone.value" @input="fieldChange('phone')" :maxlength="phone.maxLength" :placeholder="phone.placeholder" :disabled="phone.disabled"></el-input>
       <div class="error">{{phone.message}}</div>
     </el-form-item>
     <el-form-item v-if="email.visible" :required="email.required" :label="email.display">
-      <el-input v-model="email.value" @change="fieldChange('email')" :maxlength="email.maxLength" :placeholder="email.placeholder" :disabled="email.disabled"></el-input>
+      <el-input v-model="email.value" @input="fieldChange('email')" :maxlength="email.maxLength" :placeholder="email.placeholder" :disabled="email.disabled"></el-input>
       <div class="error">{{email.message}}</div>
     </el-form-item> 
     <el-form-item v-if="confirmEmail.visible" :required="confirmEmail.required" :label="confirmEmail.display">
-      <el-input v-model="confirmEmail.value" @change="fieldChange('confirmEmail')" :maxlength="confirmEmail.maxLength" :placeholder="confirmEmail.placeholder" :disabled="confirmEmail.disabled"></el-input>
+      <el-input v-model="confirmEmail.value" @input="fieldChange('confirmEmail')" :maxlength="confirmEmail.maxLength" :placeholder="confirmEmail.placeholder" :disabled="confirmEmail.disabled"></el-input>
       <div class="error">{{confirmEmail.message}}</div>
     </el-form-item>
   </div>

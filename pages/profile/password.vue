@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <div class="flex-box">
+    <div class="profile-container">
       <NavBar />
       <div class="profile container-default">
         <div class="top-heading">
@@ -14,7 +14,7 @@
             <el-form-item :required="oldPassword.required" :label="oldPassword.display">
               <el-input 
                 v-model="oldPassword.value" 
-                @blur="fieldChange('oldPassword')" 
+                @input="fieldChange('oldPassword')" 
                 :placeholder="oldPassword.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -24,7 +24,7 @@
             <el-form-item :required="newPassword.required" :label="newPassword.display">          
               <el-input 
                 v-model="newPassword.value" 
-                @blur="fieldChange('newPassword')" 
+                @input="fieldChange('newPassword')" 
                 :placeholder="newPassword.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -34,7 +34,7 @@
             <el-form-item :required="newPassword2.required" :label="newPassword2.display">          
               <el-input 
                 v-model="newPassword2.value" 
-                @blur="fieldChange('newPassword2')" 
+                @input="fieldChange('newPassword2')" 
                 :placeholder="newPassword2.placeholder"
                 autocomplete="off" 
                 type="password">
@@ -160,19 +160,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.profile{
-  width:50%;
-  @media only screen and (max-width:  $viewport-sm) {
-    width:100%;
-  }
-  box-sizing:border-box;
-}
 .fields{
   width:100%;
   justify-content:center;
 }
 .nav-button{
-  padding-top:1rem;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (max-width: $viewport-md) {
+    width:100%;
+  }
 }
 .flex-box {
   height: 30em;

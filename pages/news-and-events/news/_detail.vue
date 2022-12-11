@@ -4,7 +4,7 @@
     <div class="detail-container">
       <div class="vertical-flex"> 
         <div class="image-frame">            
-          <img :src="newsItem.image.url" class="news-image"></img>  
+          <img :src="newsItem.image.url" class="news-image" />
         </div>        
         <div class="news-title">
           <h1>{{newsItem.title}}</h1>

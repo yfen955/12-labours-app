@@ -1,42 +1,44 @@
 <template>
   <div class="page-outer">
-    <div v-if="!submitted">
-      <h1>Reset your password</h1>
-      <el-form label-position="top" class="psd-form">
-        <el-form-item :required="password.required" :label="password.display"> 
-          <el-input 
-            v-model="password.value" 
-            @blur="fieldChange('password')" 
-            :placeholder="password.placeholder"
-            type="password"
-          />
-        </el-form-item>
-        <el-form-item> 
-          <div class="error">{{ password.message }}</div>
-        </el-form-item>
-        <el-form-item :required="confirmPassword.required" :label="confirmPassword.display"> 
-          <el-input 
-            v-model="confirmPassword.value" 
-            @blur="fieldChange('confirmPassword')" 
-            :placeholder="confirmPassword.placeholder"
-            type="password"
-          />
-        </el-form-item>
-        <el-form-item> 
-          <div class="error">{{ confirmPassword.message }}</div>
-        </el-form-item>
-        <el-button :disabled="submitDisabled" @click="resetPsw()">
-          Reset the password
-        </el-button>
-      </el-form>
-    </div>
-    
-    <div v-else class="container-default msg-box flex-box">
-      <div v-if="!error" class="top-heading">
-        <h3>Your request is being verified.....</h3>
+    <div class="container-default">
+      <div v-if="!submitted">
+        <h1>Reset your password</h1>
+        <el-form label-position="top" class="pwd-form">
+          <el-form-item :required="password.required" :label="password.display"> 
+            <el-input 
+              v-model="password.value" 
+              @input="fieldChange('password')" 
+              :placeholder="password.placeholder"
+              type="password"
+            />
+          </el-form-item>
+          <el-form-item> 
+            <div class="error">{{ password.message }}</div>
+          </el-form-item>
+          <el-form-item :required="confirmPassword.required" :label="confirmPassword.display"> 
+            <el-input 
+              v-model="confirmPassword.value" 
+              @input="fieldChange('confirmPassword')" 
+              :placeholder="confirmPassword.placeholder"
+              type="password"
+            />
+          </el-form-item>
+          <el-form-item> 
+            <div class="error">{{ confirmPassword.message }}</div>
+          </el-form-item>
+          <el-button :disabled="submitDisabled" @click="resetPsw()">
+            <p>Reset the password</p>
+          </el-button>
+        </el-form>
       </div>
-      <div v-if="error" class="err-message">
-        <span>{{ error }}</span>
+      
+      <div v-else class="msg-box">
+        <div v-if="!error" class="top-heading">
+          <h3>Your request is being verified.....</h3>
+        </div>
+        <div v-if="error" class="err-message">
+          <span>{{ error }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -137,30 +139,34 @@ export default {
 
 <style scoped lang="scss">
 .msg-box{
-  justify-content:center;
-  padding:8rem 1rem 9rem 1rem;
-  @media only screen and (max-width:  $viewport-sm) {
-    padding:2rem 1rem 2rem 1rem;
-  }
+  text-align:center;
+  font-size: 1.5rem;
+  margin: 10rem 0 0 0;
+  min-width: 14rem;
 }
 h1 {
   text-align: center;
+  white-space: nowrap;
 }
-.psd-form {
+.pwd-form {
   margin: auto;
-  margin-top: 2em;
-  margin-bottom: 7em;
-  max-width: 25em;
-  padding: 1em;
+  margin-top: 2rem;
+  max-width: 25rem;
+  min-width: 14rem;
+  padding: 1rem;
   border: 1px solid #E4E7ED;
   background-color: $background;
+  @media only screen and (max-width:  $viewport-sm) {
+    p {
+      font-size: 0.75rem;
+    }
+  }
 
   ::v-deep .el-input__inner {
     width: 100%;
   }
-
   ::v-deep .el-form-item {
-    margin-bottom: 0.5em;
+    margin-bottom: 1rem;
   }
 }
 </style>
