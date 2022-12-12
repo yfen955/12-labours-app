@@ -18,12 +18,21 @@
             <section class="description">
               <p>
                 <b>Contributors: </b>
-                {{contributorName}}
+                <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length">
+                  {{combineNames()}}
+                </span>
+                <a
+                  v-else
+                  v-for="(name, i) in sampleData.contributor_name"
+                  :key="i"
+                  :href="modifyLink(i)"
+                >
+                  {{modifyName(name, i)}}
+                </a>
               </p>
               <hr>
               <p>
                 <b>Description: </b>
-                <!-- {{ sampleData.description }} -->
               </p> 
             </section>
             <el-card shadow="never" class="version">
@@ -372,7 +381,6 @@ export default {
       this.has_plot = true
     }
 
-    this.modifyName();
     this.isLoading = false;
   },
 
@@ -406,13 +414,31 @@ export default {
       window.open(route.href);
     },
 
-    modifyName() {
+    combineNames() {
+      let result = '';
       let name_list = this.sampleData.contributor_name;
       name_list.map(item => {
         let person_names = item.split(', ');
-        this.contributorName += person_names[1] + ' ' + person_names[0] + ", ";
+        result += person_names[1] + ' ' + person_names[0] + ", ";
       })
-      this.contributorName = this.contributorName.slice(0, -2);
+      return result.slice(0, -2);
+    },
+
+    modifyName(name, i) {
+      let name_list = name.split(', ');
+      let result
+      if (i === this.sampleData.contributor_name.length - 1)
+        result = name_list[1] + ' ' + name_list[0];
+      else
+        result = name_list[1] + ' ' + name_list[0] + ', ';
+      return result;
+    },
+
+    modifyLink(i) {
+      let link = this.sampleData.contributor_orcid[i];
+      if (!link.includes('http'))
+        link = 'https://orcid.org/' + link;
+      return link;
     },
 
     generateFilename(name) {
@@ -423,15 +449,13 @@ export default {
     },
 
     goWithFacet(facet) {
-      let id_list = this.$store.getters['getFacetId'];
-      let id = id_list.indexOf(facet);
       this.$router.push({
         path:'/data/browser',
         query: {
           type: 'dataset',
           page: 1,
           limit: 10,
-          facets: id
+          facets: facet
         }
       })
     }

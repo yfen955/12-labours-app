@@ -28,8 +28,8 @@
           <p>OR</p>
           <el-switch
             v-model="relation"
-            active-color="$app-primary-color"
-            inactive-color="$background"
+            active-color="#00467F"
+            inactive-color="#D11241"
             @change="handleSwitch"
           >
           </el-switch>
