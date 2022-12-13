@@ -76,7 +76,7 @@
 import axios from 'axios';
 
 export default {
-  props: [ "searched_ids", "allFilterDict" ],
+  props: [ "allFilterDict" ],
 
   data: () => {
     return {
@@ -85,8 +85,8 @@ export default {
       filteredData: [],
       filters_dict: {},
       newTotalCount: 0,
-      filter_id_list: [],
-      selected_facets_list: [],
+      element_list: [],
+      all_facets_list: [],
       relation: true,
     };
   },
@@ -114,7 +114,7 @@ export default {
   methods: {
     async dataChange(val) {
       this.filters_list = [];
-      this.filter_id_list = [];
+      this.element_list = [];
       
       if (val === 'dataset') {
         for (let i = 0; i < this.allFilterDict.size; i++) {
@@ -128,53 +128,48 @@ export default {
             checkAll: true,
             isIndeterminate: false,
           });
-          this.filter_id_list.push([]);
+          this.element_list.push([]);
         }
-        if (this.allFilterDict.ids) {
-          this.selected_facets_list = this.allFilterDict.ids;
-          this.$store.dispatch('setFacets', this.selected_facets_list);
+        
+        this.all_facets_list = this.allFilterDict.ids;
+        this.$store.dispatch('setFacets', this.all_facets_list);
 
-          if (this.$route.query.facets) {
-            this.selectedItems = this.$route.query.facets.split(',');
-            let finished = false;
-            for (let i = 0; i < this.selectedItems.length; i++) {
-              let facet = this.selectedItems[i];
-              this.filters_list.map((val) => {
-                let index = val.filter_items.indexOf(facet);
-                if (index > -1) {
-                  val.selectedItem.push(val.filter_items[index]);
-                  if (i === this.selectedItems.length - 1)
-                    finished = true;
-                  if (val.selectedItem.length === val.filter_items.length) {
-                    val.selectedItem = [];
-                    val.checkAll = true;
-                    val.isIndeterminate = false;
-                    this.handleChange(val, finished);
-                  } else {
-                    val.checkAll = false;
-                    val.isIndeterminate = true;
-                    this.generateFiltersDict(val, finished);
-                  }
+        if (this.$route.query.facets) {
+          this.selectedItems = this.$route.query.facets.split(',');
+          let finished = false;
+          for (let i = 0; i < this.selectedItems.length; i++) {
+            let facet = this.selectedItems[i];
+            this.filters_list.map((val) => {
+              let index = val.filter_items.indexOf(facet);
+              if (index > -1) {
+                val.selectedItem.push(val.filter_items[index]);
+                if (i === this.selectedItems.length - 1)
+                  finished = true;
+                if (val.selectedItem.length === val.filter_items.length) {
+                  val.selectedItem = [];
+                  val.checkAll = true;
+                  val.isIndeterminate = false;
+                  this.handleChange(val, finished);
+                } else {
+                  val.checkAll = false;
+                  val.isIndeterminate = true;
+                  this.generateFiltersDict(val, finished);
                 }
-              })
-            }
-          } else {
-            this.selectedItems = [];
-            this.generateFiltersDict();
+              }
+            })
           }
         }
       }
     },
 
     async handleChange(filter, finished) {
-      if (this.selectedItems.length === 0) {
-        this.filter_id_list = [];
-      }
-
-      // combine all the items that be selected
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+      }
+
+      if (this.selectedItems.length === 0) {
+        this.element_list = [];
       }
 
       if (!filter)
@@ -203,7 +198,7 @@ export default {
       let checkedCount = filter.selectedItem.length;
       let allFacetsLength = filter.filter_items.length;
       if (checkedCount === allFacetsLength || checkedCount === 0) {
-        this.filter_id_list[i] = [];
+        this.element_list[i] = [];
         this.filters_list[i].checkAll = true;
         this.filters_list[i].isIndeterminate = false;
         this.filters_list[i].selectedItem = [];
@@ -217,19 +212,22 @@ export default {
     // if a tag is closed, it will call this function
     deselectFacet(item) {
       // find and remove the item that is deselected
+      let filter_index;
       for (let i = 0; i < this.filters_list.length; i++) {
         let index = this.filters_list[i].selectedItem.indexOf(item);
         if (index > -1) {
+          filter_index = i;
           this.filters_list[i].selectedItem.splice(index, 1);
           // update the 'select all' checkbox
           if (this.filters_list[i].selectedItem.length === 0) {
-            this.filter_id_list[i] = [];
+            this.element_list[i] = [];
             this.filters_list[i].checkAll = true;
             this.filters_list[i].isIndeterminate = false;
           } else {
             this.filters_list[i].checkAll = false;
             this.filters_list[i].isIndeterminate = true;
           }
+          break;
         }
       }
 
@@ -239,14 +237,15 @@ export default {
       }
 
       // after update the selectedItem, hangle the change to fetch data
-      this.handleChange();
+      this.handleChange(this.filters_list[filter_index]);
     },
 
     async generateFiltersDict(filter_list, finished) {
+      let filter = {};
       if (!filter_list) {
         this.filters_dict = {};
       } else if (filter_list.selectedItem.length === 0) {
-        this.filter_id_list[filter_list.index] = [];
+        this.element_list[filter_list.index] = [];
       } else {
         let elements_list = this.allFilterDict.elements[filter_list.index];
         let result_list = [];
@@ -255,30 +254,18 @@ export default {
             result_list = result_list.concat(elements_list[key]);
           }
         }
-        let filter = {};
-        filter[filter_list.fieldName] = result_list;
-        let payload = {
-          node: filter_list.node,
-          filter: filter
-        }
-        
-        const path = `${process.env.query_api_url}/filter/dataset`;
-        await axios
-          .post(path, payload)
-          .then((res) => {
-            this.filter_id_list[filter_list.index] = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        this.element_list[filter_list.index] = result_list;
+        filter['node'] = filter_list.node;
+        filter['filter'] = {};
+        filter['filter'][filter_list.fieldName] = result_list;
       }
       
       let empty = true;
-      for (let i = 0; i < this.filter_id_list.length; i++) {
-        if (!this.filter_id_list[i]) {
-          this.filter_id_list[i] = [];
+      for (let i = 0; i < this.element_list.length; i++) {
+        if (!this.element_list[i]) {
+          this.element_list[i] = [];
         }
-        if (this.filter_id_list[i].length > 0) {
+        if (this.element_list[i].length > 0) {
           empty = false;
           break;
         }
@@ -286,7 +273,10 @@ export default {
       if (empty) {
         this.filters_dict = {};
       } else {
-        this.filters_dict["submitter_id"] = this.filter_id_list;
+        if (JSON.stringify(filter) === '{}')
+          delete this.filters_dict[filter_list.index];
+        else
+          this.filters_dict[filter_list.index] = filter;
       }
 
       if (finished != false)
