@@ -158,6 +158,9 @@ export default {
               }
             })
           }
+        } else {
+          this.selectedItems = [];
+          this.generateFiltersDict();
         }
       }
     },
