@@ -49,10 +49,10 @@ export default {
     let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.source_url = `${process.env.query_api_url}data/download/datasets/${dataset_id}/${filename}`;
+    this.source_url = `${process.env.query_api_url}data/download/${dataset_id}/${filename}`;
     this.metadata = eval("(" + data.supplemental_json_metadata + ")");
     let supplementPath = data.is_described_by;
-    this.supplemental_data = [{url: `${process.env.query_api_url}data/download/datasets/${supplementPath}`}];
+    this.supplemental_data = [{url: `${process.env.query_api_url}data/download/${supplementPath}`}];
     this.isLoading = false;
   },
 }

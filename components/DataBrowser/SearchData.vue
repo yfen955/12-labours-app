@@ -38,7 +38,7 @@ export default {
   },
 
   created: function() {
-    this.searchContent = this.$route.query.search;
+    this.searchContent = this.$route.query.search ? this.$route.query.search: '';
   },
 
   watch: {
@@ -52,20 +52,7 @@ export default {
   methods: {
     async onSubmit() {
       this.isLoading = true;
-      let matched_id_list = [];
-      let payload = {
-        search: this.searchContent,
-      };
-      const path = `${process.env.query_api_url}/search`;
-      await axios
-        .post(path, payload)
-        .then((res) => {
-          matched_id_list = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      this.$emit('search_list', matched_id_list);
+      this.$emit('search_content', this.searchContent);
 
       // update the page and search content in the url
       let query = {
@@ -75,6 +62,7 @@ export default {
       };
       if (this.$route.query.facets) {
         query.facets = this.$route.query.facets;
+        query.relation = this.$route.query.relation;
       }
       if (this.searchContent !== '') {
         query.search = this.searchContent;
@@ -83,6 +71,7 @@ export default {
         path: `${this.$route.path}`,
         query: query
       })
+      
       this.isLoading = false;
     },
 
