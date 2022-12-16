@@ -33,8 +33,8 @@
                   </nuxt-link>
                 </div>
                 <div>
-                  <strong>Organ</strong>
-                  {{ item.dataset_descriptions[0].study_organ_system }}
+                  <strong>Anatomical Structure</strong>
+                  {{ displayKeywords(item.dataset_descriptions[0].study_organ_system) }}
                 </div>
                 <div>
                   <strong>Keywords</strong>
@@ -89,12 +89,15 @@ export default {
 
   methods: {
     displayKeywords(keywords) {
-      let result = "";
-      for (let i = 0; i < keywords.length; i++) {
-        result += ", " + keywords[i];
+      if (keywords) {
+        let result = "";
+        for (let i = 0; i < keywords.length; i++) {
+          result += ", " + keywords[i];
+        }
+        result = result.slice(2);
+        return result;
       }
-      result = result.slice(2);
-      return result;
+      
     }
   },
 }
@@ -120,6 +123,7 @@ export default {
     }
     .content {
       margin-left: 1rem;
+      line-height: 2rem;
     }
   }
 }

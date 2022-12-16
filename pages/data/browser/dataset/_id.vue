@@ -232,28 +232,36 @@
             <hr>
             <div class="card-content">
               <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
-              <el-button class="secondary">
-                <span class="display-ellipsis --1">COLON</span>
-              </el-button>
+              <div
+                v-for="(organ, i) in sampleData.study_organ_system"
+                :key="i"
+              >
+                <el-button
+                  @click="goWithFacet(organ)"
+                  class="secondary"
+                >
+                  <span class="display-ellipsis --1">{{ organ }}</span>
+                </el-button>
+              </div>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">SPECIES:</span><br/>
-              <el-button class="secondary">
+              <el-button @click="goWithFacet('Mouse')" class="secondary">
                 <span class="display-ellipsis --1">MOUSE</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
-              <el-button class="secondary">
+              <el-button @click="goWithFacet('Anatomy')" class="secondary" :disabled="true">
                 <span class="display-ellipsis --1">ANATOMY</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">SEX:</span><br/>
-              <el-button class="secondary">
+              <el-button @click="goWithFacet('Male')" class="secondary" :disabled="true">
                 <span class="display-ellipsis --1">MALE</span><br/>
               </el-button>
             </div>
@@ -261,17 +269,18 @@
             <div class="card-content">
               <span class="card-title">CONTRIBUTORS:</span><br/>
               <ul>
-                <li v-for="i in 4" :key="i">
-                  dummy item {{ i }}
+                <li v-for="(name, i) in sampleData.contributor_name" :key="i">
+                  <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length">
+                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                  </span>
+                  <a
+                    v-else
+                    :href="modifyLink(i)"
+                  >
+                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                  </a>
                 </li>
               </ul>
-            </div>
-            <hr>
-            <div class="card-content">
-              <span class="card-title">test filter:</span><br/>
-              <el-button @click="goWithFacet('Scaffold')" class="secondary">
-                <span class="display-ellipsis --1">Scaffold</span>
-              </el-button>
             </div>
           </section>
         </el-card>
@@ -358,7 +367,7 @@ export default {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
+    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
     this.sampleData = this.sampleData[0];
 
     let scaffold = {
@@ -449,6 +458,7 @@ export default {
     },
 
     goWithFacet(facet) {
+      facet = facet[0].toUpperCase() + facet.slice(1);
       this.$router.push({
         path:'/data/browser',
         query: {
@@ -497,6 +507,9 @@ export default {
       }
       .card-content {
         margin: 1rem 0.5rem 1rem 0.5rem;
+        .secondary {
+          margin-top: 0.5rem;
+        }
       }
     }
   }
@@ -588,6 +601,11 @@ h2 {
   line-height: 2rem;
   .indent {
     text-indent: 2rem;
+  }
+}
+li {
+  a {
+    font-size: 1.13rem;
   }
 }
 </style>
