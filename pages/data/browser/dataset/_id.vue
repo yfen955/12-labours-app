@@ -33,11 +33,12 @@
               <hr>
               <p>
                 <b>Description: </b>
+                {{ sampleData.subtitle }}
               </p> 
             </section>
             <el-card shadow="never" class="version">
               <p>
-                <b>Viewing version:</b> 1.0
+                <b>Viewing version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
               </p>
               <p>DOI: 10.26275/umgm-rzar</p>
               <p>August 10, 2022</p>
@@ -48,7 +49,7 @@
                 <i class="el-icon-files"></i> 14.88 GB
               </p>
               <p>
-                <b>Latest version:</b> 1.0
+                <b>Latest version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
               </p>
               <p>August 10, 2022</p>
               <p>View other versions</p>
@@ -84,11 +85,20 @@
             <p class="indent"><b>Protocol Links:</b></p>
             <p class="indent"><b>Experimental Approach:</b></p>
             <p><b>Subject Information:</b></p>
-            <p class="indent"><b>Anatomical structure:</b></p>
+            <p class="indent">
+              <b>Anatomical structure:</b>
+              <nobr
+                v-for="(organ, i) in sampleData.study_organ_system"
+                :key="i"
+              >
+                <nobr v-if="i < sampleData.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }}, </nobr>
+                <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
+              </nobr>
+            </p>
             <p class="indent"><b>Species:</b></p>
             <p class="indent"><b>Sex:</b></p>
             <p class="indent"><b>Age range:</b></p>
-            <div v-if="sampleData.number_of_samples>0||sampleData.number_of_subjects>0">
+            <div v-if="sampleData.number_of_samples > 0 || sampleData.number_of_subjects > 0">
               <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
             </div>
             <div v-else>
@@ -262,7 +272,7 @@
             <div class="card-content">
               <span class="card-title">SEX:</span><br/>
               <el-button @click="goWithFacet('Male')" class="secondary" :disabled="true">
-                <span class="display-ellipsis --1">MALE</span><br/>
+                <span class="display-ellipsis --1">MALE</span>
               </el-button>
             </div>
             <hr>
@@ -458,14 +468,19 @@ export default {
     },
 
     goWithFacet(facet) {
-      facet = facet[0].toUpperCase() + facet.slice(1);
+      let words_list = facet.split(' ');
+      let result = '';
+      words_list.forEach(word => {
+        result += ' ' + word[0].toUpperCase() + word.slice(1);
+      })
+      result = result.slice(1);
       this.$router.push({
         path:'/data/browser',
         query: {
           type: 'dataset',
           page: 1,
           limit: 10,
-          facets: facet
+          facets: result
         }
       })
     }
@@ -503,12 +518,16 @@ export default {
     .related-container {
       margin-top: 2rem;
       .card-title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
       }
       .card-content {
         margin: 1rem 0.5rem 1rem 0.5rem;
         .secondary {
           margin-top: 0.5rem;
+          padding: 0 1.5rem 0 1.5rem;
+          span {
+            font-size: 1rem;
+          }
         }
       }
     }
