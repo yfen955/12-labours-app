@@ -209,8 +209,11 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <div>
-            <img :src="imgPlaceholder" alt="image"/>
+          <div v-if="scaffoldImgData">
+            <img :src="scaffoldImgData" alt="image" />
+          </div>
+          <div v-else>
+            <img :src="imgPlaceholder" alt="image" />
           </div>
           <div>
             <el-button class="left-top-btn">
@@ -370,6 +373,7 @@ export default {
       has_scaffold: false,
       has_plot: false,
       contributorName: "",
+      scaffoldImgData: ""
     }
   },
   
@@ -388,6 +392,18 @@ export default {
       this.has_scaffold = false
     } else {
       this.has_scaffold = true
+      let img = {
+        additional_types: ["image/x.vnd.abi.thumbnail+jpeg"]
+      };
+      let data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
+      if (data.length > 0) {
+        let url = `${process.env.query_api_url}/data/preview/`;
+        if (data[0].filename.includes(this.$route.params.id))
+          url += `${data[0].filename}`;
+        else
+          url += `${this.$route.params.id}/${data[0].filename}`;
+        this.scaffoldImgData = url;
+      }
     }
 
     let plot = {
@@ -483,7 +499,7 @@ export default {
           facets: result
         }
       })
-    }
+    },
   },
 }
 </script>
