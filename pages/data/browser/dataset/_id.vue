@@ -209,19 +209,15 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <div v-if="scaffoldImgData">
-            <img :src="scaffoldImgData" alt="image" />
-          </div>
-          <div v-else>
-            <img :src="imgPlaceholder" alt="image" />
-          </div>
+          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+          <img v-else :src="imgPlaceholder" alt="image" />
           <div>
-            <el-button class="left-top-btn">
+            <el-button class="left-top-btn" @click="changeTab('files')">
               <span class="display-ellipsis --1">Get Dataset</span>
             </el-button>
           </div>
           <div>
-            <el-button class="left-top-btn secondary">
+            <el-button class="left-top-btn secondary" @click="changeTab('cite')">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
           </div>
@@ -398,10 +394,14 @@ export default {
       let data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
       if (data.length > 0) {
         let url = `${process.env.query_api_url}/data/preview/`;
-        if (data[0].filename.includes(this.$route.params.id))
-          url += `${data[0].filename}`;
+        let img_list = data.filter((item) => {
+          if (item.filename.includes("Layout1"))
+            return item;
+        })
+        if (img_list[0].filename.includes(this.$route.params.id))
+          url += `${img_list[0].filename}`;
         else
-          url += `${this.$route.params.id}/${data[0].filename}`;
+          url += `${this.$route.params.id}/${img_list[0].filename}`;
         this.scaffoldImgData = url;
       }
     }

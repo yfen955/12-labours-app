@@ -15,8 +15,8 @@
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
             <section class="element">
-              <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img">
-              <p v-else>{{ item.dataset_descriptions[0].img }}</p>
+              <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" alt="image" />
+              <img v-else :src="imgPlaceholder" alt="image" />
               <section class="content">
                 <div>
                   <nuxt-link class="title-link" :to="{
@@ -97,7 +97,26 @@ export default {
         result = result.slice(2);
         return result;
       }
-      
+    },
+
+    getDatasetImg(item) {
+      if (item.manifests.length > 0) {
+        let data = item.manifests;
+        let url = `${process.env.query_api_url}/data/preview/`;
+        // let img_list = data.filter((item) => {
+        //   if (item.filename.includes("Layout1"))
+        //     return item;
+        // })
+        let img_list = data;
+        if (img_list[0].filename.includes(item.submitter_id))
+          url += `${img_list[0].filename}`;
+        else
+          url += `${item.submitter_id}/${img_list[0].filename}`;
+        console.log(url);
+        return url;
+      } else {
+        return false;
+      }
     }
   },
 }
