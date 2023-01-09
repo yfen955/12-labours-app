@@ -212,8 +212,11 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
-          <img v-else :src="imgPlaceholder" alt="image" />
+          <div class="dataset-img">
+            <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+            <img v-else :src="imgPlaceholder" alt="image" />
+          </div>
+          
           <div>
             <el-button class="left-top-btn" @click="changeTab('files')">
               <span class="display-ellipsis --1">Get Dataset</span>
@@ -397,10 +400,14 @@ export default {
       let data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
       if (data.length > 0) {
         let url = `${process.env.query_api_url}/data/preview/`;
-        let img_list = data.filter((item) => {
+        let img_list = [];
+        img_list = data.filter((item) => {
           if (item.filename.includes("Layout1"))
             return item;
         })
+        if (img_list.length === 0) {
+          img_list.push(data[0]);
+        }
         if (img_list[0].filename.includes(this.$route.params.id))
           url += `${img_list[0].filename}`;
         else
@@ -649,6 +656,13 @@ li {
 .gallery-img {
   width: 10rem;
   height: 9rem;
+  img {
+    width: 10rem;
+  }
+}
+.dataset-img {
+  width: 10rem;
+  height: 10rem;
   img {
     width: 10rem;
   }

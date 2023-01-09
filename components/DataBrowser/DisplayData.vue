@@ -106,12 +106,19 @@ export default {
       if (item.manifests.length > 0) {
         let data = item.manifests;
         let url = `${process.env.query_api_url}/data/preview/`;
-        let img_list = data.filter((item) => {
+        let img_list = [];
+        img_list = data.filter((item) => {
           if (item.filename.includes("Layout1"))
             return item;
         })
         if (img_list.length === 0) {
-          img_list.append(data[0]);
+          img_list = data.filter((item) => {
+            if (item.filename.includes("thumbnail1"))
+              return item;
+          })
+        }
+        if (img_list.length === 0) {
+          img_list.push(data[0]);
         }
         if (img_list[0].filename.includes(item.submitter_id))
           url += `${img_list[0].filename}`;
