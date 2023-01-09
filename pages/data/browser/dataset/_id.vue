@@ -142,7 +142,10 @@
               <!-- view Scaffold -->
               <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
                 <el-card class="carousel">
-                  <img :src="imgPlaceholder" alt="image" class="model-image">
+                  <div class="gallery-img">
+                    <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+                    <img v-else :src="imgPlaceholder" alt="image" />
+                  </div>
                   <p><b>Scaffold</b></p>
                   <el-popover
                     placement="top-start"
@@ -641,6 +644,13 @@ h2 {
 li {
   a {
     font-size: 1.13rem;
+  }
+}
+.gallery-img {
+  width: 10rem;
+  height: 9rem;
+  img {
+    width: 10rem;
   }
 }
 </style>
