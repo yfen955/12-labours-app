@@ -212,11 +212,8 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <div class="dataset-img">
-            <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
-            <img v-else :src="imgPlaceholder" alt="image" />
-          </div>
-          
+          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+          <img v-else :src="imgPlaceholder" alt="image" />
           <div>
             <el-button class="left-top-btn" @click="changeTab('files')">
               <span class="display-ellipsis --1">Get Dataset</span>
@@ -444,6 +441,7 @@ export default {
 
     // change the tab by change the variable in the url
     changeTab(val) {
+      this.currentTab = val;
       this.$router.push({
         path: `${this.$route.path}`,
         query: { datasetTab: val }
@@ -656,13 +654,6 @@ li {
 .gallery-img {
   width: 10rem;
   height: 9rem;
-  img {
-    width: 10rem;
-  }
-}
-.dataset-img {
-  width: 10rem;
-  height: 10rem;
   img {
     width: 10rem;
   }
