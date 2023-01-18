@@ -40,28 +40,28 @@
               <p>
                 <b>Viewing version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
               </p>
-              <p>DOI: 10.26275/umgm-rzar</p>
-              <p>August 10, 2022</p>
+              <p>DOI: N/A</p>
+              <p>Date: N/A</p>
               <p>
-                <i class="el-icon-document-copy"></i> 2532 files
+                <i class="el-icon-document-copy"></i> N/A files
               </p>
               <p>
-                <i class="el-icon-files"></i> 14.88 GB
+                <i class="el-icon-files"></i> N/A GB
               </p>
               <p>
                 <b>Latest version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
               </p>
-              <p>August 10, 2022</p>
+              <p>Date: N/A</p>
               <p>View other versions</p>
             </el-card>
           </div>
           <hr>
           <div class="information-bottom">
             <p class="usage">
-              <b>Usage Rights:</b> CC-BY-4.0
+              <b>Usage Rights:</b> N/A
             </p>
             <p class="download">
-              <b>Downloads:</b> 0
+              <b>Downloads:</b> N/A
             </p>
           </div>
         </el-card>
@@ -75,16 +75,16 @@
 
           <!-- abstract content -->
           <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
-            <p><b>Study Purpose:</b></p>
-            <p><b>Completeness:</b></p>
-            <p><b>Primary vs derivative data:</b></p>
-            <p><b>Important Notes:</b></p>
+            <p><b>Study Purpose:</b> N/A</p>
+            <p><b>Completeness:</b> N/A</p>
+            <p><b>Primary vs derivative data:</b> N/A</p>
+            <p><b>Important Notes:</b> N/A</p>
             <hr>
             <h2>Metadata</h2>
-            <p><b>Experimental Design:</b></p>
-            <p class="indent"><b>Protocol Links:</b></p>
-            <p class="indent"><b>Experimental Approach:</b></p>
-            <p><b>Subject Information:</b></p>
+            <p><b>Experimental Design:</b> N/A</p>
+            <p class="indent"><b>Protocol Links:</b> N/A</p>
+            <p class="indent"><b>Experimental Approach:</b> N/A</p>
+            <p><b>Subject Information:</b> N/A</p>
             <p class="indent">
               <b>Anatomical structure:</b>
               <nobr
@@ -95,9 +95,9 @@
                 <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
               </nobr>
             </p>
-            <p class="indent"><b>Species:</b></p>
-            <p class="indent"><b>Sex:</b></p>
-            <p class="indent"><b>Age range:</b></p>
+            <p class="indent"><b>Species:</b> N/A</p>
+            <p class="indent"><b>Sex:</b> N/A</p>
+            <p class="indent"><b>Age range:</b> N/A</p>
             <div v-if="sampleData.number_of_samples > 0 || sampleData.number_of_subjects > 0">
               <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
             </div>
@@ -110,19 +110,19 @@
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
             <h2>About this dataset</h2>
             <p><b>Title:</b> {{sampleData.title}}</p>
-            <p><b>First Published:</b></p>
-            <p><b>Last Published:</b></p>
+            <p><b>First Published:</b> N/A</p>
+            <p><b>Last Published:</b> N/A</p>
             <hr>
-            <p><b>Contact Author:</b></p>
+            <p><b>Contact Author:</b> N/A</p>
             <hr>
-            <p><b>Award(s):</b></p>
+            <p><b>Award(s):</b> N/A</p>
             <hr>
-            <p><b>Associated project(s):</b></p>
-            <p><b>Institution(s):</b></p>
+            <p><b>Associated project(s):</b> N/A</p>
+            <p><b>Institution(s):</b> N/A</p>
             <hr>
             <h2>About this version</h2>
-            <p><b>Version 3 Revision 1:</b></p>
-            <p><b>Dataset DOI:</b></p>
+            <p><b>Version 3 Revision 1:</b> N/A</p>
+            <p><b>Dataset DOI:</b> N/A</p>
           </span>
           
           <!-- cite content -->
@@ -231,8 +231,7 @@
           <hr>
           <section>
             <div class="card-content">
-              <span class="card-title">PROJECT:</span><br/>
-              Anatomic-Functional Mapping of Enteric Neural Circuits
+              <span class="card-title">PROJECT:</span><br/>N/A
             </div>
             <hr>
             <div class="card-content">
@@ -259,22 +258,22 @@
             <hr>
             <div class="card-content">
               <span class="card-title">SPECIES:</span><br/>
-              <el-button @click="goWithFacet('Mouse')" class="secondary">
-                <span class="display-ellipsis --1">MOUSE</span>
+              <el-button @click="goWithFacet('Mouse')" class="secondary" :disabled="true">
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
               <el-button @click="goWithFacet('Anatomy')" class="secondary" :disabled="true">
-                <span class="display-ellipsis --1">ANATOMY</span>
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">SEX:</span><br/>
               <el-button @click="goWithFacet('Male')" class="secondary" :disabled="true">
-                <span class="display-ellipsis --1">MALE</span>
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
