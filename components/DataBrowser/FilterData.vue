@@ -17,7 +17,7 @@
           closable
           @close="deselectFacet(facet)"
         >
-          <span>{{ facet[0].toUpperCase() + facet.slice(1) }}</span>
+          <span>{{ facet }}</span>
         </el-tag>
       </el-card>
 
@@ -63,7 +63,7 @@
               :key="index"
               :label="type"
             >
-              {{ type[0].toUpperCase() + type.slice(1) }}
+              {{ type }}
             </el-checkbox>
           </el-checkbox-group>
         </el-collapse-item>
@@ -73,8 +73,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   props: [ "allFilterDict" ],
 

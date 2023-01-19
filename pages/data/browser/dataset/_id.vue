@@ -33,34 +33,35 @@
               <hr>
               <p>
                 <b>Description: </b>
+                {{ sampleData.subtitle }}
               </p> 
             </section>
             <el-card shadow="never" class="version">
               <p>
-                <b>Viewing version:</b> 1.0
+                <b>Viewing version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
               </p>
-              <p>DOI: 10.26275/umgm-rzar</p>
-              <p>August 10, 2022</p>
+              <p>DOI: N/A</p>
+              <p>Date: N/A</p>
               <p>
-                <i class="el-icon-document-copy"></i> 2532 files
-              </p>
-              <p>
-                <i class="el-icon-files"></i> 14.88 GB
+                <i class="el-icon-document-copy"></i> N/A files
               </p>
               <p>
-                <b>Latest version:</b> 1.0
+                <i class="el-icon-files"></i> N/A GB
               </p>
-              <p>August 10, 2022</p>
+              <p>
+                <b>Latest version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
+              </p>
+              <p>Date: N/A</p>
               <p>View other versions</p>
             </el-card>
           </div>
           <hr>
           <div class="information-bottom">
             <p class="usage">
-              <b>Usage Rights:</b> CC-BY-4.0
+              <b>Usage Rights:</b> N/A
             </p>
             <p class="download">
-              <b>Downloads:</b> 0
+              <b>Downloads:</b> N/A
             </p>
           </div>
         </el-card>
@@ -74,21 +75,30 @@
 
           <!-- abstract content -->
           <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
-            <p><b>Study Purpose:</b></p>
-            <p><b>Completeness:</b></p>
-            <p><b>Primary vs derivative data:</b></p>
-            <p><b>Important Notes:</b></p>
+            <p><b>Study Purpose:</b> N/A</p>
+            <p><b>Completeness:</b> N/A</p>
+            <p><b>Primary vs derivative data:</b> N/A</p>
+            <p><b>Important Notes:</b> N/A</p>
             <hr>
             <h2>Metadata</h2>
-            <p><b>Experimental Design:</b></p>
-            <p class="indent"><b>Protocol Links:</b></p>
-            <p class="indent"><b>Experimental Approach:</b></p>
-            <p><b>Subject Information:</b></p>
-            <p class="indent"><b>Anatomical structure:</b></p>
-            <p class="indent"><b>Species:</b></p>
-            <p class="indent"><b>Sex:</b></p>
-            <p class="indent"><b>Age range:</b></p>
-            <div v-if="sampleData.number_of_samples>0||sampleData.number_of_subjects>0">
+            <p><b>Experimental Design:</b> N/A</p>
+            <p class="indent"><b>Protocol Links:</b> N/A</p>
+            <p class="indent"><b>Experimental Approach:</b> N/A</p>
+            <p><b>Subject Information:</b> N/A</p>
+            <p class="indent">
+              <b>Anatomical structure:</b>
+              <nobr
+                v-for="(organ, i) in sampleData.study_organ_system"
+                :key="i"
+              >
+                <nobr v-if="i < sampleData.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }}, </nobr>
+                <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
+              </nobr>
+            </p>
+            <p class="indent"><b>Species:</b> N/A</p>
+            <p class="indent"><b>Sex:</b> N/A</p>
+            <p class="indent"><b>Age range:</b> N/A</p>
+            <div v-if="sampleData.number_of_samples > 0 || sampleData.number_of_subjects > 0">
               <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
             </div>
             <div v-else>
@@ -100,19 +110,19 @@
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
             <h2>About this dataset</h2>
             <p><b>Title:</b> {{sampleData.title}}</p>
-            <p><b>First Published:</b></p>
-            <p><b>Last Published:</b></p>
+            <p><b>First Published:</b> N/A</p>
+            <p><b>Last Published:</b> N/A</p>
             <hr>
-            <p><b>Contact Author:</b></p>
+            <p><b>Contact Author:</b> N/A</p>
             <hr>
-            <p><b>Award(s):</b></p>
+            <p><b>Award(s):</b> N/A</p>
             <hr>
-            <p><b>Associated project(s):</b></p>
-            <p><b>Institution(s):</b></p>
+            <p><b>Associated project(s):</b> N/A</p>
+            <p><b>Institution(s):</b> N/A</p>
             <hr>
             <h2>About this version</h2>
-            <p><b>Version 3 Revision 1:</b></p>
-            <p><b>Dataset DOI:</b></p>
+            <p><b>Version 3 Revision 1:</b> N/A</p>
+            <p><b>Dataset DOI:</b> N/A</p>
           </span>
           
           <!-- cite content -->
@@ -132,7 +142,10 @@
               <!-- view Scaffold -->
               <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
                 <el-card class="carousel">
-                  <img :src="imgPlaceholder" alt="image" class="model-image">
+                  <div class="gallery-img">
+                    <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+                    <img v-else :src="imgPlaceholder" alt="image" />
+                  </div>
                   <p><b>Scaffold</b></p>
                   <el-popover
                     placement="top-start"
@@ -199,16 +212,15 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
+          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+          <img v-else :src="imgPlaceholder" alt="image" />
           <div>
-            <img :src="imgPlaceholder" alt="image"/>
-          </div>
-          <div>
-            <el-button class="left-top-btn">
+            <el-button class="left-top-btn" @click="changeTab('files')">
               <span class="display-ellipsis --1">Get Dataset</span>
             </el-button>
           </div>
           <div>
-            <el-button class="left-top-btn secondary">
+            <el-button class="left-top-btn secondary" @click="changeTab('cite')">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
           </div>
@@ -219,8 +231,7 @@
           <hr>
           <section>
             <div class="card-content">
-              <span class="card-title">PROJECT:</span><br/>
-              Anatomic-Functional Mapping of Enteric Neural Circuits
+              <span class="card-title">PROJECT:</span><br/>N/A
             </div>
             <hr>
             <div class="card-content">
@@ -232,46 +243,55 @@
             <hr>
             <div class="card-content">
               <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
-              <el-button class="secondary">
-                <span class="display-ellipsis --1">COLON</span>
-              </el-button>
+              <div
+                v-for="(organ, i) in sampleData.study_organ_system"
+                :key="i"
+              >
+                <el-button
+                  @click="goWithFacet(organ)"
+                  class="secondary"
+                >
+                  <span class="display-ellipsis --1">{{ organ }}</span>
+                </el-button>
+              </div>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">SPECIES:</span><br/>
-              <el-button class="secondary">
-                <span class="display-ellipsis --1">MOUSE</span>
+              <el-button @click="goWithFacet('Mouse')" class="secondary" :disabled="true">
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
-              <el-button class="secondary">
-                <span class="display-ellipsis --1">ANATOMY</span>
+              <el-button @click="goWithFacet('Anatomy')" class="secondary" :disabled="true">
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">SEX:</span><br/>
-              <el-button class="secondary">
-                <span class="display-ellipsis --1">MALE</span><br/>
+              <el-button @click="goWithFacet('Male')" class="secondary" :disabled="true">
+                <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
               <span class="card-title">CONTRIBUTORS:</span><br/>
               <ul>
-                <li v-for="i in 4" :key="i">
-                  dummy item {{ i }}
+                <li v-for="(name, i) in sampleData.contributor_name" :key="i">
+                  <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length">
+                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                  </span>
+                  <a
+                    v-else
+                    :href="modifyLink(i)"
+                  >
+                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                  </a>
                 </li>
               </ul>
-            </div>
-            <hr>
-            <div class="card-content">
-              <span class="card-title">test filter:</span><br/>
-              <el-button @click="goWithFacet('Scaffold')" class="secondary">
-                <span class="display-ellipsis --1">Scaffold</span>
-              </el-button>
             </div>
           </section>
         </el-card>
@@ -351,6 +371,7 @@ export default {
       has_scaffold: false,
       has_plot: false,
       contributorName: "",
+      scaffoldImgData: ""
     }
   },
   
@@ -358,7 +379,7 @@ export default {
     this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: `${this.$route.params.id}-dataset_description`});
+    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
     this.sampleData = this.sampleData[0];
 
     let scaffold = {
@@ -369,6 +390,26 @@ export default {
       this.has_scaffold = false
     } else {
       this.has_scaffold = true
+      let img = {
+        additional_types: ["image/x.vnd.abi.thumbnail+jpeg"]
+      };
+      let data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
+      if (data.length > 0) {
+        let url = `${process.env.query_api_url}/data/preview/`;
+        let img_list = [];
+        img_list = data.filter((item) => {
+          if (item.filename.includes("Layout1"))
+            return item;
+        })
+        if (img_list.length === 0) {
+          img_list.push(data[0]);
+        }
+        if (img_list[0].filename.includes(this.$route.params.id))
+          url += `${img_list[0].filename}`;
+        else
+          url += `${this.$route.params.id}/${img_list[0].filename}`;
+        this.scaffoldImgData = url;
+      }
     }
 
     let plot = {
@@ -399,6 +440,7 @@ export default {
 
     // change the tab by change the variable in the url
     changeTab(val) {
+      this.currentTab = val;
       this.$router.push({
         path: `${this.$route.path}`,
         query: { datasetTab: val }
@@ -449,16 +491,22 @@ export default {
     },
 
     goWithFacet(facet) {
+      let words_list = facet.split(' ');
+      let result = '';
+      words_list.forEach(word => {
+        result += ' ' + word[0].toUpperCase() + word.slice(1);
+      })
+      result = result.slice(1);
       this.$router.push({
         path:'/data/browser',
         query: {
           type: 'dataset',
           page: 1,
           limit: 10,
-          facets: facet
+          facets: result
         }
       })
-    }
+    },
   },
 }
 </script>
@@ -493,10 +541,17 @@ export default {
     .related-container {
       margin-top: 2rem;
       .card-title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
       }
       .card-content {
         margin: 1rem 0.5rem 1rem 0.5rem;
+        .secondary {
+          margin-top: 0.5rem;
+          padding: 0 1.5rem 0 1.5rem;
+          span {
+            font-size: 1rem;
+          }
+        }
       }
     }
   }
@@ -588,6 +643,18 @@ h2 {
   line-height: 2rem;
   .indent {
     text-indent: 2rem;
+  }
+}
+li {
+  a {
+    font-size: 1.13rem;
+  }
+}
+.gallery-img {
+  width: 10rem;
+  height: 9rem;
+  img {
+    width: 10rem;
   }
 }
 </style>

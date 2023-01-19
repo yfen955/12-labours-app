@@ -15,8 +15,11 @@
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
             <section class="element">
-              <img :src="imgPlaceholder" v-if="!item.dataset_descriptions[0].img">
-              <p v-else>{{ item.dataset_descriptions[0].img }}</p>
+              <div class="dataset-img">
+                <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" alt="image" />
+                <img v-else :src="imgPlaceholder" alt="image" />
+              </div>
+              
               <section class="content">
                 <div>
                   <nuxt-link class="title-link" :to="{
@@ -33,8 +36,8 @@
                   </nuxt-link>
                 </div>
                 <div>
-                  <strong>Organ</strong>
-                  {{ item.dataset_descriptions[0].study_organ_system }}
+                  <strong>Anatomical Structure</strong>
+                  {{ displayKeywords(item.dataset_descriptions[0].study_organ_system) }}
                 </div>
                 <div>
                   <strong>Keywords</strong>
@@ -89,12 +92,42 @@ export default {
 
   methods: {
     displayKeywords(keywords) {
-      let result = "";
-      for (let i = 0; i < keywords.length; i++) {
-        result += ", " + keywords[i];
+      if (keywords) {
+        let result = "";
+        for (let i = 0; i < keywords.length; i++) {
+          result += ", " + keywords[i];
+        }
+        result = result.slice(2);
+        return result;
       }
-      result = result.slice(2);
-      return result;
+    },
+
+    getDatasetImg(item) {
+      if (item.manifests.length > 0) {
+        let data = item.manifests;
+        let url = `${process.env.query_api_url}/data/preview/`;
+        let img_list = [];
+        img_list = data.filter((item) => {
+          if (item.filename.includes("Layout1"))
+            return item;
+        })
+        if (img_list.length === 0) {
+          img_list = data.filter((item) => {
+            if (item.filename.includes("thumbnail1"))
+              return item;
+          })
+        }
+        if (img_list.length === 0) {
+          img_list.push(data[0]);
+        }
+        if (img_list[0].filename.includes(item.submitter_id))
+          url += `${img_list[0].filename}`;
+        else
+          url += `${item.submitter_id}/${img_list[0].filename}`;
+        return url;
+      } else {
+        return false;
+      }
     }
   },
 }
@@ -115,16 +148,21 @@ export default {
       width: 27rem;
     }
     padding: 1rem;
+    .dataset-img {
+      width: 10rem;
+      height: 10rem;
+    }
     img, p {
-      width: 10rem
+      width: 10rem;
     }
     .content {
       margin-left: 1rem;
+      line-height: 2rem;
     }
   }
 }
 hr {
-  border: 1px solid #E4E7ED;
+  border: 0.25px solid #E4E7ED;
   @media only screen and (max-width: 37rem) {
     width: 27rem
   }
