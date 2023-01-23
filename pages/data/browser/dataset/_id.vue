@@ -211,7 +211,7 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="viewMap('scaffold', scaffold_manifest_data[0].id)" class="model-button">
+                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
                       View Scaffold
                     </el-button>
                   </div>
@@ -407,7 +407,7 @@ export default {
     this.sampleData = this.sampleData[0];
 
     let img = {
-      additional_types: ["image/x.vnd.abi.thumbnail+jpeg"]
+      additional_types: ["application/x.vnd.abi.scaffold.view+json"]
     };
     this.thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
 
@@ -416,20 +416,30 @@ export default {
     };
     this.scaffold_manifest_data = await backendQuery.fetchQueryData('manifest', scaffold, `${this.$route.params.id}`);
     if (this.scaffold_manifest_data.length === 0) {
-      this.has_scaffold = false
+      this.has_scaffold = false;
     } else {
-      this.has_scaffold = true
+      this.has_scaffold = true;
       if (this.thumbnail_data.length > 0) {
-        // let url = `${process.env.query_api_url}/data/preview/`;
         let img_list = [];
         img_list = this.thumbnail_data.filter((item) => {
-          if (item.filename.includes("Layout1"))
+          if (item.is_source_of.includes("Layout1"))
             return item;
-        })
+        });
+        if (img_list.length === 0) {
+          img_list = data.filter((item) => {
+            if (item.is_source_of.includes("thumbnail1"))
+              return item;
+          });
+        }
         if (img_list.length === 0) {
           img_list.push(this.thumbnail_data[0]);
         }
-        this.scaffoldImgData = this.generateImg(img_list[0].filename);
+        this.scaffoldImgData = this.generateImg(
+          `${img_list[0].filename.substring(
+            0,
+            img_list[0].filename.lastIndexOf("/")
+          )}/${img_list[0].is_source_of}`
+        );
       }
     }
 
@@ -536,6 +546,11 @@ export default {
       else
         url += `${this.$route.params.id}/${filename}`;
       return url;
+    },
+
+    async findModel(name) {
+      let model_data = await backendQuery.fetchQueryData('manifest', {}, name);
+      this.viewMap('scaffold', model_data[0].id);
     }
   },
 }
