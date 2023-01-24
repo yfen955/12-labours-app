@@ -197,10 +197,10 @@
               </el-carousel-item>
 
               <!-- view Thumbnail -->
-              <el-carousel-item v-for="item, i in thumbnail_data" :key="item.id">
+              <el-carousel-item v-for="(item, i) in thumbnail_data" :key="item.id">
                 <el-card class="carousel">
                   <div class="gallery-img">
-                    <img :src="generateImg(item.filename)" alt="thumbnail" />
+                    <img :src="generateImg(item.filename, item.is_source_of)" alt="thumbnail" />
                   </div>
                   <p><b>Thumbnail {{ i + 1 }}</b></p>
                   <el-popover
@@ -434,12 +434,7 @@ export default {
         if (img_list.length === 0) {
           img_list.push(this.thumbnail_data[0]);
         }
-        this.scaffoldImgData = this.generateImg(
-          `${img_list[0].filename.substring(
-            0,
-            img_list[0].filename.lastIndexOf("/")
-          )}/${img_list[0].is_source_of}`
-        );
+        this.scaffoldImgData = this.generateImg(img_list[0].filename, img_list[0].is_source_of);
       }
     }
 
@@ -539,12 +534,12 @@ export default {
       })
     },
 
-    generateImg(filename) {
+    generateImg(filename, is_source_of) {
       let url = `${process.env.query_api_url}/data/preview/`;
       if (filename.includes(this.$route.params.id))
-        url += `${filename}`;
+        url += `${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
       else
-        url += `${this.$route.params.id}/${filename}`;
+        url += `${this.$route.params.id}/${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
       return url;
     },
 
