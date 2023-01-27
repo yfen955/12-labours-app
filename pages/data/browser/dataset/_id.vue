@@ -140,11 +140,10 @@
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
             <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
               <!-- view Scaffold -->
-              <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
+              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="item.id">
                 <el-card class="carousel">
                   <div class="gallery-img">
-                    <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
-                    <img v-else :src="imgPlaceholder" alt="image" />
+                    <img :src="generateImg('preview', item.filename, item.is_source_of)" alt="thumbnail" />
                   </div>
                   <p><b>Scaffold</b></p>
                   <el-popover
@@ -155,7 +154,7 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="viewMap('scaffold', item.id)" class="model-button">
+                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
                       View Scaffold
                     </el-button>
                   </div>
@@ -196,13 +195,13 @@
                 </el-card>
               </el-carousel-item>
 
-              <!-- view Thumbnail -->
-              <el-carousel-item v-for="(item, i) in thumbnail_data" :key="item.id">
+              <!-- view thumbnail -->
+              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="item.id">
                 <el-card class="carousel">
                   <div class="gallery-img">
-                    <img :src="generateImg(item.filename, item.is_source_of)" alt="thumbnail" />
+                    <img :src="generateImg('preview', item.filename)" alt="thumbnail" />
                   </div>
-                  <p><b>Thumbnail {{ i + 1 }}</b></p>
+                  <p><b>Thumbnail</b></p>
                   <el-popover
                     placement="top-start"
                     trigger="hover"
@@ -211,8 +210,8 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
-                      View Scaffold
+                    <el-button @click="downloadImg(item.filename)" class="model-button">
+                      Download
                     </el-button>
                   </div>
                 </el-card>
@@ -235,7 +234,9 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+          <div v-if="scaffold_thumbnail_data.length > 0">
+            <img :src="generateImg('preview', scaffold_thumbnail_data[0].filename, scaffold_thumbnail_data[0].is_source_of)" alt="image" />
+          </div>
           <img v-else :src="imgPlaceholder" alt="image" />
           <div>
             <el-button class="left-top-btn" @click="changeTab('files')">
@@ -389,13 +390,12 @@ export default {
       sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       currentID: '',
-      scaffold_manifest_data: [],
       plot_manifest_data: [],
-      has_scaffold: false,
       has_plot: false,
       contributorName: "",
-      scaffoldImgData: "",
+      scaffold_thumbnail_data: [],
       thumbnail_data: [],
+      thumbnailVisible: false,
     }
   },
   
@@ -409,34 +409,12 @@ export default {
     let img = {
       additional_types: ["application/x.vnd.abi.scaffold.view+json"]
     };
-    this.thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
+    this.scaffold_thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
 
-    let scaffold = {
-      additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]
+    let thumbnail = {
+      file_type: [".jpg", ".png"]
     };
-    this.scaffold_manifest_data = await backendQuery.fetchQueryData('manifest', scaffold, `${this.$route.params.id}`);
-    if (this.scaffold_manifest_data.length === 0) {
-      this.has_scaffold = false;
-    } else {
-      this.has_scaffold = true;
-      if (this.thumbnail_data.length > 0) {
-        let img_list = [];
-        img_list = this.thumbnail_data.filter((item) => {
-          if (item.is_source_of.includes("Layout1"))
-            return item;
-        });
-        if (img_list.length === 0) {
-          img_list = data.filter((item) => {
-            if (item.is_source_of.includes("thumbnail1"))
-              return item;
-          });
-        }
-        if (img_list.length === 0) {
-          img_list.push(this.thumbnail_data[0]);
-        }
-        this.scaffoldImgData = this.generateImg(img_list[0].filename, img_list[0].is_source_of);
-      }
-    }
+    this.thumbnail_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
 
     let plot = {
       additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
@@ -534,18 +512,26 @@ export default {
       })
     },
 
-    generateImg(filename, is_source_of) {
-      let url = `${process.env.query_api_url}/data/preview/`;
-      if (filename.includes(this.$route.params.id))
-        url += `${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
+    generateImg(method, filename, is_source_of) {
+      let url = `${process.env.query_api_url}/data/${method}`;
+      if (!filename.includes(this.$route.params.id)) {
+        url += `/${this.$route.params.id}`;
+      }
+      if (is_source_of)
+        url += `/${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
       else
-        url += `${this.$route.params.id}/${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
+        url += `/${filename}`;
       return url;
     },
 
     async findModel(name) {
       let model_data = await backendQuery.fetchQueryData('manifest', {}, name);
       this.viewMap('scaffold', model_data[0].id);
+    },
+
+    downloadImg(filename) {
+      let url = this.generateImg('download', filename);
+      window.open(url);
     }
   },
 }
