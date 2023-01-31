@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="title" />
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -13,7 +13,7 @@
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
         <el-card shadow="never" class="description-container">
-          <h1>{{sampleData.title}}</h1>
+          <h1>{{ title }}</h1>
           <div class="information-top">
             <section class="description">
               <p>
@@ -33,12 +33,12 @@
               <hr>
               <p>
                 <b>Description: </b>
-                {{ sampleData.subtitle }}
+                {{ sampleData.subtitle[0] }}
               </p> 
             </section>
             <el-card shadow="never" class="version">
               <p>
-                <b>Viewing version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
+                <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
               <p>DOI: N/A</p>
               <p>Date: N/A</p>
@@ -49,7 +49,7 @@
                 <i class="el-icon-files"></i> N/A GB
               </p>
               <p>
-                <b>Latest version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
+                <b>Latest version:</b> {{ sampleData.metadata_version[0] }}
               </p>
               <p>Date: N/A</p>
               <p>View other versions</p>
@@ -98,8 +98,8 @@
             <p class="indent"><b>Species:</b> N/A</p>
             <p class="indent"><b>Sex:</b> N/A</p>
             <p class="indent"><b>Age range:</b> N/A</p>
-            <div v-if="sampleData.number_of_samples > 0 || sampleData.number_of_subjects > 0">
-              <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
+            <div v-if="sampleData.number_of_samples[0] > 0 || sampleData.number_of_subjects[0] > 0">
+              <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples[0]}} samples from {{sampleData.number_of_subjects[0]}} subjects</p>
             </div>
             <div v-else>
               <p class="indent"><b>Number of samples:</b> N/A</p>
@@ -109,7 +109,7 @@
           <!-- about content -->
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
             <h2>About this dataset</h2>
-            <p><b>Title:</b> {{sampleData.title}}</p>
+            <p><b>Title:</b> {{ title }}</p>
             <p><b>First Published:</b> N/A</p>
             <p><b>Last Published:</b> N/A</p>
             <hr>
@@ -129,6 +129,39 @@
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
             <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of SPARC datasets. To make it easy, the SPARC Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
+            <div v-if="sampleData.identifier.length > 0">
+              <h5 class="small-title">APA</h5>
+              <div class="citaiton-block">
+                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
+                <div class="citation-content">
+                  <div v-for="item in apaCitation" v-html="item"></div>
+                </div>
+              </div>
+
+              <h5 class="small-title">Chicago</h5>
+              <div class="citaiton-block">
+                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(chicagoCitation)">Copy</el-button>
+                <div class="citation-content">
+                  <div v-for="item in chicagoCitation" v-html="item"></div>
+                </div>
+              </div>
+
+              <h5 class="small-title">IEEE</h5>
+              <div class="citaiton-block">
+                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(ieeeCitation)">Copy</el-button>
+                <div class="citation-content">
+                  <div v-for="item in ieeeCitation" v-html="item"></div>
+                </div>
+              </div>
+
+              <h5 class="small-title">Bibtex</h5>
+              <div class="citaiton-block">
+                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(bibtexCitationc)">Copy</el-button>
+                <div class="citation-content">
+                  <div v-for="item in bibtexCitation">{{ item }}</div>
+                </div>
+              </div>
+            </div>
           </span>
           
           <!-- files content -->
@@ -326,6 +359,7 @@
 
 <script>
 import backendQuery from '@/services/backendQuery';
+import axios from "axios";
 
 const datasetTabs = [
   {
@@ -384,7 +418,7 @@ export default {
           label: 'Data Browser'
         },
       ],
-      isLoading: false,
+      isLoading: true,
       datasetTabs,
       currentTab: '',
       sampleData: [],
@@ -396,15 +430,20 @@ export default {
       scaffold_thumbnail_data: [],
       thumbnail_data: [],
       thumbnailVisible: false,
+      title: "",
+      apaCitation: [],
+      chicagoCitation: [],
+      ieeeCitation: [],
+      bibtexCitation: [],
     }
   },
   
   created: async function() {
-    this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
     this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
     this.sampleData = this.sampleData[0];
+    this.title = this.sampleData.title[0];
 
     let img = {
       additional_types: ["application/x.vnd.abi.scaffold.view+json"]
@@ -414,7 +453,11 @@ export default {
     let thumbnail = {
       file_type: [".jpg", ".png"]
     };
-    this.thumbnail_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
+    let picture_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
+    this.thumbnail_data = picture_data.filter(item => {
+      if (item.additional_types == null)
+        return item;
+    })
 
     let plot = {
       additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
@@ -425,6 +468,11 @@ export default {
     } else {
       this.has_plot = true
     }
+
+    await this.handleCitation(this.apaCitation, "text/x-bibliography; style=apa");
+    await this.handleCitation(this.chicagoCitation, "text/x-bibliography; style=chicago-note-bibliography");
+    await this.handleCitation(this.ieeeCitation, "text/x-bibliography; style=ieee");
+    await this.handleCitation(this.bibtexCitation, "application/x-bibtex");
 
     this.isLoading = false;
   },
@@ -532,6 +580,49 @@ export default {
     downloadImg(filename) {
       let url = this.generateImg('download', filename);
       window.open(url);
+    },
+
+    async handleCitation(citation_list, format) {
+      for (let item of this.sampleData.identifier) {
+        await axios
+          .get(item, {
+            headers: {
+              "Accept": `${format}`
+            }      
+          })
+          .then((res) => {
+            if (format === "text/x-bibliography; style=ieee") {
+              let result = res.data;
+              if (result.includes('[1]'))
+                result = result.slice(3);
+              result = `[${citation_list.length + 1}]` + result;
+              citation_list.push(result);
+            }
+            else
+              citation_list.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    
+    copyText(text_list) {
+      let text = "";
+      text_list.map(item => {
+        text += item;
+        if (!item.includes("\n")) {
+          text += "\n";
+        }
+      })
+      let inputNode = document.createElement('input');
+      inputNode.value = text;
+      document.body.appendChild(inputNode);
+      inputNode.select();
+      document.execCommand('copy');
+      inputNode.className = 'oInput';
+      inputNode.style.display = 'none';
+      this.$message.success('copied');
     }
   },
 }
@@ -681,6 +772,30 @@ li {
   height: 9rem;
   img {
     width: 10rem;
+  }
+}
+.small-title {
+  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+.citaiton-block {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  background-color: $background;
+  .copy-btn {
+    background-color: transparent;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 1rem -0.5rem;
+    font-size: 1rem;
+    color: $app-primary-color;
+  }
+  .citation-content {
+    padding: 0 1.5rem 1.5rem;
+    text-indent: 1rem;
+    font-size: 1rem;
   }
 }
 </style>

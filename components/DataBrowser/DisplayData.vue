@@ -32,7 +32,7 @@
                       datasetTab: 'abstract',
                     }
                   }">
-                    {{ item.dataset_descriptions[0].title }}
+                    {{ item.dataset_descriptions[0].title[0] }}
                   </nuxt-link>
                 </div>
                 <div>
@@ -44,9 +44,9 @@
                   {{ displayKeywords(item.dataset_descriptions[0].keywords) }}
                 </div>
                 <div>
-                  <div v-if="item.dataset_descriptions[0].number_of_samples>0||item.dataset_descriptions[0].number_of_subjects>0">
+                  <div v-if="item.dataset_descriptions[0].number_of_samples[0]>0||item.dataset_descriptions[0].number_of_subjects[0]>0">
                     <strong>Samples</strong>
-                    {{item.dataset_descriptions[0].number_of_samples}} samples out of {{item.dataset_descriptions[0].number_of_subjects}} objects
+                    {{item.dataset_descriptions[0].number_of_samples[0]}} samples out of {{item.dataset_descriptions[0].number_of_subjects[0]}} objects
                   </div>
                 </div>
               </section>
@@ -108,13 +108,18 @@ export default {
         let url = `${process.env.query_api_url}/data/preview/`;
         let img_list = [];
         img_list = data.filter((item) => {
-          if (item.is_source_of.includes("Layout1"))
-            return item;
+          if (item.is_source_of) {
+            if (item.is_source_of.includes("Layout1"))
+              return item;
+          }
+          
         });
         if (img_list.length === 0) {
           img_list = data.filter((item) => {
-            if (item.is_source_of.includes("thumbnail1"))
-              return item;
+            if (item.is_source_of) {
+              if (item.is_source_of.includes("thumbnail1"))
+                return item;
+            }
           });
         }
         if (img_list.length === 0) {
