@@ -137,31 +137,15 @@
                   <div v-for="item in apaCitation" v-html="item"></div>
                 </div>
               </div>
-
-              <h5 class="small-title">Chicago</h5>
-              <div class="citaiton-block">
-                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(chicagoCitation)">Copy</el-button>
-                <div class="citation-content">
-                  <div v-for="item in chicagoCitation" v-html="item"></div>
-                </div>
-              </div>
-
-              <h5 class="small-title">IEEE</h5>
-              <div class="citaiton-block">
-                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(ieeeCitation)">Copy</el-button>
-                <div class="citation-content">
-                  <div v-for="item in ieeeCitation" v-html="item"></div>
-                </div>
-              </div>
-
-              <h5 class="small-title">Bibtex</h5>
-              <div class="citaiton-block">
-                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(bibtexCitationc)">Copy</el-button>
-                <div class="citation-content">
-                  <div v-for="item in bibtexCitation">{{ item }}</div>
-                </div>
-              </div>
             </div>
+            <p>Click 
+              <a
+                href="https://citation.crosscite.org/"
+                target="_blank"
+              >
+              here
+              </a>
+            to generate citations in more formats.</p>
           </span>
           
           <!-- files content -->
@@ -432,9 +416,6 @@ export default {
       thumbnailVisible: false,
       title: "",
       apaCitation: [],
-      chicagoCitation: [],
-      ieeeCitation: [],
-      bibtexCitation: [],
     }
   },
   
@@ -469,10 +450,7 @@ export default {
       this.has_plot = true
     }
 
-    await this.handleCitation(this.apaCitation, "text/x-bibliography; style=apa");
-    await this.handleCitation(this.chicagoCitation, "text/x-bibliography; style=chicago-note-bibliography");
-    await this.handleCitation(this.ieeeCitation, "text/x-bibliography; style=ieee");
-    await this.handleCitation(this.bibtexCitation, "application/x-bibtex");
+    await this.handleCitation();
 
     this.isLoading = false;
   },
@@ -582,24 +560,16 @@ export default {
       window.open(url);
     },
 
-    async handleCitation(citation_list, format) {
+    async handleCitation() {
       for (let item of this.sampleData.identifier) {
         await axios
           .get(item, {
             headers: {
-              "Accept": `${format}`
+              "Accept": "text/x-bibliography; style=apa"
             }      
           })
           .then((res) => {
-            if (format === "text/x-bibliography; style=ieee") {
-              let result = res.data;
-              if (result.includes('[1]'))
-                result = result.slice(3);
-              result = `[${citation_list.length + 1}]` + result;
-              citation_list.push(result);
-            }
-            else
-              citation_list.push(res.data);
+            this.apaCitation.push(res.data);
           })
           .catch((err) => {
             console.log(err);
