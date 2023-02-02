@@ -1,6 +1,6 @@
 <template>
   <div class="page-outer">
-    <breadcrumb-trail :breadcrumb="breadcrumb" :title="sampleData.title" />
+    <breadcrumb-trail :breadcrumb="breadcrumb" :title="title" />
     <!-- loading -->
     <div
       v-if="isLoading"
@@ -13,7 +13,7 @@
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
         <el-card shadow="never" class="description-container">
-          <h1>{{sampleData.title}}</h1>
+          <h1>{{ title }}</h1>
           <div class="information-top">
             <section class="description">
               <p>
@@ -33,30 +33,36 @@
               <hr>
               <p>
                 <b>Description: </b>
-                {{ sampleData.subtitle }}
+                {{ sampleData.subtitle[0] }}
               </p> 
             </section>
             <el-card shadow="never" class="version">
               <p>
-                <b>Viewing version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
-              </p>
-              <p>DOI: N/A</p>
-              <p>Date: N/A</p>
-              <p>
-                <i class="el-icon-document-copy"></i> N/A files
+                <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
               <p>
-                <i class="el-icon-files"></i> N/A GB
+                <b>DOI: </b>
+                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent">
+                  {{ item }}
+                </div>
+              </p>
+              <!-- need more data to display these infomation -->
+              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
+              <p v-if="sampleData.files">
+                <i class="el-icon-document-copy"></i> {{ sampleData.files }} files
+              </p>
+              <p v-if="sampleData.size">
+                <i class="el-icon-files"></i> {{ sampleData.size }} GB
               </p>
               <p>
-                <b>Latest version:</b> {{ $route.params.id.split('-')[$route.params.id.split('-').length - 1] }}
+                <b>Latest version:</b> {{ sampleData.metadata_version[0] }}
               </p>
-              <p>Date: N/A</p>
-              <p>View other versions</p>
+              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
+              <p v-if="sampleData.other_version">View other version</p>
             </el-card>
           </div>
-          <hr>
-          <div class="information-bottom">
+          <hr v-if="sampleData.download_num">
+          <div class="information-bottom" v-if="sampleData.download_num">
             <p class="usage">
               <b>Usage Rights:</b> N/A
             </p>
@@ -82,10 +88,10 @@
             <hr>
             <h2>Metadata</h2>
             <p><b>Experimental Design:</b> N/A</p>
-            <p class="indent"><b>Protocol Links:</b> N/A</p>
-            <p class="indent"><b>Experimental Approach:</b> N/A</p>
+            <p class="indent --2"><b>Protocol Links:</b> N/A</p>
+            <p class="indent --2"><b>Experimental Approach:</b> N/A</p>
             <p><b>Subject Information:</b> N/A</p>
-            <p class="indent">
+            <p class="indent --2">
               <b>Anatomical structure:</b>
               <nobr
                 v-for="(organ, i) in sampleData.study_organ_system"
@@ -95,21 +101,21 @@
                 <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
               </nobr>
             </p>
-            <p class="indent"><b>Species:</b> N/A</p>
-            <p class="indent"><b>Sex:</b> N/A</p>
-            <p class="indent"><b>Age range:</b> N/A</p>
-            <div v-if="sampleData.number_of_samples > 0 || sampleData.number_of_subjects > 0">
-              <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples}} samples from {{sampleData.number_of_subjects}} subjects</p>
+            <p class="indent --2"><b>Species:</b> N/A</p>
+            <p class="indent --2"><b>Sex:</b> N/A</p>
+            <p class="indent --2"><b>Age range:</b> N/A</p>
+            <div v-if="sampleData.number_of_samples[0] > 0 || sampleData.number_of_subjects[0] > 0">
+              <p class="indent --2"><b>Number of samples:</b> {{sampleData.number_of_samples[0]}} samples from {{sampleData.number_of_subjects[0]}} subjects</p>
             </div>
             <div v-else>
-              <p class="indent"><b>Number of samples:</b> N/A</p>
+              <p class="indent --2"><b>Number of samples:</b> N/A</p>
             </div>
           </span>
           
           <!-- about content -->
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
             <h2>About this dataset</h2>
-            <p><b>Title:</b> {{sampleData.title}}</p>
+            <p><b>Title:</b> {{ title }}</p>
             <p><b>First Published:</b> N/A</p>
             <p><b>Last Published:</b> N/A</p>
             <hr>
@@ -129,6 +135,23 @@
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
             <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of SPARC datasets. To make it easy, the SPARC Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
+            <div v-if="sampleData.identifier.length > 0">
+              <h5 class="small-title">APA</h5>
+              <div class="citaiton-block">
+                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
+                <div class="citation-content indent">
+                  <div v-for="(item, i) in apaCitation" :key="i" v-html="item"></div>
+                </div>
+              </div>
+            </div>
+            <p>Click 
+              <a
+                href="https://citation.crosscite.org/"
+                target="_blank"
+              >
+              here
+              </a>
+            to generate citations in more formats.</p>
           </span>
           
           <!-- files content -->
@@ -140,11 +163,10 @@
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
             <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
               <!-- view Scaffold -->
-              <el-carousel-item v-show="has_scaffold" v-for="item in scaffold_manifest_data" :key="item.id">
+              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="item.id">
                 <el-card class="carousel">
                   <div class="gallery-img">
-                    <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
-                    <img v-else :src="imgPlaceholder" alt="image" />
+                    <img :src="generateImg('preview', item.filename, item.is_source_of)" alt="thumbnail" />
                   </div>
                   <p><b>Scaffold</b></p>
                   <el-popover
@@ -155,7 +177,7 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="viewMap('scaffold', item.id)" class="model-button">
+                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
                       View Scaffold
                     </el-button>
                   </div>
@@ -195,6 +217,29 @@
                   </div>
                 </el-card>
               </el-carousel-item>
+
+              <!-- view thumbnail -->
+              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="item.id">
+                <el-card class="carousel">
+                  <div class="gallery-img">
+                    <img :src="generateImg('preview', item.filename)" alt="thumbnail" />
+                  </div>
+                  <p><b>Thumbnail</b></p>
+                  <el-popover
+                    placement="top-start"
+                    trigger="hover"
+                    :content="generateFilename(item.filename)"
+                  >
+                    <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
+                  </el-popover>
+                  <div>
+                    <el-button @click="downloadImg(item.filename)" class="model-button">
+                      Download
+                    </el-button>
+                  </div>
+                </el-card>
+              </el-carousel-item>
+
             </el-carousel>
           </span>
           
@@ -212,7 +257,9 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <img v-if="scaffoldImgData" :src="scaffoldImgData" alt="image" />
+          <div v-if="scaffold_thumbnail_data.length > 0">
+            <img :src="generateImg('preview', scaffold_thumbnail_data[0].filename, scaffold_thumbnail_data[0].is_source_of)" alt="image" />
+          </div>
           <img v-else :src="imgPlaceholder" alt="image" />
           <div>
             <el-button class="left-top-btn" @click="changeTab('files')">
@@ -302,6 +349,7 @@
 
 <script>
 import backendQuery from '@/services/backendQuery';
+import axios from "axios";
 
 const datasetTabs = [
   {
@@ -360,57 +408,43 @@ export default {
           label: 'Data Browser'
         },
       ],
-      isLoading: false,
+      isLoading: true,
       datasetTabs,
       currentTab: '',
       sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       currentID: '',
-      scaffold_manifest_data: [],
       plot_manifest_data: [],
-      has_scaffold: false,
       has_plot: false,
       contributorName: "",
-      scaffoldImgData: ""
+      scaffold_thumbnail_data: [],
+      thumbnail_data: [],
+      thumbnailVisible: false,
+      title: "",
+      apaCitation: [],
     }
   },
   
   created: async function() {
-    this.isLoading = true;
     this.currentTab = this.$route.query.datasetTab;
 
     this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
     this.sampleData = this.sampleData[0];
+    this.title = this.sampleData.title[0];
 
-    let scaffold = {
-      additional_types: ["application/x.vnd.abi.scaffold.meta+json", "inode/vnd.abi.scaffold+file"]
+    let img = {
+      additional_types: ["application/x.vnd.abi.scaffold.view+json"]
     };
-    this.scaffold_manifest_data = await backendQuery.fetchQueryData('manifest', scaffold, `${this.$route.params.id}`);
-    if (this.scaffold_manifest_data.length === 0) {
-      this.has_scaffold = false
-    } else {
-      this.has_scaffold = true
-      let img = {
-        additional_types: ["image/x.vnd.abi.thumbnail+jpeg"]
-      };
-      let data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
-      if (data.length > 0) {
-        let url = `${process.env.query_api_url}/data/preview/`;
-        let img_list = [];
-        img_list = data.filter((item) => {
-          if (item.filename.includes("Layout1"))
-            return item;
-        })
-        if (img_list.length === 0) {
-          img_list.push(data[0]);
-        }
-        if (img_list[0].filename.includes(this.$route.params.id))
-          url += `${img_list[0].filename}`;
-        else
-          url += `${this.$route.params.id}/${img_list[0].filename}`;
-        this.scaffoldImgData = url;
-      }
-    }
+    this.scaffold_thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
+
+    let thumbnail = {
+      file_type: [".jpg", ".png"]
+    };
+    let picture_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
+    this.thumbnail_data = picture_data.filter(item => {
+      if (item.additional_types == null)
+        return item;
+    })
 
     let plot = {
       additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
@@ -421,6 +455,8 @@ export default {
     } else {
       this.has_plot = true
     }
+
+    await this.handleCitation();
 
     this.isLoading = false;
   },
@@ -507,6 +543,63 @@ export default {
         }
       })
     },
+
+    generateImg(method, filename, is_source_of) {
+      let url = `${process.env.query_api_url}/data/${method}`;
+      if (!filename.includes(this.$route.params.id)) {
+        url += `/${this.$route.params.id}`;
+      }
+      if (is_source_of)
+        url += `/${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
+      else
+        url += `/${filename}`;
+      return url;
+    },
+
+    async findModel(name) {
+      let model_data = await backendQuery.fetchQueryData('manifest', {}, name);
+      this.viewMap('scaffold', model_data[0].id);
+    },
+
+    downloadImg(filename) {
+      let url = this.generateImg('download', filename);
+      window.open(url);
+    },
+
+    async handleCitation() {
+      for (let item of this.sampleData.identifier) {
+        await axios
+          .get(item, {
+            headers: {
+              "Accept": "text/x-bibliography; style=apa"
+            }      
+          })
+          .then((res) => {
+            this.apaCitation.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    
+    copyText(text_list) {
+      let text = "";
+      text_list.map(item => {
+        text += item;
+        if (!item.includes("\n")) {
+          text += "\n";
+        }
+      })
+      let inputNode = document.createElement('input');
+      inputNode.value = text;
+      document.body.appendChild(inputNode);
+      inputNode.select();
+      document.execCommand('copy');
+      inputNode.className = 'oInput';
+      inputNode.style.display = 'none';
+      this.$message.success('copied');
+    }
   },
 }
 </script>
@@ -641,9 +734,6 @@ h2 {
 }
 .tab-content {
   line-height: 2rem;
-  .indent {
-    text-indent: 2rem;
-  }
 }
 li {
   a {
@@ -655,6 +745,29 @@ li {
   height: 9rem;
   img {
     width: 10rem;
+  }
+}
+.small-title {
+  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+.citaiton-block {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  background-color: $background;
+  .copy-btn {
+    background-color: transparent;
+    border: none;
+    color: black;
+    padding: 0;
+    margin: 0 1rem -0.5rem;
+    font-size: 1rem;
+    color: $app-primary-color;
+  }
+  .citation-content {
+    padding: 0 1.5rem 1.5rem;
+    font-size: 1rem;
   }
 }
 </style>
