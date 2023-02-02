@@ -40,23 +40,29 @@
               <p>
                 <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
-              <p>DOI: N/A</p>
-              <p>Date: N/A</p>
               <p>
-                <i class="el-icon-document-copy"></i> N/A files
+                <b>DOI: </b>
+                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent">
+                  {{ item }}
+                </div>
               </p>
-              <p>
-                <i class="el-icon-files"></i> N/A GB
+              <!-- need more data to display these infomation -->
+              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
+              <p v-if="sampleData.files">
+                <i class="el-icon-document-copy"></i> {{ sampleData.files }} files
+              </p>
+              <p v-if="sampleData.size">
+                <i class="el-icon-files"></i> {{ sampleData.size }} GB
               </p>
               <p>
                 <b>Latest version:</b> {{ sampleData.metadata_version[0] }}
               </p>
-              <p>Date: N/A</p>
-              <p>View other versions</p>
+              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
+              <p v-if="sampleData.other_version">View other version</p>
             </el-card>
           </div>
-          <hr>
-          <div class="information-bottom">
+          <hr v-if="sampleData.download_num">
+          <div class="information-bottom" v-if="sampleData.download_num">
             <p class="usage">
               <b>Usage Rights:</b> N/A
             </p>
@@ -82,10 +88,10 @@
             <hr>
             <h2>Metadata</h2>
             <p><b>Experimental Design:</b> N/A</p>
-            <p class="indent"><b>Protocol Links:</b> N/A</p>
-            <p class="indent"><b>Experimental Approach:</b> N/A</p>
+            <p class="indent --2"><b>Protocol Links:</b> N/A</p>
+            <p class="indent --2"><b>Experimental Approach:</b> N/A</p>
             <p><b>Subject Information:</b> N/A</p>
-            <p class="indent">
+            <p class="indent --2">
               <b>Anatomical structure:</b>
               <nobr
                 v-for="(organ, i) in sampleData.study_organ_system"
@@ -95,14 +101,14 @@
                 <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
               </nobr>
             </p>
-            <p class="indent"><b>Species:</b> N/A</p>
-            <p class="indent"><b>Sex:</b> N/A</p>
-            <p class="indent"><b>Age range:</b> N/A</p>
+            <p class="indent --2"><b>Species:</b> N/A</p>
+            <p class="indent --2"><b>Sex:</b> N/A</p>
+            <p class="indent --2"><b>Age range:</b> N/A</p>
             <div v-if="sampleData.number_of_samples[0] > 0 || sampleData.number_of_subjects[0] > 0">
-              <p class="indent"><b>Number of samples:</b> {{sampleData.number_of_samples[0]}} samples from {{sampleData.number_of_subjects[0]}} subjects</p>
+              <p class="indent --2"><b>Number of samples:</b> {{sampleData.number_of_samples[0]}} samples from {{sampleData.number_of_subjects[0]}} subjects</p>
             </div>
             <div v-else>
-              <p class="indent"><b>Number of samples:</b> N/A</p>
+              <p class="indent --2"><b>Number of samples:</b> N/A</p>
             </div>
           </span>
           
@@ -133,8 +139,8 @@
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">
                 <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
-                <div class="citation-content">
-                  <div v-for="item in apaCitation" v-html="item"></div>
+                <div class="citation-content indent">
+                  <div v-for="(item, i) in apaCitation" :key="i" v-html="item"></div>
                 </div>
               </div>
             </div>
@@ -728,9 +734,6 @@ h2 {
 }
 .tab-content {
   line-height: 2rem;
-  .indent {
-    text-indent: 2rem;
-  }
 }
 li {
   a {
@@ -764,7 +767,6 @@ li {
   }
   .citation-content {
     padding: 0 1.5rem 1.5rem;
-    text-indent: 1rem;
     font-size: 1rem;
   }
 }
