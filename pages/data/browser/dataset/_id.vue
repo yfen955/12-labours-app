@@ -40,10 +40,10 @@
               <p>
                 <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
-              <p>
+              <p v-if="sampleData.identifier.length > 0">
                 <b>DOI: </b>
                 <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent">
-                  {{ item }}
+                  <a :href="item" target="_blank">{{ item }}</a>
                 </div>
               </p>
               <!-- need more data to display these infomation -->
@@ -189,7 +189,6 @@
                 <el-card class="carousel">
                   <img :src="imgPlaceholder" alt="image" class="model-image">
                   <p><b>Flatmap</b></p>
-                  <p>Mouse</p>
                   <div>
                     <el-button @click="viewMap('flatmap', 1)" class="model-button">
                       View Flatmap
