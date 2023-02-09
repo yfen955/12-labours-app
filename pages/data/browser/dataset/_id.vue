@@ -134,7 +134,7 @@
           <!-- cite content -->
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
-            <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of SPARC datasets. To make it easy, the SPARC Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
+            <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of 12-labours datasets. To make it easy, the 12-labours Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
             <div v-if="sampleData.identifier.length > 0">
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">

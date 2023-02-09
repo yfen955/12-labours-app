@@ -11,7 +11,9 @@
           <div class="scaffold-container">
               <ScaffoldVuer 
                 v-if="!isLoading" 
-                :url='url'/>
+                :url='url'
+                :view-u-r-l="url"
+              />
           </div>
         </client-only>
       </div>
