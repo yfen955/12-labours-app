@@ -177,7 +177,7 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
+                    <el-button @click="viewMap('scaffold', item.id)" class="model-button">
                       View Scaffold
                     </el-button>
                   </div>
@@ -553,11 +553,6 @@ export default {
       else
         url += `/${filename}`;
       return url;
-    },
-
-    async findModel(name) {
-      let model_data = await backendQuery.fetchQueryData('manifest', {}, name);
-      this.viewMap('scaffold', model_data[0].id);
     },
 
     downloadImg(filename) {
