@@ -47,7 +47,7 @@ export default {
     this.isLoading = true;
     let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
     let dataset_id = data.experiments[0].submitter_id;
-    this.url = `${process.env.query_api_url}/data/download/${dataset_id}/${data.is_derived_from}`;
+    this.url = `${process.env.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0,data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
     this.viewUrl = `${process.env.query_api_url}/data/download/${dataset_id}/${data.filename}`;
     this.isLoading = false;
   },
