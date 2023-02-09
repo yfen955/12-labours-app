@@ -183,7 +183,7 @@ export default {
     async handleConfirm() {
       let userInfo = {
         userId: this.user.user_id,
-        title:this.user.title,
+        title:this.contactInfoValues['title'],
         firstName:this.contactInfoValues['firstName'],
         lastName:this.contactInfoValues['lastName'],
         email:this.user.email,
