@@ -141,17 +141,26 @@ export default {
     async changePassword() {
       try {
         this.verifyLoggedIn();
-        let userData = encryption({
+        let encrypted_oldPwd = encryption({
           data: {
-            userId:this.user.user_id,
-            newPassword:this.newPassword.value.trim(),
             oldPassword:this.oldPassword.value.trim(),
-            reset:false
+          },
+          key: process.env.encryption_key,
+          param: ['oldPassword']
+        })
+        let encrypted_newPwd = encryption({
+          data: {
+            newPassword:this.newPassword.value.trim(),
           },
           key: process.env.encryption_key,
           param: ['newPassword']
         })
-        let response=await this.$axios.post('/user/local/password', userData)
+        let response=await this.$axios.post('/user/local/password', {
+          userId:this.user.user_id,
+          oldPassword:encrypted_oldPwd.oldPassword,
+          newPassword:encrypted_newPwd.newPassword,
+          reset:false
+        })
         if(response.status===200){
           this.$toast.success('Your password is changed successfully!',{duration:3000, position: 'bottom-right'})
           this.resetForm();
