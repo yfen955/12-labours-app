@@ -19,7 +19,7 @@ function validateElement(element,elementToMatch,elementToCompare)
       if(strMessage) return{strMessage,matchFlag}
     }
 
-    if(element.minLength && !elementToMatch){
+    if(element.minLength){
       strMessage=element.value.length>=element.minLength ? null: "Minimum length for " + element.display + " is " + element.minLength
       if(strMessage) return{strMessage,matchFlag}
     }
