@@ -127,7 +127,7 @@ export default {
             await this.$auth.loginWith('local', {
               data: {
                 email: userEmail,
-                password: this.password.value
+                password: userData.newPassword
               }
             }).then((res) => { 
               this.$auth.setUser(res.data.user);
