@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { encryption } from '../../../plugins/encrypt-pwd.js';
+
 export default {
   data: () => {
     return {
@@ -93,15 +95,20 @@ export default {
 
     async resetPsw() {
       this.submitted = true;
-      let userEmail;
-      const path = `/user/local/password`;
-      await this.$axios
-        .post(path, {
+      let userData = encryption({
+        data: {
           userId: this.$route.params.id,
           newPassword: this.password.value,
           oldPassword: 'none',  // this API needs old password, but in this case reset is true, so its value does not matter
           reset: true,
-        }, {headers: {
+        },
+        key: process.env.encryption_key,
+        param: ['newPassword']
+      })
+      let userEmail;
+      const path = `/user/local/password`;
+      await this.$axios
+        .post(path, userData, {headers: {
           'Content-Type': 'application/json',
           'access_token': `Bearer ${this.$route.params.token}`
         }})
