@@ -177,7 +177,7 @@
                     <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
                   </el-popover>
                   <div>
-                    <el-button @click="findModel(item.is_derived_from)" class="model-button">
+                    <el-button @click="findModel(item.is_derived_from)" class="model-button scaffold">
                       View Scaffold
                     </el-button>
                   </div>
@@ -282,7 +282,7 @@
             <hr>
             <div class="card-content">
               <span class="card-title">TYPE:</span><br/>
-              <el-button @click="goToDataset" class="secondary">
+              <el-button @click="goToDataset" class="secondary" id="datasetBrowser">
                 <span class="display-ellipsis --1">Dataset</span>
               </el-button>
             </div>
