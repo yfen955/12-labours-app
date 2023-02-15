@@ -15,9 +15,9 @@
       <div class="default-inner">
         <div v-html="content.values.content.html"/>
         <div class="nav-about">
-          <nuxt-link to="/about/">
+          <!-- <nuxt-link to="/about/">
             FIND OUT MORE ABOUT THE 12 LABOURS PROJECT
-          </nuxt-link>
+          </nuxt-link> -->
         </div>
       </div>
     </div>

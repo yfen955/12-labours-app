@@ -92,11 +92,11 @@ export default {
             displayTitle: "Resources",
             href: "/resources"
           },
-          {
-            title: "about",
-            displayTitle: "About",
-            href: `/about`
-          },
+          // {
+          //   title: "about",
+          //   displayTitle: "About",
+          //   href: `/about`
+          // },
           {
             title: "news-and-events",
             displayTitle: "News & Events",
