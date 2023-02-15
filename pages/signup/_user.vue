@@ -153,6 +153,7 @@
 </template>
 
 <script>
+import { encryption } from '../../plugins/encrypt-pwd.js';
 
 export default { 
 
@@ -266,13 +267,20 @@ export default {
     },
 
     getFormData:function(){
+      let encrypted_pwd = encryption({
+        data: {
+          password:this.password.value,
+        },
+        key: process.env.encryption_key,
+        param: ['password']
+      })
       return{
         userTypeName:this.userType,
         title:this.contactInfoValues.title,
         firstName:this.contactInfoValues.firstName,
         lastName:this.contactInfoValues.lastName,
         email:this.contactInfoValues.email,
-        password:this.password.value,
+        password:encrypted_pwd.password,
         profession:this.profession.value,
         institutionId:this.institution.value,
         hpi:this.hpi.value,
