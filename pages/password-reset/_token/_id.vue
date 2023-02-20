@@ -102,7 +102,6 @@ export default {
           oldPassword: 'none',  // this API needs old password, but in this case reset is true, so its value does not matter
           reset: true,
         },
-        key: process.env.encryption_key,
         param: ['newPassword']
       })
       let userEmail;

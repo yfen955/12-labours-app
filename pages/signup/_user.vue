@@ -271,7 +271,6 @@ export default {
         data: {
           password:this.password.value,
         },
-        key: process.env.encryption_key,
         param: ['password']
       })
       return{

@@ -145,14 +145,12 @@ export default {
           data: {
             oldPassword:this.oldPassword.value.trim(),
           },
-          key: process.env.encryption_key,
           param: ['oldPassword']
         })
         let encrypted_newPwd = encryption({
           data: {
             newPassword:this.newPassword.value.trim(),
           },
-          key: process.env.encryption_key,
           param: ['newPassword']
         })
         let response=await this.$axios.post('/user/local/password', {

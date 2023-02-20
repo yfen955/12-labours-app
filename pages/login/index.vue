@@ -97,7 +97,6 @@ export default {
           email: this.email.value,
           password: this.password.value
         },
-        key: process.env.encryption_key,
         param: ['password']
       })
       try {
