@@ -1,7 +1,7 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
-    <!-- About 12 Labours -->
+    <!-- About 12 Labours 
     <div class="about container-default shaded flex-box">
       <div class="tohu-image flex-box"">
         <img src="~/static/img/tohu.png">
@@ -13,6 +13,7 @@
         <div v-html="about.content.html"/>
       </div>
     </div>
+    -->
     <!-- Project Aims & Information -->
     <div class="project container-default flex-box">
       <div class="project__item default-inner">
