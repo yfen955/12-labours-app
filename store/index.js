@@ -60,6 +60,7 @@ export const actions = {
       .catch((err) => {
         console.log(err);
       });
+    return [program, project];
   },
 
   setFacets({commit}, facetIds) {
