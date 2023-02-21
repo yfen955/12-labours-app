@@ -1,7 +1,7 @@
 describe('information in the duke dataset detail page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
-    cy.wait(20000);
+    cy.wait(10000);
   })
 
   it('test left column button', () => {
@@ -28,19 +28,17 @@ describe('information in the duke dataset detail page', () =>{
 describe('gallery tab', () =>{
   it('test carousel number & thumbnail', () => {
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=gallery');
-    cy.wait(20000);
+    cy.wait(10000);
     cy.get('.el-card.carousel').should('have.length', 4);
     cy.get('.gallery-img').find('img').should('have.attr', 'alt', 'thumbnail');
   })
 
   it('open a scaffold in gallery', () => {
     cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
-    cy.wait(15000);
     cy.window().then((win) => {
       cy.stub(win, 'open').as("popup");
     })
     cy.get('.model-button.scaffold').click();
-    cy.wait(5000);
     cy.get('@popup').should("be.called");
   })
 })
