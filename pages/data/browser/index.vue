@@ -15,7 +15,6 @@
       <DataContainer
         v-if="!isLoadingSearch"
         :category="category"
-        :payload="payload"
       />
     </div>
   </div>
@@ -60,10 +59,6 @@ export default {
       isLoadingSearch: false,
       category: '',
       projects_list: [],
-      payload: {
-        program: "",
-        project: "",
-      },
     }
   },
 
@@ -71,19 +66,6 @@ export default {
     this.isLoadingSearch = true;
     // update the category to the current category in the url
     this.category = this.$route.query.type;
-    
-    // fetch the program & project
-    let program = this.$store.getters['getProgram'];
-    let project = this.$store.getters['getProject'];
-    if (!program || !project) {
-      await this.$store.dispatch('fetchPayload');
-      program = this.$store.getters['getProgram'];
-      project = this.$store.getters['getProject'];
-    };
-    this.payload = {
-      program: program,
-      project: project,
-    };
     this.isLoadingSearch = false;
   },
 
