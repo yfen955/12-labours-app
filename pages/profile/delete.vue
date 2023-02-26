@@ -73,7 +73,14 @@ export default {
       catch (err) {
         this.deleteError=err.response? err.response.data.message : err.message
       }
-    }
+    },
+
+    verifyLoggedIn(){
+      if(!this.$auth.loggedIn || !this.$auth.user || !this.$auth.strategy.token.status().valid()){
+        this.$toast.error('Your session has expired. Please login again!',{duration:3000, position: 'bottom-right'})
+        this.$router.replace('/login')
+      }
+    },
   },
 }
 </script>

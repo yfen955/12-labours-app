@@ -29,7 +29,7 @@
             </div>
           </div>
           <ul>
-            <li v-for="link in links" :key="link.href" style="z-index: 100;">
+            <li v-for="link in links" :key="link.href" style="z-index: 100;" @click="openMobileNav">
               <component
                 :is="linkComponent"
                 :to="link.href"

@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { encryption } from '../../plugins/encrypt-pwd.js';
 
 export default { 
   name: 'LoginPage',
@@ -91,12 +92,16 @@ export default {
       }
     },
     async localSignIn() {
+      let userData = encryption({
+        data: {
+          email: this.email.value,
+          password: this.password.value
+        },
+        param: ['password']
+      })
       try {
         let response =  await this.$auth.loginWith('local', {
-          data: {
-            email: this.email.value,
-            password: this.password.value
-          }
+          data: userData
         }).then((response) => { 
           this.$auth.setUser(response.data.user)     
           this.$router.replace('/?login=true')

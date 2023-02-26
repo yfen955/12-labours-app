@@ -59,6 +59,7 @@
 
 <script>
 import NavBar from "../../components/Profile/NavBar.vue";
+import { encryption } from '../../plugins/encrypt-pwd.js';
 
 export default {
   components: { NavBar },
@@ -140,10 +141,22 @@ export default {
     async changePassword() {
       try {
         this.verifyLoggedIn();
+        let encrypted_oldPwd = encryption({
+          data: {
+            oldPassword:this.oldPassword.value.trim(),
+          },
+          param: ['oldPassword']
+        })
+        let encrypted_newPwd = encryption({
+          data: {
+            newPassword:this.newPassword.value.trim(),
+          },
+          param: ['newPassword']
+        })
         let response=await this.$axios.post('/user/local/password', {
           userId:this.user.user_id,
-          newPassword:this.newPassword.value.trim(),
-          oldPassword:this.oldPassword.value.trim(),
+          oldPassword:encrypted_oldPwd.oldPassword,
+          newPassword:encrypted_newPwd.newPassword,
           reset:false
         })
         if(response.status===200){
