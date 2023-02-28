@@ -36,13 +36,13 @@
                 {{ sampleData.subtitle[0] }}
               </p> 
             </section>
-            <el-card shadow="never" class="version">
+            <el-card shadow="never">
               <p>
                 <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
               <p v-if="sampleData.identifier.length > 0">
                 <b>DOI: </b>
-                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent">
+                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent display-ellipsis --1">
                   <a :href="item" target="_blank">{{ item }}</a>
                 </div>
               </p>
@@ -658,9 +658,6 @@ export default {
         }
         .description {
           margin: 1rem 1rem 1rem 0;
-          width: fit-content;
-        }
-        .version {
           width: fit-content;
         }
       }
