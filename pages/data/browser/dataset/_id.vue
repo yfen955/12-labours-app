@@ -36,13 +36,13 @@
                 {{ sampleData.subtitle[0] }}
               </p> 
             </section>
-            <el-card shadow="never" class="version">
+            <el-card shadow="never">
               <p>
                 <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
               </p>
               <p v-if="sampleData.identifier.length > 0">
                 <b>DOI: </b>
-                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent">
+                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent display-ellipsis --1">
                   <a :href="item" target="_blank">{{ item }}</a>
                 </div>
               </p>
@@ -427,19 +427,19 @@ export default {
   created: async function() {
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
+    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]}, '', 'dataset');
     this.sampleData = this.sampleData[0];
     this.title = this.sampleData.title[0];
 
     let img = {
       additional_types: ["application/x.vnd.abi.scaffold.view+json"]
     };
-    this.scaffold_thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
+    this.scaffold_thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`, 'scaffold');
 
     let thumbnail = {
       file_type: [".jpg", ".png"]
     };
-    let picture_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
+    let picture_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`, 'thumbnail');
     this.thumbnail_data = picture_data.filter(item => {
       if (item.additional_types == null)
         return item;
@@ -448,7 +448,7 @@ export default {
     let plot = {
       additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
     };
-    this.plot_manifest_data = await backendQuery.fetchQueryData('manifest', plot, `${this.$route.params.id}`);
+    this.plot_manifest_data = await backendQuery.fetchQueryData('manifest', plot, `${this.$route.params.id}`, 'plot');
     if (this.plot_manifest_data.length === 0) {
       this.has_plot = false
     } else {
@@ -664,9 +664,6 @@ export default {
         }
         .description {
           margin: 1rem 1rem 1rem 0;
-          width: fit-content;
-        }
-        .version {
           width: fit-content;
         }
       }

@@ -1,0 +1,65 @@
+[
+    {
+        "contributor_affiliation": [
+            "Department of Radiology, Duke University School of Medicine, Durham, NC 22705 USA"
+        ],
+        "contributor_name": [
+            "Ashirbani, Saha"
+        ],
+        "contributor_orcid": [],
+        "contributor_role": [
+            "PrincipalInvestigator"
+        ],
+        "dataset_type": [
+            "experimental"
+        ],
+        "id": "793ce0d2-d0d4-411c-980b-192b259be917",
+        "identifier": [
+            "https://doi.org/10.7937/TCIA.e3sv-re93",
+            "https://doi.org/10.1038/s41416-018-0185-8",
+            "https://doi.org/10.1007/s10278-013-9622-7"
+        ],
+        "identifier_description": [
+            "catation",
+            "catation",
+            "catation"
+        ],
+        "identifier_type": [
+            "DOI",
+            "DOI",
+            "DOI"
+        ],
+        "keywords": [
+            "breast",
+            "human"
+        ],
+        "metadata_version": [
+            "2.0.0"
+        ],
+        "number_of_samples": [
+            "1"
+        ],
+        "number_of_subjects": [
+            "1"
+        ],
+        "relation_type": [
+            "Cites",
+            "Cites",
+            "Cites"
+        ],
+        "study_approach": [],
+        "study_data_collection": [],
+        "study_organ_system": [
+            "breast"
+        ],
+        "study_primary_conclusion": [],
+        "study_purpose": [],
+        "study_technique": [],
+        "submitter_id": "1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538-dataset_description",
+        "subtitle": [],
+        "title": [
+            "Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)"
+        ],
+        "type": "dataset_description"
+    }
+]

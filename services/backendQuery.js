@@ -24,14 +24,14 @@ async function fetchPaginationData(node, filter, search, limit, page, relation) 
   return new Array(fetched_data, totalNum);
 }
 
-async function fetchQueryData(node, filter, search = '') {
+async function fetchQueryData(node, filter, search = '', type = '') {
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
     search: search
   };
-  const path = `${process.env.query_api_url}/graphql/query`;
+  const path = `${process.env.query_api_url}/graphql/query/?type=${type}`;
   await axios
     .post(path, payload)
     .then((res) => {

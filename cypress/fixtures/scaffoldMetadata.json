@@ -1,0 +1,17 @@
+[
+    {
+        "additional_metadata": null,
+        "additional_types": "application/x.vnd.abi.scaffold.view+json",
+        "description": "NA",
+        "file_type": ".json",
+        "filename": "derivative/pig_heart_Layout1_view.json",
+        "id": "7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f",
+        "is_derived_from": "pig_heart_metadata.json",
+        "is_described_by": null,
+        "is_source_of": "pig_heart_Layout1_thumbnail.jpeg",
+        "submitter_id": "dataset-102-version-4-manifest-derivative-pig-heart-Layout1-view.json",
+        "supplemental_json_metadata": null,
+        "timestamp": "NA",
+        "type": "manifest"
+    }
+]
