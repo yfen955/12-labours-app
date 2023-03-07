@@ -1,0 +1,84 @@
+{
+    "data": [
+        {
+            "cases": [],
+            "dataset_descriptions": [
+                {
+                    "id": "ab5daab3-8e5e-4d04-a63b-b7893cd57c84",
+                    "keywords": [
+                        "brainstem",
+                        "sheep"
+                    ],
+                    "number_of_samples": [
+                        "0"
+                    ],
+                    "number_of_subjects": [
+                        "0"
+                    ],
+                    "study_organ_system": [],
+                    "subtitle": [
+                        "Annotated sheep brainstem scaffold available for registration of segmented neural anatomical-functional mapping of neural circuits."
+                    ],
+                    "title": [
+                        "Generic sheep brainstem scaffold"
+                    ]
+                }
+            ],
+            "id": "f313b3dd-b111-4d4b-8b57-e990798a5d37",
+            "manifests": [
+                {
+                    "filename": "derivative/sheep_brainstem_Layout1_view.json",
+                    "id": "8b407bfe-e9d6-4a45-a81c-386184beecdd",
+                    "is_derived_from": "sheep_brainstem_metadata.json",
+                    "is_source_of": "sheep_brainstem_Layout1_thumbnail.jpeg"
+                }
+            ],
+            "submitter_id": "dataset-219-version-2"
+        },
+        {
+            "cases": [],
+            "dataset_descriptions": [
+                {
+                    "id": "9d0d0358-7584-4787-800e-67a4ed152c07",
+                    "keywords": [
+                        "whole-body",
+                        "abdomen",
+                        "thorax",
+                        "head",
+                        "spinal cord",
+                        "embed",
+                        "organ",
+                        "lungs",
+                        "heart"
+                    ],
+                    "number_of_samples": [
+                        "0"
+                    ],
+                    "number_of_subjects": [
+                        "0"
+                    ],
+                    "study_organ_system": [],
+                    "subtitle": [
+                        "Annotated pig whole-body scaffold (abdomen, diaphragm, thorax, neck, head, skin, spinal cord) with organs including heart, lungs"
+                    ],
+                    "title": [
+                        "Pig whole-body with embedded organs using automatic workflow for inserting the organs"
+                    ]
+                }
+            ],
+            "id": "d379e97a-fad0-419d-b67a-4d98dfab36aa",
+            "manifests": [
+                {
+                    "filename": "derivative/pig_body_view.json",
+                    "id": "a739ea53-de3c-4519-bc63-95d41fcdb01d",
+                    "is_derived_from": "pig_body_metadata.json",
+                    "is_source_of": "Scaffold/thumbnail.png"
+                }
+            ],
+            "submitter_id": "dataset-227-version-2"
+        }
+    ],
+    "limit": 10,
+    "page": 2,
+    "total": 12
+}

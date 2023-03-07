@@ -1,0 +1,90 @@
+{
+    "size": 5,
+    "titles": [
+        "AGE CATEGORY",
+        "ANATOMICAL STRUCTURE",
+        "SEX",
+        "MIME TYPE",
+        "SPECIES"
+    ],
+    "nodes": [
+        "case_filter",
+        "dataset_description_filter",
+        "case_filter",
+        "manifest_filter",
+        "case_filter"
+    ],
+    "fields": [
+        "age_category",
+        "keywords",
+        "sex",
+        "additional_types",
+        "species"
+    ],
+    "elements": [
+        {
+            "Adolescent": "Adolescent",
+            "Adult": "prime adult stage",
+            "Juvenile": "Juvenile"
+        },
+        {
+            "Body Proper": "body proper",
+            "Brainstem": "brainstem",
+            "Breast": "breast",
+            "Cardiac Nerve Plexus": "cardiac nerve plexus",
+            "Colon": "colon",
+            "Heart": "heart",
+            "Lungs": "lungs",
+            "Spinal Cord": "spinal cord",
+            "Stomach": "stomach",
+            "Urinary Bladder": "urinary bladder",
+            "Vagus Nerve": "vagus nerve"
+        },
+        {
+            "Female": "Female",
+            "Male": "Male"
+        },
+        {
+            "Plot": [
+                "text/vnd.abi.plot+tab-separated-values",
+                "text/vnd.abi.plot+csv"
+            ],
+            "Scaffold": [
+                "application/x.vnd.abi.scaffold.meta+json",
+                "inode/vnd.abi.scaffold+file"
+            ]
+        },
+        {
+            "Cat": "Felis catus",
+            "Human": "Homo sapiens",
+            "Mouse": "Mus musculus",
+            "Pig": "Sus scrofa",
+            "Rat": "Rattus norvegicus"
+        }
+    ],
+    "ids": [
+        "Adolescent",
+        "Adult",
+        "Juvenile",
+        "Body Proper",
+        "Brainstem",
+        "Breast",
+        "Cardiac Nerve Plexus",
+        "Colon",
+        "Heart",
+        "Lungs",
+        "Spinal Cord",
+        "Stomach",
+        "Urinary Bladder",
+        "Vagus Nerve",
+        "Female",
+        "Male",
+        "Plot",
+        "Scaffold",
+        "Cat",
+        "Human",
+        "Mouse",
+        "Pig",
+        "Rat"
+    ]
+}

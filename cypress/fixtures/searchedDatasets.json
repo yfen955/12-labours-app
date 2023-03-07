@@ -1,0 +1,92 @@
+{
+    "data": [
+        {
+            "cases": [],
+            "dataset_descriptions": [
+                {
+                    "id": "04b38e0c-1570-45f8-b5b7-81ceaccda93e",
+                    "keywords": [
+                        "whole-body",
+                        "abdomen",
+                        "thorax",
+                        "head",
+                        "spinal cord",
+                        "human"
+                    ],
+                    "number_of_samples": [
+                        "0"
+                    ],
+                    "number_of_subjects": [
+                        "0"
+                    ],
+                    "study_organ_system": [],
+                    "subtitle": [
+                        "Annotated human whole-body scaffold (abdomen, diaphragm, thorax, neck, head, skin, spinal cord) with embedded vagus nerves"
+                    ],
+                    "title": [
+                        "Human whole-body scaffold"
+                    ]
+                }
+            ],
+            "id": "1d6ac684-deeb-4586-967c-532af42f65f7",
+            "manifests": [
+                {
+                    "filename": "derivative/human_morph_view.json",
+                    "id": "fd80b88a-faf5-4fd1-acbe-7b5d28acf410",
+                    "is_derived_from": "human_morph_metadata.json",
+                    "is_source_of": "thumbnail1.png"
+                }
+            ],
+            "submitter_id": "dataset-134-version-2"
+        },
+        {
+            "cases": [],
+            "dataset_descriptions": [
+                {
+                    "id": "aa22bc98-9301-4521-bba6-7ef75b9048ee",
+                    "keywords": [
+                        "whole-body",
+                        "abdomen",
+                        "thorax",
+                        "head",
+                        "spinal cord",
+                        "mouse",
+                        "embed",
+                        "organ",
+                        "lungs",
+                        "stomach",
+                        "bladder",
+                        "heart",
+                        "colon"
+                    ],
+                    "number_of_samples": [
+                        "0"
+                    ],
+                    "number_of_subjects": [
+                        "0"
+                    ],
+                    "study_organ_system": [],
+                    "subtitle": [
+                        "Annotated human whole-body scaffold (abdomen, diaphragm, thorax, neck, head, skin, spinal cord) with organs including heart, lungs, colon, bladder, stomach"
+                    ],
+                    "title": [
+                        "Human whole-body with embedded organs using automatic workflow for inserting the organs"
+                    ]
+                }
+            ],
+            "id": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
+            "manifests": [
+                {
+                    "filename": "derivative/human_body_view.json",
+                    "id": "c442772a-e2cd-42fc-ab4a-06961842155a",
+                    "is_derived_from": "human_body_metadata.json",
+                    "is_source_of": "thumbnail.png"
+                }
+            ],
+            "submitter_id": "dataset-182-version-2"
+        }
+    ],
+    "limit": 10,
+    "page": 1,
+    "total": 2
+}
