@@ -11,7 +11,7 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/img/12-labours-logo-black.png" }],
 
   },
   env: {
@@ -30,6 +30,7 @@ export default {
     query_api_url: process.env.QUERY_API_URL,
     base_url: process.env.BASEURL,
     flatmap_api: process.env.FLATMAP_API,
+    encryption_key: process.env.SECRET_KEY,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

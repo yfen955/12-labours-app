@@ -84,7 +84,7 @@ import PaginationHeading from "./PaginationHeading.vue"
 export default {
   name: "DisplayData",
   components: { PaginationHeading },
-  props: [ "isLoadingSearch", "dataDetails", "payload", "totalCount" ],
+  props: [ "isLoadingSearch", "dataDetails", "totalCount" ],
   data: () => {
     return {
       dataShowed: [],

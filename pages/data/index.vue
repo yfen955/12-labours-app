@@ -48,7 +48,7 @@ export default {
         btnLink:{caption:'Launch Interactive Viewer', to: {
             name: 'data-maps-scaffold-id',
             params: {
-              id: 'f865f693-c3b0-4c84-91ba-8db2ad58f6ec',   // use a default id for the scaffold
+              id: '7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f',   // use a default id for the scaffold
             }
           }
         }

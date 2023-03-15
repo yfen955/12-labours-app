@@ -11,7 +11,9 @@
           <div class="scaffold-container">
               <ScaffoldVuer 
                 v-if="!isLoading" 
-                :url='url'/>
+                :url='url'
+                :view-u-r-l="viewUrl"
+              />
           </div>
         </client-only>
       </div>
@@ -37,15 +39,16 @@ export default {
     return {
       isLoading: true,
       url: '',
+      viewUrl: '',
     }
   },
 
   async fetch() {
     this.isLoading = true;
     let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
-    let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.url = `${process.env.query_api_url}/data/download/${dataset_id}/${filename}`;
+    this.url = `${process.env.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0,data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
+    this.viewUrl = `${process.env.query_api_url}/data/download/${dataset_id}/${data.filename}`;
     this.isLoading = false;
   },
 }
