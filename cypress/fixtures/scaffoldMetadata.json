@@ -1,17 +1,24 @@
 [
     {
-        "additional_metadata": null,
-        "additional_types": "application/x.vnd.abi.scaffold.view+json",
+        "id": "70ba78fb-b0b9-4054-8f58-43f11ede529a",
+        "experiments": [
+            {
+                "node_id": "22c4459b-5f4f-4e62-abd2-2aa205fe838b",
+                "submitter_id": "dataset-217-version-2"
+            }
+        ],
+        "type": "manifest",
+        "project_id": "demo1-12L",
+        "submitter_id": "dataset-217-version-2-manifest-derivative-pig-brainstem-metadata.json",
         "description": "NA",
-        "file_type": ".json",
-        "filename": "derivative/pig_heart_Layout1_view.json",
-        "id": "7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f",
-        "is_derived_from": "pig_heart_metadata.json",
-        "is_described_by": null,
-        "is_source_of": "pig_heart_Layout1_thumbnail.jpeg",
-        "submitter_id": "dataset-102-version-4-manifest-derivative-pig-heart-Layout1-view.json",
-        "supplemental_json_metadata": null,
+        "file_type": "json",
+        "filename": "derivative/pig_brainstem_metadata.json",
         "timestamp": "NA",
-        "type": "manifest"
+        "additional_metadata": null,
+        "additional_types": "application/x.vnd.abi.scaffold.meta+json",
+        "is_derived_from": null,
+        "is_described_by": null,
+        "is_source_of": "pig_brainstem_Layout1_view.json",
+        "supplemental_json_metadata": null
     }
 ]
