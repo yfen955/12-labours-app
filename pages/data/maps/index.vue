@@ -73,6 +73,10 @@ export default {
   .el-loading-spinner .el-loading-text, .el-loading-spinner i {
     color: $app-primary-color !important;
   }
+  .icon-group {
+    position: relative !important;
+    right: -44% !important;
+  }
   .text.title {
     color: $app-primary-color !important;
   }
