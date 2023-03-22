@@ -14,7 +14,7 @@ async function fetchPaginationData(node, filter, search, limit, page, relation) 
   await axios
     .post(path, payload)
     .then((res) => {
-      fetched_data = res.data.data;
+      fetched_data = res.data.items;
       totalNum = res.data.total;
     })
     .catch((err) => {

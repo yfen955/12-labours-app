@@ -45,11 +45,10 @@ export default {
         title:'Interactive Viewer',
         imgFile:'patient-in-frame.png',
         detail:'  View the interactive 3D scaffold',
-        btnLink:{caption:'Launch Interactive Viewer', to: {
-            name: 'data-maps-scaffold-id',
-            params: {
-              id: '7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f',   // use a default id for the scaffold
-            }
+        btnLink:{
+          caption:'Launch Interactive Viewer',
+          to: {
+            path: '/data/maps'
           }
         }
       },

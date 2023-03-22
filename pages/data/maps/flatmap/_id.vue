@@ -81,10 +81,18 @@ export default {
   color: $app-primary-color !important;
 }
 .flatmap-container {
-  // height: 70vh;
-  // overflow: hidden;
   @import '~@abi-software/flatmapvuer/dist/flatmapvuer';
 
+  .pathways-display-text {
+    font-size: inherit !important;
+  }
+  .checkbox-group {
+    width: auto !important;
+    padding: 0 0.5rem 0.5rem;
+  }
+  .background-colour.open {
+    left: 380px !important;
+  }
   span {
     color: $app-primary-color !important;
   }
@@ -92,7 +100,7 @@ export default {
     color: $app-primary-color !important;
   }
   .el-checkbox__input.is-checked+span.el-checkbox__label {
-    font-size: 0.5rem;
+    font-size: 1rem;
   }
 
   .flatmap-container {
@@ -171,7 +179,7 @@ export default {
     }
 
     .pathway-location.close {
-      left: -300px;
+      left: -356px;
       .pathway-container {
         opacity: 0;
       }

@@ -25,28 +25,27 @@
                   <nuxt-link class="title-link" :to="{
                     name: 'data-browser-dataset-id',
                     params: {
-                      id: item.submitter_id,
-                      uuid: item.dataset_descriptions[0].id,
+                      id: item.datasetId,
                     },
                     query: {
                       datasetTab: 'abstract',
                     }
                   }">
-                    {{ item.dataset_descriptions[0].title[0] }}
+                    {{ item.name }}
                   </nuxt-link>
                 </div>
                 <div>
                   <strong>Anatomical Structure</strong>
-                  {{ displayKeywords(item.dataset_descriptions[0].study_organ_system) }}
+                  {{ displayKeywords(item.organs) }}
                 </div>
                 <div>
                   <strong>Keywords</strong>
-                  {{ displayKeywords(item.dataset_descriptions[0].keywords) }}
+                  {{ displayKeywords(item.keywords) }}
                 </div>
                 <div>
-                  <div v-if="item.dataset_descriptions[0].number_of_samples[0]>0||item.dataset_descriptions[0].number_of_subjects[0]>0">
+                  <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
                     <strong>Samples</strong>
-                    {{item.dataset_descriptions[0].number_of_samples[0]}} samples out of {{item.dataset_descriptions[0].number_of_subjects[0]}} objects
+                    {{item.numberSamples}} samples out of {{item.numberSubjects}} objects
                   </div>
                 </div>
               </section>
@@ -103,8 +102,8 @@ export default {
     },
 
     getDatasetImg(item) {
-      if (item.manifests.length > 0) {
-        let data = item.manifests;
+      if (item.scaffoldViews.length > 0) {
+        let data = item.scaffoldViews;
         let url = `${process.env.query_api_url}/data/preview/`;
         let img_list = [];
         img_list = data.filter((item) => {
@@ -125,13 +124,13 @@ export default {
         if (img_list.length === 0) {
           img_list.push(data[0]);
         }
-        if (img_list[0].filename.includes(item.submitter_id))
+        if (img_list[0].filename.includes(item.datasetId))
           url += `${img_list[0].filename.substring(
             0,
             img_list[0].filename.lastIndexOf("/")
           )}/${img_list[0].is_source_of}`;
         else
-          url += `${item.submitter_id}/${img_list[0].filename.substring(
+          url += `${item.datasetId}/${img_list[0].filename.substring(
             0,
             img_list[0].filename.lastIndexOf("/")
           )}/${img_list[0].is_source_of}`;
