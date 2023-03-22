@@ -102,42 +102,15 @@ export default {
     },
 
     getDatasetImg(item) {
+      let url = `${process.env.query_api_url}/data/preview/`;
       if (item.scaffoldViews.length > 0) {
-        let data = item.scaffoldViews;
-        let url = `${process.env.query_api_url}/data/preview/`;
-        let img_list = [];
-        img_list = data.filter((item) => {
-          if (item.is_source_of) {
-            if (item.is_source_of.includes("Layout1"))
-              return item;
-          }
-          
-        });
-        if (img_list.length === 0) {
-          img_list = data.filter((item) => {
-            if (item.is_source_of) {
-              if (item.is_source_of.includes("thumbnail1"))
-                return item;
-            }
-          });
-        }
-        if (img_list.length === 0) {
-          img_list.push(data[0]);
-        }
-        if (img_list[0].filename.includes(item.datasetId))
-          url += `${img_list[0].filename.substring(
-            0,
-            img_list[0].filename.lastIndexOf("/")
-          )}/${img_list[0].is_source_of}`;
-        else
-          url += `${item.datasetId}/${img_list[0].filename.substring(
-            0,
-            img_list[0].filename.lastIndexOf("/")
-          )}/${img_list[0].is_source_of}`;
-        return url;
+        url += `${item.datasetId}` + item.scaffoldViews[0].image_url;
+      } else if (item.thumbnails.length > 0) {
+        url += `${item.datasetId}` + item.thumbnails[0].image_url;
       } else {
-        return false;
+        url = this.imgPlaceholder;
       }
+      return url;
     }
   },
 }
