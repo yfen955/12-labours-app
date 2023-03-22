@@ -75,7 +75,7 @@ export default {
   }
   .icon-group {
     position: relative !important;
-    right: -44% !important;
+    right: calc(-50% + 70px) !important;
   }
   .text.title {
     color: $app-primary-color !important;
