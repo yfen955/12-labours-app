@@ -38,7 +38,7 @@ describe('gallery tab', () =>{
     cy.window().then((win) => {
       cy.stub(win, 'open').as("popup");
     })
-    cy.get('.model-button.scaffold').click();
+    cy.get('.model-button').first().click();
     cy.get('@popup').should("be.called");
   })
 })
