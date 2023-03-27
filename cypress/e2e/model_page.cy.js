@@ -21,7 +21,7 @@ describe('map viewer page', () =>{
   it('test flatmap is loaded', () => {
     cy.visit('/data/maps/flatmap/1');
     cy.contains('Flatmap Viewer');
-    cy.wait(5000);
+    cy.wait(10000);
     cy.get('.pathways-display-text').should('contain', 'Pathways');
     cy.get('.el-checkbox__label').should('contain', 'CNS');
     cy.get('canvas');

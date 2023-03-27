@@ -11,7 +11,7 @@ describe('test api in data browser page', () =>{
       });
     });
     // filter data
-    cy.intercept('GET', 'http://localhost:8000/filter', {
+    cy.intercept('GET', 'http://localhost:8000/filter/?sidebar=false', {
       fixture: 'filterData.json'
     }).as('getFilter');
     // dataset metadata

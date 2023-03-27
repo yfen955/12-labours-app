@@ -1,10 +1,9 @@
 import axios from "axios";
 
-async function fetchPaginationData(node, filter, search, limit, page, relation) {
+async function fetchPaginationData(filter, search, limit, page, relation) {
   let fetched_data = [];
   let totalNum = 0;
   let payload = {
-    node: node,
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
@@ -14,7 +13,7 @@ async function fetchPaginationData(node, filter, search, limit, page, relation) 
   await axios
     .post(path, payload)
     .then((res) => {
-      fetched_data = res.data.data;
+      fetched_data = res.data.items;
       totalNum = res.data.total;
     })
     .catch((err) => {
@@ -62,8 +61,23 @@ async function getSingleData(uuid, programName, projectName) {
   return fetched_data;
 }
 
+async function fetchFilterData(sidebar) {
+  let filter = {};
+  const path = `${process.env.query_api_url}/filter/?sidebar=${sidebar}`;
+  await axios
+    .get(path)
+    .then((res) => {
+      filter = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return filter;
+}
+
 export default {
   fetchPaginationData,
   fetchQueryData,
-  getSingleData
+  getSingleData,
+  fetchFilterData
 }

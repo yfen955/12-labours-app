@@ -28,17 +28,13 @@
             "Juvenile": "Juvenile"
         },
         {
-            "Body Proper": "body proper",
             "Brainstem": "brainstem",
             "Breast": "breast",
-            "Cardiac Nerve Plexus": "cardiac nerve plexus",
             "Colon": "colon",
             "Heart": "heart",
             "Lungs": "lungs",
             "Spinal Cord": "spinal cord",
-            "Stomach": "stomach",
-            "Urinary Bladder": "urinary bladder",
-            "Vagus Nerve": "vagus nerve"
+            "Stomach": "stomach"
         },
         {
             "Female": "Female",
@@ -47,6 +43,7 @@
         {
             "Plot": [
                 "text/vnd.abi.plot+tab-separated-values",
+                "text/vnd.abi.plot+Tab-separated-values",
                 "text/vnd.abi.plot+csv"
             ],
             "Scaffold": [
@@ -66,17 +63,13 @@
         "Adolescent",
         "Adult",
         "Juvenile",
-        "Body Proper",
         "Brainstem",
         "Breast",
-        "Cardiac Nerve Plexus",
         "Colon",
         "Heart",
         "Lungs",
         "Spinal Cord",
         "Stomach",
-        "Urinary Bladder",
-        "Vagus Nerve",
         "Female",
         "Male",
         "Plot",

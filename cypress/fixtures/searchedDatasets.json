@@ -1,92 +1,268 @@
 {
-    "data": [
+    "items": [
         {
-            "cases": [],
-            "dataset_descriptions": [
+            "contributors": [
+                "Soltani, Elias",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "human"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Human whole-body scaffold",
+            "datasetId": "dataset-134-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
                 {
-                    "id": "04b38e0c-1570-45f8-b5b7-81ceaccda93e",
-                    "keywords": [
-                        "whole-body",
-                        "abdomen",
-                        "thorax",
-                        "head",
-                        "spinal cord",
-                        "human"
-                    ],
-                    "number_of_samples": [
-                        "0"
-                    ],
-                    "number_of_subjects": [
-                        "0"
-                    ],
-                    "study_organ_system": [],
-                    "subtitle": [
-                        "Annotated human whole-body scaffold (abdomen, diaphragm, thorax, neck, head, skin, spinal cord) with embedded vagus nerves"
-                    ],
-                    "title": [
-                        "Human whole-body scaffold"
-                    ]
+                    "image_url": "/derivative/thumbnail1.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/human_morph_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_morph_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail1.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail1.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1d6ac684-deeb-4586-967c-532af42f65f7",
+                        "path": "derivative/human_morph_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "fd80b88a-faf5-4fd1-acbe-7b5d28acf410",
+                    "name": "human_morph_view.json"
                 }
             ],
-            "id": "1d6ac684-deeb-4586-967c-532af42f65f7",
-            "manifests": [
+            "scaffolds": [
                 {
-                    "filename": "derivative/human_morph_view.json",
-                    "id": "fd80b88a-faf5-4fd1-acbe-7b5d28acf410",
-                    "is_derived_from": "human_morph_metadata.json",
-                    "is_source_of": "thumbnail1.png"
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/human_morph_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_morph_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1d6ac684-deeb-4586-967c-532af42f65f7",
+                        "path": "derivative/human_morph_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "881c9e09-8d3c-4836-8fe2-9b0f7c0c75b3",
+                    "name": "human_morph_metadata.json"
                 }
             ],
-            "submitter_id": "dataset-134-version-2"
+            "thumbnails": []
         },
         {
-            "cases": [],
-            "dataset_descriptions": [
+            "contributors": [
+                "Soltani, Elias",
+                "Nickerson, David",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "mouse",
+                "embed",
+                "organ",
+                "lungs",
+                "stomach",
+                "bladder",
+                "heart",
+                "colon"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Human whole-body with embedded organs using automatic workflow for inserting the organs",
+            "datasetId": "dataset-182-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
                 {
-                    "id": "aa22bc98-9301-4521-bba6-7ef75b9048ee",
-                    "keywords": [
-                        "whole-body",
-                        "abdomen",
-                        "thorax",
-                        "head",
-                        "spinal cord",
-                        "mouse",
-                        "embed",
-                        "organ",
-                        "lungs",
-                        "stomach",
-                        "bladder",
-                        "heart",
-                        "colon"
-                    ],
-                    "number_of_samples": [
-                        "0"
-                    ],
-                    "number_of_subjects": [
-                        "0"
-                    ],
-                    "study_organ_system": [],
-                    "subtitle": [
-                        "Annotated human whole-body scaffold (abdomen, diaphragm, thorax, neck, head, skin, spinal cord) with organs including heart, lungs, colon, bladder, stomach"
-                    ],
-                    "title": [
-                        "Human whole-body with embedded organs using automatic workflow for inserting the organs"
-                    ]
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/human_body_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_body_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
+                        "path": "derivative/human_body_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "c442772a-e2cd-42fc-ab4a-06961842155a",
+                    "name": "human_body_view.json"
                 }
             ],
-            "id": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
-            "manifests": [
+            "scaffolds": [
                 {
-                    "filename": "derivative/human_body_view.json",
-                    "id": "c442772a-e2cd-42fc-ab4a-06961842155a",
-                    "is_derived_from": "human_body_metadata.json",
-                    "is_source_of": "thumbnail.png"
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/human_body_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_body_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
+                        "path": "derivative/human_body_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "106b9ab0-385c-4279-9d80-2d0b78016a68",
+                    "name": "human_body_metadata.json"
                 }
             ],
-            "submitter_id": "dataset-182-version-2"
+            "thumbnails": []
         }
     ],
-    "limit": 10,
+    "numberPerPage": 10,
     "page": 1,
     "total": 2
 }

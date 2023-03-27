@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import backendQuery from '@/services/backendQuery';
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
@@ -99,22 +98,14 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData('experiment', this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page, this.relation);
+      let result = await backendQuery.fetchPaginationData(this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page, this.relation);
       this.currentData = result[0];
       this.totalCount = result[1];
       this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
-      const newPath = `${process.env.query_api_url}/filter`;
-      await axios
-        .get(newPath)
-        .then((res) => {
-          this.allFilterDict = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.allFilterDict = await backendQuery.fetchFilterData(false);
     },
 
     dataChange(val) {
