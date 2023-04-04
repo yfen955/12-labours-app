@@ -18,14 +18,13 @@
             <section class="description">
               <p>
                 <b>Contributors: </b>
-                <span
-                  v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length"
-                >
+                <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length" >
                   {{ combineNames() }}
                 </span>
                 <a
                   v-else
                   v-for="(name, i) in sampleData.contributor_name"
+                  :key="i"
                   :href="modifyLink(i)"
                 >
                   {{ modifyName(name, i) }}
