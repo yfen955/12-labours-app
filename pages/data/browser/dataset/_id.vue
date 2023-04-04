@@ -21,7 +21,7 @@
                 <span
                   v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length"
                 >
-                  {{ combineNames(name) }}
+                  {{ combineNames() }}
                 </span>
                 <a
                   v-else
