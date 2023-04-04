@@ -20,15 +20,12 @@
                 <b>Contributors: </b>
                 <span
                   v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length"
-                  v-for="(name, index) in sampleData.contributor_name"
-                  :key="index"
                 >
-                  {{ modifyName(name, index) }}
+                  {{ combineNames(name) }}
                 </span>
                 <a
                   v-else
                   v-for="(name, i) in sampleData.contributor_name"
-                  :key="i"
                   :href="modifyLink(i)"
                 >
                   {{ modifyName(name, i) }}
@@ -495,6 +492,16 @@ export default {
         params: { id: uuid }
       });
       window.open(route.href);
+    },
+
+    combineNames() {
+      let result = '';
+      let name_list = this.sampleData.contributor_name;
+      name_list.map(item => {
+        let person_names = item.split(', ');
+        result += person_names[1] + ' ' + person_names[0] + ", ";
+      })
+      return result.slice(0, -2);
     },
 
     modifyName(name, i) {
