@@ -88,15 +88,29 @@ export default {
     background: $background !important;
     border-color: $mildBlue !important;
   }
+  .open-tab {
+    top: 40vh !important;
+  }
+  .close-tab {
+    margin-top: 40vh !important;
+  }
 
   .drawer-button, .open-drawer {
-    margin-top: calc(50% + 45px) !important;
+    margin-top: 21vh !important;
   }
   .pathways-display-text {
     font-size: inherit !important;
   }
+  .el-checkbox__input + span.el-checkbox__label {
+    color: $app-primary-color !important;
+    padding-left: 10px;
+  }
   .el-checkbox__input.is-checked + span.el-checkbox__label {
     font-size: 12px;
+    color: $grey !important;
+  }
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    border-color: $app-primary-color !important;
   }
   .el-checkbox__input.is-checked .el-checkbox__inner, .map-container .el-checkbox__input.is-indeterminate .el-checkbox__inner {
     border-color: $app-primary-color !important;
@@ -113,8 +127,12 @@ export default {
     margin-left: 0;
     padding-top: 0.5rem;
   }
-  .el-checkbox:first-child {
-    padding-top: 0;
+  .checkbox-group-inner {
+    padding-top: 0 !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .el-checkbox.all-checkbox {
+    padding-top: 0 !important;
   }
 
   .open-tab, .close-tab, .drawer-button, .open-drawer {

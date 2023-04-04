@@ -100,7 +100,7 @@ export default {
     color: $app-primary-color !important;
   }
   .el-checkbox__input.is-checked+span.el-checkbox__label {
-    font-size: 1rem;
+    font-size: 12px;
   }
 
   .flatmap-container {

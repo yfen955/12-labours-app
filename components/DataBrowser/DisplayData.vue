@@ -102,11 +102,11 @@ export default {
     },
 
     getDatasetImg(item) {
-      let url = `${process.env.query_api_url}/data/preview/`;
+      let url = '';
       if (item.scaffoldViews.length > 0) {
-        url += `${item.datasetId}` + item.scaffoldViews[0].image_url;
+        url = item.scaffoldViews[0].image_url;
       } else if (item.thumbnails.length > 0) {
-        url += `${item.datasetId}` + item.thumbnails[0].image_url;
+        url = item.thumbnails[0].image_url;
       } else {
         url = this.imgPlaceholder;
       }
