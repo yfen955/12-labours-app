@@ -260,7 +260,7 @@
             <img :src="generateImg('preview', scaffold_thumbnail_data[0].filename, scaffold_thumbnail_data[0].is_source_of)" alt="image" />
           </div>
           <img v-else :src="imgPlaceholder" alt="image" />
-          <div>
+          <!-- <div>
             <el-button class="left-top-btn" @click="changeTab('files', true)">
               <span class="display-ellipsis --1">Get Dataset</span>
             </el-button>
@@ -269,7 +269,7 @@
             <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
-          </div>
+          </div> -->
         </el-card>
 
         <el-card shadow="never" class="related-container">
@@ -363,22 +363,22 @@ const datasetTabs = [
     label: 'Cite',
     name: 'cite',
   },
-  {
-    label: 'Files',
-    name: 'files',
-  },
+  // {
+  //   label: 'Files',
+  //   name: 'files',
+  // },
   {
     label: 'Gallery',
     name: 'gallery',
   },
-  {
-    label: 'References',
-    name: 'references',
-  },
-  {
-    label: 'Versions',
-    name: 'versions',
-  }
+  // {
+  //   label: 'References',
+  //   name: 'references',
+  // },
+  // {
+  //   label: 'Versions',
+  //   name: 'versions',
+  // }
 ]
 
 export default {
