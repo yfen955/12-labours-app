@@ -6,7 +6,7 @@
       <div class="default-inner">                 
         There are two ways to discover data and models within the 12 Labours portal.
         <ul>  
-          <li>Interactive viewer - allows you to traverse a 3D scaffold of the human body and drill down across the multiple levels of physiological modelling.</li>
+          <li>Interactive viewer - allows you to traverse a 3D scaffold of the human body/organs and drill down across the multiple levels of physiological modelling.</li>
           <li>Data browser - allows you to search for data & models using filters and tags.</li>
         </ul>
       </div> 
@@ -44,7 +44,7 @@ export default {
       interactiveViewerSpecs:{
         title:'Interactive Viewer',
         imgFile:'patient-in-frame.png',
-        detail:'  View the interactive 3D scaffold',
+        detail:'View the interactive 3D whole body map',
         btnLink:{caption:'Launch Interactive Viewer', to: {
             name: 'data-maps-scaffold-id',
             params: {

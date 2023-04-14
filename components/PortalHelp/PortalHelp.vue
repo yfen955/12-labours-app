@@ -22,21 +22,21 @@ export default {
       helpResearchers:{
         title:'Researchers',
         imgFile:'researcher-in-frame.png',
-        detail:' Want access to the latest data, or share your research with others? Then the 12 Labours Portal is the place to be.',
+        detail:'This website offers computational modelling tools aimed at advancing personalised medicine and clinical research. Researchers can utilise the tool to support their studies and gain insights into various medical conditions.',
         //btnLink:{caption:'Find Research Data', to:'/'}
         btnLink:{caption:'Learn More', to:'/'}
       },
       helpClinicians:{
         title:'Clinicians',
         imgFile:'clinician-in-frame.png',
-        detail:'The 12 Labours Portal allows you to access and upload data to visualise results that may aid prognosis and help you to develop your treatment plans.',
+        detail:'This website provides a valuable resource for clinicians by offering a computational modeling tool for medical research. Clinicians will be able to access/input medical imaging data to create computational models. The tool can help clinicians in making informed decisions for their patients, as well as support their ongoing research efforts.',
         //btnLink:{caption:'Learn about Workflows', to:'/'}
         btnLink:{caption:'Learn More', to:'/'}
       },
       helpPatients:{
         title:'Patients',
         imgFile:'patient-in-frame.png',
-        detail:'Want to track your health status or set personal health improvement goals? The portal allows you to link your health records with your health devices.',
+        detail:'This website is dedicated to advancing medical research and personalized medicine through computational modeling. Patients can access information about the research being conducted, and may benefit from the results of this research in the future. Patients will also be able to access their health records with your health devices.',
         //btnLink:{caption:'More about Health Tracking', to:'/'}
         btnLink:{caption:'Learn More', to:'/'}
       }
