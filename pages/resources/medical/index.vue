@@ -18,6 +18,10 @@
       </p>
       <br>
       <p>
+        EP2: Our goal is to create a personalised approach for the diagnosis and treatment of upper limb disorders. This approach will utilise computational models, wearable sensors, and robotic devices for quantification and monitoring. Our team will use biomechanical simulation and machine learning classification to quantify movement patterns to ultimately assist in clinical decision-making and personalising treatment plans. Patient specific anatomical models of the upper limb are paramount to accurate biomechanical analyses. We will use low cost imaging and motion measurements together with machine learning methods to rapidly generate such models. These models will be integrated into an open-source musculoskeletal platform to perform dynamic assessment of motion and forces. This musculoskeletal platform will enable orthopaedic surgeons to perform virtual surgeries and aid in the surgery planning process. In the future, the project will focus on wearable sensors and digital musculoskeletal twins for home-based monitoring.
+      </p>
+      <br>
+      <p>
         P3: We have developed a range of technologies that provide a platform to enable small, deeply implanted medical devices.
         <ol>
           <li>Encapsulation methods to manufacture biocompatible, hermetic, long term packaging for small implants.</li>
