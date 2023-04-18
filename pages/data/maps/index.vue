@@ -19,12 +19,19 @@
 </template>
 
 <script>
+import { mySearch } from "./AlternateResponse.js";
+
 export default {
   name: 'MapViewer',
   components: {
     MapContent: process.client
-      ? () => import('@abi-software/mapintegratedvuer').then(m => m.MapContent)
+      ? () => import('@12-labours/mapintegratedvuer').then(m => m.MapContent)
       : null
+  },
+  provide: function() {
+    return {
+      alternateSearch: this.alternateSearch,
+    };
   },
   data: () => {
     return {
@@ -33,7 +40,8 @@ export default {
         flatmapAPI: process.env.FLATMAPAPI_LOCATION,
         rootUrl: process.env.base_url,
       },
-      shareLink: undefined
+      shareLink: undefined,
+      alternateSearch: mySearch,
     }
   },
   created: function() {
@@ -67,34 +75,19 @@ export default {
 
 <style lang="scss">
 .map-container {
-  @import '~@abi-software/mapintegratedvuer/dist/mapintegratedvuer';
+  @import '~@12-labours/mapintegratedvuer/dist/mapintegratedvuer';
   height: 85vh;
 
-  .el-loading-spinner .el-loading-text, .el-loading-spinner i {
-    color: $app-primary-color !important;
-  }
   .icon-group {
     position: relative !important;
     justify-content: right !important;
   }
-  .text.title {
+  .header-icon, .magnify, .map-icon {
     color: $app-primary-color !important;
   }
   .search-container .magnify {
     background: $app-primary-color !important;
   }
-  .el-button--primary.is-plain {
-    color: $app-primary-color !important;
-    background: $background !important;
-    border-color: $mildBlue !important;
-  }
-  .open-tab {
-    top: 40vh !important;
-  }
-  .close-tab {
-    margin-top: 40vh !important;
-  }
-
   .drawer-button, .open-drawer {
     margin-top: 21vh !important;
   }
@@ -102,18 +95,11 @@ export default {
     font-size: inherit !important;
   }
   .el-checkbox__input + span.el-checkbox__label {
-    color: $app-primary-color !important;
     padding-left: 10px;
   }
   .el-checkbox__input.is-checked + span.el-checkbox__label {
     font-size: 12px;
     color: $grey !important;
-  }
-  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    border-color: $app-primary-color !important;
-  }
-  .el-checkbox__input.is-checked .el-checkbox__inner, .map-container .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    border-color: $app-primary-color !important;
   }
   .el-checkbox__input.is-checked .el-checkbox__inner {
     border-color: $app-primary-color !important;
@@ -137,49 +123,46 @@ export default {
 
   .open-tab, .close-tab, .drawer-button, .open-drawer {
     border: 1px solid $app-primary-color !important;
-    background-color: $background !important;
+    background-color: #e6edf2 !important;
   }
   .el-icon-arrow-left, .el-icon-arrow-right {
     color: $app-primary-color !important;
   }
-  .content-card .el-card__header, .content-card .el-card__header .header {
-    background-color: $darkBlue !important;
-    border-color: $darkBlue !important;
-    
+  .el-button {
+    padding: 0px 20px !important;
+    text-transform: none;
   }
-  .button {
-    background-color: $app-secondary-color !important;
-    border: $app-secondary-color !important;
-    box-sizing: border-box !important;
-    border-radius: 1rem !important;
-    font: {
-      size: 1.13rem;
-      family: $font-family;
-      weight: 600; 
-    }
-    padding: 0.25rem 2.5rem;
-    height: 2rem;
-    margin-top: 2px;
+  .el-input__icon {
+    color: grey;
   }
-  .help {
-    color: $app-primary-color !important;
+  // .filters .el-popover {
+  //   background: #e6edf2 !important;
+  // }
+  .el-select .el-input .el-select__caret:before {
+    font-size: 14px;
   }
-  .content .el-loading-spinner .path {
-    stroke: $app-primary-color !important;
+  .el-select .el-input .el-select__caret.is-reverse {
+    padding-top: 0;
   }
-  .search-filters .el-cascader-node.in-active-path, .search-filters .el-cascader-node.is-active {
-    color: $app-primary-color !important;
+  .tag-button {
+    padding: 0.2rem 0.2rem !important;
+    height: auto;
+    background: #e6edf2 !important;
   }
-  .el-popover {
-    border: 1px solid $app-primary-color !important;
-    background: $background !important;
-    .popper__arrow {
-      border-bottom-color: $app-primary-color !important;
-      border-top-color: $app-primary-color !important;
-    }
+  .tag-button.active {
+    background: $app-primary-color !important;
   }
-  .el-select-dropdown__item.selected {
-    color: $mildBlue !important;
+  span, .details, .title {
+    font-family: arimo !important;
   }
+  .dataset-results-feedback {
+    margin-right: 1rem;
+  }
+  .el-scrollbar__bar.is-horizontal {
+    overflow: hidden;
+  }
+}
+.pagination ul.el-pager li.number.active {
+  background: $app-primary-color !important;
 }
 </style>

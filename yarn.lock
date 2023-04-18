@@ -11,101 +11,17 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@abi-software/flatmap-viewer@2.2.9":
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/@abi-software/flatmap-viewer/-/flatmap-viewer-2.2.9.tgz#b3f50f4e23944d19b4babf8a56030b12c5f2470b"
-  integrity sha512-UN7R84Xn2TeK9Fo/IEFSEKuauRroO5KMYKDUu4wfZQw0qzSC79OdJmHBOeIH4pkS+J4FRZfq+prS7cxiCNCyRw==
+"@12-labours/mapintegratedvuer@^1.0.0-beta.0":
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.0.tgz#2421a20f015cc87b0e01f7d72415bdf602327f0b"
+  integrity sha512-eE7X/dSUil0G1LkU2B4uKQtm+41kmUpUHi+TzcLBYDI2O9M584xotaLRY9uyPWhHahJgR+S2NgE9v5aDEr+vYg==
   dependencies:
-    "@babel/runtime" "^7.10.4"
-    "@turf/area" "^6.0.1"
-    "@turf/bbox" "^6.0.1"
-    "@turf/helpers" "^6.1.4"
-    "@turf/projection" "^6.5.0"
-    bezier-js "^6.1.0"
-    maplibre-gl ">=1.15.3"
-    minisearch "^2.2.1"
-    polylabel "^1.1.0"
-
-"@abi-software/flatmap-viewer@^2.2.0-beta.16":
-  version "2.2.0-beta.16"
-  resolved "https://registry.npmjs.org/@abi-software/flatmap-viewer/-/flatmap-viewer-2.2.0-beta.16.tgz"
-  integrity sha512-1Eu4IRJFcQANNBuNK/kRVyzP8kRz+FXulPZKoWS62Mvf2B9D1YjmqQ1+ldO5bbCxZiwH5xhH4AGOFi2KJ54lkQ==
-  dependencies:
-    "@babel/runtime" "^7.10.4"
-    "@turf/area" "^6.0.1"
-    "@turf/bbox" "^6.0.1"
-    "@turf/helpers" "^6.1.4"
-    maplibre-gl ">=1.15.3"
-    minisearch "^2.2.1"
-    polylabel "^1.1.0"
-
-"@abi-software/flatmapvuer@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@abi-software/flatmapvuer/-/flatmapvuer-0.3.15.tgz#2aca7dffc18fcfdb8e9bdcce042d87d743c8a5aa"
-  integrity sha512-//xneTykx+5p+Xm/RBEI9r/0ftRRvGhZLpbLCMnIZ/i23jwM62fbNzeNQJ1gHyaoY8SHORd+g7iWERuRJmsjPg==
-  dependencies:
-    "@abi-software/flatmap-viewer" "2.2.9"
-    "@abi-software/svg-sprite" "^0.1.14"
-    core-js "^3.3.2"
-    css-element-queries "^1.2.2"
-    current-script-polyfill "^1.0.0"
-    element-ui "^2.13.0"
-    file-loader "^5.0.2"
-    lodash "^4.17.21"
-    vue "^2.6.10"
-
-"@abi-software/flatmapvuer@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/@abi-software/flatmapvuer/-/flatmapvuer-0.3.3.tgz"
-  integrity sha512-6sQdLpmcN+30F48F3ZN2xGdK1+4f/YhlYbCE7IWo74UVYyDyNaYJ1reJaHWbsZwynEuDueZ05rMWpcrRR5blwQ==
-  dependencies:
-    "@abi-software/flatmap-viewer" "^2.2.0-beta.16"
-    "@abi-software/svg-sprite" "^0.1.14"
-    core-js "^3.3.2"
-    css-element-queries "^1.2.2"
-    current-script-polyfill "^1.0.0"
-    element-ui "^2.13.0"
-    file-loader "^5.0.2"
-    lodash "^4.17.21"
-    vue "^2.6.10"
-
-"@abi-software/gallery@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@abi-software/gallery/-/gallery-0.3.1.tgz#cb8317e4271e95254c6e3242be824fd3ec4b9ad4"
-  integrity sha512-ED5ppMiXfHbobM073SnDiUhomviLH+dSQ6jgk6b9ULBkdTmF6r0cE6WbPHYJHdNgZVJDbYokBieO/URrff8QhQ==
-  dependencies:
-    "@babel/code-frame" "^7.12.11"
-    axios "^0.26.1"
-    babel-plugin-component "^1.1.1"
-    base64-inline-loader "^2.0.1"
-    core-js "^3.8.3"
-    element-ui "^2.15.0"
-    vue "^2.6.11"
-
-"@abi-software/map-side-bar@^1.3.34":
-  version "1.3.35"
-  resolved "https://registry.yarnpkg.com/@abi-software/map-side-bar/-/map-side-bar-1.3.35.tgz#7b781218b5df85011458ce2b56f6277ac46b72c3"
-  integrity sha512-CdBg+BOQ3AgSkv/hLmO4o+fzMYxy+BaCJ6K30svwdB1RR/hoFyiH6hwstG120+m6twt8C9Vl8kJu0B897zSsYg==
-  dependencies:
-    "@abi-software/gallery" "^0.3.1"
-    "@abi-software/svg-sprite" "^0.1.14"
-    algoliasearch "^4.10.5"
-    element-ui "^2.13.0"
-    marked "^4.1.1"
-    vue "^2.6.10"
-    xss "^1.0.14"
-
-"@abi-software/mapintegratedvuer@^0.3.13-fixes-1":
-  version "0.3.13-fixes-1"
-  resolved "https://registry.yarnpkg.com/@abi-software/mapintegratedvuer/-/mapintegratedvuer-0.3.13-fixes-1.tgz#84200997d944fe21a0c125a4c58010283727d7f3"
-  integrity sha512-wNKt7pnK9AdeexBmOpFQ2ESAlncEMQV+YTtkAQiCrU0j1/igwLRAdLYAwO3ImFXnZUxR6bNUPK2i6kZfnaXl5w==
-  dependencies:
-    "@abi-software/flatmapvuer" "^0.3.15"
-    "@abi-software/map-side-bar" "^1.3.34"
+    "@abi-software/flatmapvuer" "^0.4.0"
+    "@abi-software/map-side-bar" "^2.0.0-response.1"
     "@abi-software/plotvuer" "^0.3.9"
-    "@abi-software/scaffoldvuer" "^0.1.57"
+    "@abi-software/scaffoldvuer" "^0.1.58"
     "@abi-software/simulationvuer" "^0.6.5"
-    "@abi-software/svg-sprite" "^0.1.15"
+    "@abi-software/svg-sprite" "^0.2.0"
     "@soda/get-current-script" "^1.0.2"
     core-js "^3.3.2"
     d3-time-format "^3.0.0"
@@ -123,6 +39,90 @@
     vue-router "^3.4.9"
     vuex "^3.5.1"
     webpack-node-externals "^2.5.2"
+
+"@abi-software/flatmap-viewer@^2.2.0-beta.16":
+  version "2.2.0-beta.16"
+  resolved "https://registry.npmjs.org/@abi-software/flatmap-viewer/-/flatmap-viewer-2.2.0-beta.16.tgz"
+  integrity sha512-1Eu4IRJFcQANNBuNK/kRVyzP8kRz+FXulPZKoWS62Mvf2B9D1YjmqQ1+ldO5bbCxZiwH5xhH4AGOFi2KJ54lkQ==
+  dependencies:
+    "@babel/runtime" "^7.10.4"
+    "@turf/area" "^6.0.1"
+    "@turf/bbox" "^6.0.1"
+    "@turf/helpers" "^6.1.4"
+    maplibre-gl ">=1.15.3"
+    minisearch "^2.2.1"
+    polylabel "^1.1.0"
+
+"@abi-software/flatmap-viewer@^2.2.13":
+  version "2.2.13"
+  resolved "https://registry.yarnpkg.com/@abi-software/flatmap-viewer/-/flatmap-viewer-2.2.13.tgz#7b5f5565c5baa3252950ffbeb28f16578f5f2b15"
+  integrity sha512-5t6jlHPHFQyvx53tHY8OM8j8Abs0oii4jXCSCNPOZAh7mRvrN1sWafXt4kVlgFeUV4IcDBan6Ihh7mx+ejHyNw==
+  dependencies:
+    "@babel/runtime" "^7.10.4"
+    "@turf/area" "^6.0.1"
+    "@turf/bbox" "^6.0.1"
+    "@turf/helpers" "^6.1.4"
+    "@turf/projection" "^6.5.0"
+    bezier-js "^6.1.0"
+    maplibre-gl ">=2.4.0"
+    minisearch "^2.2.1"
+    polylabel "^1.1.0"
+
+"@abi-software/flatmapvuer@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/@abi-software/flatmapvuer/-/flatmapvuer-0.3.3.tgz"
+  integrity sha512-6sQdLpmcN+30F48F3ZN2xGdK1+4f/YhlYbCE7IWo74UVYyDyNaYJ1reJaHWbsZwynEuDueZ05rMWpcrRR5blwQ==
+  dependencies:
+    "@abi-software/flatmap-viewer" "^2.2.0-beta.16"
+    "@abi-software/svg-sprite" "^0.1.14"
+    core-js "^3.3.2"
+    css-element-queries "^1.2.2"
+    current-script-polyfill "^1.0.0"
+    element-ui "^2.13.0"
+    file-loader "^5.0.2"
+    lodash "^4.17.21"
+    vue "^2.6.10"
+
+"@abi-software/flatmapvuer@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@abi-software/flatmapvuer/-/flatmapvuer-0.4.0.tgz#2bba6085559f3d43be9bbd39ba8e7a21e849a0c7"
+  integrity sha512-nr+H0Vl4gMwZhScENYWrwRVJA2CNJbMSxKKQwBFmvNuNr5wQWPiQynM2qBKaMLpF6En8a6eMRGeVjeS+ULq0Rw==
+  dependencies:
+    "@abi-software/flatmap-viewer" "^2.2.13"
+    "@abi-software/svg-sprite" "^0.1.14"
+    core-js "^3.3.2"
+    css-element-queries "^1.2.2"
+    current-script-polyfill "^1.0.0"
+    element-ui "^2.13.0"
+    file-loader "^5.0.2"
+    lodash "^4.17.21"
+    vue "^2.6.10"
+
+"@abi-software/gallery@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@abi-software/gallery/-/gallery-0.3.3.tgz#f4631fb20d4091d375acfa9193ed004d887fe736"
+  integrity sha512-Xw3m6U88ZPMvcw1JGPMWl6aVswtTAc5Ffb8Z8eZdy+r+RCtz2ldLniPl47n/eM7TsKZjIZCJ/2C/BnzllFE2cA==
+  dependencies:
+    "@babel/code-frame" "^7.12.11"
+    axios "^0.26.1"
+    babel-plugin-component "^1.1.1"
+    base64-inline-loader "^2.0.1"
+    core-js "^3.8.3"
+    element-ui "^2.15.0"
+    vue "^2.6.11"
+
+"@abi-software/map-side-bar@^2.0.0-response.1":
+  version "2.0.0-response.1"
+  resolved "https://registry.yarnpkg.com/@abi-software/map-side-bar/-/map-side-bar-2.0.0-response.1.tgz#a1e02d75299510869e399d87106b9d24fa824bbc"
+  integrity sha512-L1+pRX5fEPnG6reB1MZiTjzCngiaJspZAfjXzMbQu+jNVY7hLH9ectma8C5G7nnulHkf8MkCyUjjwid2DqOUWw==
+  dependencies:
+    "@abi-software/gallery" "^0.3.3"
+    "@abi-software/svg-sprite" "^0.2.0"
+    algoliasearch "^4.10.5"
+    element-ui "^2.13.0"
+    marked "^4.1.1"
+    vue "^2.6.10"
+    xss "^1.0.14"
 
 "@abi-software/plotvuer@^0.2.46":
   version "0.2.46"
@@ -175,10 +175,10 @@
     vue-router "^3.5.1"
     zincjs "^1.0.0"
 
-"@abi-software/scaffoldvuer@^0.1.57":
-  version "0.1.57"
-  resolved "https://registry.yarnpkg.com/@abi-software/scaffoldvuer/-/scaffoldvuer-0.1.57.tgz#420f11a4796f8e5bb19f28a6e7589e43886b079d"
-  integrity sha512-L/I5rAQsS3mNbd5aSJ1tHlmGs7qG9Ljr3M65HQMBp6H06+n6CgmO6lXRagt2HEmCzh6VyLX1AkH/uSfBreUS5A==
+"@abi-software/scaffoldvuer@^0.1.58":
+  version "0.1.58"
+  resolved "https://registry.yarnpkg.com/@abi-software/scaffoldvuer/-/scaffoldvuer-0.1.58.tgz#98766a40bc21a4a0ca502eb49cdb429abe0876e2"
+  integrity sha512-r/zkckQi1Xzu4NtlqnNoE7gczm1jJucEQSb4eQVwbqvxvUO27k7dUBNLC9aTLy3rBjDQcN8PxbDLDVZLTUVfgQ==
   dependencies:
     "@abi-software/svg-sprite" "^0.1.15"
     axios "^0.21.2"
@@ -192,7 +192,7 @@
     vue-custom-element "^3.3.0"
     vue-drag-resize "^1.3.2"
     vue-router "^3.5.1"
-    zincjs "^1.0.11"
+    zincjs "^1.0.15"
 
 "@abi-software/simulationvuer@^0.6.5":
   version "0.6.5"
@@ -208,6 +208,15 @@
   version "0.1.15"
   resolved "https://registry.npmjs.org/@abi-software/svg-sprite/-/svg-sprite-0.1.15.tgz"
   integrity sha512-xkEdNL8l2WsH8VR21aMJo49xXYmbPp049JHnw4+FSPhQgrikX8YLBfpl7nSHHePDCToD7cax3fK2ZV7dSxKHfg==
+  dependencies:
+    core-js "^3.6.5"
+    svg-inline-loader "^0.8.2"
+    vue "^2.6.11"
+
+"@abi-software/svg-sprite@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@abi-software/svg-sprite/-/svg-sprite-0.2.0.tgz#c7437405709bf67a0c766c97317a0672037bc750"
+  integrity sha512-vK/D4Wd9ntg/b7B5o2FPK2CtFrqNuuNHBOCWbZlvtrVvk90WH9JgJWx1+UPPzzTmrKRCvwE24osF/nQef206vg==
   dependencies:
     core-js "^3.6.5"
     svg-inline-loader "^0.8.2"
@@ -230,109 +239,109 @@
     vue-router "^3.5.1"
     vue-svgicon "^3.2.9"
 
-"@algolia/cache-browser-local-storage@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.15.0.tgz#84f12aec6b6aa69542a3bfd3a4ba458ed2cc8230"
-  integrity sha512-uxxFhTWh4JJDb2+FFSmNMfEQ8p9o2vjSpU7iW007QX3OvqljPPN68lk3bpZVaG8pwr5MU1DqpkZ71FcQdVTjgQ==
+"@algolia/cache-browser-local-storage@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.17.0.tgz#4c54a9b1795dcc1cd9f9533144f7df3057984d39"
+  integrity sha512-myRSRZDIMYB8uCkO+lb40YKiYHi0fjpWRtJpR/dgkaiBlSD0plRyB6lLOh1XIfmMcSeBOqDE7y9m8xZMrXYfyQ==
   dependencies:
-    "@algolia/cache-common" "4.15.0"
+    "@algolia/cache-common" "4.17.0"
 
-"@algolia/cache-common@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-common/-/cache-common-4.15.0.tgz#a198098c4b8fa6ef661879ec22d2a2d1ad77d2bb"
-  integrity sha512-Me3PbI4QurAM+3D+htIE0l1xt6+bl/18SG6Wc7bPQEZAtN7DTGz22HqhKNyLF2lR/cOfpaH7umXZlZEhIHf7gQ==
+"@algolia/cache-common@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-common/-/cache-common-4.17.0.tgz#bc3da15548df585b44d76c55e66b0056a2b3f917"
+  integrity sha512-g8mXzkrcUBIPZaulAuqE7xyHhLAYAcF2xSch7d9dABheybaU3U91LjBX6eJTEB7XVhEsgK4Smi27vWtAJRhIKQ==
 
-"@algolia/cache-in-memory@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-in-memory/-/cache-in-memory-4.15.0.tgz#77cac4db36a0aa0837f7a7ceb760188191e35268"
-  integrity sha512-B9mg1wd7CKMfpkbiTQ8KlcKkH6ut/goVaI6XmDCUczOOqeuZlV34tuEi7o3Xo1j66KWr/d9pMjjGYcoVPCVeOA==
+"@algolia/cache-in-memory@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-in-memory/-/cache-in-memory-4.17.0.tgz#eb55a92cb8eb8641903a2b23fd6d05ebdaca2010"
+  integrity sha512-PT32ciC/xI8z919d0oknWVu3kMfTlhQn3MKxDln3pkn+yA7F7xrxSALysxquv+MhFfNAcrtQ/oVvQVBAQSHtdw==
   dependencies:
-    "@algolia/cache-common" "4.15.0"
+    "@algolia/cache-common" "4.17.0"
 
-"@algolia/client-account@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/client-account/-/client-account-4.15.0.tgz#8e0723052169665b4449dc2f8bcf3075feb6a424"
-  integrity sha512-8wqI33HRZy5ydfFt6F5vMhtkOiAUhVfSCYXx4U3Go5RALqWLgVUp6wzOo0mr1z08POCkHDpbQMQvyayb1CZ/kw==
+"@algolia/client-account@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/client-account/-/client-account-4.17.0.tgz#4b13e5a8e50a06be1f3289d9db337096ebc66b73"
+  integrity sha512-sSEHx9GA6m7wrlsSMNBGfyzlIfDT2fkz2u7jqfCCd6JEEwmxt8emGmxAU/0qBfbhRSuGvzojoLJlr83BSZAKjA==
   dependencies:
-    "@algolia/client-common" "4.15.0"
-    "@algolia/client-search" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/client-common" "4.17.0"
+    "@algolia/client-search" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
-"@algolia/client-analytics@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/client-analytics/-/client-analytics-4.15.0.tgz#6b8fe450e1bba114b0d0598cbf9acac482798a36"
-  integrity sha512-jrPjEeNEIIQKeA1XCZXx3f3aybtwF7wjYlnfHbLARuZ9AuHzimOKjX0ZwqvMmvTsHivpcZ2rqY+j1E8HoH1ELA==
+"@algolia/client-analytics@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/client-analytics/-/client-analytics-4.17.0.tgz#1b36ffbe913b7b4d8900bc15982ca431f47a473c"
+  integrity sha512-84ooP8QA3mQ958hQ9wozk7hFUbAO+81CX1CjAuerxBqjKIInh1fOhXKTaku05O/GHBvcfExpPLIQuSuLYziBXQ==
   dependencies:
-    "@algolia/client-common" "4.15.0"
-    "@algolia/client-search" "4.15.0"
-    "@algolia/requester-common" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/client-common" "4.17.0"
+    "@algolia/client-search" "4.17.0"
+    "@algolia/requester-common" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
-"@algolia/client-common@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/client-common/-/client-common-4.15.0.tgz#27dd9441aedf481736696d519e55ea8e2f5a4432"
-  integrity sha512-PlsJMObZuYw4JlG5EhYv1PHDOv7n5mD5PzqFyoNfSOYaEPRZepa3W579ya29yOu3FZ0VGMNJmB7Q5v/+/fwvIw==
+"@algolia/client-common@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/client-common/-/client-common-4.17.0.tgz#67fd898006e3ac359ea3e3ed61abfc26147ffa53"
+  integrity sha512-jHMks0ZFicf8nRDn6ma8DNNsdwGgP/NKiAAL9z6rS7CymJ7L0+QqTJl3rYxRW7TmBhsUH40wqzmrG6aMIN/DrQ==
   dependencies:
-    "@algolia/requester-common" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/requester-common" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
-"@algolia/client-personalization@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/client-personalization/-/client-personalization-4.15.0.tgz#6f10eda827d2607ab6c2341464cd35107bf8cf99"
-  integrity sha512-Bf0bhRAiNL9LWurzyHRH8UBi4fDt3VbCNkInxVngKQT1uCZWXecwoPWGhcSSpdanBqFJA/1WBt+BWx7a50Bhlg==
+"@algolia/client-personalization@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/client-personalization/-/client-personalization-4.17.0.tgz#428d9f4762c22856b6062bb54351eb31834db6c1"
+  integrity sha512-RMzN4dZLIta1YuwT7QC9o+OeGz2cU6eTOlGNE/6RcUBLOU3l9tkCOdln5dPE2jp8GZXPl2yk54b2nSs1+pAjqw==
   dependencies:
-    "@algolia/client-common" "4.15.0"
-    "@algolia/requester-common" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/client-common" "4.17.0"
+    "@algolia/requester-common" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
-"@algolia/client-search@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/client-search/-/client-search-4.15.0.tgz#2d849faae7943fcc983ac923eac767666a9e6a9a"
-  integrity sha512-dTwZD4u53WdmexnMcoO2Qd/+YCP3ESXKOtD2MryQ1a9dHwB2Y3Qob0kyS1PG82idwM3enbznvscI9Sf4o9PUWQ==
+"@algolia/client-search@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/client-search/-/client-search-4.17.0.tgz#0053c682f5f588e006c20791c27e8bcb0aa5b53c"
+  integrity sha512-x4P2wKrrRIXszT8gb7eWsMHNNHAJs0wE7/uqbufm4tZenAp+hwU/hq5KVsY50v+PfwM0LcDwwn/1DroujsTFoA==
   dependencies:
-    "@algolia/client-common" "4.15.0"
-    "@algolia/requester-common" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/client-common" "4.17.0"
+    "@algolia/requester-common" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
-"@algolia/logger-common@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/logger-common/-/logger-common-4.15.0.tgz#a2cf3d3abbdd00594006164302600ba46d75059f"
-  integrity sha512-D8OFwn/HpvQz66goIcjxOKsYBMuxiruxJ3cA/bnc0EiDvSA2P2z6bNQWgS5gbstuTZIJmbhr+53NyOxFkmMNAA==
+"@algolia/logger-common@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/logger-common/-/logger-common-4.17.0.tgz#0fcea39c9485554edb4cdbfd965c5748b0b837ac"
+  integrity sha512-DGuoZqpTmIKJFDeyAJ7M8E/LOenIjWiOsg1XJ1OqAU/eofp49JfqXxbfgctlVZVmDABIyOz8LqEoJ6ZP4DTyvw==
 
-"@algolia/logger-console@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/logger-console/-/logger-console-4.15.0.tgz#8a0948b0c16ad546af9dd14b9021f21f42737c97"
-  integrity sha512-pQOvVaRSEJQJRXKTnxEA6nN1hipSQadJJ4einw0nIlfMOGZh/kps1ybh8vRUlUGyfEuN/3dyFs0W3Ac7hIItlg==
+"@algolia/logger-console@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/logger-console/-/logger-console-4.17.0.tgz#8ac56ef4259c4fa3eb9eb6586c7b4b4ed942e8da"
+  integrity sha512-zMPvugQV/gbXUvWBCzihw6m7oxIKp48w37QBIUu/XqQQfxhjoOE9xyfJr1KldUt5FrYOKZJVsJaEjTsu+bIgQg==
   dependencies:
-    "@algolia/logger-common" "4.15.0"
+    "@algolia/logger-common" "4.17.0"
 
-"@algolia/requester-browser-xhr@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.15.0.tgz#38b5956d01408ad4291d89915df921ff8534cca6"
-  integrity sha512-va186EfALF+6msYZXaoBSxcnFCg3SoWJ+uv1yMyhQRJRe7cZSHWSVT3s40vmar90gxlBu80KMVwVlsvJhJv6ew==
+"@algolia/requester-browser-xhr@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.17.0.tgz#f52fdeeac2f3c531f00838920af33a73066a159b"
+  integrity sha512-aSOX/smauyTkP21Pf52pJ1O2LmNFJ5iHRIzEeTh0mwBeADO4GdG94cAWDILFA9rNblq/nK3EDh3+UyHHjplZ1A==
   dependencies:
-    "@algolia/requester-common" "4.15.0"
+    "@algolia/requester-common" "4.17.0"
 
-"@algolia/requester-common@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-common/-/requester-common-4.15.0.tgz#c68ad3dccc1de71b5be9b08a07e2baf58ec49d82"
-  integrity sha512-w0UUzxElbo4hrKg4QP/jiXDNbIJuAthxdlkos9nS8KAPK2XI3R9BlUjLz/ZVs4F9TDGI0mhjrNHhZ12KXcoyhg==
+"@algolia/requester-common@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-common/-/requester-common-4.17.0.tgz#746020d2cbc829213e7cede8eef2182c7a71e32b"
+  integrity sha512-XJjmWFEUlHu0ijvcHBoixuXfEoiRUdyzQM6YwTuB8usJNIgShua8ouFlRWF8iCeag0vZZiUm4S2WCVBPkdxFgg==
 
-"@algolia/requester-node-http@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-node-http/-/requester-node-http-4.15.0.tgz#02f841586e620c7b4e4e555f315cd52dd815f330"
-  integrity sha512-eeEOhFtgwKcgAlKAZpgBRZJ0ILSEBCXxZ9uwfVWPD24W1b6z08gVoTJ6J7lCeCnJmudg+tMElDnGzHkjup9CJA==
+"@algolia/requester-node-http@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-node-http/-/requester-node-http-4.17.0.tgz#262276d94c25a4ec2128b1bdfb9471529528d8b9"
+  integrity sha512-bpb/wDA1aC6WxxM8v7TsFspB7yBN3nqCGs2H1OADolQR/hiAIjAxusbuMxVbRFOdaUvAIqioIIkWvZdpYNIn8w==
   dependencies:
-    "@algolia/requester-common" "4.15.0"
+    "@algolia/requester-common" "4.17.0"
 
-"@algolia/transporter@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@algolia/transporter/-/transporter-4.15.0.tgz#c65c512206c66aadc2897337220ae5454001967e"
-  integrity sha512-JoWR+ixG3EmA0UPntQFN/FV5TasYcYu93d5+oKzHFeZ6Z7rtW5Im9iy/Oh/ggk1AAN5fTdqKewtbBpdaYDbKsQ==
+"@algolia/transporter@4.17.0":
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/@algolia/transporter/-/transporter-4.17.0.tgz#6aabdbc20c475d72d83c8e6519f1191f1a51fb37"
+  integrity sha512-6xL6H6fe+Fi0AEP3ziSgC+G04RK37iRb4uUUqVAH9WPYFI8g+LYFq6iv5HS8Cbuc5TTut+Bwj6G+dh/asdb9uA==
   dependencies:
-    "@algolia/cache-common" "4.15.0"
-    "@algolia/logger-common" "4.15.0"
-    "@algolia/requester-common" "4.15.0"
+    "@algolia/cache-common" "4.17.0"
+    "@algolia/logger-common" "4.17.0"
+    "@algolia/requester-common" "4.17.0"
 
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
@@ -342,7 +351,14 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@babel/code-frame@^7.12.11", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6":
+"@babel/code-frame@^7.12.11":
+  version "7.21.4"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.21.4.tgz#d0fa9e4413aca81f2b23b9442797bda1826edb39"
+  integrity sha512-LYvhNKfwWSPpocw8GI7gpK2nq3HSDuEPC/uSYaALSJu9xjsalaaYFOq0Pwt5KmVqwEbZlDu81aLXwBOmD/Fv9g==
+  dependencies:
+    "@babel/highlight" "^7.18.6"
+
+"@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
   integrity sha512-TDCmlK5eOvH+eH7cdAFlNXeVJqWIQ7gW9tY1GJIpUtFb6CmjVyq2VM3u71bOyR8CRihcCgMUYoDNyLXao3+70Q==
@@ -2206,9 +2222,9 @@
   integrity sha512-88p7+M0QGxKpmnkfXjS4V26AnoC/eiqZutE8GLdaI5X12NY75bXSdTY9NkmYb2Xyk1O+MmkuO6Frmsj84V6I8Q==
 
 "@popperjs/core@^2.4.0":
-  version "2.11.6"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
-  integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
+  version "2.11.7"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.7.tgz#ccab5c8f7dc557a52ca3288c10075c9ccd37fff7"
+  integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -2856,24 +2872,24 @@ ajv@^6.1.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     uri-js "^4.2.2"
 
 algoliasearch@^4.10.5:
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.15.0.tgz#8279576f06667a1d0705e8c22a17daa8e707b469"
-  integrity sha512-+vgKQF5944dYsz9zhKk07JbOYeNdKisoD5GeG0woBL3nLzbn2a+nGwki60DXg7CXvaFXBcTXyJG4C+VaBVd44g==
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.17.0.tgz#46ed58b2b99509d041f11cd1ea83623edf84355f"
+  integrity sha512-JMRh2Mw6sEnVMiz6+APsi7lx9a2jiDFF+WUtANaUVCv6uSU9UOLdo5h9K3pdP6frRRybaM2fX8b1u0nqICS9aA==
   dependencies:
-    "@algolia/cache-browser-local-storage" "4.15.0"
-    "@algolia/cache-common" "4.15.0"
-    "@algolia/cache-in-memory" "4.15.0"
-    "@algolia/client-account" "4.15.0"
-    "@algolia/client-analytics" "4.15.0"
-    "@algolia/client-common" "4.15.0"
-    "@algolia/client-personalization" "4.15.0"
-    "@algolia/client-search" "4.15.0"
-    "@algolia/logger-common" "4.15.0"
-    "@algolia/logger-console" "4.15.0"
-    "@algolia/requester-browser-xhr" "4.15.0"
-    "@algolia/requester-common" "4.15.0"
-    "@algolia/requester-node-http" "4.15.0"
-    "@algolia/transporter" "4.15.0"
+    "@algolia/cache-browser-local-storage" "4.17.0"
+    "@algolia/cache-common" "4.17.0"
+    "@algolia/cache-in-memory" "4.17.0"
+    "@algolia/client-account" "4.17.0"
+    "@algolia/client-analytics" "4.17.0"
+    "@algolia/client-common" "4.17.0"
+    "@algolia/client-personalization" "4.17.0"
+    "@algolia/client-search" "4.17.0"
+    "@algolia/logger-common" "4.17.0"
+    "@algolia/logger-console" "4.17.0"
+    "@algolia/requester-browser-xhr" "4.17.0"
+    "@algolia/requester-common" "4.17.0"
+    "@algolia/requester-node-http" "4.17.0"
+    "@algolia/transporter" "4.17.0"
 
 almost-equal@^1.1.0:
   version "1.1.0"
@@ -4719,10 +4735,15 @@ core-js@^3.22.5, core-js@^3.3.2, core-js@^3.6.5, core-js@^3.7.0:
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.24.0.tgz"
   integrity sha512-IeOyT8A6iK37Ep4kZDD423mpi6JfPRoPUdQwEWYiGolvn4o6j2diaRzNfDfpTdu3a5qMbrGUzKUpYpRY8jXCkQ==
 
-core-js@^3.29.1, core-js@^3.8.3:
+core-js@^3.29.1:
   version "3.29.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.29.1.tgz#40ff3b41588b091aaed19ca1aa5cb111803fa9a6"
   integrity sha512-+jwgnhg6cQxKYIIjGtAHq2nwUOolo9eoFZ4sHfUH09BLXBgxnH4gA0zEd+t+BO2cNB8idaBtZFcFTRjQJRJmAw==
+
+core-js@^3.8.3:
+  version "3.30.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.1.tgz#fc9c5adcc541d8e9fa3e381179433cbf795628ba"
+  integrity sha512-ZNS5nbiSwDTq4hFosEDqm65izl2CWmLz0hARJMyNQBgkUZMIF51cQiMvIQKA6hvuaeWxQDP3hEedM1JZIgTldQ==
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -9553,7 +9574,7 @@ mapbox-gl@1.10.1:
     tinyqueue "^2.0.3"
     vt-pbf "^3.1.1"
 
-maplibre-gl@>=1.15.3:
+maplibre-gl@>=1.15.3, maplibre-gl@>=2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/maplibre-gl/-/maplibre-gl-2.4.0.tgz"
   integrity sha512-csNFylzntPmHWidczfgCZpvbTSmhaWvLRj9e1ezUDBEPizGgshgm3ea1T5TCNEEBq0roauu7BPuRZjA3wO4KqA==
@@ -9591,9 +9612,9 @@ marching-simplex-table@^1.0.0:
     convex-hull "^1.0.3"
 
 marked@^4.1.1:
-  version "4.2.12"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-4.2.12.tgz#d69a64e21d71b06250da995dcd065c11083bebb5"
-  integrity sha512-yr8hSKa3Fv4D3jdZmtMMPghgVt6TWbk86WQaWhDloQjRSQhMMYCAro7jP7VDJrjjdV8pxVxMssXS8B8Y5DZ5aw==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
+  integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
 
 mat4-decompose@^1.0.3:
   version "1.0.4"
@@ -15482,10 +15503,10 @@ zincjs@^1.0.0:
     url-polyfill "^1.1.7"
     webworkify-webpack "^2.1.5"
 
-zincjs@^1.0.11:
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/zincjs/-/zincjs-1.0.14.tgz#f74e8f430181d26c4d1fd96a81c90ba17b43404e"
-  integrity sha512-7h+N9YRCcchoX2JJYvEX3xBIz56BdiegT26JX1B0pX54a9jnlfo7HG3Bt0Q+oJRJJrqKxFiDSSKYcQuwpbTL4g==
+zincjs@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/zincjs/-/zincjs-1.0.15.tgz#0865f8e05b0d8dc7586167fe496accbd8898535a"
+  integrity sha512-Csnbvrgin7Ebo9kfFr071KzKDFcoDX03MoBz41h1hq6lG8MHJXjTHLP/EhF5kwbNhThH21rgz718D8rBvwTALA==
   dependencies:
     css-element-queries "^1.2.2"
     lodash "^4.17.19"
