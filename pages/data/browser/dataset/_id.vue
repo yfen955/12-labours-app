@@ -40,12 +40,12 @@
               <p>
                 <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <p v-if="detail_data.identifier.length > 0">
+              <div v-if="detail_data.identifier.length > 0">
                 <b>DOI: </b>
                 <div v-for="(item, i) in detail_data.identifier" :key="i" class="indent display-ellipsis --1">
                   <a :href="item" target="_blank">{{ item }}</a>
                 </div>
-              </p>
+              </div>
               <!-- need more data to display these infomation -->
               <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
               <p v-if="detail_data.files">
@@ -163,7 +163,7 @@
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
             <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
               <!-- view Scaffold -->
-              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="item.id">
+              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="i">
                 <el-card class="carousel">
                   <div class="gallery-img">
                     <img :src="generateImg('preview', item.filename, item.is_source_of)" alt="thumbnail" />
@@ -218,7 +218,7 @@
               </el-carousel-item>
 
               <!-- view thumbnail -->
-              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="item.id">
+              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="i">
                 <el-card class="carousel">
                   <div class="gallery-img">
                     <img :src="generateImg('preview', item.filename)" alt="thumbnail" />
