@@ -2,27 +2,34 @@
 
 ## Environment variables
 
-Here is the list of environment variables used by the app
+Here is the list of environment variables used by the app. After cloning the repository, please create a file named `.env` in the root directory and paste the variables.
 ```bash
-#This should point to the api server, the default value is http://localhost:8080
-API_URL=http://localhost:8080
+#This should point to the login system, the default value is http://localhost:8080
+API_URL=
 #Endpoint to the GraphCMS
 GRAPHCMS_ENDPOINT=
 #The client id for Google OAuth. They are provided from the Credentials setup on Google Cloud
 GOOGLE_CLIENT_ID=
 #Location of the xml educational material for 12 Labours
-TWELVE_LABOURS_XML=https://12-labours.s3.us-west-2.amazonaws.com/portal/docs
+TWELVE_LABOURS_XML=
 #An API Key to protect the server, this variable is required and should be the same when starting the api and app server
 API_KEY=
 #This is the client number for google analytics, this is not essential
 GOOGLE_ANALYTICS_GA4=
 #This is the api url of FastAPI backend
 QUERY_API_URL=
-#This is the url of the Map Viewer page
-BASEURL=localhost:3000
+#This is the base url
+BASEURL=
 #This is the API for the flatmap
 FLATMAP_API=
+# This is the api key for encryption
+SECRET_KEY=
 ```
+
+## Recommended versions of development tools
+Node.js: `14.17.6`
+
+yarn: `1.22.19`
 
 ## Build Setup
 

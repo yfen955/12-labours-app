@@ -18,8 +18,8 @@
             <section class="description">
               <p>
                 <b>Contributors: </b>
-                <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length">
-                  {{combineNames()}}
+                <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length" >
+                  {{ combineNames() }}
                 </span>
                 <a
                   v-else
@@ -27,7 +27,7 @@
                   :key="i"
                   :href="modifyLink(i)"
                 >
-                  {{modifyName(name, i)}}
+                  {{ modifyName(name, i) }}
                 </a>
               </p>
               <hr>
@@ -261,12 +261,12 @@
           </div>
           <img v-else :src="imgPlaceholder" alt="image" />
           <div>
-            <el-button class="left-top-btn" @click="changeTab('files')">
+            <el-button class="left-top-btn" @click="changeTab('files', true)">
               <span class="display-ellipsis --1">Get Dataset</span>
             </el-button>
           </div>
           <div>
-            <el-button class="left-top-btn secondary" @click="changeTab('cite')">
+            <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
           </div>
@@ -474,12 +474,14 @@ export default {
     },
 
     // change the tab by change the variable in the url
-    changeTab(val) {
+    changeTab(val, jump = false) {
       this.currentTab = val;
       this.$router.push({
         path: `${this.$route.path}`,
         query: { datasetTab: val }
-      })
+      });
+      if (jump)
+        this.$el.querySelector('.detail-container').scrollIntoView({ behavior: "smooth" });
     },
 
     // go to the map viewer with id
@@ -760,5 +762,8 @@ li {
     padding: 0 1.5rem 1.5rem;
     font-size: 1rem;
   }
+}
+.categories-nav {
+  margin-bottom: 1rem;
 }
 </style>
