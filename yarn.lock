@@ -222,10 +222,10 @@
     svg-inline-loader "^0.8.2"
     vue "^2.6.11"
 
-"@abi-software/twelve-labours-design-system-components@0.1.0-beta-7":
-  version "0.1.0-beta-7"
-  resolved "https://registry.npmjs.org/@abi-software/twelve-labours-design-system-components/-/twelve-labours-design-system-components-0.1.0-beta-7.tgz"
-  integrity sha512-GWdnFZmnjL4cJzZA1CI58IHEyaYboTBYEraA0YoWhUD3yrYo3Hvhod1iv9XkhARSchqNMn8NrUBsLEbmifMpmA==
+"@abi-software/twelve-labours-design-system-components@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@abi-software/twelve-labours-design-system-components/-/twelve-labours-design-system-components-0.1.1.tgz#a19fab558bdd2236cd9e4a52e8a58f7f7df80dee"
+  integrity sha512-pd9LxhnZ9/4DTHX6yebJikv26odHBYinQXdpAwR2z9QkE/B16KjSxfl8Ebl62yn8p9RQMMG60yJhJf1Y2Ip23g==
   dependencies:
     "@carbon/grid" "10.17.0"
     core-js "^3.6.5"
