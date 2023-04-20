@@ -18,12 +18,12 @@
             <section class="description">
               <p>
                 <b>Contributors: </b>
-                <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length" >
+                <span v-if="detail_data.contributor_name.length!==detail_data.contributor_orcid.length" >
                   {{ combineNames() }}
                 </span>
                 <a
                   v-else
-                  v-for="(name, i) in sampleData.contributor_name"
+                  v-for="(name, i) in detail_data.contributor_name"
                   :key="i"
                   :href="modifyLink(i)"
                 >
@@ -33,36 +33,36 @@
               <hr>
               <p>
                 <b>Description: </b>
-                {{ sampleData.subtitle[0] }}
+                {{ detail_data.subtitle[0] }}
               </p> 
             </section>
             <el-card shadow="never">
               <p>
-                <b>Viewing version:</b> {{ sampleData.metadata_version[0] }}
+                <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <p v-if="sampleData.identifier.length > 0">
+              <div v-if="detail_data.identifier.length > 0">
                 <b>DOI: </b>
-                <div v-for="(item, i) in sampleData.identifier" :key="i" class="indent display-ellipsis --1">
+                <div v-for="(item, i) in detail_data.identifier" :key="i" class="indent display-ellipsis --1">
                   <a :href="item" target="_blank">{{ item }}</a>
                 </div>
-              </p>
+              </div>
               <!-- need more data to display these infomation -->
-              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
-              <p v-if="sampleData.files">
-                <i class="el-icon-document-copy"></i> {{ sampleData.files }} files
+              <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
+              <p v-if="detail_data.files">
+                <i class="el-icon-document-copy"></i> {{ detail_data.files }} files
               </p>
-              <p v-if="sampleData.size">
-                <i class="el-icon-files"></i> {{ sampleData.size }} GB
+              <p v-if="detail_data.size">
+                <i class="el-icon-files"></i> {{ detail_data.size }} GB
               </p>
               <p>
-                <b>Latest version:</b> {{ sampleData.metadata_version[0] }}
+                <b>Latest version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <p v-if="sampleData.date">Date: {{ sampleData.date }}</p>
-              <p v-if="sampleData.other_version">View other version</p>
+              <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
+              <p v-if="detail_data.other_version">View other version</p>
             </el-card>
           </div>
-          <hr v-if="sampleData.download_num">
-          <div class="information-bottom" v-if="sampleData.download_num">
+          <hr v-if="detail_data.download_num">
+          <div class="information-bottom" v-if="detail_data.download_num">
             <p class="usage">
               <b>Usage Rights:</b> N/A
             </p>
@@ -94,18 +94,18 @@
             <p class="indent --2">
               <b>Anatomical structure:</b>
               <nobr
-                v-for="(organ, i) in sampleData.study_organ_system"
+                v-for="(organ, i) in detail_data.study_organ_system"
                 :key="i"
               >
-                <nobr v-if="i < sampleData.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }}, </nobr>
+                <nobr v-if="i < detail_data.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }}, </nobr>
                 <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
               </nobr>
             </p>
             <p class="indent --2"><b>Species:</b> N/A</p>
             <p class="indent --2"><b>Sex:</b> N/A</p>
             <p class="indent --2"><b>Age range:</b> N/A</p>
-            <div v-if="sampleData.number_of_samples[0] > 0 || sampleData.number_of_subjects[0] > 0">
-              <p class="indent --2"><b>Number of samples:</b> {{sampleData.number_of_samples[0]}} samples from {{sampleData.number_of_subjects[0]}} subjects</p>
+            <div v-if="detail_data.number_of_samples[0] > 0 || detail_data.number_of_subjects[0] > 0">
+              <p class="indent --2"><b>Number of samples:</b> {{detail_data.number_of_samples[0]}} samples from {{detail_data.number_of_subjects[0]}} subjects</p>
             </div>
             <div v-else>
               <p class="indent --2"><b>Number of samples:</b> N/A</p>
@@ -135,7 +135,7 @@
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
             <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of 12-labours datasets. To make it easy, the 12-labours Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
-            <div v-if="sampleData.identifier.length > 0">
+            <div v-if="detail_data.identifier.length > 0">
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">
                 <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
@@ -163,7 +163,7 @@
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
             <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
               <!-- view Scaffold -->
-              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="item.id">
+              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="i">
                 <el-card class="carousel">
                   <div class="gallery-img">
                     <img :src="generateImg('preview', item.filename, item.is_source_of)" alt="thumbnail" />
@@ -198,7 +198,7 @@
               </el-carousel-item>
 
               <!-- view Plot -->
-              <el-carousel-item v-show="has_plot" v-for="item in plot_manifest_data" :key="item.id">
+              <el-carousel-item v-show="plot_manifest_data.length > 0" v-for="item in plot_manifest_data" :key="item.id">
                 <el-card class="carousel">
                   <i class="el-icon-data-analysis"></i>
                   <p><b>Plot</b></p>
@@ -218,7 +218,7 @@
               </el-carousel-item>
 
               <!-- view thumbnail -->
-              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="item.id">
+              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="i">
                 <el-card class="carousel">
                   <div class="gallery-img">
                     <img :src="generateImg('preview', item.filename)" alt="thumbnail" />
@@ -260,7 +260,7 @@
             <img :src="generateImg('preview', scaffold_thumbnail_data[0].filename, scaffold_thumbnail_data[0].is_source_of)" alt="image" />
           </div>
           <img v-else :src="imgPlaceholder" alt="image" />
-          <div>
+          <!-- <div>
             <el-button class="left-top-btn" @click="changeTab('files', true)">
               <span class="display-ellipsis --1">Get Dataset</span>
             </el-button>
@@ -269,7 +269,7 @@
             <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
-          </div>
+          </div> -->
         </el-card>
 
         <el-card shadow="never" class="related-container">
@@ -290,7 +290,7 @@
             <div class="card-content">
               <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
               <div
-                v-for="(organ, i) in sampleData.study_organ_system"
+                v-for="(organ, i) in detail_data.study_organ_system"
                 :key="i"
               >
                 <el-button
@@ -326,15 +326,15 @@
             <div class="card-content">
               <span class="card-title">CONTRIBUTORS:</span><br/>
               <ul>
-                <li v-for="(name, i) in sampleData.contributor_name" :key="i">
-                  <span v-if="sampleData.contributor_name.length!==sampleData.contributor_orcid.length">
-                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                <li v-for="(name, i) in detail_data.contributor_name" :key="i">
+                  <span v-if="detail_data.contributor_name.length!==detail_data.contributor_orcid.length">
+                    {{modifyName(name, detail_data.contributor_name.length - 1)}}
                   </span>
                   <a
                     v-else
                     :href="modifyLink(i)"
                   >
-                    {{modifyName(name, sampleData.contributor_name.length - 1)}}
+                    {{modifyName(name, detail_data.contributor_name.length - 1)}}
                   </a>
                 </li>
               </ul>
@@ -363,22 +363,22 @@ const datasetTabs = [
     label: 'Cite',
     name: 'cite',
   },
-  {
-    label: 'Files',
-    name: 'files',
-  },
+  // {
+  //   label: 'Files',
+  //   name: 'files',
+  // },
   {
     label: 'Gallery',
     name: 'gallery',
   },
-  {
-    label: 'References',
-    name: 'references',
-  },
-  {
-    label: 'Versions',
-    name: 'versions',
-  }
+  // {
+  //   label: 'References',
+  //   name: 'references',
+  // },
+  // {
+  //   label: 'Versions',
+  //   name: 'versions',
+  // }
 ]
 
 export default {
@@ -410,16 +410,12 @@ export default {
       isLoading: true,
       datasetTabs,
       currentTab: '',
-      sampleData: [],
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
-      currentID: '',
-      plot_manifest_data: [],
-      has_plot: false,
-      contributorName: "",
+      detail_data: {},
+      title: '',
       scaffold_thumbnail_data: [],
+      plot_manifest_data: [],
       thumbnail_data: [],
-      thumbnailVisible: false,
-      title: "",
       apaCitation: [],
     }
   },
@@ -427,33 +423,12 @@ export default {
   created: async function() {
     this.currentTab = this.$route.query.datasetTab;
 
-    this.sampleData = await backendQuery.fetchQueryData('dataset_description', {submitter_id: [`${this.$route.params.id}-dataset_description`]});
-    this.sampleData = this.sampleData[0];
-    this.title = this.sampleData.title[0];
-
-    let img = {
-      additional_types: ["application/x.vnd.abi.scaffold.view+json"]
-    };
-    this.scaffold_thumbnail_data = await backendQuery.fetchQueryData('manifest', img, `${this.$route.params.id}`);
-
-    let thumbnail = {
-      file_type: [".jpg", ".png"]
-    };
-    let picture_data = await backendQuery.fetchQueryData('manifest', thumbnail, `${this.$route.params.id}`);
-    this.thumbnail_data = picture_data.filter(item => {
-      if (item.additional_types == null)
-        return item;
-    })
-
-    let plot = {
-      additional_types: ["text/vnd.abi.plot+Tab-separated-values", "text/vnd.abi.plot+tab-separated-values", "text/vnd.abi.plot+csv"]
-    };
-    this.plot_manifest_data = await backendQuery.fetchQueryData('manifest', plot, `${this.$route.params.id}`);
-    if (this.plot_manifest_data.length === 0) {
-      this.has_plot = false
-    } else {
-      this.has_plot = true
-    }
+    let data = await backendQuery.fetchQueryData('experiment_query', {submitter_id: [`${this.$route.params.id}`]});
+    this.detail_data = data[0].dataset_descriptions[0];
+    this.title = data[0].dataset_descriptions[0].title[0];
+    this.scaffold_thumbnail_data = data[0].scaffoldViews;
+    this.plot_manifest_data = data[0].plots;
+    this.thumbnail_data = data[0].thumbnails;
 
     await this.handleCitation();
 
@@ -461,7 +436,6 @@ export default {
   },
 
   methods: {
-    // go back to the data browser for datasets
     goToDataset() {
       this.$router.push({
         path:'/data/browser',
@@ -473,7 +447,6 @@ export default {
       })
     },
 
-    // change the tab by change the variable in the url
     changeTab(val, jump = false) {
       this.currentTab = val;
       this.$router.push({
@@ -484,7 +457,6 @@ export default {
         this.$el.querySelector('.detail-container').scrollIntoView({ behavior: "smooth" });
     },
 
-    // go to the map viewer with id
     viewMap(model, uuid) {
       let route = this.$router.resolve({
         name: `data-maps-${model}-id`,
@@ -495,7 +467,7 @@ export default {
 
     combineNames() {
       let result = '';
-      let name_list = this.sampleData.contributor_name;
+      let name_list = this.detail_data.contributor_name;
       name_list.map(item => {
         let person_names = item.split(', ');
         result += person_names[1] + ' ' + person_names[0] + ", ";
@@ -506,7 +478,7 @@ export default {
     modifyName(name, i) {
       let name_list = name.split(', ');
       let result
-      if (i === this.sampleData.contributor_name.length - 1)
+      if (i === this.detail_data.contributor_name.length - 1)
         result = name_list[1] + ' ' + name_list[0];
       else
         result = name_list[1] + ' ' + name_list[0] + ', ';
@@ -514,7 +486,7 @@ export default {
     },
 
     modifyLink(i) {
-      let link = this.sampleData.contributor_orcid[i];
+      let link = this.detail_data.contributor_orcid[i];
       if (!link.includes('http'))
         link = 'https://orcid.org/' + link;
       return link;
@@ -563,7 +535,7 @@ export default {
     },
 
     async handleCitation() {
-      for (let item of this.sampleData.identifier) {
+      for (let item of this.detail_data.identifier) {
         await axios
           .get(item, {
             headers: {
