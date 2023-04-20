@@ -11,10 +11,10 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@12-labours/mapintegratedvuer@^1.0.0-beta.0":
-  version "1.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.0.tgz#2421a20f015cc87b0e01f7d72415bdf602327f0b"
-  integrity sha512-eE7X/dSUil0G1LkU2B4uKQtm+41kmUpUHi+TzcLBYDI2O9M584xotaLRY9uyPWhHahJgR+S2NgE9v5aDEr+vYg==
+"@12-labours/mapintegratedvuer@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.1.tgz#8125126ee6715821b97e02adf0e9ea906a9c63c6"
+  integrity sha512-oeetPyv21ccmUHVXLm0wmUjQO0V5KigmUceFr88AvEPa5bvjcd/9Qo37zFVDX99jm9t8YeLhPxsouW6Ku3gW5w==
   dependencies:
     "@abi-software/flatmapvuer" "^0.4.0"
     "@abi-software/map-side-bar" "^2.0.0-response.1"
@@ -5763,7 +5763,7 @@ element-ui@^2.13.0:
     resize-observer-polyfill "^1.5.0"
     throttle-debounce "^1.0.1"
 
-element-ui@^2.15.13:
+element-ui@^2.14.1, element-ui@^2.15.0, element-ui@^2.15.13:
   version "2.15.13"
   resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.15.13.tgz#380f019ee7d15b181105587b41fd5914c308a143"
   integrity sha512-LJoatEYX6WV74FqXBss8Xfho9fh9rjDSzrDrTyREdGb1h1R3uRvmLh5jqp2JU137aj4/BgqA3K06RQpQBX33Bg==
