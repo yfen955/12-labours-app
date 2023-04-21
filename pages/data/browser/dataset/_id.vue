@@ -161,85 +161,7 @@
           
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="300px" v-if="!isLoading">
-              <!-- view Scaffold -->
-              <el-carousel-item v-show="scaffold_thumbnail_data.length > 0" v-for="(item, i) in scaffold_thumbnail_data" :key="i">
-                <el-card class="carousel">
-                  <div class="gallery-img">
-                    <img :src="generateImg('preview', item.filename, item.is_source_of)" alt="thumbnail" />
-                  </div>
-                  <p><b>Scaffold</b></p>
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    :content="generateFilename(item.filename)"
-                  >
-                    <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
-                  </el-popover>
-                  <div>
-                    <el-button @click="viewMap('scaffold', item.id)" class="model-button">
-                      View Scaffold
-                    </el-button>
-                  </div>
-                </el-card>
-              </el-carousel-item>
-
-              <!-- view Flatmap -->
-              <el-carousel-item>
-                <el-card class="carousel">
-                  <img :src="imgPlaceholder" alt="image" class="model-image">
-                  <p><b>Flatmap</b></p>
-                  <div>
-                    <el-button @click="viewMap('flatmap', 1)" class="model-button">
-                      View Flatmap
-                    </el-button>
-                  </div>
-                </el-card>
-              </el-carousel-item>
-
-              <!-- view Plot -->
-              <el-carousel-item v-show="plot_manifest_data.length > 0" v-for="item in plot_manifest_data" :key="item.id">
-                <el-card class="carousel">
-                  <i class="el-icon-data-analysis"></i>
-                  <p><b>Plot</b></p>
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    :content="generateFilename(item.filename)"
-                  >
-                    <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
-                  </el-popover>
-                  <div>
-                    <el-button @click="viewMap('plot', item.id)" class="model-button">
-                      View Plot
-                    </el-button>
-                  </div>
-                </el-card>
-              </el-carousel-item>
-
-              <!-- view thumbnail -->
-              <el-carousel-item v-show="thumbnail_data.length > 0" v-for="(item, i) in thumbnail_data" :key="i">
-                <el-card class="carousel">
-                  <div class="gallery-img">
-                    <img :src="generateImg('preview', item.filename)" alt="thumbnail" />
-                  </div>
-                  <p><b>Thumbnail</b></p>
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    :content="generateFilename(item.filename)"
-                  >
-                    <p slot="reference" class="model-name">{{ generateFilename(item.filename) }}</p>
-                  </el-popover>
-                  <div>
-                    <el-button @click="downloadImg(item.filename)" class="model-button">
-                      Download
-                    </el-button>
-                  </div>
-                </el-card>
-              </el-carousel-item>
-
-            </el-carousel>
+            <carousel-card :cards="models_list" v-if="!isLoading" />
           </span>
           
           <!-- references content -->
@@ -256,8 +178,8 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <div v-if="scaffold_thumbnail_data.length > 0">
-            <img :src="generateImg('preview', scaffold_thumbnail_data[0].filename, scaffold_thumbnail_data[0].is_source_of)" alt="image" />
+          <div v-if="dataset_img">
+            <img :src="dataset_img" alt="image" />
           </div>
           <img v-else :src="imgPlaceholder" alt="image" />
           <!-- <div>
@@ -415,8 +337,9 @@ export default {
       title: '',
       scaffold_thumbnail_data: [],
       plot_manifest_data: [],
-      thumbnail_data: [],
       apaCitation: [],
+      models_list: [],
+      dataset_img: ''
     }
   },
   
@@ -429,6 +352,9 @@ export default {
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
     this.plot_manifest_data = data[0].plots;
     this.thumbnail_data = data[0].thumbnails;
+
+    this.getDatasetImg();
+    this.handleModels(this.scaffold_thumbnail_data, this.plot_manifest_data, this.thumbnail_data);
 
     await this.handleCitation();
 
@@ -567,7 +493,62 @@ export default {
       inputNode.className = 'oInput';
       inputNode.style.display = 'none';
       this.$message.success('copied');
-    }
+    },
+
+    handleModels(scaffold, plot, thumbnail) {
+      scaffold.forEach((item) => {
+        let model = {
+          type: "Scaffold",
+          imageUrl: this.generateImg('preview', item.filename, item.is_source_of),
+          filename: this.generateFilename(item.filename),
+          id: item.id,
+          imageDownload: ""
+        };
+        this.models_list.push(model);
+      })
+      let flatmap = {
+        type: "Flatmap",
+        imageUrl: this.imgPlaceholder,
+        filename: "",
+        id: 1,
+        imageDownload: ""
+      }
+      this.models_list.push(flatmap);
+      plot.forEach((item) => {
+        let model = {
+          type: "Plot",
+          imageUrl: "",
+          filename: this.generateFilename(item.filename),
+          id: item.id,
+          imageDownload: ""
+        };
+        this.models_list.push(model);
+      })
+      thumbnail.forEach((item) => {
+        let model = {
+          type: "Thumbnail",
+          imageUrl: this.generateImg('preview', item.filename, item.is_source_of),
+          filename: this.generateFilename(item.filename),
+          id: item.id,
+          imageDownload: this.generateImg('download', item.filename)
+        };
+        this.models_list.push(model);
+      })
+    },
+
+    getDatasetImg() {
+      let item = {};
+      if (this.scaffold_thumbnail_data.length > 0) {
+        item = this.scaffold_thumbnail_data[0];
+      } else if (this.thumbnail_data.length > 0) {
+        item = this.thumbnail_data[0];
+      }
+      if (!item) {
+        this.dataset_img = this.imgPlaceholder;
+      } else {
+        this.dataset_img = this.generateImg('preview', item.filename, item.is_source_of);
+      }
+    },
   },
 }
 </script>
