@@ -5,7 +5,7 @@
             <div class="image-frame">
                 <img id="img-user" :src="require(`~/static/img/${specs.imgFile}`)"/>
             </div>           
-            <div class="detail display-ellipsis --7">
+            <div class="detail display-ellipsis --5">
                 <span>
                     {{specs.detail}}
                 </span>
