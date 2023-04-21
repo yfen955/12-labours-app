@@ -1,6 +1,15 @@
 <template>
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
+    <!-- About 12 Labours -->
+    <div class="about container-default shaded flex-box">
+      <div class="vertical-flex">
+        <h1 class="top-heading">
+          {{about.title.toUpperCase() }}
+        </h1>
+        <div v-html="about.content.html"/>
+      </div>
+    </div>
     <!-- Project Aims & Information -->
     <div class="project container-default flex-box">
       <div class="project__item default-inner">
@@ -30,7 +39,7 @@
         </el-collapse>
       </div>
     </div>
-    <latest-news :newsList="topNews.newsList"/>
+    <!-- <latest-news :newsList="topNews.newsList"/> -->
     <latest-events :eventsList="topEvents.eventsList"/>
     <!-- Partners -->
     <section-with-image :title="partners.title">

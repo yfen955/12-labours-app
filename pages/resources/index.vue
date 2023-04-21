@@ -6,6 +6,7 @@
       <div class="wide-cards">
         <card-small class="item" :specs="dataAndModels"/>
         <card-small class="item" :specs="tools"/>
+        <card-small class="item" :specs="workflows"/>
       </div>          
     </div>
     <div class="container-default shaded">
@@ -56,14 +57,27 @@ export default {
         title:'Tools',
         imgFile:'researcher-in-frame.png',
         detail:'Want the latest research tools.',
-        btnLink:{caption:'Find Research Tools', to:'/'}
+        btnLink:{caption:'Find Research Tools', to: {
+          path: '/data/browser',
+          query: {
+            type: 'tools',
+            page: 1,
+            limit: 10,
+          }
+        }}
+      },
+      workflows:{
+        title:'Workflows',
+        imgFile:'clinician-in-frame.png',
+        detail:'camera images -> point clouds -> scaffolds -> reduced parameter statistical shape models',
+        btnLink:{caption:'Find Research Data', to:'/workflow'}
       },
       technicalResources:{
         title:'Technical Resources',
         imgFile:'researcher-in-frame.png',
         detail:'Learn all about API Access, how to use the modelling workflows and how to connect devices to models.',
         //btnLink:{caption:'View Technical Resources', to:'/'}
-        btnLink:{caption:'View More', to:'/'}
+        btnLink:{caption:'View More', to:'/resources/technical'}
       },
       educationalResources:{
         title:'Educational Resources',
@@ -77,7 +91,7 @@ export default {
         imgFile:'patient-in-frame.png',
         detail:'Learn all about the medical benefits the 12 Labours portal could help, including disease information and publications.',
         //btnLink:{caption:'View Medical Resources', to:'/'}
-        btnLink:{caption:'View More', to:'/'}
+        btnLink:{caption:'View More', to:'/resources/medical'}
       }
     }
   }

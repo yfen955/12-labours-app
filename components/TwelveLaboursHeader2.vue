@@ -102,11 +102,11 @@ export default {
             displayTitle: "News & Events",
             href: "/news-and-events"
           },
-          {
-            title: "search",
-            displayTitle: "Search",
-            href: "/search"
-          }
+          // {
+          //   title: "search",
+          //   displayTitle: "Search",
+          //   href: "/search"
+          // }
         ]
       }
     },

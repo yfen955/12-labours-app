@@ -26,12 +26,17 @@ FLATMAP_API=
 SECRET_KEY=
 ```
 
-## Recommended versions of development tools
+## Development tools
+
+Before setup the project, please install the Node.js and Yarn (package manager). Here are recommended versions: 
+
 Node.js: `14.17.6`
 
-yarn: `1.22.19`
+Yarn: `1.22.19`
 
 ## Build Setup
+
+Please run the first command to install the dependencies, then run the second command to open the portal.
 
 ```bash
 # install dependencies
