@@ -3,19 +3,19 @@ describe('test api in data browser page', () =>{
     cy.fixture('gen3Info.json').as('gen3');
     // gen3 information
     cy.get('@gen3').then((gen3) => {
-      cy.intercept('GET', 'http://localhost:8000/program', {
+      cy.intercept('GET', `${Cypress.env('query_url')}/program`, {
         statusCode: 200, body: gen3.program
       });
-      cy.intercept('GET', 'http://localhost:8000/project/demo1', {
+      cy.intercept('GET', `${Cypress.env('query_url')}/project/demo1`, {
         statusCode: 200, body: gen3.project
       });
     });
     // filter data
-    cy.intercept('GET', 'http://localhost:8000/filter/?sidebar=false', {
+    cy.intercept('GET', `${Cypress.env('query_url')}/filter/?sidebar=false`, {
       fixture: 'filterData.json'
     }).as('getFilter');
     // dataset metadata
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'multipleDatasetsMetadata.json'
     }).as('getDataset');
 
@@ -38,7 +38,7 @@ describe('test api in data browser page', () =>{
     cy.contains('Samples 1 samples out of 1 objects');
 
     // filter
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'filteredDatasets.json'
     });
     cy.get('.el-collapse-item__header').filter(':contains("MIME TYPE")').click();
@@ -46,27 +46,27 @@ describe('test api in data browser page', () =>{
     cy.contains('11 Results | Showing');
     cy.get('a').should('contain', 'Generic sheep brainstem scaffold');
     // switch to 'or' relation
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       statusCode: 404,
       times: 1
     });
     cy.get('.el-collapse-item__header').filter(':contains("SEX")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Female")').click();
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'filterANDsearchDataset.json'
     });
     cy.get('.el-switch.is-checked').click();
     cy.contains('12 Results | Showing');
 
     // page number
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'turnPageDatasets.json'
     });
     cy.get('.pagination-container.top').find('ul.el-pager').children('li.number').filter(':contains("2")').click();
     cy.get('a').should('contain', 'Generic sheep brainstem scaffold');
 
     // page size
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'allDatasets.json'
     });
     cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
@@ -75,13 +75,13 @@ describe('test api in data browser page', () =>{
     cy.get('a.title-link').should('have.length', 12);
     
     // search
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       statusCode: 404,
       times: 1
     });
     cy.get('.el-switch__core').click();
     cy.get('input[placeholder="Enter search criteria"]').type('human');
-    cy.intercept('POST', 'http://localhost:8000/graphql/pagination/?search=human', {
+    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=human`, {
       fixture: 'searchedDatasets.json'
     });
     cy.get('.el-button.search-btn.el-button--default').click();

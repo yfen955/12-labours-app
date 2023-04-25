@@ -5,10 +5,9 @@ describe('test components that uses api', () =>{
     cy.get('@dataset').then((dataset) => {
       cy.intercept({
         method: 'POST', 
-        url: 'http://localhost:8000/graphql/query',
-        times: 1
+        url: `${Cypress.env('query_url')}/graphql/query`
       }, (req) => {
-        expect(req.body.node).to.include('dataset_description');
+        expect(req.body.node).to.include('experiment_query');
         req.reply(dataset);
       }).as('getDataset');
     });
@@ -63,5 +62,10 @@ describe('test components that uses api', () =>{
 
     // citation
     cy.get(".citation-content.indent").find('div').should('contain', 'Saha, A., Harowicz, M. R., Grimm, L. J., Kim, C. E., Ghate, S. V., Walsh, R., & Mazurowski, M. A. (2018). A machine learning approach to radiogenomics of breast cancer: a study of 922 subjects and 529 DCE-MRI features. British Journal of Cancer, 119(4), 508–516. https://doi.org/10.1038/s41416-018-0185-8');
+
+    // gallery
+    cy.get('#tab-gallery').click();
+    cy.get('.el-carousel__arrow--right').click();
+    cy.get('p').should('contain', 'thumbnail_0.jpg');
   })
 })

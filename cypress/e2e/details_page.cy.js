@@ -30,7 +30,7 @@ describe('gallery tab', () =>{
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=gallery');
     cy.wait(10000);
     cy.get('.el-card.carousel').should('have.length', 4);
-    cy.get('.gallery-img').find('img').should('have.attr', 'alt', 'thumbnail');
+    cy.get('.model-image').find('img').should('have.attr', 'alt', 'thumbnail');
   })
 
   it('open a scaffold in gallery', () => {

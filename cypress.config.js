@@ -8,4 +8,7 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
+  env: {
+    query_url: 'https://abi-12-labours-api.herokuapp.com',
+  },
 });
