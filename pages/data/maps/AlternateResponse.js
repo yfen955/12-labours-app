@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /* eslint-disable no-alert, no-console */
 const searchDataset = async (payload, callback) => {
     let data = {};
@@ -49,17 +51,12 @@ const searchDataset = async (payload, callback) => {
       limit: payload.numberPerPage,
       page: payload.page,
     };
-    await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        Accept: "application.json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postPayload), // body data type must match "Content-Type" header
-      Cache: "default",
-    })
-      .then((response) => response.json())
-      .then((json) => (data = json));
+    await axios
+      .post(url, postPayload)
+      .then((response) => data = response.data)
+      .catch((err) => {
+        console.log(err);
+      });
     // const element = {};
     // const searchData = {
     //   total: 5, //Total number of items
@@ -95,16 +92,12 @@ const searchDataset = async (payload, callback) => {
   const getFacets = async (payload, callback) => {
     let facet = {};
     let url = `${process.env.query_api_url}/filter/?sidebar=true`;
-    await fetch(url, {
-      method: "GET", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        Accept: "application.json",
-        "Content-Type": "application/json",
-      },
-      Cache: "default",
-    })
-      .then((response) => response.json())
-      .then((json) => (facet = json));
+    await axios
+      .get(url)
+      .then((response) => facet = response.data)
+      .catch((err) => {
+        console.log(err);
+      });
     // const facets = [
     //   {
     //     key: "anatomy.organ.name",
