@@ -50,7 +50,7 @@ export default {
 .banner-home{
   display:flex; 
       
-  background:url("~static/img/virtual-screen.png") no-repeat center center fixed; 
+  background:url("~static/img/digital-twin.png") no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -71,6 +71,7 @@ export default {
 }
   
  .title-box{
+    margin: 20rem 25rem;
     height:fit-content;
     border-radius:1.25rem;
     background-color: $blue;
