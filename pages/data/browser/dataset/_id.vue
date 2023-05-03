@@ -138,7 +138,7 @@
             <div v-if="detail_data.identifier.length > 0">
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">
-                <el-button icon="el-icon-copy-document" class="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
+                <el-button icon="el-icon-copy-document" id="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
                 <div class="citation-content indent">
                   <div v-for="(item, i) in apaCitation" :key="i" v-html="item"></div>
                 </div>
@@ -204,7 +204,7 @@
             <hr>
             <div class="card-content">
               <span class="card-title">TYPE:</span><br/>
-              <el-button @click="goToDataset" class="secondary">
+              <el-button @click="goToDataset" class="secondary" id="datasetBrowser">
                 <span class="display-ellipsis --1">Dataset</span>
               </el-button>
             </div>
@@ -491,6 +491,7 @@ export default {
       inputNode.select();
       document.execCommand('copy');
       inputNode.className = 'oInput';
+      inputNode.id = 'clipboard';
       inputNode.style.display = 'none';
       this.$message.success('copied');
     },
@@ -702,7 +703,7 @@ li {
   flex-direction: row-reverse;
   flex-wrap: wrap;
   background-color: $background;
-  .copy-btn {
+  #copy-btn {
     background-color: transparent;
     border: none;
     color: black;

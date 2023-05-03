@@ -5,6 +5,7 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
+        class="top"
       />
       <!-- data details -->
       <div class="data-container">
@@ -67,6 +68,7 @@
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
         :totalCount="totalCount"
+        class="bottom"
       />
     </div>
     <div v-else class="no-result">

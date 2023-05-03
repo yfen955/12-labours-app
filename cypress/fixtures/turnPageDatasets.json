@@ -1,0 +1,259 @@
+{
+    "items": [
+        {
+            "contributors": [
+                "Sukasem, Atchariya",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "brainstem",
+                "sheep"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic sheep brainstem scaffold",
+            "datasetId": "dataset-219-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/sheep_brainstem_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/sheep_brainstem_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/sheep_brainstem_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f313b3dd-b111-4d4b-8b57-e990798a5d37",
+                        "path": "derivative/sheep_brainstem_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "8b407bfe-e9d6-4a45-a81c-386184beecdd",
+                    "name": "sheep_brainstem_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/sheep_brainstem_Layout1_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_Layout1_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f313b3dd-b111-4d4b-8b57-e990798a5d37",
+                        "path": "derivative/sheep_brainstem_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "d6bffcd8-eede-437c-9fac-ca4d88b93cd5",
+                    "name": "sheep_brainstem_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "embed",
+                "organ",
+                "lungs",
+                "heart"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Pig whole-body with embedded organs using automatic workflow for inserting the organs",
+            "datasetId": "dataset-227-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/pig_body_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_body_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "d379e97a-fad0-419d-b67a-4d98dfab36aa",
+                        "path": "derivative/pig_body_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "a739ea53-de3c-4519-bc63-95d41fcdb01d",
+                    "name": "pig_body_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_body_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_body_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "d379e97a-fad0-419d-b67a-4d98dfab36aa",
+                        "path": "derivative/pig_body_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "63f68f3e-69cd-4416-ae5a-3d464779ccb1",
+                    "name": "pig_body_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        }
+    ],
+    "numberPerPage": 10,
+    "page": 2,
+    "total": 12
+}

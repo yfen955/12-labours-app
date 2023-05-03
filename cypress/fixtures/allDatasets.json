@@ -1,0 +1,2358 @@
+{
+    "items": [
+        {
+            "contributors": [
+                "Larauche, Muriel",
+                "Wang, Yushan",
+                "Wang, Po-Min",
+                "Dubrovsky, Genia",
+                "Lo, Yi-Kai",
+                "Hsiang, Ian",
+                "Dunn, James C",
+                "Liu, Wentai",
+                "Taché, Yvette",
+                "Mulugeta, Million"
+            ],
+            "keywords": [
+                "Electroceutical-therapy",
+                " autonomic",
+                " pelvic",
+                " gastrointestinal",
+                " pre-clinical"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 28,
+            "name": "Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig",
+            "datasetId": "dataset-34-version-5",
+            "organs": [],
+            "species": [
+                "Pig"
+            ],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_distal-colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_distal-colon_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "bfdb4f9a-1301-4c16-b9bd-0aa8e121c097",
+                    "name": "sub-all_direct-stim_distal-colon_view.json"
+                },
+                {
+                    "image_url": "/derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_thumbnail.jpg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_proximal-colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_proximal-colon_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "8a90430b-e863-4ec4-8c05-656fa3998409",
+                    "name": "sub-all_direct-stim_proximal-colon_view.json"
+                },
+                {
+                    "image_url": "/derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_thumbnail.jpg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_transverse-colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_transverse-colon_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "209b2cf1-2579-4197-bfef-99a1edeab203",
+                    "name": "sub-all_direct-stim_transverse-colon_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_transverse-colon_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_transverse-colon/sub-all_direct-stim_transverse-colon_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "db67ce28-4cba-4bca-b11b-ad8ae6fc864e",
+                    "name": "sub-all_direct-stim_transverse-colon_metadata.json"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_distal-colon_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "62ff77eb-7d27-4cbc-b1fd-bf43e3b387f7",
+                    "name": "sub-all_direct-stim_distal-colon_metadata.json"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sub-all_direct-stim_proximal-colon_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "af7222c9-6921-49b1-bc59-09e6b757febb",
+                    "name": "sub-all_direct-stim_proximal-colon_metadata.json"
+                }
+            ],
+            "thumbnails": [
+                {
+                    "image_url": "/docs/Proximal colon stimulation.jpg",
+                    "additional_mimetype": {
+                        "name": ""
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1c7574b6-9f66-4e78-ba31-d3e16f659412",
+                        "path": "docs/Proximal colon stimulation.jpg"
+                    },
+                    "file_type": {
+                        "name": ".jpg"
+                    },
+                    "identifier": "d5104435-e78e-476a-a557-ae19c7bac626",
+                    "name": "Proximal colon stimulation.jpg"
+                }
+            ]
+        },
+        {
+            "contributors": [
+                "Lin, Mabelle",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "colon",
+                " mouse",
+                " mesenteric zone",
+                " transverse colon",
+                "proximal colon",
+                "distal colon"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic mouse colon scaffold",
+            "datasetId": "dataset-76-version-7",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/mouse_colon_proximalColon_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/mouse_colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouse_colon_proximalColon_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_proximalColon_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f7a08ea9-adb3-4569-b883-340edf3152d8",
+                        "path": "derivative/mouse_colon_proximalColon_view.json"
+                    },
+                    "file_type": {
+                        "name": ".jpeg"
+                    },
+                    "identifier": "90711591-53f3-4d15-82ad-51c7f769318d",
+                    "name": "mouse_colon_proximalColon_view.json"
+                },
+                {
+                    "image_url": "/derivative/mouse_colon_transverseColon_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/mouse_colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouse_colon_transverseColon_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_transverseColon_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f7a08ea9-adb3-4569-b883-340edf3152d8",
+                        "path": "derivative/mouse_colon_transverseColon_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "5a72f474-00b3-41be-a71d-11056ac66ad2",
+                    "name": "mouse_colon_transverseColon_view.json"
+                },
+                {
+                    "image_url": "/derivative/mouse_colon_distalColon_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/mouse_colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouse_colon_distalColon_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_distalColon_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f7a08ea9-adb3-4569-b883-340edf3152d8",
+                        "path": "derivative/mouse_colon_distalColon_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "ecfe1b06-eb33-461e-ad34-92456c8cbfc6",
+                    "name": "mouse_colon_distalColon_view.json"
+                },
+                {
+                    "image_url": "/derivative/mouse_colon_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/mouse_colon_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouse_colon_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f7a08ea9-adb3-4569-b883-340edf3152d8",
+                        "path": "derivative/mouse_colon_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "17284227-61e0-4aff-8694-bd6c4ee28076",
+                    "name": "mouse_colon_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouse_colon_distalColon_view.json",
+                                "derivative/mouse_colon_Layout1_view.json",
+                                "derivative/mouse_colon_proximalColon_view.json",
+                                "derivative/mouse_colon_transverseColon_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouse_colon_distalColon_view.json",
+                                    "mouse_colon_Layout1_view.json",
+                                    "mouse_colon_proximalColon_view.json",
+                                    "mouse_colon_transverseColon_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f7a08ea9-adb3-4569-b883-340edf3152d8",
+                        "path": "derivative/mouse_colon_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "84f5a723-86e7-4820-aad6-941428e1d929",
+                    "name": "mouse_colon_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Osanlouy, Mahyar",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "heart",
+                "pig",
+                "cardiac zone",
+                "ventricles",
+                "atria",
+                "coronary"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic pig heart scaffold",
+            "datasetId": "dataset-102-version-4",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/pig_heart_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/pig_heart_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_heart_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_heart_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_heart_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "11a285ec-f063-4092-9c99-59f4a35e7bc1",
+                        "path": "derivative/pig_heart_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f",
+                    "name": "pig_heart_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_heart_Layout1_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_heart_Layout1_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "11a285ec-f063-4092-9c99-59f4a35e7bc1",
+                        "path": "derivative/pig_heart_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "45dcc382-40a7-4ca8-9da6-441f226c5958",
+                    "name": "pig_heart_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "human"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Human whole-body scaffold",
+            "datasetId": "dataset-134-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail1.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/human_morph_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_morph_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail1.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail1.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1d6ac684-deeb-4586-967c-532af42f65f7",
+                        "path": "derivative/human_morph_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "fd80b88a-faf5-4fd1-acbe-7b5d28acf410",
+                    "name": "human_morph_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/human_morph_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_morph_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "1d6ac684-deeb-4586-967c-532af42f65f7",
+                        "path": "derivative/human_morph_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "881c9e09-8d3c-4836-8fe2-9b0f7c0c75b3",
+                    "name": "human_morph_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Lin, Mabelle",
+                "Sorby, Hugh",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "time series",
+                "physiological data",
+                "plot"
+            ],
+            "numberSamples": 3,
+            "numberSubjects": 8,
+            "name": "Test case for physiological data visualisation",
+            "datasetId": "dataset-141-version-3",
+            "organs": [],
+            "species": [
+                "Pig",
+                "Cat",
+                "Human"
+            ],
+            "plots": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "derivative/pool-1/RNAseq_PR1643-normalized-gene-counts.txt"
+                    },
+                    "file_type": {
+                        "name": ".txt"
+                    },
+                    "identifier": "68ab58cc-8739-45ae-94c2-297c295e311f",
+                    "name": "RNAseq_PR1643-normalized-gene-counts.txt"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+csv"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "derivative/pool-1/RAGP_4subs_negddct_matrix.csv"
+                    },
+                    "file_type": {
+                        "name": ".csv"
+                    },
+                    "identifier": "f8d2b33e-b02d-4c18-a9c0-6f0a3f0ae1f2",
+                    "name": "RAGP_4subs_negddct_matrix.csv"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+csv"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "derivative/pool-1/RAGP_4subs_raw_Ct.csv"
+                    },
+                    "file_type": {
+                        "name": ".csv"
+                    },
+                    "identifier": "03cd917e-3fba-4d4d-b374-d5d1e70bd989",
+                    "name": "RAGP_4subs_raw_Ct.csv"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+Tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'delimiter': 'tab', 'y-axes-columns': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-1/sam-1/subject1.txt"
+                    },
+                    "file_type": {
+                        "name": ".txt"
+                    },
+                    "identifier": "d457f987-8079-4932-80ee-ab1e8d6cf285",
+                    "name": "subject1.txt"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+Tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'delimiter': 'tab', 'y-axes-columns': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-2/sam-2/subject2.txt"
+                    },
+                    "file_type": {
+                        "name": ".txt"
+                    },
+                    "identifier": "574dd3d8-1a09-47ef-903e-bed2153249a7",
+                    "name": "subject2.txt"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+Tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'delimiter': 'tab', 'y-axes-columns': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-3/sam-3/subject3.txt"
+                    },
+                    "file_type": {
+                        "name": ".txt"
+                    },
+                    "identifier": "ec9901c8-c009-433e-8c1e-d7ba29da44b2",
+                    "name": "subject3.txt"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_SidePosition_Fill1-11_20_2018-1_32_47_PM_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "DamaserSPARC_Device_SidePosition_Fill1-11_20_2018-1_32_47_PM_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_SidePosition_Fill1-11_20_2018-1_32_47 PM.tsv"
+                    },
+                    "file_type": {
+                        "name": ".tsv"
+                    },
+                    "identifier": "82c78fc7-a6c1-4ee2-b9fc-d40b31afe762",
+                    "name": "DamaserSPARC_Device_SidePosition_Fill1-11_20_2018-1_32_47 PM.tsv"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_bolusFill6_3-11_20_2018-12_36_24_PM_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "DamaserSPARC_Device_bolusFill6_3-11_20_2018-12_36_24_PM_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_bolusFill6_3-11_20_2018-12_36_24 PM.tsv"
+                    },
+                    "file_type": {
+                        "name": ".tsv"
+                    },
+                    "identifier": "1171b883-15a0-4b47-a086-785a04973639",
+                    "name": "DamaserSPARC_Device_bolusFill6_3-11_20_2018-12_36_24 PM.tsv"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Calibration-preinsert-11_20_2018-9_23_41_AM_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "DamaserSPARC_Calibration-preinsert-11_20_2018-9_23_41_AM_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Calibration-preinsert-11_20_2018-9_23_41 AM.tsv"
+                    },
+                    "file_type": {
+                        "name": ".tsv"
+                    },
+                    "identifier": "864af2e8-2666-4125-b2b6-97a5846183b0",
+                    "name": "DamaserSPARC_Calibration-preinsert-11_20_2018-9_23_41 AM.tsv"
+                },
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "text/vnd.abi.plot+tab-separated-values"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_bolusFill9_3-11_20_2018-1_16_01_PM_thumbnail.jpg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "DamaserSPARC_Device_bolusFill9_3-11_20_2018-1_16_01_PM_thumbnail.jpg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": "{'version': '1.1.0', 'type': 'plot', 'attrs': {'style': 'timeseries', 'no-header': true}}"
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f1c757db-176d-46a8-9fc4-6eda48dde064",
+                        "path": "primary/sub-cat5/ses-1_cat5/DamaserSPARC_Device_bolusFill9_3-11_20_2018-1_16_01 PM.tsv"
+                    },
+                    "file_type": {
+                        "name": ".tsv"
+                    },
+                    "identifier": "72ee44d0-f06a-4494-bb3b-5d7c467dbb8b",
+                    "name": "DamaserSPARC_Device_bolusFill9_3-11_20_2018-1_16_01 PM.tsv"
+                }
+            ],
+            "scaffoldViews": [],
+            "scaffolds": [],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Sukasem, Atchariya",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "lung",
+                " rat"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic rat lung scaffold",
+            "datasetId": "dataset-146-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/rat_lung_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/rat_lung_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "rat_lung_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/rat_lung_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "rat_lung_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "964e740a-7976-4205-9529-09b1caf638a7",
+                        "path": "derivative/rat_lung_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "c1753ebe-b123-4b20-8a1a-feab23b1f1f5",
+                    "name": "rat_lung_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/rat_lung_Layout1_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "rat_lung_Layout1_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "964e740a-7976-4205-9529-09b1caf638a7",
+                        "path": "derivative/rat_lung_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "6fe93578-5d40-441d-b5b6-9297fc4a701a",
+                    "name": "rat_lung_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "mouse",
+                "embed",
+                "organ",
+                "lungs",
+                "stomach",
+                "bladder",
+                "heart",
+                "colon"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Mouse whole-body scaffold with embedded organs",
+            "datasetId": "dataset-167-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/mouseBody_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouseBody_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "5412cbb8-0843-4e46-b309-f67c20eea2ea",
+                        "path": "derivative/mouseBody_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "f564c146-3c31-4aa5-9eb9-706d419d4285",
+                    "name": "mouseBody_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/mouseBody_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "mouseBody_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "5412cbb8-0843-4e46-b309-f67c20eea2ea",
+                        "path": "derivative/mouseBody_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "2a97dba0-1005-4c8d-aa63-7353de9c6e21",
+                    "name": "mouseBody_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Nickerson, David",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "mouse",
+                "embed",
+                "organ",
+                "lungs",
+                "stomach",
+                "bladder",
+                "heart",
+                "colon"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Human whole-body with embedded organs using automatic workflow for inserting the organs",
+            "datasetId": "dataset-182-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/human_body_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_body_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
+                        "path": "derivative/human_body_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "c442772a-e2cd-42fc-ab4a-06961842155a",
+                    "name": "human_body_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/human_body_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "human_body_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "7e7b4c86-e01f-4f89-9098-89fbe95fda2b",
+                        "path": "derivative/human_body_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "106b9ab0-385c-4279-9d80-2d0b78016a68",
+                    "name": "human_body_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Nickerson, David",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "mouse",
+                "embed",
+                "organ",
+                "lungs",
+                "stomach",
+                "bladder",
+                "heart",
+                "colon"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Rat whole-body with embedded organs using automatic workflow for inserting the organs",
+            "datasetId": "dataset-186-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/rat_body_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "rat_body_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "bf8a8312-8c8c-4fd3-a9bf-64551d5cae83",
+                        "path": "derivative/rat_body_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "92c094a5-8be9-4a86-81f9-830732d0575f",
+                    "name": "rat_body_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/rat_body_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "rat_body_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "bf8a8312-8c8c-4fd3-a9bf-64551d5cae83",
+                        "path": "derivative/rat_body_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "34c79f5c-82d8-48a6-8d8b-0a782a699d47",
+                    "name": "rat_body_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Sukasem, Atchariya",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "brainstem",
+                "pig"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic pig brainstem scaffold",
+            "datasetId": "dataset-217-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/pig_brainstem_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/pig_brainstem_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_brainstem_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_brainstem_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_brainstem_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "22c4459b-5f4f-4e62-abd2-2aa205fe838b",
+                        "path": "derivative/pig_brainstem_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": "json"
+                    },
+                    "identifier": "fd65a93f-ff62-45e4-b7b6-96419ef4f749",
+                    "name": "pig_brainstem_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_brainstem_Layout1_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_brainstem_Layout1_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "22c4459b-5f4f-4e62-abd2-2aa205fe838b",
+                        "path": "derivative/pig_brainstem_metadata.json"
+                    },
+                    "file_type": {
+                        "name": "json"
+                    },
+                    "identifier": "70ba78fb-b0b9-4054-8f58-43f11ede529a",
+                    "name": "pig_brainstem_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Sukasem, Atchariya",
+                "Christie, Richard",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "brainstem",
+                "sheep"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Generic sheep brainstem scaffold",
+            "datasetId": "dataset-219-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/sheep_brainstem_Layout1_thumbnail.jpeg",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/sheep_brainstem_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/sheep_brainstem_Layout1_thumbnail.jpeg"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_Layout1_thumbnail.jpeg"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f313b3dd-b111-4d4b-8b57-e990798a5d37",
+                        "path": "derivative/sheep_brainstem_Layout1_view.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "8b407bfe-e9d6-4a45-a81c-386184beecdd",
+                    "name": "sheep_brainstem_Layout1_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/sheep_brainstem_Layout1_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "sheep_brainstem_Layout1_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "f313b3dd-b111-4d4b-8b57-e990798a5d37",
+                        "path": "derivative/sheep_brainstem_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ".json"
+                    },
+                    "identifier": "d6bffcd8-eede-437c-9fac-ca4d88b93cd5",
+                    "name": "sheep_brainstem_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        },
+        {
+            "contributors": [
+                "Soltani, Elias",
+                "Hunter, Peter"
+            ],
+            "keywords": [
+                "whole-body",
+                "abdomen",
+                "thorax",
+                "head",
+                "spinal cord",
+                "embed",
+                "organ",
+                "lungs",
+                "heart"
+            ],
+            "numberSamples": 0,
+            "numberSubjects": 0,
+            "name": "Pig whole-body with embedded organs using automatic workflow for inserting the organs",
+            "datasetId": "dataset-227-version-2",
+            "organs": [],
+            "species": [],
+            "plots": [],
+            "scaffoldViews": [
+                {
+                    "image_url": "/derivative/thumbnail.png",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.view+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                "derivative/pig_body_metadata.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_body_metadata.json"
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/thumbnail.png"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "thumbnail.png"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "d379e97a-fad0-419d-b67a-4d98dfab36aa",
+                        "path": "derivative/pig_body_view.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "a739ea53-de3c-4519-bc63-95d41fcdb01d",
+                    "name": "pig_body_view.json"
+                }
+            ],
+            "scaffolds": [
+                {
+                    "image_url": "",
+                    "additional_mimetype": {
+                        "name": "application/x.vnd.abi.scaffold.meta+json"
+                    },
+                    "datacite": {
+                        "isDerivedFrom": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isDescribedBy": {
+                            "path": [
+                                ""
+                            ],
+                            "relative": {
+                                "path": [
+                                    ""
+                                ]
+                            }
+                        },
+                        "isSourceOf": {
+                            "path": [
+                                "derivative/pig_body_view.json"
+                            ],
+                            "relative": {
+                                "path": [
+                                    "pig_body_view.json"
+                                ]
+                            }
+                        },
+                        "supplemental_json_metadata": {
+                            "description": ""
+                        }
+                    },
+                    "dataset": {
+                        "identifier": "d379e97a-fad0-419d-b67a-4d98dfab36aa",
+                        "path": "derivative/pig_body_metadata.json"
+                    },
+                    "file_type": {
+                        "name": ""
+                    },
+                    "identifier": "63f68f3e-69cd-4416-ae5a-3d464779ccb1",
+                    "name": "pig_body_metadata.json"
+                }
+            ],
+            "thumbnails": []
+        }
+    ],
+    "numberPerPage": 20,
+    "page": 1,
+    "total": 12
+}
