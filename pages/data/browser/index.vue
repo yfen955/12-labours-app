@@ -69,6 +69,16 @@ export default {
     this.isLoadingSearch = false;
   },
 
+  mounted() {
+    let mo = function (e) {
+      e.preventDefault();
+    };
+    if (document.body.style.overflow = "hidden") {
+      document.body.style.overflow = "";
+      document.removeEventListener("touchmove", mo, false);
+    }
+  },
+
   methods: {
     // change the category by change the variable in the url
     changeCategory(val) {
