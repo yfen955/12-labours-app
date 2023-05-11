@@ -38,10 +38,14 @@ export default {
   data: () => {
     return {
       isLoading: true,
-      flatmapAPI: process.env.flatmap_api,
-      taxo: 'NCBITaxon:10114',
-      uberonid: 'UBERON:0013702',
-    }
+      flatmapAPI: undefined,
+      taxo: "NCBITaxon:10114",
+      uberonid: "UBERON:0013702",
+    };
+  },
+
+  created: function() {
+    this.flatmapAPI = this.$config.flatmap_api;
   },
 
   methods: {

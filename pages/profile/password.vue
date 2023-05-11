@@ -142,12 +142,14 @@ export default {
       try {
         this.verifyLoggedIn();
         let encrypted_oldPwd = encryption({
+          key: this.$config.encryption_key,
           data: {
             oldPassword:this.oldPassword.value.trim(),
           },
           param: ['oldPassword']
         })
         let encrypted_newPwd = encryption({
+          key: this.$config.encryption_key,
           data: {
             newPassword:this.newPassword.value.trim(),
           },

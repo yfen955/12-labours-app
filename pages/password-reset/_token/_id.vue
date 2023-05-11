@@ -96,6 +96,7 @@ export default {
     async resetPsw() {
       this.submitted = true;
       let userData = encryption({
+        key: this.$config.encryption_key,
         data: {
           userId: this.$route.params.id,
           newPassword: this.password.value,
