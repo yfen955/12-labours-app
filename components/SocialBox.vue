@@ -33,9 +33,9 @@ export default {
   },
 
   created: function() {
-    this.twitterLink = this.$config.twitterLink;
-    this.facebookLink = this.$config.facebookLink;
-    this.linkedInLink = this.$config.linkedInLink;
+    this.twitterLink = this.$config.social_twitter;
+    this.facebookLink = this.$config.social_facebook;
+    this.linkedInLink = this.$config.social_linkedin;
   },
 }
 </script>

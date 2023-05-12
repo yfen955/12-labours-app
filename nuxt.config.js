@@ -21,22 +21,27 @@ export default {
   },
 
   publicRuntimeConfig: {
+    portal_url: process.env.PORTAL_URL,
+    query_api_url: process.env.QUERY_API_URL,
+    login_url: process.env.API_URL,
+    login_key: process.env.API_KEY,
+    flatmap_api: process.env.FLATMAP_API,
+    encryption_key: process.env.SECRET_KEY,
     graphcms_api: process.env.GRAPHCMS_ENDPOINT,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
     google_analytics_ga4: process.env.GOOGLE_ANALYTICS_GA4,
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
       process.env.SOCIAL_FACEBOOK || "https://wwww.facebook.com/12-labours",
-    social_linkedIn:
+    social_linkedin:
       process.env.SOCIAL_LINKEDIN || "https://www.linkedin.com/12-labours",
-    social_youYube:
+    social_youtube:
       process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours",
-    twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
-    query_api_url: process.env.QUERY_API_URL,
-    portal_url: process.env.PORTAL_URL,
-    flatmap_api: process.env.FLATMAP_API,
-    encryption_key: process.env.SECRET_KEY,
   },
+
+  privateRuntimeConfig: {},
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -60,7 +65,6 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
-    "@/plugins/auth.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -103,6 +107,7 @@ export default {
   },
 
   auth: {
+    plugins: ["~/plugins/auth.js"],
     watchLoggedIn: false,
     router: {
       middleware: ["auth"],
