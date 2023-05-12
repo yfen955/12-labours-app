@@ -46,3 +46,4 @@ jobs:
           QUERY_API_URL: ${{ vars.QUERY_API_URL }}
           SECRET_KEY: ${{ vars.SECRET_KEY }}
           TWELVE_LABOURS_XML: ${{ vars.TWELVE_LABOURS_XML }}
+        run: echo "$API_KEY"
