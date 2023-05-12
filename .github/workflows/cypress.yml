@@ -1,5 +1,15 @@
 name: Cypress Tests
 on: [push]
+env:
+  API_KEY: ${{ vars.API_KEY }}
+  API_URL: ${{ vars.API_URL }}
+  BASEURL: ${{ vars.BASEURL }}
+  FLATMAP_API: ${{ vars.FLATMAP_API }}
+  GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
+  GRAPHCMS_ENDPOINT: ${{ vars.GRAPHCMS_ENDPOINT }}
+  QUERY_API_URL: ${{ vars.QUERY_API_URL }}
+  SECRET_KEY: ${{ vars.SECRET_KEY }}
+  TWELVE_LABOURS_XML: ${{ vars.TWELVE_LABOURS_XML }}
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
