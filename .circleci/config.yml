@@ -13,21 +13,22 @@ workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      steps:
-        - node/test:
-          # This is the node version to use for the `cimg/node` tag
-          # Relevant tags can be found on the CircleCI Developer Hub
-          # https://circleci.com/developer/images/image/cimg/node
-          version: '14.17.6'
-          # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: yarn
-        - cypress/run:
-          # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
-          # in CircleCI → Project Settings → Environment Variables
-          # Records in parallel to Cypress Cloud
-          # https://docs.cypress.io/guides/guides/parallelization
-          parallelism: 2 # Uses 2 parallel instances
-          # Starts web server for E2E tests - replace with your own server invocation
-          # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          start-command: yarn start
-          cypress-command: yarn test-e2e-run
+      build:
+        steps:
+          - node/test:
+            # This is the node version to use for the `cimg/node` tag
+            # Relevant tags can be found on the CircleCI Developer Hub
+            # https://circleci.com/developer/images/image/cimg/node
+            version: '14.17.6'
+            # If you are using yarn, change the line below from "npm" to "yarn"
+            pkg-manager: yarn
+          - cypress/run:
+            # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
+            # in CircleCI → Project Settings → Environment Variables
+            # Records in parallel to Cypress Cloud
+            # https://docs.cypress.io/guides/guides/parallelization
+            parallelism: 2 # Uses 2 parallel instances
+            # Starts web server for E2E tests - replace with your own server invocation
+            # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
+            start-command: yarn start
+            cypress-command: yarn test-e2e-run
