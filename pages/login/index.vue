@@ -93,7 +93,7 @@ export default {
     },
     async localSignIn() {
       let userData = encryption({
-        key: this.$config.encryption_key,
+        key: this.$config.login_secret_key,
         data: {
           email: this.email.value,
           password: this.password.value

@@ -1,5 +1,5 @@
 import { GraphQLClient } from "graphql-request";
 
-export default ({ $config: { graphcms_api } }, inject) => {
-  inject("graphcms", new GraphQLClient(graphcms_api));
+export default ({ $config: { graphcms_endpoint } }, inject) => {
+  inject("graphcms", new GraphQLClient(graphcms_endpoint));
 };

@@ -21,16 +21,19 @@ export default {
   },
 
   publicRuntimeConfig: {
-    portal_url: process.env.PORTAL_URL,
-    query_api_url: process.env.QUERY_API_URL,
-    login_url: process.env.API_URL,
-    login_key: process.env.API_KEY,
-    flatmap_api: process.env.FLATMAP_API,
-    encryption_key: process.env.SECRET_KEY,
-    graphcms_api: process.env.GRAPHCMS_ENDPOINT,
-    client_id: process.env.GOOGLE_CLIENT_ID,
+    portal_url: process.env.PORTAL_URL || "http://localhost:3000",
+    query_api_url: process.env.QUERY_API_URL || "http://localhost:8000",
+    login_api_url: process.env.LOGIN_API_URL || "http://localhost:8080",
+    login_api_key: process.env.LOGIN_API_KEY,
+    login_secret_key: process.env.LOGIN_SECRET_KEY,
+    graphcms_endpoint: process.env.GRAPHCMS_ENDPOINT,
+    google_client_id: process.env.GOOGLE_CLIENT_ID,
     twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
     google_analytics_ga4: process.env.GOOGLE_ANALYTICS_GA4,
+    flatmap_api: process.env.FLATMAP_API,
+    axios: {
+      baseURL: process.env.LOGIN_API_URL || "http://localhost:8080",
+    },
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
@@ -65,6 +68,7 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
+    { src: "@/plugins/axios.js", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -102,8 +106,7 @@ export default {
   ],
 
   axios: {
-    baseURL: process.env.API_URL || "http://localhost:8080",
-    headers: { Authorization: process.env.API_KEY },
+    baseURL: process.env.LOGIN_API_URL,
   },
 
   auth: {
@@ -119,8 +122,8 @@ export default {
         responseType: "code",
         grantType: "authorization_code",
         endpoints: {
-          //token: `${process.env.API_URL}/user/google/login`,
-          userInfo: `${process.env.API_URL}/user/local/profile`,
+          //token: `${process.env.LOGIN_API_URL}/user/google/login`,
+          userInfo: `${process.env.LOGIN_API_URL}/user/local/profile`,
         },
         token: {
           property: "access_token",

@@ -1,18 +1,16 @@
-version: "3"
-
 services:
   server:
     image: 12laboursapp:latest
-    ports:
-      - "3000:3000"
     environment:
       PORTAL_URL: ${PORTAL_URL}
       QUERY_API_URL: ${QUERY_API_URL}
-      API_URL: ${API_URL}
-      API_KEY: ${API_KEY}
-      SECRET_KEY: ${SECRET_KEY}
+      LOGIN_API_URL: ${LOGIN_API_URL}
+      LOGIN_API_KEY: ${LOGIN_API_KEY}
+      LOGIN_SECRET_KEY: ${LOGIN_SECRET_KEY}
       GRAPHCMS_ENDPOINT: ${GRAPHCMS_ENDPOINT}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       TWELVE_LABOURS_XML: ${TWELVE_LABOURS_XML}
       GOOGLE_ANALYTICS_GA4: ${GOOGLE_ANALYTICS_GA4}
       FLATMAP_API: ${FLATMAP_API}
+    ports:
+      - "3000:3000"

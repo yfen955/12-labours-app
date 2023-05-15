@@ -268,7 +268,7 @@ export default {
 
     getFormData:function(){
       let encrypted_pwd = encryption({
-        key: this.$config.encryption_key,
+        key: this.$config.login_secret_key,
         data: {
           password:this.password.value,
         },
