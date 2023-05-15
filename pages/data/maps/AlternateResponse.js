@@ -78,7 +78,6 @@ const getFacets = async (payload, callback) => {
 };
 
 export const mySearch = (payload, callback) => {
-  console.log(payload);
   if (payload && callback) {
     if (payload.requestType == "Search") {
       searchDataset(payload, callback);

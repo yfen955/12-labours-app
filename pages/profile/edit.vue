@@ -121,9 +121,9 @@ export default {
       return redirect('/login');
     }
     const user=$auth.user
-    const hospitals=await $axios.$get(`/hospitals`)
-    const institutions=await $axios.$get(`/institutions`)
-    const dhbs=await $axios.$get(`/dhbs`)
+    const hospitals=await $axios.$get('/hospitals')
+    const institutions=await $axios.$get('/institutions')
+    const dhbs=await $axios.$get('/dhbs')
     const strategy=query.strategy || 'local'
     return{user, hospitals, institutions, dhbs, strategy}
   },
@@ -194,8 +194,7 @@ export default {
         googleId: (this.googleProfile && this.googleProfile.googleId) ? this.googleProfile.googleId : null
       };
       try {
-        const path = '/user/local/profile/update';
-        let response = await this.$axios.post(path, {userInfo: userInfo});
+        let response = await this.$axios.post('/user/local/profile/update', {userInfo: userInfo});
         if(response.status===200){
           this.$toast.success('Your profile is changed successfully!',{duration:3000, position: 'bottom-right'});
           this.$auth.setUser(response.data.user);

@@ -106,9 +106,8 @@ export default {
         param: ['newPassword']
       })
       let userEmail;
-      const path = `/user/local/password`;
       await this.$axios
-        .post(path, userData, {headers: {
+        .post('/user/local/password', userData, {headers: {
           'Content-Type': 'application/json',
           'access_token': `Bearer ${this.$route.params.token}`
         }})
