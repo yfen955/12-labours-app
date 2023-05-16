@@ -61,7 +61,7 @@ export default {
     async deleteUser(){
      try {
         this.verifyLoggedIn();
-        let response=await this.$axios.post( '/user/local/delete', {
+        let response=await this.$axios.post('/user/local/delete', {
           userId:this.user.user_id
         })
         if(response.status===200){ 

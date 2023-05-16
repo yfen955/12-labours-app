@@ -345,8 +345,8 @@ export default {
   
   created: async function() {
     this.currentTab = this.$route.query.datasetTab;
-
-    let data = await backendQuery.fetchQueryData('experiment_query', {submitter_id: [`${this.$route.params.id}`]});
+    const path = `${this.$config.query_api_url}/graphql/query`;
+    let data = await backendQuery.fetchQueryData(path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
     this.detail_data = data[0].dataset_descriptions[0];
     this.title = data[0].dataset_descriptions[0].title[0];
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
@@ -444,7 +444,7 @@ export default {
     },
 
     generateImg(method, filename, is_source_of) {
-      let url = `${process.env.query_api_url}/data/${method}`;
+      let url = `${this.$config.query_api_url}/data/${method}`;
       if (!filename.includes(this.$route.params.id)) {
         url += `/${this.$route.params.id}`;
       }

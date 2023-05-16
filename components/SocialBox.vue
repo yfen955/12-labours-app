@@ -17,20 +17,26 @@
 export default {
   name: "SocialBox",
 
-  props: {        
-      twitterLink: {
-        type: String,
-        default: process.env.social_twitter
-      },
-      facebookLink: {
-        type: String,
-        default: process.env.social_facebook
-      },
-      linkedInLink: {
-        type: String,
-        default:process.env.social_linkedIn
-      }
-  }
+  props: {
+    twitterLink: {
+      type: String,
+      default: undefined,
+    },
+    facebookLink: {
+      type: String,
+      default: undefined,
+    },
+    linkedInLink: {
+      type: String,
+      default: undefined,
+    },
+  },
+
+  created: function() {
+    this.twitterLink = this.$config.social_twitter;
+    this.facebookLink = this.$config.social_facebook;
+    this.linkedInLink = this.$config.social_linkedin;
+  },
 }
 </script>
 

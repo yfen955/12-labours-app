@@ -14,7 +14,7 @@ export default {
   name: 'CopyLink',
   methods: {
     copyLink() {
-      let url = process.env.base_url + this.$router.currentRoute.fullPath;  // current url
+      let url = this.$config.portal_url + this.$router.currentRoute.fullPath;  // current url
       let inputNode = document.createElement('input');  // create a new input
       inputNode.value = url;  // set the value to the url
       document.body.appendChild(inputNode);

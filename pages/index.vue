@@ -71,6 +71,7 @@ export default {
 }
   
  .title-box{
+  min-width: 15rem;
     margin: 20rem 25rem;
     height:fit-content;
     border-radius:1.25rem;

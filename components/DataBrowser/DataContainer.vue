@@ -98,14 +98,16 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData(this.currentFilterDict, this.searchContent, this.$route.query.limit, this.$route.query.page, this.relation);
+      let path = `${this.$config.query_api_url}/graphql/pagination/?search=${this.searchContent}`;
+      let result = await backendQuery.fetchPaginationData(path, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.relation);
       this.currentData = result[0];
       this.totalCount = result[1];
       this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
-      this.allFilterDict = await backendQuery.fetchFilterData(false);
+      const path = `${this.$config.query_api_url}/filter/?sidebar=false`;
+      this.allFilterDict = await backendQuery.fetchFilterData(path);
     },
 
     dataChange(val) {

@@ -26,7 +26,7 @@
           <el-form-item> 
             <div class="error">{{ confirmPassword.message }}</div>
           </el-form-item>
-          <el-button :disabled="submitDisabled" @click="resetPsw()">
+          <el-button :disabled="submitDisabled" @click="resetPwd()">
             <p>Reset the password</p>
           </el-button>
         </el-form>
@@ -93,9 +93,10 @@ export default {
       this.submitDisabled = this.password.disabled || this.confirmPassword.disabled;
     },
 
-    async resetPsw() {
+    async resetPwd() {
       this.submitted = true;
       let userData = encryption({
+        key: this.$config.login_secret_key,
         data: {
           userId: this.$route.params.id,
           newPassword: this.password.value,
@@ -105,9 +106,8 @@ export default {
         param: ['newPassword']
       })
       let userEmail;
-      const path = `/user/local/password`;
       await this.$axios
-        .post(path, userData, {headers: {
+        .post('/user/local/password', userData, {headers: {
           'Content-Type': 'application/json',
           'access_token': `Bearer ${this.$route.params.token}`
         }})
