@@ -11,6 +11,8 @@ jobs:
 workflows:
   use-my-orb:
     jobs:
+      - install-node-example:
+          name: Install node version
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
