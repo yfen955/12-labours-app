@@ -7,7 +7,9 @@ jobs:
       - image: cimg/node:14.17.6
     steps:
       - cypress/install:
-          install-browsers: true
+          install-browsers: false
+          install-npm: false
+          install-yarn: true
       - persist_to_workspace:
           root: ~/
           paths:
