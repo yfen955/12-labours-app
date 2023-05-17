@@ -1,6 +1,6 @@
 version: '2.1'
 orbs:
-  cypress: cypress-io/cypress@2
+  cypress: cypress-io/cypress@2.2.0
 workflows:
   use-my-orb:
     jobs:
@@ -8,11 +8,11 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-      yarn: true
-      start: yarn start
-      executor: cypress/browsers:node14.17.6-slim-chrome100-ff99-edge
-      browser: chrome
-      parallel: true
-            parallelism: 4
-      record: true
-      group: 4 machines
+    start: yarn start
+    yarn: true
+    executor: cypress/browsers:node14.17.6-slim-chrome100-ff99-edge
+    browser: chrome
+    parallel: true
+          parallelism: 4
+    record: true
+    group: 4 machines
