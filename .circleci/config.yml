@@ -19,4 +19,4 @@ workflows:
           start-command: yarn start
           parallelism: 2
           requires:
-            - install-node
+            - Install node
