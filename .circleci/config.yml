@@ -8,7 +8,7 @@ jobs:
     steps:
       - cypress/install:
           install-browsers: false
-          yarn: true
+          package-manager: yarn
       - persist_to_workspace:
           root: ~/
           paths:
