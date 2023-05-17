@@ -4,6 +4,7 @@ orbs:
   cypress: cypress-io/cypress@3
 jobs:
   install-node-example:
+    executor: cypress/default
     steps:
       - node/install:
           node-version: '14.17.6'
