@@ -2,12 +2,15 @@ version: '2.1'
 orbs:
   node: circleci/node@4.7
   cypress: cypress-io/cypress@3
+jobs:
+  install-node-example:
+    steps:
+      - node/install:
+          node-version: '14.17.6'
+          install-yarn: true
 workflows:
   use-my-orb:
     jobs:
-      - node/install:
-          install-yarn: true
-          node-version: '14.17.6'
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
