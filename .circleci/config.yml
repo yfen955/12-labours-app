@@ -8,6 +8,7 @@ jobs:
     steps:
       - node/install:
           node-version: '14.17.6'
+          install-npm: false
           install-yarn: true
 workflows:
   use-my-orb:
@@ -15,7 +16,6 @@ workflows:
       - install-node:
           name: Install node
       - cypress/run:
-          package-manager: yarn
           start-command: yarn start
           parallelism: 2
           requires:
