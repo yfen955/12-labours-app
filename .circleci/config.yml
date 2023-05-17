@@ -3,9 +3,8 @@ orbs:
   cypress: cypress-io/cypress@3
 jobs:
   install:
-    executor:
-      docker:
-        image: cypress/base:14.17.6
+    docker:
+			- image: cypress/base:14.17.6
     steps:
       - cypress/install:
           install-browsers: true
