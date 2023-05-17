@@ -13,9 +13,4 @@ jobs:
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
-workflows:
-  use-my-orb:
-    jobs:
-      - run-cypress:
-          name: Install node version & run cypress
       
