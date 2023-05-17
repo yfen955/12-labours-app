@@ -1,26 +1,15 @@
 version: '2.1'
 orbs:
-  node: circleci/node@4.7
   cypress: cypress-io/cypress@3
+executors:
+  node-14.17.6:
+    docker:
+      - image: circleci/node:14.17.6
 jobs:
-  install-node:
-    executor: cypress/default
-    steps:
-      - node/install:
-          node-version: '14.17.6'
-          install-yarn: true
-  run-cypress:
-    executor: cypress/default
+  build:
+    executor: node-14.17.6
     steps:
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
-workflows:
-  use-my-orb:
-    jobs:
-      - run-cypress:
-          name: Install node version
-      - run-cypress:
-          name: Run cypress
-      
