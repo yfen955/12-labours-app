@@ -13,6 +13,6 @@ workflows:
     executor: cypress/browsers:node14.17.6-slim-chrome100-ff99-edge
     browser: chrome
     parallel: true
-          parallelism: 4
+    parallelism: 4
     record: true
     group: 4 machines
