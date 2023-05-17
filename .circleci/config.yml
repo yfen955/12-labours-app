@@ -5,10 +5,9 @@ orbs:
 workflows:
   use-my-orb:
     jobs:
-      steps:
-        - node/test:
-            version: '14.17.6'
-        - cypress/run:
-            package-manager: yarn
-            start-command: yarn start
-            parallelism: 2
+      - node/test:
+          version: '14.17.6'
+      - cypress/run:
+          package-manager: yarn
+          start-command: yarn start
+          parallelism: 2
