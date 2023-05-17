@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+require('dotenv').config();
 
 module.exports = defineConfig({
   e2e: {
@@ -9,6 +10,6 @@ module.exports = defineConfig({
     },
   },
   env: {
-    query_url: 'https://abi-12-labours-api.herokuapp.com',
+    query_url: process.env.QUERY_API_URL,
   },
 });
