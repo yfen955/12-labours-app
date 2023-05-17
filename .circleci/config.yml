@@ -16,6 +16,7 @@ workflows:
       - install-node:
           name: Install node
       - cypress/run:
+          package-manager: yarn
           start-command: yarn start
           parallelism: 2
           requires:
