@@ -31,4 +31,5 @@ workflows:
           name: setup
       - run-tests:
           name: run tests
-          requires: setup
+          requires:
+            - setup
