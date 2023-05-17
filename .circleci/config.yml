@@ -1,10 +1,11 @@
 version: '2.1'
 orbs:
   cypress: cypress-io/cypress@3
+executors:
+  node-version: '14.17.6'
 workflows:
   use-my-orb:
     jobs:
       - cypress/run:
-          node-cache-version: '14.17.6'
           package-manager: yarn
           start-command: yarn start
