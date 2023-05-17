@@ -4,7 +4,7 @@ orbs:
 jobs:
   install:
     docker:
-      - image: cimg/base:14.17.6
+      - image: cimg/node:14.17.6
     steps:
       - cypress/install:
           install-browsers: true
@@ -15,7 +15,7 @@ jobs:
             - project
   run-tests:
     docker:
-      - image: cimg/base:14.17.6
+      - image: cimg/node:14.17.6
     parallelism: 10
     steps:
       - run: echo "This step assumes dependencies were installed using the cypress/install job"
