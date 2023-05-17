@@ -1,21 +1,17 @@
 version: '2.1'
 orbs:
   cypress: cypress-io/cypress@3
-jobs:
-  install-node:
+executors:
+  with-chrome:
+    resource_class: small
     docker:
-      - image: cimg/node:14.17.6
-    steps:
-      - checkout
-      - run: node --version
+      - image: "cypress/browsers:node14.17.6-chrome100-ff98"
 workflows:
   use-my-orb:
     jobs:
-      - install-node:
-          name: Install node
+      - cypress/install:
+          executor: with-chrome
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
-          requires:
-            - Install node
