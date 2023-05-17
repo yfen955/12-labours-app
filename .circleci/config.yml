@@ -1,36 +1,10 @@
 version: '2.1'
 orbs:
   cypress: cypress-io/cypress@3
-jobs:
-  install:
-    docker:
-      - image: cimg/node:14.17.6
-    steps:
-      - cypress/install:
-          install-browsers: false
-          package-manager: yarn
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - .cache/Cypress
-            - project
-  run-tests:
-    docker:
-      - image: cimg/node:14.17.6
-    parallelism: 10
-    steps:
-      - run: echo "This step assumes dependencies were installed using the cypress/install job"
-      - attach_workspace:
-          at: ~/
-      - cypress/run-tests:
-          cypress-command: 'yarn cypress run --parallel --record'
-          start-command: 'yarn run start'
 workflows:
-  test_my_app:
+  use-my-orb:
     jobs:
-      - install:
-          name: setup
-      - run-tests:
-          name: run tests
-          requires:
-            - setup
+      - cypress/run:
+          node-cache-version: '14.17.6'
+          package-manager: yarn
+          start-command: yarn start
