@@ -1,6 +1,5 @@
 version: '2.1'
 orbs:
-  slack: circleci/slack@4.1
   node: circleci/node@4.7
   cypress: cypress-io/cypress@3
 jobs:
@@ -10,31 +9,14 @@ jobs:
       - node/install:
           node-version: '14.17.6'
           install-yarn: true
-  install-and-persist:
-    executor: cypress/default
-    steps:
-      - cypress/install
-      - persist_to_workspace:
-          paths:
-            - .cache/Cypress
-            - project
-          root: ~/
-  run-tests-in-parallel:
-    executor: cypress/default
-    parallelism: 8
-    steps:
-      - attach_workspace:
-          at: ~/
-      - cypress/run-tests:
-          cypress-command: yarn cypress run --component --parallel --record
 workflows:
   use-my-orb:
     jobs:
       - install-node:
           name: Install node
-      - install-and-persist:
-          name: Install & Persist To Workspace
-      - run-tests-in-parallel:
-          name: Run Tests in Parallel
+      - cypress/run:
+          package-manager: yarn
+          start-command: yarn start
+          parallelism: 2
           requires:
-            - Install & Persist To Workspace
+            - install-node
