@@ -6,7 +6,7 @@ workflows:
   use-my-orb:
     jobs:
       - node/test:
-          install-yarn: true
+          pkg-manager: yarn
           version: '14.17.6'
       - cypress/run:
           package-manager: yarn
