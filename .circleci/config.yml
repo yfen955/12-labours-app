@@ -3,18 +3,19 @@ orbs:
   node: circleci/node@4.7
   cypress: cypress-io/cypress@3
 jobs:
-  install-node-example:
+  run-cypress:
     executor: cypress/default
     steps:
       - node/install:
           node-version: '14.17.6'
           install-yarn: true
-workflows:
-  use-my-orb:
-    jobs:
-      - install-node-example:
-          name: Install node version
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
+workflows:
+  use-my-orb:
+    jobs:
+      - run-cypress:
+          name: Install node version & run cypress
+      
