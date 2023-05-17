@@ -1,15 +1,13 @@
 version: '2.1'
 orbs:
-  node: circleci/node@4.7
   cypress: cypress-io/cypress@3
 jobs:
   install-node:
-    executor: cypress/default
+    docker:
+      - image: cimg/node:14.17.6
     steps:
-      - node/install:
-          node-version: '14.17.6'
-          install-npm: false
-          install-yarn: true
+      - checkout
+      - run: node --version
 workflows:
   use-my-orb:
     jobs:
