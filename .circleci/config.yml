@@ -9,9 +9,8 @@ executors:
 workflows:
   use-my-orb:
     jobs:
-      - cypress/install:
-          executor: with-chrome
       - cypress/run:
+          executor: with-chrome
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
