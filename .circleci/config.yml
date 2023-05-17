@@ -14,7 +14,8 @@ jobs:
             - .cache/Cypress
             - project
   run-tests:
-    executor: cypress/default
+    docker:
+      - image: cimg/base:14.17.6
     parallelism: 10
     steps:
       - run: echo "This step assumes dependencies were installed using the cypress/install job"
@@ -23,3 +24,11 @@ jobs:
       - cypress/run-tests:
           cypress-command: 'yarn cypress run --parallel --record'
           start-command: 'yarn run start'
+workflows:
+  test_my_app:
+    jobs:
+      - install:
+          name: setup
+      - run-tests:
+          name: run tests
+          requires: setup
