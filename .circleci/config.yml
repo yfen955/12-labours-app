@@ -1,16 +1,11 @@
 version: '2.1'
 orbs:
   cypress: cypress-io/cypress@3
-executors:
-  with-chrome:
-    resource_class: small
-    docker:
-      - image: "cypress/browsers:node14.17.6-chrome100-ff98"
 workflows:
   use-my-orb:
     jobs:
       - cypress/run:
-          executor: with-chrome
+          executor: cypress/base-14.17.6
           package-manager: yarn
           start-command: yarn start
           parallelism: 2
