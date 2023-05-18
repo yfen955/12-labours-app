@@ -106,9 +106,9 @@ export default {
     getDatasetImg(item) {
       let url = '';
       if (item.scaffoldViews.length > 0) {
-        url = item.scaffoldViews[0].image_url;
+        url = this.$config.query_api_url + item.scaffoldViews[0].image_url;
       } else if (item.thumbnails.length > 0) {
-        url = item.thumbnails[0].image_url;
+        url = this.$config.query_api_url + item.thumbnails[0].image_url;
       } else {
         url = this.imgPlaceholder;
       }
