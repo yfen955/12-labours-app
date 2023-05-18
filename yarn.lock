@@ -11,11 +11,25 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@12-labours/mapintegratedvuer@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.1.tgz#8125126ee6715821b97e02adf0e9ea906a9c63c6"
-  integrity sha512-oeetPyv21ccmUHVXLm0wmUjQO0V5KigmUceFr88AvEPa5bvjcd/9Qo37zFVDX99jm9t8YeLhPxsouW6Ku3gW5w==
+"@12-labours/map-side-bar@^2.0.0-response.2":
+  version "2.0.0-response.2"
+  resolved "https://registry.yarnpkg.com/@12-labours/map-side-bar/-/map-side-bar-2.0.0-response.2.tgz#f898e3d635bc7c0164116b644e15ef4b07c311d1"
+  integrity sha512-3bZyVPadd0j/xVXktfoRi4l33HuMUmA5W5BumQacjR0FLHMtohjQ/VWEl7YYn9+yHw2RRyL4dmpqDGz/ICWO2Q==
   dependencies:
+    "@abi-software/gallery" "^0.3.3"
+    "@abi-software/svg-sprite" "^0.2.0"
+    algoliasearch "^4.10.5"
+    element-ui "^2.13.0"
+    marked "^4.1.1"
+    vue "^2.6.10"
+    xss "^1.0.14"
+
+"@12-labours/mapintegratedvuer@1.0.0-beta.7":
+  version "1.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.7.tgz#a83897c90c819edd1d7488377bd9f8e4632f4848"
+  integrity sha512-Jhe1zZYS2nhqhFpoAqaXkoOF/bfiWXtALkZ3tasr/8EryL4NHvQV7cK4GFIJc057IRH1LdAworFxCk1HubITsw==
+  dependencies:
+    "@12-labours/map-side-bar" "^2.0.0-response.2"
     "@abi-software/flatmapvuer" "^0.4.0"
     "@abi-software/map-side-bar" "^2.0.0-response.1"
     "@abi-software/plotvuer" "^0.3.9"
