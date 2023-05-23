@@ -19,7 +19,6 @@
             element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
             :isLoadingSearch="isLoadingSearch"
-            :payload="payload"
             :totalCount="totalCount"
           />
         </div>
@@ -60,7 +59,7 @@ import DisplayData from "./DisplayData.vue";
 
 export default {
   components: { SearchData, FilterData, DisplayData },
-  props: [ "category", "payload" ],
+  props: [ "category" ],
   data: () => {
     return {
       isLoadingSearch: true,
