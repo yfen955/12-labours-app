@@ -12,6 +12,7 @@ env:
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   TWELVE_LABOURS_XML: ${{ secrets.TWELVE_LABOURS_XML }}
   FLATMAP_API: ${{ secrets.FLATMAP_API }}
+  URL: ${{vars.URL}}
 jobs:
   install:
     runs-on: ubuntu-latest
