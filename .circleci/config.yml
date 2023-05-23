@@ -5,6 +5,7 @@ jobs:
   run-tests:
     executor: cypress/base:14.17.6
     steps:
+      - checkout
       - cypress/run:
           package-manager: yarn
           start-command: yarn start
