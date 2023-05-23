@@ -17,7 +17,7 @@
           <span v-if="$route.query.type === 'dataset'">
             <section class="element">
               <div class="dataset-img">
-                <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" alt="image" />
+                <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" @error="replaceByDefaultImage" alt="image" />
                 <img v-else :src="imgPlaceholder" alt="image" />
               </div>
               
@@ -113,7 +113,11 @@ export default {
         url = this.imgPlaceholder;
       }
       return url;
-    }
+    },
+
+    replaceByDefaultImage(error) {
+      error.target.src = this.imgPlaceholder;
+    },
   },
 }
 </script>
