@@ -10,7 +10,7 @@
     "generate": "nuxt generate",
     "test": "jest",
     "test-e2e": "cypress open",
-    "test-e2e-ci": "cypres run --record --group"
+    "test-e2e-ci": "cypress run --record --group"
   },
   "dependencies": {
     "@12-labours/mapintegratedvuer": "^1.0.0-beta.1",
