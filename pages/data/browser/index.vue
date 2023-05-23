@@ -13,7 +13,6 @@
       </section>
       <!-- data container -->
       <DataContainer
-        v-if="!isLoadingSearch"
         :category="category"
       />
     </div>
@@ -56,17 +55,8 @@ export default {
         },
       ],
       searchTypes,
-      isLoadingSearch: false,
-      category: '',
       projects_list: [],
     }
-  },
-
-  created: async function() {
-    this.isLoadingSearch = true;
-    // update the category to the current category in the url
-    this.category = this.$route.query.type;
-    this.isLoadingSearch = false;
   },
 
   mounted() {
@@ -76,6 +66,12 @@ export default {
     if (document.body.style.overflow = "hidden") {
       document.body.style.overflow = "";
       document.removeEventListener("touchmove", mo, false);
+    }
+  },
+
+  computed: {
+    category: function() {
+      return this.$route.query.type;
     }
   },
 
