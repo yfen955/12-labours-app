@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 14.17.6
       - name: Cypress install
-        use: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v5
         with:
           runTests: false
           build: yarn build
