@@ -16,9 +16,8 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - name: check env
-        if: ${{ env.PORTAL_URL == 'http://localhost:3000' }}
-        run: echo "valid env"
+      - name: List of the GitHub Actions environment variables
+        run: env
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
@@ -40,9 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - name: check env
-        if: ${{ env.PORTAL_URL == 'http://localhost:3000' }}
-        run: echo "valid env"
+      - name: List of the GitHub Actions environment variables
+        run: env
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
