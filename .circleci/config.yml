@@ -3,7 +3,7 @@ orbs:
   cypress: cypress-io/cypress@3
 jobs:
   install:
-    executor: cypress/base:14.17.6
+    executor: cypress/base-14.17.6
     steps:
       - cypress/install:
           install-browsers: false
@@ -13,7 +13,7 @@ jobs:
             - .cache/Cypress
             - project
   run-tests:
-    executor: cypress/base:14.17.6
+    executor: cypress/base-14.17.6
     parallelism: 10
     steps:
       - run: echo "This step assumes dependencies were installed using the cypress/install job"
