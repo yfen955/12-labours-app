@@ -19,9 +19,6 @@ jobs:
       - name: check env
         if: ${{ env.PORTAL_URL == 'http://localhost:3000' }}
         run: echo "valid env"
-      - name: check secrets
-        if: ${{ secrets.PORTAL_URL == 'http://localhost:3000' }}
-        run: echo "valid secrets"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
@@ -46,9 +43,6 @@ jobs:
       - name: check env
         if: ${{ env.PORTAL_URL == 'http://localhost:3000' }}
         run: echo "valid env"
-      - name: check secrets
-        if: ${{ secrets.PORTAL_URL == 'http://localhost:3000' }}
-        run: echo "valid secrets"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
