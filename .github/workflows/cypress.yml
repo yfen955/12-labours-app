@@ -16,6 +16,8 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
+      - name: print env
+        run: echo "env $PORTAL_URL"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
@@ -37,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: install
     steps:
+      - name: print env
+        run: echo "env $PORTAL_URL"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
