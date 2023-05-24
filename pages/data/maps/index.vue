@@ -47,9 +47,11 @@ export default {
   },
   created: function() {
     this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
-    this.flatmapAPI = this.$config.flatmap_api;
-    this.rootUrl = this.$config.portal_url;
-    this.queryUrl = this.$config.query_api_url;
+    this.options= {
+      flatmapAPI: this.$config.flatmap_api,
+      rootUrl: this.$config.portal_url,
+      queryUrl: this.$config.query_api_url,
+    }
   },
   methods: {
     updateUUID: function() {

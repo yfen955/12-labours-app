@@ -45,7 +45,7 @@ const searchDataset = async (payload, callback) => {
       }
     }
   }
-  let url = `${process.env.query_api_url}/graphql/pagination/?search=${search}`;
+  let url = `${payload.queryUrl}/graphql/pagination/?search=${search}`;
   let postPayload = {
     filter: allFilter,
     limit: payload.numberPerPage,
@@ -63,7 +63,7 @@ const searchDataset = async (payload, callback) => {
 
 const getFacets = async (payload, callback) => {
   let facet = {};
-  let url = `${process.env.query_api_url}/filter/?sidebar=true`;
+  let url = `${payload.queryUrl}/filter/?sidebar=true`;
   await axios
     .get(url)
     .then((response) => (facet = response.data))

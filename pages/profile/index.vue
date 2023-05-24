@@ -81,11 +81,6 @@ export default {
 
 <style scoped lang="scss">
   .user-detail {
-    width: 25rem;
-    margin: auto;
-    @media only screen and (max-width: $viewport-sm) {
-      width: 15rem;
-    }
     div{
       margin:2rem;
       display:flex;
@@ -94,7 +89,7 @@ export default {
         align-items: center;
         min-width: 7rem;
       }
-      @media only screen and (max-width: $viewport-sm) {
+      @media only screen and (max-width: $viewport-md) {
         flex-direction: column;
         span {
           margin-top: 1rem;

@@ -137,8 +137,8 @@ export default {
   @import '@/assets/google.scss';
 
   .login{
-    width:50%;
-    min-height: 82.5vh;
+    width:55%;
+    height: 82.5vh;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }

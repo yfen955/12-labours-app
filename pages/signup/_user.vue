@@ -354,8 +354,7 @@ export default {
 
 <style scoped lang="scss">
   .signup{
-    min-height: 82.5vh;
-    width:50%;
+    width:55%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }

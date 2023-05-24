@@ -174,6 +174,23 @@
             versions
           </span>
         </el-card>
+
+        <div>
+          <br>
+          <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
+          <br><br>
+          <iframe v-show="show_segmentation" src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" width="100%" height="800"></iframe>
+          <br>
+          <div>
+            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
+            <div class="pdf-bg" v-show="show_pdf">
+              <el-button class="icon-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
+              <div class="pdf-viewer">
+                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="left-column">
@@ -331,7 +348,6 @@ export default {
       ],
       isLoading: true,
       datasetTabs,
-      currentTab: '',
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       detail_data: {},
       title: '',
@@ -339,7 +355,9 @@ export default {
       plot_manifest_data: [],
       apaCitation: [],
       models_list: [],
-      dataset_img: ''
+      dataset_img: '',
+      show_segmentation: false,
+      show_pdf: false,
     }
   },
   
@@ -358,7 +376,30 @@ export default {
 
     await this.handleCitation();
 
+    this.show_segmentation = false;
+    this.show_pdf = false;
+
     this.isLoading = false;
+  },
+
+  mounted() {
+    this.show_segmentation = false;
+    this.show_pdf = false;
+    this.updateScroll();
+  },
+
+  computed: {
+    currentTab: function() {
+      return this.$route.query.datasetTab;
+    }
+  },
+
+  watch: {
+    'show_pdf': {
+      handler() {
+        this.updateScroll();
+      }
+    },
   },
 
   methods: {
@@ -374,7 +415,6 @@ export default {
     },
 
     changeTab(val, jump = false) {
-      this.currentTab = val;
       this.$router.push({
         path: `${this.$route.path}`,
         query: { datasetTab: val }
@@ -550,6 +590,26 @@ export default {
         this.dataset_img = this.generateImg('preview', item.filename, item.is_source_of);
       }
     },
+
+    changeShowState(val) {
+      if (val === "show_segmentation")
+        this.show_segmentation = !this.show_segmentation;
+      else if (val === "show_pdf")
+        this.show_pdf = !this.show_pdf;
+    },
+
+    updateScroll() {
+      let mo = function (e) {
+        e.preventDefault();
+      };
+      if (this.show_pdf) {
+        document.body.style.overflow = "hidden";
+        document.addEventListener("touchmove", mo, false);
+      } else {
+        document.body.style.overflow = "";
+        document.removeEventListener("touchmove", mo, false);
+      }
+    }
   },
 }
 </script>
@@ -719,5 +779,30 @@ li {
 }
 .categories-nav {
   margin-bottom: 1rem;
+}
+.pdf-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgb(38, 38, 38, 0.7);   //$background
+}
+.icon-btn {
+  background-color: rgb(0, 0, 0, 0);
+  border-color: rgb(0, 0, 0, 0);
+  color: white;
+  padding: 0;
+  margin: 1% 88%;
+  font-size: x-large;
+}
+.pdf-viewer {
+  border-radius: 10px;
+  position: fixed;
+  top: 5%;
+  left: 10%;
+  width: 80%;
+  height: 90%;
 }
 </style>
