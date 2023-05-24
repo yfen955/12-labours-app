@@ -20,6 +20,7 @@ describe('information in the data brower page', () =>{
   })
 
   it('click filter items', () => {
+    cy.wait(5000);
     // click the checkbox to choose 1 item
     cy.get('.el-collapse-item__header').filter(':contains("Sex")').click();
     cy.get('.el-collapse-item__header.is-active');
