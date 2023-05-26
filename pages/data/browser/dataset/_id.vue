@@ -161,7 +161,7 @@
           
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card :cards="models_list" v-if="!isLoading" />
+            <carousel-card2 :cards="models_list" v-if="!isLoading" />
           </span>
           
           <!-- references content -->
@@ -362,7 +362,6 @@ export default {
   },
   
   created: async function() {
-    this.currentTab = this.$route.query.datasetTab;
     const path = `${this.$config.query_api_url}/graphql/query`;
     let data = await backendQuery.fetchQueryData(path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
     this.detail_data = data[0].dataset_descriptions[0];
