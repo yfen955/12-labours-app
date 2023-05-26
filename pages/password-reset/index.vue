@@ -51,6 +51,14 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+      })
+    }
+  },
+
   // watch: {
 
   // },
@@ -68,7 +76,11 @@ export default {
 
     async sendEmail() {
       await this.$axios
-        .post('/user/local/password/reset', { email: this.email.value })
+        .post('/user/local/password/reset', { 
+          email: this.email.value
+         }, {
+          headers: { 'Authorization': this.$config.login_api_key }
+        })
         .then((res) => {
           this.message = res.data.message;
         })

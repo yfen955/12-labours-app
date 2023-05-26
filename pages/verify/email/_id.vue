@@ -57,13 +57,23 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+      })
+    }
+  },
+
   methods:{
     async resend(){
       try {
         this.error=''
         if(this.emailAttemtps++ <this.allowedAttempts) {       
           await this.$axios.post('/user/local/email', {
-            email:this.email   
+            email: this.email
+          }, {
+            headers: {'Authorization': this.$config.login_api_key}
           })
           .then((response)=>{  
             if(response.data.alreadyActive){

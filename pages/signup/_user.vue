@@ -243,7 +243,9 @@ export default {
         const endpoint= this.strategy=='google' ? '/user/google/register' : '/user/local/register' 
         await this.$axios.post(endpoint, {
           strategy:this.strategy,
-          userInfo: this.getFormData()      
+          userInfo: this.getFormData()
+        }, {
+          headers: { 'Authorization': this.$config.login_api_key } 
         })
         .then((response)=>{  
           this.$auth.logout()    //TBC: if needed

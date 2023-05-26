@@ -51,6 +51,14 @@ export default {
     };
   },
 
+  fetch ({ beforeNuxtRender, $config: { twelve_labours_xml} }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.twelve_labours_xml = twelve_labours_xml
+      })
+    }
+  },
+
   created: function() {
     this.xmlURL = this.$config.twelve_labours_xml;
   },

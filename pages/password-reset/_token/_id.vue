@@ -64,6 +64,15 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key, login_secret_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+        nuxtState.nuxtState.config.login_secret_key = login_secret_key
+      })
+    }
+  },
+
   watch:{
     validCount: {
       handler: function() {
@@ -95,6 +104,7 @@ export default {
 
     async resetPwd() {
       this.submitted = true;
+      console.log(this.$config.login_secret_key);
       let userData = encryption({
         key: this.$config.login_secret_key,
         data: {
@@ -106,10 +116,12 @@ export default {
         param: ['newPassword']
       })
       let userEmail;
+      console.log(this.$config.login_api_key);
       await this.$axios
         .post('/user/local/password', userData, {headers: {
           'Content-Type': 'application/json',
-          'access_token': `Bearer ${this.$route.params.token}`
+          'access_token': `Bearer ${this.$route.params.token}`,
+          'Authorization': this.$config.login_api_key
         }})
         .then((res) => {
           if (res.status === 200) {
@@ -127,6 +139,8 @@ export default {
               data: {
                 email: userEmail,
                 password: userData.newPassword
+              }, headers: { 
+                'Authorization': this.$config.login_api_key 
               }
             }).then((res) => { 
               this.$auth.setUser(res.data.user);

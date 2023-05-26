@@ -24,11 +24,6 @@ export default {
     portal_url: process.env.PORTAL_URL || "http://localhost:3000",
     query_api_url: process.env.QUERY_API_URL || "http://localhost:8000",
     login_api_url: process.env.LOGIN_API_URL || "http://localhost:8080",
-    login_api_key: process.env.LOGIN_API_KEY,
-    login_secret_key: process.env.LOGIN_SECRET_KEY,
-    graphcms_endpoint: process.env.GRAPHCMS_ENDPOINT,
-    google_client_id: process.env.GOOGLE_CLIENT_ID,
-    twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
     google_analytics_ga4: process.env.GOOGLE_ANALYTICS_GA4,
     flatmap_api: process.env.FLATMAP_API,
     axios: {
@@ -44,7 +39,13 @@ export default {
       process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours",
   },
 
-  privateRuntimeConfig: {},
+  privateRuntimeConfig: {
+    login_api_key: process.env.LOGIN_API_KEY,
+    login_secret_key: process.env.LOGIN_SECRET_KEY,
+    graphcms_endpoint: process.env.GRAPHCMS_ENDPOINT,
+    google_client_id: process.env.GOOGLE_CLIENT_ID,
+    twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -68,7 +69,6 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
-    { src: "@/plugins/axios.js", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -75,6 +75,14 @@ export default {
     const user=$auth.user
     return{user}
   },
+
+  fetch ({ beforeNuxtRender, $config: { login_secret_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_secret_key = login_secret_key
+      })
+    }
+  }
 }
 
 </script>

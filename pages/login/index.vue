@@ -73,6 +73,15 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key, login_secret_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+        nuxtState.nuxtState.config.login_secret_key = login_secret_key
+      })
+    }
+  },
+
   methods: {
     fieldChange:function(fieldName){
       let field=this[fieldName]
@@ -102,7 +111,8 @@ export default {
       })
       try {
         let response =  await this.$auth.loginWith('local', {
-          data: userData
+          data: userData,
+          headers: { 'Authorization': this.$config.login_api_key }
         }).then((response) => { 
           this.$auth.setUser(response.data.user)     
           this.$router.replace('/?login=true')

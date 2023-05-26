@@ -62,6 +62,15 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key, login_secret_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+        nuxtState.nuxtState.config.login_secret_key = login_secret_key
+      })
+    }
+  },
+
   methods:{
     async googleSignIn(){
       this.$auth.loginWith('google', { params: { prompt: "select_account" } })

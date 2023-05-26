@@ -31,6 +31,14 @@ export default {
     }
   },
 
+  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
+    if (typeof window === 'undefined') {
+      beforeNuxtRender(nuxtState => {
+        nuxtState.nuxtState.config.login_api_key = login_api_key
+      })
+    }
+  },
+
   created(){
     this.confirmUser();
   },
@@ -42,7 +50,8 @@ export default {
         await this.$axios.post('/user/local/confirm', {},{
           headers: {
           'Content-Type': 'application/json',
-          'access_token': `Bearer ${this.access_token}`   
+          'access_token': `Bearer ${this.access_token}`,
+          'Authorization': this.$config.login_api_key
           }      
         })
         .then((response)=>{  
