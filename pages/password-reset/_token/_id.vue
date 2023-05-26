@@ -104,7 +104,6 @@ export default {
 
     async resetPwd() {
       this.submitted = true;
-      console.log(this.$config.login_secret_key);
       let userData = encryption({
         key: this.$config.login_secret_key,
         data: {
@@ -116,7 +115,6 @@ export default {
         param: ['newPassword']
       })
       let userEmail;
-      console.log(this.$config.login_api_key);
       await this.$axios
         .post('/user/local/password', userData, {headers: {
           'Content-Type': 'application/json',
