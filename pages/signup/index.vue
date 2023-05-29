@@ -49,7 +49,8 @@
 export default { 
   name: 'SignupPage',
 
-  async asyncData({$axios,query}) {
+  async asyncData({$axios,query, $configGetter}) {
+    $configGetter()
     const userTypes=await $axios.$get('/types')
     const strategy= query.strategy
     return {userTypes,strategy}
@@ -59,15 +60,6 @@ export default {
     return {   
       userType:'',
       imgFile:'',
-    }
-  },
-
-  fetch ({ beforeNuxtRender, $config: { login_api_key, login_secret_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_api_key = login_api_key
-        nuxtState.nuxtState.config.login_secret_key = login_secret_key
-      })
     }
   },
 

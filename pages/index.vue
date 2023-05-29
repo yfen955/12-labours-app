@@ -38,15 +38,6 @@ export default {
     return {content,topNews}
   },
 
-  fetch ({ beforeNuxtRender, $config: { login_api_key, login_secret_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_api_key = login_api_key
-        nuxtState.nuxtState.config.login_secret_key = login_secret_key
-      })
-    }
-  },
-
   mounted(){
     const loginSuccess=this.$route.query.login
     if(loginSuccess) this.$toast.success('Successfully Logged In!',{duration:3000, position: 'bottom-right'})

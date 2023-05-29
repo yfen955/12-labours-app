@@ -17,19 +17,21 @@
 export default {
   name: "SocialBox",
 
-  props: {
-    twitterLink: {
-      type: String,
-      default: undefined,
-    },
-    facebookLink: {
-      type: String,
-      default: undefined,
-    },
-    linkedInLink: {
-      type: String,
-      default: undefined,
-    },
+  data: () => {
+    return {
+      twitterLink: {
+        type: String,
+        default: undefined,
+      },
+      facebookLink: {
+        type: String,
+        default: undefined,
+      },
+      linkedInLink: {
+        type: String,
+        default: undefined,
+      },
+    };
   },
 
   created: function() {

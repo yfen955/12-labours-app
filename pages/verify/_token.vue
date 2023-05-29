@@ -20,7 +20,8 @@ export default {
     return params.token 
   },
 
-  async asyncData({params}) {
+  async asyncData({params, $configGetter}) {
+    $configGetter()
     const access_token=params.token
     return{access_token}
   },
@@ -28,14 +29,6 @@ export default {
   data: () => {
     return { 
       error:'',
-    }
-  },
-
-  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_api_key = login_api_key
-      })
     }
   },
 

@@ -4,7 +4,7 @@ export default (
   { beforeNuxtRender, $config: { graphcms_endpoint } },
   inject
 ) => {
-  if (typeof window === "undefined") {
+  if (process.server) {
     beforeNuxtRender((nuxtState) => {
       nuxtState.nuxtState.config.graphcms_endpoint = graphcms_endpoint;
     });

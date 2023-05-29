@@ -51,12 +51,8 @@ export default {
     }
   },
 
-  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_api_key = login_api_key
-      })
-    }
+  async asyncData({$configGetter}) {
+    $configGetter()
   },
 
   // watch: {

@@ -43,7 +43,8 @@ export default {
     return params.id
   },
 
-  async asyncData({params,query}) {
+  async asyncData({params,query, $configGetter}) {
+    $configGetter()
     const email=params.id
     let emailSent=query.emailSent
     return{email,emailSent}
@@ -54,14 +55,6 @@ export default {
       allowedAttempts:10,
       emailAttemtps:1,
       error:'',
-    }
-  },
-
-  fetch ({ beforeNuxtRender, $config: { login_api_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_api_key = login_api_key
-      })
     }
   },
 

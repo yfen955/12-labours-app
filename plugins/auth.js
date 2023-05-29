@@ -3,8 +3,8 @@ export default function({
   $auth,
   $config: { google_client_id, login_api_url },
 }) {
-  if (typeof window === "undefined") {
-    beforeNuxtRender((nuxtState) => {
+  if (process.server) {
+    beforeNuxtRender(() => {
       $auth.strategies.google.options.clientId = google_client_id;
     });
   }

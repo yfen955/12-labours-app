@@ -67,7 +67,8 @@ export default {
   //middleware: 'auth',
   components: { NavBar },
       
-  async asyncData({$auth,redirect}) {
+  async asyncData({$auth,redirect, $configGetter}) {
+    $configGetter()
     if(!$auth.loggedIn ||  !$auth.user || !$auth.strategy.token.status().valid()){     
       return redirect('/login');
     }
@@ -75,14 +76,6 @@ export default {
     const user=$auth.user
     return{user}
   },
-
-  fetch ({ beforeNuxtRender, $config: { login_secret_key } }) {
-    if (typeof window === 'undefined') {
-      beforeNuxtRender(nuxtState => {
-        nuxtState.nuxtState.config.login_secret_key = login_secret_key
-      })
-    }
-  }
 }
 
 </script>

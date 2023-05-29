@@ -69,6 +69,8 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
+    // { src: "@/plugins/private-config-getter.js", ssr: true, mode: "server" },
+    "@/plugins/private-config-getter.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
