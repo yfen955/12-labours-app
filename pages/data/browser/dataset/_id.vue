@@ -422,14 +422,6 @@ export default {
         this.$el.querySelector('.detail-container').scrollIntoView({ behavior: "smooth" });
     },
 
-    viewMap(model, uuid) {
-      let route = this.$router.resolve({
-        name: `data-maps-${model}-id`,
-        params: { id: uuid }
-      });
-      window.open(route.href);
-    },
-
     combineNames() {
       let result = '';
       let name_list = this.detail_data.contributor_name;

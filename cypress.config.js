@@ -1,14 +1,16 @@
 const { defineConfig } = require("cypress");
+require('dotenv').config();
 
 module.exports = defineConfig({
+  projectId: "1hukkn",
   e2e: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: process.env.PORTAL_URL,
     // pageLoadTimeout: 1024*1024*1024,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
   },
   env: {
-    query_url: 'https://abi-12-labours-api.herokuapp.com',
+    query_url: process.env.QUERY_API_URL,
   },
 });
