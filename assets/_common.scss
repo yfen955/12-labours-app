@@ -2,6 +2,7 @@
 .page-outer{
   width:100%;
   min-height: 82.5vh;
+  min-width: 20rem;
 }
 
 .container-default{
@@ -157,7 +158,7 @@ p a{
 //Picture on signup pages
 
 .signup-picture{
-  width:50%;
+  width:45%;
   border: 1px solid #707070;
   height:auto;
   background-image:
@@ -203,6 +204,7 @@ a {
 
 .profile{
   width:50%;
+  min-width:20rem;
   @media only screen and (max-width: $viewport-md) {
     width:100%;
   }

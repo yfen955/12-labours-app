@@ -4,26 +4,26 @@
 
 Here is the list of environment variables used by the app. After cloning the repository, please create a file named `.env` in the root directory and paste the variables.
 ```bash
+#This is the base url
+PORTAL_URL=
+#This is the api url of FastAPI backend
+QUERY_API_URL=
 #This should point to the login system, the default value is http://localhost:8080
-API_URL=
+LOGIN_API_URL=
+#An API Key to protect the server, this variable is required and should be the same when starting the api and app server
+LOGIN_API_KEY=
+# This is the api key for encryption
+LOGIN_SECRET_KEY=
 #Endpoint to the GraphCMS
 GRAPHCMS_ENDPOINT=
 #The client id for Google OAuth. They are provided from the Credentials setup on Google Cloud
 GOOGLE_CLIENT_ID=
 #Location of the xml educational material for 12 Labours
 TWELVE_LABOURS_XML=
-#An API Key to protect the server, this variable is required and should be the same when starting the api and app server
-API_KEY=
 #This is the client number for google analytics, this is not essential
 GOOGLE_ANALYTICS_GA4=
-#This is the api url of FastAPI backend
-QUERY_API_URL=
-#This is the base url
-BASEURL=
 #This is the API for the flatmap
 FLATMAP_API=
-# This is the api key for encryption
-SECRET_KEY=
 ```
 
 ## Development tools

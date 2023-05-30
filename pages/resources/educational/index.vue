@@ -47,8 +47,16 @@ export default {
           label: "RESOURCES",
         },
       ],
-      xmlURL: process.env.twelve_labours_xml
+      xmlURL: undefined,
     };
+  },
+
+  async asyncData({$configGetter}) {
+    $configGetter()
+  },
+
+  created: function() {
+    this.xmlURL = this.$config.twelve_labours_xml;
   },
 };
 </script>

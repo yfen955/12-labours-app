@@ -1,15 +1,14 @@
 import axios from "axios";
 
-async function fetchPaginationData(filter, search, limit, page, relation) {
+async function fetchPaginationData(path, filter, limit, page, relation) {
   let fetched_data = [];
   let totalNum = 0;
   let payload = {
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
-    relation: relation
+    relation: relation,
   };
-  let path = `${process.env.query_api_url}/graphql/pagination/?search=${search}`;
   await axios
     .post(path, payload)
     .then((res) => {
@@ -18,19 +17,17 @@ async function fetchPaginationData(filter, search, limit, page, relation) {
     })
     .catch((err) => {
       console.log(err);
-      fetched_data = [];
     });
   return new Array(fetched_data, totalNum);
 }
 
-async function fetchQueryData(node, filter, search = '') {
+async function fetchQueryData(path, node, filter, search = "") {
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
-    search: search
+    search: search,
   };
-  const path = `${process.env.query_api_url}/graphql/query`;
   await axios
     .post(path, payload)
     .then((res) => {
@@ -42,13 +39,12 @@ async function fetchQueryData(node, filter, search = '') {
   return fetched_data;
 }
 
-async function getSingleData(uuid, programName, projectName) {
+async function getSingleData(path, programName, projectName) {
   let fetched_data = [];
   let payload = {
     program: programName,
     project: projectName,
   };
-  const path = `${process.env.query_api_url}/record/${uuid}`;
   await axios
     .post(path, payload)
     .then((res) => {
@@ -56,14 +52,12 @@ async function getSingleData(uuid, programName, projectName) {
     })
     .catch((err) => {
       console.log(err);
-      fetched_data = [];
     });
   return fetched_data;
 }
 
-async function fetchFilterData(sidebar) {
+async function fetchFilterData(path) {
   let filter = {};
-  const path = `${process.env.query_api_url}/filter/?sidebar=${sidebar}`;
   await axios
     .get(path)
     .then((res) => {
@@ -79,5 +73,5 @@ export default {
   fetchPaginationData,
   fetchQueryData,
   getSingleData,
-  fetchFilterData
-}
+  fetchFilterData,
+};

@@ -46,23 +46,25 @@
         </div>
       </div>
       <div>
-        <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex"> 
-          <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
-          <component :is="linkComponent" to="/profile">
-            <el-button>Account</el-button>
-          </component>
-          <component :is="linkComponent" @click.native="signout" to="/">
-            Log out
-          </component>
-        </div>
-        <div v-else  class="login vertical-flex"> 
-          <component :is="linkComponent" to="/login">
-            <el-button>Login</el-button>
-          </component>
-          <component :is="linkComponent" to="/signup">
-            Sign up Here
-          </component>
-        </div>
+        <client-only>
+          <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex status1"> 
+            <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
+            <component :is="linkComponent" to="/profile">
+              <el-button>Account</el-button>
+            </component>
+            <component :is="linkComponent" @click.native="signout" to="/">
+              Log out
+            </component>
+          </div>
+          <div v-else  class="login vertical-flex status2"> 
+            <component :is="linkComponent" to="/login">
+              <el-button>Login</el-button>
+            </component>
+            <component :is="linkComponent" to="/signup">
+              Sign up Here
+            </component>
+          </div>
+        </client-only>
       </div>
     </div>
   </div>
@@ -292,7 +294,13 @@ export default {
   padding:0.5rem 2rem 0.5rem 2rem;
   @media only screen and (max-width: $viewport-md){
     padding:0 1rem 0rem 1rem;
-  }   
+    .status1{
+      margin-left: 4rem
+    }
+    .status2{
+      margin-left: 6.05rem
+    }
+  }
 }
 
 .logo

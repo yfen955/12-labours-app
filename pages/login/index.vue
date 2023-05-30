@@ -73,6 +73,10 @@ export default {
     }
   },
 
+  async asyncData({$configGetter}) {
+    $configGetter()
+  },
+
   methods: {
     fieldChange:function(fieldName){
       let field=this[fieldName]
@@ -93,6 +97,7 @@ export default {
     },
     async localSignIn() {
       let userData = encryption({
+        key: this.$config.login_secret_key,
         data: {
           email: this.email.value,
           password: this.password.value
@@ -101,7 +106,8 @@ export default {
       })
       try {
         let response =  await this.$auth.loginWith('local', {
-          data: userData
+          data: userData,
+          headers: { 'Authorization': this.$config.login_api_key }
         }).then((response) => { 
           this.$auth.setUser(response.data.user)     
           this.$router.replace('/?login=true')
@@ -136,8 +142,8 @@ export default {
   @import '@/assets/google.scss';
 
   .login{
-    width:50%;
-    min-height: 82.5vh;
+    width:55%;
+    height: 82.5vh;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }

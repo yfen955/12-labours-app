@@ -36,16 +36,22 @@ export default {
   data: () => {
     return {
       state: undefined,
-      options:{
-        flatmapAPI: process.env.FLATMAPAPI_LOCATION,
-        rootUrl: process.env.base_url,
+      options: {
+        flatmapAPI: undefined,
+        rootUrl: undefined,
+        queryUrl: undefined,
       },
       shareLink: undefined,
       alternateSearch: mySearch,
-    }
+    };
   },
   created: function() {
-    this.shareLink = `${process.env.base_url}${this.$route.fullPath}`
+    this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
+    this.options= {
+      flatmapAPI: this.$config.flatmap_api,
+      rootUrl: this.$config.portal_url,
+      queryUrl: this.$config.query_api_url,
+    }
   },
   methods: {
     updateUUID: function() {
@@ -64,7 +70,7 @@ export default {
           this.$router.replace(
             { query: { ...this.$route.query, id: data.uuid } },
             () => {
-              this.shareLink = `${process.env.ROOT_URL}${this.$route.fullPath}`
+              this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`
             }
           )
         })

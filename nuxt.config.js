@@ -11,26 +11,40 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/img/12-labours-logo-black.png" }],
-
+    link: [
+      {
+        rel: "icon",
+        type: "image/x-icon",
+        href: "/img/12-labours-logo-black.png",
+      },
+    ],
   },
-  env: {
-    graphcms_api: process.env.GRAPHCMS_ENDPOINT,
-    google_analytics_ga4:process.env.GOOGLE_ANALYTICS_GA4,
+
+  publicRuntimeConfig: {
+    portal_url: process.env.PORTAL_URL || "http://localhost:3000",
+    query_api_url: process.env.QUERY_API_URL || "http://localhost:8000",
+    login_api_url: process.env.LOGIN_API_URL || "http://localhost:8080",
+    google_analytics_ga4: process.env.GOOGLE_ANALYTICS_GA4,
+    flatmap_api: process.env.FLATMAP_API,
+    axios: {
+      baseURL: process.env.LOGIN_API_URL || "http://localhost:8080",
+    },
     social_twitter:
       process.env.SOCIAL_TWITTER || "https://twitter.com/12-labours",
     social_facebook:
       process.env.SOCIAL_FACEBOOK || "https://wwww.facebook.com/12-labours",
-    social_linkedIn:
+    social_linkedin:
       process.env.SOCIAL_LINKEDIN || "https://www.linkedin.com/12-labours",
-    social_youYube:
+    social_youtube:
       process.env.SOCIAL_YOUTUBE || "https://www.youtube.com/12-labours",
-    twelve_labours_xml:
-      process.env.TWELVE_LABOURS_XML,
-    query_api_url: process.env.QUERY_API_URL,
-    base_url: process.env.BASEURL,
-    flatmap_api: process.env.FLATMAP_API,
-    encryption_key: process.env.SECRET_KEY,
+  },
+
+  privateRuntimeConfig: {
+    login_api_key: process.env.LOGIN_API_KEY,
+    login_secret_key: process.env.LOGIN_SECRET_KEY,
+    graphcms_endpoint: process.env.GRAPHCMS_ENDPOINT,
+    google_client_id: process.env.GOOGLE_CLIENT_ID,
+    twelve_labours_xml: process.env.TWELVE_LABOURS_XML,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -55,6 +69,7 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
+    "@/plugins/private-config-getter.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -64,7 +79,7 @@ export default {
       "~/components/News",
       "~/components/Events",
       "~/components/PortalHelp",
-      "~/components/Contact"
+      "~/components/Contact",
     ],
   },
 
@@ -76,11 +91,11 @@ export default {
     extendRoutes(routes, resolve) {
       for (let i = 0; i < routes.length; i++) {
         if (routes[i].name === "resources-educational") {
-          routes[i].path = "/resources/educational/:pageName*"
-          return
+          routes[i].path = "/resources/educational/:pageName*";
+          return;
         }
       }
-    }
+    },
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -88,72 +103,70 @@ export default {
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
     "@nuxtjs/auth-next",
-    "@nuxtjs/toast"
+    "@nuxtjs/toast",
   ],
-  
+
   axios: {
-    baseURL: process.env.API_URL || "http://localhost:8080",
-    headers: {'Authorization':process.env.API_KEY}
+    baseURL: process.env.LOGIN_API_URL,
   },
 
   auth: {
-    watchLoggedIn:false,
+    plugins: ["~/plugins/auth.js"],
+    watchLoggedIn: false,
     router: {
       middleware: ["auth"],
     },
     strategies: {
       google: {
         clientId: process.env.GOOGLE_CLIENT_ID,
-        codeChallengeMethod: '',  
-        responseType: 'code',  
-        grantType: 'authorization_code', 
+        codeChallengeMethod: "",
+        responseType: "code",
+        grantType: "authorization_code",
         endpoints: {
-          //token: `${process.env.API_URL}/user/google/login`, 
-          userInfo: `${process.env.API_URL}/user/local/profile` 
+          //token: `${process.env.LOGIN_API_URL}/user/google/login`,
+          userInfo: `${process.env.LOGIN_API_URL}/user/local/profile`,
         },
         token: {
-          property:'access_token',
+          property: "access_token",
           global: true,
-          name:'access_token'  
+          name: "access_token",
         },
         user: {
-          property: 'user'
+          property: "user",
         },
       },
       local: {
         token: {
           global: true,
-          property: 'access_token',     //Field of the response JSON to be used for value
-          name:'access_token'           //Authorization header name to be used in axios requests. Default is 'Authorization'
+          property: "access_token", //Field of the response JSON to be used for value
+          name: "access_token", //Authorization header name to be used in axios requests. Default is 'Authorization'
         },
         user: {
-          property: 'user',
-          autoFetch:false
+          property: "user",
+          autoFetch: false,
         },
         endpoints: {
-          login: { url: '/user/local/login', method: 'post'},
-          user: { url: '/user/local/profile', method: 'get'}
+          login: { url: "/user/local/login", method: "post" },
+          user: { url: "/user/local/profile", method: "get" },
         },
-      }
+      },
     },
     redirect: {
       callback: "/login/callback",
     },
   },
-  
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
     extractCSS: {
-      ignoreOrder: true
+      ignoreOrder: true,
     },
   },
 
   vue: {
     config: {
-      devtools: true
-    }
+      devtools: true,
+    },
   },
 };
-
-console.log(process.env.API_URL)

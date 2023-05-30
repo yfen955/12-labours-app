@@ -46,13 +46,13 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let data = await fetchModel.fetchModelInfo(this.$route.params.id, this.$store);
+    let data = await fetchModel.fetchModelInfo(this.$config.query_api_url, this.$route.params.id);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.source_url = `${process.env.query_api_url}data/download/${dataset_id}/${filename}`;
+    this.source_url = `${this.$config.query_api_url}data/download/${dataset_id}/${filename}`;
     this.metadata = JSON.parse(data.supplemental_json_metadata.replaceAll("'", '"'));
     let supplementPath = data.is_described_by;
-    this.supplemental_data = [{url: `${process.env.query_api_url}data/download/${supplementPath}`}];
+    this.supplemental_data = [{ url: `${this.$config.query_api_url}data/download/${supplementPath}` },];
     this.isLoading = false;
   },
 }

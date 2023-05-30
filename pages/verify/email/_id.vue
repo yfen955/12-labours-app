@@ -43,7 +43,8 @@ export default {
     return params.id
   },
 
-  async asyncData({params,query}) {
+  async asyncData({params,query, $configGetter}) {
+    $configGetter()
     const email=params.id
     let emailSent=query.emailSent
     return{email,emailSent}
@@ -63,7 +64,9 @@ export default {
         this.error=''
         if(this.emailAttemtps++ <this.allowedAttempts) {       
           await this.$axios.post('/user/local/email', {
-            email:this.email   
+            email: this.email
+          }, {
+            headers: {'Authorization': this.$config.login_api_key}
           })
           .then((response)=>{  
             if(response.data.alreadyActive){

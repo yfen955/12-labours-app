@@ -13,7 +13,7 @@ export default {
   async asyncData({$axios,$auth,redirect,query}) {
     try{
       const googleCode=query.code
-      let response = await $axios.post(`/user/google/login`, {code:googleCode})
+      let response = await $axios.post('/user/google/login', {code:googleCode})
       .then((response)=>{     
         if(response.status===200){
           if(response.data.createAccount){

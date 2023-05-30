@@ -51,6 +51,10 @@ export default {
     }
   },
 
+  async asyncData({$configGetter}) {
+    $configGetter()
+  },
+
   // watch: {
 
   // },
@@ -67,16 +71,18 @@ export default {
     },
 
     async sendEmail() {
-      const path = `/user/local/password/reset`;
       await this.$axios
-        .post(path, { email: this.email.value })
+        .post('/user/local/password/reset', { 
+          email: this.email.value
+         }, {
+          headers: { 'Authorization': this.$config.login_api_key }
+        })
         .then((res) => {
           this.message = res.data.message;
         })
         .catch((err) => {
           this.error = err.response ? err.response.data.message : err;
         });
-      
     }
   }
 }

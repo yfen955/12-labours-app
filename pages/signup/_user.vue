@@ -243,7 +243,9 @@ export default {
         const endpoint= this.strategy=='google' ? '/user/google/register' : '/user/local/register' 
         await this.$axios.post(endpoint, {
           strategy:this.strategy,
-          userInfo: this.getFormData()      
+          userInfo: this.getFormData()
+        }, {
+          headers: { 'Authorization': this.$config.login_api_key } 
         })
         .then((response)=>{  
           this.$auth.logout()    //TBC: if needed
@@ -268,6 +270,7 @@ export default {
 
     getFormData:function(){
       let encrypted_pwd = encryption({
+        key: this.$config.login_secret_key,
         data: {
           password:this.password.value,
         },
@@ -353,8 +356,7 @@ export default {
 
 <style scoped lang="scss">
   .signup{
-    min-height: 82.5vh;
-    width:50%;
+    width:55%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }

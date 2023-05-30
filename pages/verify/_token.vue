@@ -20,7 +20,8 @@ export default {
     return params.token 
   },
 
-  async asyncData({params}) {
+  async asyncData({params, $configGetter}) {
+    $configGetter()
     const access_token=params.token
     return{access_token}
   },
@@ -42,7 +43,8 @@ export default {
         await this.$axios.post('/user/local/confirm', {},{
           headers: {
           'Content-Type': 'application/json',
-          'access_token': `Bearer ${this.access_token}`   
+          'access_token': `Bearer ${this.access_token}`,
+          'Authorization': this.$config.login_api_key
           }      
         })
         .then((response)=>{  

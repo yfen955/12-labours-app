@@ -11,13 +11,26 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@12-labours/mapintegratedvuer@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.1.tgz#8125126ee6715821b97e02adf0e9ea906a9c63c6"
-  integrity sha512-oeetPyv21ccmUHVXLm0wmUjQO0V5KigmUceFr88AvEPa5bvjcd/9Qo37zFVDX99jm9t8YeLhPxsouW6Ku3gW5w==
+"@12-labours/map-side-bar@^2.0.0-response.6":
+  version "2.0.0-response.6"
+  resolved "https://registry.yarnpkg.com/@12-labours/map-side-bar/-/map-side-bar-2.0.0-response.6.tgz#af39e5ca967c6e793526db4624ae310d952f48c9"
+  integrity sha512-3XrZUuH4DV2QXn03BQnr5x/PIA0acGBE0ToZIQGuR+sTyNRqkJKab31NBETjPmSX1vG4+3hpUWn6GvMAsQ06PA==
   dependencies:
+    "@abi-software/gallery" "^0.3.3"
+    "@abi-software/svg-sprite" "^0.2.0"
+    algoliasearch "^4.10.5"
+    element-ui "^2.13.0"
+    marked "^4.1.1"
+    vue "^2.6.10"
+    xss "^1.0.14"
+
+"@12-labours/mapintegratedvuer@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.8.tgz#120dcf706b34a3c3c702aa8bca954aa109c05104"
+  integrity sha512-aWUFOGvFiMvQCnQKAb7+HdKLhlKDduPSHUPVgncNvEUfv5Q5+OPgE4gt8g6E89CQqAwA7UnRq45T/L5qq4QrSg==
+  dependencies:
+    "@12-labours/map-side-bar" "^2.0.0-response.6"
     "@abi-software/flatmapvuer" "^0.4.0"
-    "@abi-software/map-side-bar" "^2.0.0-response.1"
     "@abi-software/plotvuer" "^0.3.9"
     "@abi-software/scaffoldvuer" "^0.1.58"
     "@abi-software/simulationvuer" "^0.6.5"
@@ -110,19 +123,6 @@
     core-js "^3.8.3"
     element-ui "^2.15.0"
     vue "^2.6.11"
-
-"@abi-software/map-side-bar@^2.0.0-response.1":
-  version "2.0.0-response.1"
-  resolved "https://registry.yarnpkg.com/@abi-software/map-side-bar/-/map-side-bar-2.0.0-response.1.tgz#a1e02d75299510869e399d87106b9d24fa824bbc"
-  integrity sha512-L1+pRX5fEPnG6reB1MZiTjzCngiaJspZAfjXzMbQu+jNVY7hLH9ectma8C5G7nnulHkf8MkCyUjjwid2DqOUWw==
-  dependencies:
-    "@abi-software/gallery" "^0.3.3"
-    "@abi-software/svg-sprite" "^0.2.0"
-    algoliasearch "^4.10.5"
-    element-ui "^2.13.0"
-    marked "^4.1.1"
-    vue "^2.6.10"
-    xss "^1.0.14"
 
 "@abi-software/plotvuer@^0.2.46":
   version "0.2.46"

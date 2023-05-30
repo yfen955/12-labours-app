@@ -49,8 +49,9 @@
 export default { 
   name: 'SignupPage',
 
-  async asyncData({$axios,query}) {
-    const userTypes=await $axios.$get(`/types`)
+  async asyncData({$axios,query, $configGetter}) {
+    $configGetter()
+    const userTypes=await $axios.$get('/types')
     const strategy= query.strategy
     return {userTypes,strategy}
   },
@@ -93,8 +94,8 @@ export default {
   @import '@/assets/google.scss';
 
   .signup{
-    min-height: 82.5vh;
-    width:50%;
+    height: 82.5vh;
+    width:55%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
     }
