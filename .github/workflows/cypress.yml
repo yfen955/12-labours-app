@@ -26,6 +26,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           runTests: false
+          build: yarn build
       - name: Save build folder
         uses: actions/upload-artifact@v3
         with:
