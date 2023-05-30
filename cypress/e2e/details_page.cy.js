@@ -1,3 +1,20 @@
+describe('gallery tab', () =>{
+  beforeEach(function () {
+    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
+    cy.wait(3000);
+  })
+
+  it('test carousel number & thumbnail', () => {
+    cy.get('.el-carousel__item').should('have.length', 2);
+    cy.get('.model-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
+  })
+
+  it('open a scaffold in gallery', () => {
+    cy.get('.model-button').first().click();
+    cy.url().should('include', '/data/maps/scaffold/7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f');
+  })
+})
+
 describe('information in the duke dataset detail page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
@@ -22,22 +39,5 @@ describe('information in the duke dataset detail page', () =>{
     cy.on('url:changed', url => {
       cy.contains(url, 'https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903');
     })
-  })
-})
-
-describe('gallery tab', () =>{
-  beforeEach(function () {
-    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
-    cy.wait(3000);
-  })
-
-  it('test carousel number & thumbnail', () => {
-    cy.get('.el-carousel__item').should('have.length', 2);
-    cy.get('.model-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
-  })
-
-  it('open a scaffold in gallery', () => {
-    cy.get('.model-button').first().click();
-    cy.url().should('include', '/data/maps/scaffold/7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f');
   })
 })
