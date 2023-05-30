@@ -26,20 +26,18 @@ describe('information in the duke dataset detail page', () =>{
 })
 
 describe('gallery tab', () =>{
+  beforeEach(function () {
+    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
+    cy.wait(3000);
+  })
+
   it('test carousel number & thumbnail', () => {
-    cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=gallery');
-    cy.wait(10000);
-    cy.get('.el-card.carousel').should('have.length', 2);
-    cy.get('.model-image').find('img').should('have.attr', 'alt', 'thumbnail');
+    cy.get('.el-carousel__item').should('have.length', 2);
+    cy.get('.model-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
   })
 
   it('open a scaffold in gallery', () => {
-    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
-    cy.wait(5000);
-    cy.window().then((win) => {
-      cy.stub(win, 'open').as("popup");
-    })
     cy.get('.model-button').first().click();
-    cy.get('@popup').should("be.called");
+    cy.url().should('include', '/data/maps/scaffold/7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f');
   })
 })
