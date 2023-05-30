@@ -43,6 +43,10 @@ export default {
       supplemental_data: [],
     }
   },
+  
+  async asyncData({$configGetter}) {  
+    $configGetter()
+  },
 
   async fetch() {
     this.isLoading = true;
@@ -55,6 +59,10 @@ export default {
     this.supplemental_data = [{ url: `${this.$config.query_api_url}data/download/${supplementPath}` },];
     this.isLoading = false;
   },
+
+  mounted() {
+    this.$fetch()
+  }
 }
 </script>
 
