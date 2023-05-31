@@ -156,7 +156,33 @@
           
           <!-- files content -->
           <span v-if="$route.query.datasetTab === 'files'" class="tab-content">
-            files
+            <h2>Dataset Files</h2>
+            <el-table :data="files_data"
+                v-loading="isLoadingFile"
+                element-loading-text="Loading..."
+                element-loading-spinner="el-icon-loading"
+                :cell-style="{padding: '1rem 0 1rem'}"
+            >
+              <el-table-column prop="name" label="Name">
+                <template slot-scope="scope">
+                  <div class="display-ellipsis --1">
+                    <i class="el-icon-folder" v-if="scope.row.type === 'Folder'"></i>
+                    <i class="el-icon-document" v-else></i>
+                    <el-button class="filename" @click="updateFilesData(scope.row.path, scope.row.type)">{{ scope.row.name[0].toUpperCase() + scope.row.name.slice(1) }}</el-button>
+                  </div>
+                  
+                </template>
+              </el-table-column>
+              <el-table-column prop="type" label="Type"></el-table-column>
+              <el-table-column label="Action">
+                <template slot-scope="scope">
+                  <p v-if="scope.row.type === 'Folder'">-</p>
+                  <div v-else>
+                    <el-button @click="downloadFile(scope.row.path)" class="icon-btn"><i class="el-icon-download"></i></el-button>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
           </span>
           
           <!-- gallery content -->
@@ -184,7 +210,7 @@
           <div>
             <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
             <div class="pdf-bg" v-show="show_pdf">
-              <el-button class="icon-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
+              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
               <div class="pdf-viewer">
                 <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
               </div>
@@ -302,10 +328,10 @@ const datasetTabs = [
     label: 'Cite',
     name: 'cite',
   },
-  // {
-  //   label: 'Files',
-  //   name: 'files',
-  // },
+  {
+    label: 'Files',
+    name: 'files',
+  },
   {
     label: 'Gallery',
     name: 'gallery',
@@ -358,12 +384,15 @@ export default {
       dataset_img: '',
       show_segmentation: false,
       show_pdf: false,
+      isLoadingFile: false,
+      get_file_path: "",
+      files_data: [],
     }
   },
   
   created: async function() {
-    const path = `${this.$config.query_api_url}/graphql/query`;
-    let data = await backendQuery.fetchQueryData(path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
+    const get_data_path = `${this.$config.query_api_url}/graphql/query`;
+    let data = await backendQuery.fetchQueryData(get_data_path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
     this.detail_data = data[0].dataset_descriptions[0];
     this.title = data[0].dataset_descriptions[0].title[0];
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
@@ -374,6 +403,10 @@ export default {
     this.handleModels(this.scaffold_thumbnail_data, this.plot_manifest_data, this.thumbnail_data);
 
     await this.handleCitation();
+
+    this.get_file_path = `${this.$config.query_api_url}/collection`;
+    let fetched_data = await backendQuery.fetchFiles(this.get_file_path, {path: `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`});
+    this.handleFilesData(fetched_data);
 
     this.show_segmentation = false;
     this.show_pdf = false;
@@ -608,6 +641,43 @@ export default {
         document.body.style.overflow = "";
         document.removeEventListener("touchmove", mo, false);
       }
+    },
+
+    handleFilesData(data) {
+      data.folders.forEach((item) => {
+        let folder = {
+          name: item.name,
+          path: item.path,
+          type: "Folder"
+        }
+        this.files_data.push(folder);
+      })
+      data.files.forEach((item) => {
+        let file = {
+          name: item.name,
+          path: item.path,
+          type: "File"
+        }
+        this.files_data.push(file);
+      })
+    },
+
+    async updateFilesData(path, type) {
+      if (type === "Folder") {
+        this.isLoadingFile = true;
+        this.files_data = [];
+        let new_files = await backendQuery.fetchFiles(this.get_file_path, {path: path});
+        this.handleFilesData(new_files);
+        this.isLoadingFile = false;
+      } else {
+        this.downloadFile(path);
+      }
+    },
+
+    downloadFile(path) {
+      let file_path = path.replace('/tempZone/home/rods/12L/datasets/', '');
+      let download_path = `${this.$config.query_api_url}/data/download/${file_path}`;
+      window.open(download_path, "_self");
     }
   },
 }
@@ -788,7 +858,7 @@ li {
   z-index: 10;
   background-color: rgb(38, 38, 38, 0.7);   //$background
 }
-.icon-btn {
+.view-btn {
   background-color: rgb(0, 0, 0, 0);
   border-color: rgb(0, 0, 0, 0);
   color: white;
@@ -803,5 +873,23 @@ li {
   left: 10%;
   width: 80%;
   height: 90%;
+}
+.filename {
+  background: transparent;
+  color: $app-primary-color;
+  border-color: transparent;
+  font-size: 1rem;
+  text-transform: none;
+  padding: 0;
+  height: auto;
+}
+.icon-btn {
+  background: $app-primary-color;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  font-size: large;
 }
 </style>
