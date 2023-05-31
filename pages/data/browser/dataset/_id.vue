@@ -161,7 +161,7 @@
           
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card2 :cards="models_list" v-if="!isLoading" />
+            <carousel-card :cards="models_list" v-if="!isLoading" />
           </span>
           
           <!-- references content -->
