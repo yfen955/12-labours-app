@@ -7,7 +7,7 @@ describe('map sidebar', () =>{
     // open 3D map button
     cy.get('.el-button').find('span').filter(':contains("Open 3D Map")').click();
     cy.get('.regions-display-text').should('contain', 'Regions');
-    cy.get('.region-tree-node').find('span').should('contain', 'Bladder');
+    cy.get('.region-tree-node').find('span').should('contain', 'Heart');
     cy.get('.el-button').find('span').filter(':contains("Close 3D Map")').click();
 
     // sidebar
@@ -22,11 +22,11 @@ describe('map sidebar', () =>{
     cy.wait(5000);
     cy.contains('11 results | Showing');
     cy.get('div').should('contain', 'Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig');
-    cy.get('.cursor-pointer').find('img').should('have.attr', 'src', 'https://abi-12-labours-api.herokuapp.com/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg');
+    cy.get('.cursor-pointer').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg`);
     // change img
     cy.get('.next').find('.progress-button').first().click();
     cy.get('.next').find('.progress-button').first().click();
-    cy.get('.cursor-pointer').find('img').should('have.attr', 'src', 'https://abi-12-labours-api.herokuapp.com/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_thumbnail.jpg');
+    cy.get('.cursor-pointer').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_proximal-colon/sub-all_direct-stim_proximal-colon_thumbnail.jpg`);
     // clear the facet
     cy.get('.el-icon-close').click();
     cy.wait(5000);
