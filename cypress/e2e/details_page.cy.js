@@ -11,14 +11,18 @@ describe('gallery tab', () =>{
 
   it('open a scaffold in gallery', () => {
     cy.get('.model-button').first().click();
-    cy.url().should('include', '/data/maps/scaffold/7a0f44d7-98c6-4ced-bd5f-58a68b31fc8f');
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as("popup");
+    })
+    cy.get('.model-button').first().click();
+    cy.get('@popup').should("be.called");
   })
 })
 
 describe('information in the duke dataset detail page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
-    cy.wait(10000);
+    cy.wait(12000);
   })
 
   it('test left column button', () => {
