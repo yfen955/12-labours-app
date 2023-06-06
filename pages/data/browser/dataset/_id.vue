@@ -157,20 +157,23 @@
           <!-- files content -->
           <span v-if="$route.query.datasetTab === 'files'" class="tab-content">
             <h2>Dataset Files</h2>
-            <el-table :data="files_data"
-                v-loading="isLoadingFile"
-                element-loading-text="Loading..."
-                element-loading-spinner="el-icon-loading"
-                :cell-style="{padding: '1rem 0 1rem'}"
+            <FilesBreadcrumb :breadcrumb="files_breadcrumb" v-on:folder_path="updateFilesData" />
+            <el-table
+              :data="files_data"
+              v-loading="isLoadingFile"
+              element-loading-text="Loading..."
+              element-loading-spinner="el-icon-loading"
+              :cell-style="{padding: '1rem 0 1rem'}"
             >
               <el-table-column prop="name" label="Name">
                 <template slot-scope="scope">
-                  <div class="display-ellipsis --1">
+                  <span class="table-content">
                     <i class="el-icon-folder" v-if="scope.row.type === 'Folder'"></i>
                     <i class="el-icon-document" v-else></i>
-                    <el-button class="filename" @click="updateFilesData(scope.row.path, scope.row.type)">{{ scope.row.name[0].toUpperCase() + scope.row.name.slice(1) }}</el-button>
-                  </div>
-                  
+                    <a class="filename-btn" @click="updateFilesData(scope.row.path, scope.row.type)">
+                      {{ scope.row.name[0].toUpperCase() + scope.row.name.slice(1) }}
+                    </a>
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="type" label="Type"></el-table-column>
@@ -314,6 +317,7 @@
 <script>
 import backendQuery from '@/services/backendQuery';
 import axios from "axios";
+import FilesBreadcrumb from '../../../../components/DataBrowser/FilesBreadcrumb.vue';
 
 const datasetTabs = [
   {
@@ -349,6 +353,7 @@ const datasetTabs = [
 export default {
   name: "DataDetails",
   props: [ 'id' ],
+  components: { FilesBreadcrumb },
   data: () => {
     return {
       breadcrumb: [
@@ -387,6 +392,12 @@ export default {
       isLoadingFile: false,
       get_file_path: "",
       files_data: [],
+      files_breadcrumb: [
+        {
+          to: 'files',
+          label: 'files'
+        }
+      ],
     }
   },
   
@@ -405,7 +416,10 @@ export default {
     await this.handleCitation();
 
     this.get_file_path = `${this.$config.query_api_url}/collection`;
-    let fetched_data = await backendQuery.fetchFiles(this.get_file_path, {path: `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`});
+    let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
+    if (this.$route.query.path && this.$route.query.path.length > 6)
+      file_path = file_path + `/${this.$route.query.path.slice(6)}`;
+    let fetched_data = await backendQuery.fetchFiles(this.get_file_path, {path: file_path});
     this.handleFilesData(fetched_data);
 
     this.show_segmentation = false;
@@ -654,9 +668,31 @@ export default {
       })
     },
 
-    async updateFilesData(path, type) {
+    async updateFilesData(path, type = 'Folder') {
       if (type === "Folder") {
         this.isLoadingFile = true;
+        let folder_path = 'files';
+        if (path.split('/').length > 7) {
+          folder_path = folder_path + `/${path.slice(path.indexOf(this.$route.params.id) + this.$route.params.id.length + 1)}`;
+        }
+        if (this.$route.query.path && folder_path.length < this.$route.query.path.length) {
+          this.files_breadcrumb = this.files_breadcrumb.filter((item) => {
+            if (folder_path.indexOf(item.label) > -1)
+              return item;
+          })
+        } else {
+          this.files_breadcrumb.push({
+            to: folder_path,
+            label: path.slice(path.lastIndexOf('/') + 1)
+          })
+        }
+        this.$router.push({
+          path: `${this.$route.path}`,
+          query: {
+            datasetTab: `${this.$route.query.datasetTab}`,
+            path: folder_path
+          }
+        });
         this.files_data = [];
         let new_files = await backendQuery.fetchFiles(this.get_file_path, {path: path});
         this.handleFilesData(new_files);
@@ -670,7 +706,7 @@ export default {
       let file_path = path.replace('/tempZone/home/rods/12L/datasets/', '');
       let download_path = `${this.$config.query_api_url}/data/download/${file_path}`;
       window.open(download_path, "_self");
-    }
+    },
   },
 }
 </script>
@@ -866,15 +902,16 @@ li {
   width: 80%;
   height: 90%;
 }
-.filename {
-  background: transparent;
-  color: $app-primary-color;
-  border-color: transparent;
-  font-size: 1rem;
-  text-transform: none;
-  padding: 0;
-  height: auto;
+.table-content {
+  white-space: nowrap;
+  .filename-btn {
+    color: $app-primary-color !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+  }
 }
+
 .icon-btn {
   background: $app-primary-color;
   border-radius: 50%;

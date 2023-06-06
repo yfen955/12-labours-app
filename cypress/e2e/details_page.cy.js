@@ -22,7 +22,7 @@ describe('gallery tab', () =>{
 describe('information in the duke dataset detail page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
-    cy.wait(12000);
+    cy.wait(15000);
   })
 
   it('test left column button', () => {
