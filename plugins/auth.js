@@ -4,9 +4,10 @@ export default function({
   $config: { google_client_id, login_api_url },
 }) {
   if (process.server) {
-    beforeNuxtRender(() => {
-      $auth.strategies.google.options.clientId = google_client_id;
+    beforeNuxtRender((nuxtState) => {
+      nuxtState.nuxtState.config.google_client_id = google_client_id;
     });
   }
+  $auth.strategies.google.options.clientId = google_client_id;
   $auth.strategies.google.options.endpoints.userInfo = `${login_api_url}/user/local/profile`;
 }

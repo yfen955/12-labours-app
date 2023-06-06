@@ -43,6 +43,10 @@ export default {
     }
   },
 
+  async asyncData({$configGetter}) {  
+    $configGetter()
+  },
+
   async fetch() {
     this.isLoading = true;
     let data = await fetchModel.fetchModelInfo(this.$config.query_api_url, this.$route.params.id);
@@ -51,6 +55,10 @@ export default {
     this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
     this.isLoading = false;
   },
+
+  mounted() {
+    this.$fetch()
+  }
 }
 </script>
 

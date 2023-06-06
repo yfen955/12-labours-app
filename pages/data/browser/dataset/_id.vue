@@ -187,7 +187,7 @@
           
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card2 :cards="models_list" v-if="!isLoading" />
+            <carousel-card :cards="models_list" v-if="!isLoading" />
           </span>
           
           <!-- references content -->
@@ -453,14 +453,6 @@ export default {
       });
       if (jump)
         this.$el.querySelector('.detail-container').scrollIntoView({ behavior: "smooth" });
-    },
-
-    viewMap(model, uuid) {
-      let route = this.$router.resolve({
-        name: `data-maps-${model}-id`,
-        params: { id: uuid }
-      });
-      window.open(route.href);
     },
 
     combineNames() {
