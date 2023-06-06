@@ -1,8 +1,9 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item v-for="item in breadcrumb" :key="item.label">
-      <span @click="handlePath(item.to)">{{ item.label }}</span>
+    <el-breadcrumb-item v-for="(item, i) in breadcrumb.slice(0, breadcrumb.length - 1)" :key="i">
+      <span class="hyperlink" @click="handlePath(item.to)">{{ item.label }}</span>
     </el-breadcrumb-item>
+    <el-breadcrumb-item class="title">{{ title }}</el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
@@ -10,9 +11,15 @@
 export default {
   name: 'FilesBreadcrumb',
   props: [ 'breadcrumb' ],
-  data: () => {
-    return {
-      
+  // data: () => {
+  //   return {
+  //     title: '',
+  //   }
+  // },
+
+  computed: {
+    title: function() {
+      return this.breadcrumb[this.breadcrumb.length - 1].label;
     }
   },
 
@@ -28,10 +35,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-span {
+.hyperlink {
   margin-top: .5rem;
   margin-bottom: .5rem;
   color: $app-secondary-color;
+  text-transform: capitalize;
+  text-decoration: underline;
+}
+.title {
   text-transform: capitalize;
 }
 </style>

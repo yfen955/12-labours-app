@@ -419,8 +419,7 @@ export default {
     let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
     if (this.$route.query.path && this.$route.query.path.length > 6)
       file_path = file_path + `/${this.$route.query.path.slice(6)}`;
-    let fetched_data = await backendQuery.fetchFiles(this.get_file_path, {path: file_path});
-    this.handleFilesData(fetched_data);
+    this.updateFilesData(file_path, 'Folder', 'files');
 
     this.show_segmentation = false;
     this.show_pdf = false;
@@ -446,6 +445,16 @@ export default {
         this.updateScroll();
       }
     },
+    '$route.query.path': {
+      handler(new_val, old_val) {
+      let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
+        if (this.files_breadcrumb[this.files_breadcrumb.length - 1].to !== new_val) {
+          if (new_val && new_val !== 'files')
+            file_path = file_path + `/${new_val.slice(new_val.indexOf('/') + 1)}`;
+          this.updateFilesData(file_path, 'Folder', old_val);
+        }
+      }
+    }
   },
 
   methods: {
@@ -668,19 +677,19 @@ export default {
       })
     },
 
-    async updateFilesData(path, type = 'Folder') {
+    async updateFilesData(path, type = 'Folder', old_path = this.$route.query.path) {
       if (type === "Folder") {
         this.isLoadingFile = true;
         let folder_path = 'files';
         if (path.split('/').length > 7) {
           folder_path = folder_path + `/${path.slice(path.indexOf(this.$route.params.id) + this.$route.params.id.length + 1)}`;
         }
-        if (this.$route.query.path && folder_path.length < this.$route.query.path.length) {
+        if (old_path && folder_path.length < old_path.length) {
           this.files_breadcrumb = this.files_breadcrumb.filter((item) => {
             if (folder_path.indexOf(item.label) > -1)
               return item;
           })
-        } else {
+        } else if ((old_path && folder_path.length !== old_path.length) || folder_path !== 'files') {
           this.files_breadcrumb.push({
             to: folder_path,
             label: path.slice(path.lastIndexOf('/') + 1)
