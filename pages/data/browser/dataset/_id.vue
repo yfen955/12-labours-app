@@ -175,23 +175,6 @@
             versions
           </span>
         </el-card>
-
-        <div>
-          <br>
-          <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
-          <br><br>
-          <iframe v-show="show_segmentation" src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" width="100%" height="800"></iframe>
-          <br>
-          <div>
-            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
-            <div class="pdf-bg" v-show="show_pdf">
-              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
-              <div class="pdf-viewer">
-                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="left-column">
@@ -209,6 +192,23 @@
             <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
+          </div> -->
+          <!-- <div>
+            <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
+            <div class="pdf-bg" v-show="show_segmentation">
+              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
+              <iframe src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" style="height: 800px; width: 90%;"></iframe>
+            </div>
+          </div>
+          <br>
+          <div>
+            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
+            <div class="pdf-bg" v-show="show_pdf">
+              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
+              <div class="pdf-viewer">
+                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
+              </div>
+            </div>
           </div> -->
         </el-card>
 
@@ -777,29 +777,32 @@ li {
 .categories-nav {
   margin-bottom: 1rem;
 }
-.pdf-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: rgb(38, 38, 38, 0.7);   //$background
-}
-.view-btn {
-  background-color: rgb(0, 0, 0, 0);
-  border-color: rgb(0, 0, 0, 0);
-  color: white;
-  padding: 0;
-  margin: 1% 88%;
-  font-size: x-large;
-}
-.pdf-viewer {
-  border-radius: 10px;
-  position: fixed;
-  top: 5%;
-  left: 10%;
-  width: 80%;
-  height: 90%;
-}
+// .pdf-bg {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 10;
+//   background-color: rgb(38, 38, 38, 0.7);   //$background
+// }
+// .view-btn {
+//   background-color: rgb(0, 0, 0, 0);
+//   border-color: rgb(0, 0, 0, 0);
+//   color: white;
+//   padding: 0;
+//   margin: 1% 88%;
+//   font-size: x-large;
+// }
+// .pdf-viewer {
+//   border-radius: 10px;
+//   position: fixed;
+//   top: 5%;
+//   left: 10%;
+//   width: 80%;
+//   height: 90%;
+// }
+// .segemtation-viewer {
+//   margin: auto;
+// }
 </style>

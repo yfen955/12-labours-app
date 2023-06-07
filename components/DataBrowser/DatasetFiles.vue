@@ -19,9 +19,15 @@
           <span class="table-content">
             <i class="el-icon-folder" v-if="scope.row.type === 'Folder'"></i>
             <i class="el-icon-document" v-else></i>
-            <a class="filename-btn" @click="updateFilesData(scope.row.path, scope.row.type)">
-              {{ scope.row.name[0].toUpperCase() + scope.row.name.slice(1) }}
-            </a>
+            <el-popover
+              placement="right"
+              trigger="hover"
+              :content="scope.row.name[0].toUpperCase() + scope.row.name.slice(1)"
+            >
+              <a slot="reference" class="filename-btn" @click="updateFilesData(scope.row.path, scope.row.type)">
+                {{ scope.row.name[0].toUpperCase() + scope.row.name.slice(1) }}
+              </a>
+            </el-popover>
           </span>
         </template>
       </el-table-column>
@@ -44,7 +50,6 @@ import backendQuery from '@/services/backendQuery';
 
 export default {
   name: 'FilesBreadcrumb',
-  props: [ '$route.params.id', '$route.query.path' ],
   data: () => {
     return {
       isLoadingFile: false,
