@@ -22,8 +22,8 @@ describe('map viewer page', () =>{
     cy.visit('/data/maps/flatmap/1');
     cy.contains('Flatmap Viewer');
     cy.wait(10000);
-    cy.get('.pathways-display-text').should('contain', 'Pathways');
-    cy.get('.el-checkbox__label').should('contain', 'CNS');
+    cy.get('.checkall-display-text').should('contain', 'Pathways');
+    cy.get('.label-text').should('contain', 'CNS');
     cy.get('canvas');
   })
 })
