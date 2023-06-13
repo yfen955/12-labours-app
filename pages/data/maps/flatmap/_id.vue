@@ -15,6 +15,7 @@
               :display-minimap="false"
               :flatmap-a-p-i="flatmapAPI"
               @ready="flatmapReady"
+              :pathControls="true"
             />
           </div>
         </client-only>
@@ -84,6 +85,9 @@ export default {
 .el-icon-loading {
   color: $app-primary-color !important;
 }
+.model-container .flatmap-container {
+  height: 85vh;
+}
 .flatmap-container {
   @import '~@abi-software/flatmapvuer/dist/flatmapvuer';
 
@@ -92,10 +96,7 @@ export default {
   }
   .checkbox-group {
     width: auto !important;
-    padding: 0 0.5rem 0.5rem;
-  }
-  .background-colour.open {
-    left: 380px !important;
+    padding: 1rem;
   }
   span {
     color: $app-primary-color !important;
@@ -105,11 +106,13 @@ export default {
   }
   .el-checkbox__input.is-checked+span.el-checkbox__label {
     font-size: 12px;
+    line-height: 14px;
   }
 
   .flatmap-container {
     .el-checkbox__label {
       color: $app-primary-color !important;
+      padding-left: 10px;
     }
     .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
       border-color: $app-primary-color !important;
@@ -215,8 +218,14 @@ export default {
       height: .7rem;
     }
   }
-  .tooltip-container {
+  .tooltip-container, .drawer-button {
     border: 1px solid $app-primary-color !important;
+    background-color: $lightGrey;
+  }
+
+  .el-checkbox {
+    margin-left: 0;
+    padding-top: 0;
   }
 }
 </style>
