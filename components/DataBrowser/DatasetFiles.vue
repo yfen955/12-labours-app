@@ -66,9 +66,9 @@ export default {
   
   created: function() {
     this.get_file_path = `${this.$config.query_api_url}/collection`;
-    let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
-    if (this.$route.query.path && this.$route.query.path.length > 6) {
-      file_path = file_path + `/${this.$route.query.path.slice(6)}`;
+    let file_path = `/${this.$route.params.id}`;
+    if (this.$route.query.path && this.$route.query.path.length > 'files'.length) {   // remove 'files'
+      file_path = file_path + `${this.$route.query.path.slice(5)}`;
       this.generateFilesBreadcrumb(this.$route.query.path);
     }
     this.updateFilesData(file_path);
@@ -77,7 +77,7 @@ export default {
   watch: {
     '$route.query.path': {
       handler(new_val, old_val) {
-      let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
+      let file_path = `/${this.$route.params.id}`;
         if (this.breadcrumb[this.breadcrumb.length - 1].to !== new_val) {
           if (new_val && new_val !== 'files')
             file_path = file_path + `/${new_val.slice(new_val.indexOf('/') + 1)}`;
@@ -130,9 +130,8 @@ export default {
       if (type === "Folder") {
         this.isLoadingFile = true;
         let folder_path = 'files';
-        if (path.split('/').length > 7) {
+        if (path.split('/').length > 2)   // if path is longer than '/dataset-id', e.g. '/dataset-id/derivative'
           folder_path = folder_path + `/${path.slice(path.indexOf(this.$route.params.id) + this.$route.params.id.length + 1)}`;
-        }
         if (old_path && folder_path.length < old_path.length) {
           this.breadcrumb = this.breadcrumb.filter((item) => {
             if (folder_path.indexOf(item.label) > -1)
@@ -161,14 +160,14 @@ export default {
     },
 
     handlePath(path) {
-      let file_path = `/tempZone/home/rods/12L/datasets/${this.$route.params.id}`;
-      if (path.length > 6)
-        file_path = file_path + `/${path.slice(6)}`;
+      let file_path = `/${this.$route.params.id}`;
+      if (path.length > 'files'.length)   // remove 'files'
+        file_path = file_path + `${path.slice(5)}`;
       this.updateFilesData(file_path);
     },
 
     downloadFile(path) {
-      let file_path = path.replace('/tempZone/home/rods/12L/datasets/', '');
+      let file_path = path.slice(path.indexOf(`${this.$route.params.id}`));
       let download_path = `${this.$config.query_api_url}/data/download/${file_path}`;
       window.open(download_path, "_self");
     },

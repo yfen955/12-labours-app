@@ -418,7 +418,7 @@ export default {
 
     changeTab(val, jump = false) {
       this.$router.push({
-        path: `${this.$route.path}`,
+        path: this.$route.path,
         query: {
           datasetTab: val,
           path: this.$route.query.path
