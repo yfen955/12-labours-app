@@ -73,23 +73,23 @@ export default {
   
  .title-box{
   min-width: 15rem;
-    margin: 20rem 25rem;
-    height:fit-content;
-    border-radius:1.25rem;
-    background-color: $blue;
-    display:flex;
-    padding:2.25rem;
-    span{
-      font-weight:bold;
-      font-size: 2.5rem;
-      line-height: 2.75rem;
-      color:$cochlear;
-      @media only screen and (max-width: $viewport-sm){    
-        font-size: 2rem;
-        line-height: 2rem;
-      }
+  margin: auto;
+  height:fit-content;
+  border-radius:1.25rem;
+  background-color: $blue;
+  display:flex;
+  padding:2.25rem;
+  span{
+    font-weight:bold;
+    font-size: 2.5rem;
+    line-height: 2.75rem;
+    color:$cochlear;
+    @media only screen and (max-width: $viewport-sm){    
+      font-size: 2rem;
+      line-height: 2rem;
     }
   }
+}
 
  .nav-about{
     padding-top:1rem;

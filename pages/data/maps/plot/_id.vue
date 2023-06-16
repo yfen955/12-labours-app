@@ -53,10 +53,10 @@ export default {
     let data = await fetchModel.fetchModelInfo(this.$config.query_api_url, this.$route.params.id);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
-    this.source_url = `${this.$config.query_api_url}data/download/${dataset_id}/${filename}`;
-    this.metadata = JSON.parse(data.supplemental_json_metadata.replaceAll("'", '"'));
+    this.source_url = `${this.$config.query_api_url}/data/download/${dataset_id}/${filename}`;
+    this.metadata = JSON.parse(data.supplemental_json_metadata.replace(/'/g, '"'));
     let supplementPath = data.is_described_by;
-    this.supplemental_data = [{ url: `${this.$config.query_api_url}data/download/${supplementPath}` },];
+    this.supplemental_data = [{ url: `${this.$config.query_api_url}/data/download/${supplementPath}` },];
     this.isLoading = false;
   },
 

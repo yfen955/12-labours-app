@@ -69,9 +69,20 @@ async function fetchFilterData(path) {
   return filter;
 }
 
+async function fetchFiles(path, payload) {
+  let files_data = {};
+  await axios
+    .post(path, payload)
+    .then((res) => {
+      files_data = res.data;
+    })
+  return files_data;
+}
+
 export default {
   fetchPaginationData,
   fetchQueryData,
   getSingleData,
   fetchFilterData,
+  fetchFiles,
 };

@@ -156,7 +156,8 @@
           
           <!-- files content -->
           <span v-if="$route.query.datasetTab === 'files'" class="tab-content">
-            files
+            <h2>Dataset Files</h2>
+            <DatasetFiles />
           </span>
           
           <!-- gallery content -->
@@ -174,23 +175,6 @@
             versions
           </span>
         </el-card>
-
-        <div>
-          <br>
-          <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
-          <br><br>
-          <iframe v-show="show_segmentation" src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" width="100%" height="800"></iframe>
-          <br>
-          <div>
-            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
-            <div class="pdf-bg" v-show="show_pdf">
-              <el-button class="icon-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
-              <div class="pdf-viewer">
-                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="left-column">
@@ -208,6 +192,23 @@
             <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
+          </div> -->
+          <!-- <div>
+            <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
+            <div class="pdf-bg" v-show="show_segmentation">
+              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
+              <iframe src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" style="height: 800px; width: 90%;"></iframe>
+            </div>
+          </div>
+          <br>
+          <div>
+            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
+            <div class="pdf-bg" v-show="show_pdf">
+              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
+              <div class="pdf-viewer">
+                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
+              </div>
+            </div>
           </div> -->
         </el-card>
 
@@ -288,6 +289,7 @@
 <script>
 import backendQuery from '@/services/backendQuery';
 import axios from "axios";
+import DatasetFiles from '../../../../components/DataBrowser/DatasetFiles.vue';
 
 const datasetTabs = [
   {
@@ -302,10 +304,10 @@ const datasetTabs = [
     label: 'Cite',
     name: 'cite',
   },
-  // {
-  //   label: 'Files',
-  //   name: 'files',
-  // },
+  {
+    label: 'Files',
+    name: 'files',
+  },
   {
     label: 'Gallery',
     name: 'gallery',
@@ -323,6 +325,7 @@ const datasetTabs = [
 export default {
   name: "DataDetails",
   props: [ 'id' ],
+  components: { DatasetFiles },
   data: () => {
     return {
       breadcrumb: [
@@ -362,8 +365,8 @@ export default {
   },
   
   created: async function() {
-    const path = `${this.$config.query_api_url}/graphql/query`;
-    let data = await backendQuery.fetchQueryData(path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
+    const get_data_path = `${this.$config.query_api_url}/graphql/query`;
+    let data = await backendQuery.fetchQueryData(get_data_path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
     this.detail_data = data[0].dataset_descriptions[0];
     this.title = data[0].dataset_descriptions[0].title[0];
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
@@ -390,7 +393,7 @@ export default {
   computed: {
     currentTab: function() {
       return this.$route.query.datasetTab;
-    }
+    },
   },
 
   watch: {
@@ -415,8 +418,11 @@ export default {
 
     changeTab(val, jump = false) {
       this.$router.push({
-        path: `${this.$route.path}`,
-        query: { datasetTab: val }
+        path: this.$route.path,
+        query: {
+          datasetTab: val,
+          path: this.$route.query.path
+        }
       });
       if (jump)
         this.$el.querySelector('.detail-container').scrollIntoView({ behavior: "smooth" });
@@ -600,7 +606,7 @@ export default {
         document.body.style.overflow = "";
         document.removeEventListener("touchmove", mo, false);
       }
-    }
+    },
   },
 }
 </script>
@@ -771,29 +777,32 @@ li {
 .categories-nav {
   margin-bottom: 1rem;
 }
-.pdf-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: rgb(38, 38, 38, 0.7);   //$background
-}
-.icon-btn {
-  background-color: rgb(0, 0, 0, 0);
-  border-color: rgb(0, 0, 0, 0);
-  color: white;
-  padding: 0;
-  margin: 1% 88%;
-  font-size: x-large;
-}
-.pdf-viewer {
-  border-radius: 10px;
-  position: fixed;
-  top: 5%;
-  left: 10%;
-  width: 80%;
-  height: 90%;
-}
+// .pdf-bg {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 10;
+//   background-color: rgb(38, 38, 38, 0.7);   //$background
+// }
+// .view-btn {
+//   background-color: rgb(0, 0, 0, 0);
+//   border-color: rgb(0, 0, 0, 0);
+//   color: white;
+//   padding: 0;
+//   margin: 1% 88%;
+//   font-size: x-large;
+// }
+// .pdf-viewer {
+//   border-radius: 10px;
+//   position: fixed;
+//   top: 5%;
+//   left: 10%;
+//   width: 80%;
+//   height: 90%;
+// }
+// .segemtation-viewer {
+//   margin: auto;
+// }
 </style>

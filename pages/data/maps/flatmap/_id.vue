@@ -177,20 +177,6 @@ export default {
       max-height: calc(100% - 48px);
       transition: all 1s ease;
     }
-
-    .pathway-location.open {
-      left: 0;
-      .pathway-container {
-        opacity: 1;
-      }
-    }
-
-    .pathway-location.close {
-      left: -356px;
-      .pathway-container {
-        opacity: 0;
-      }
-    }
   }
 
   .el-radio {
