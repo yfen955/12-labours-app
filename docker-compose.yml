@@ -1,6 +1,6 @@
 services:
   server:
-    image: 12laboursapp:latest
+    image: 12labours/app-dev:latest
     environment:
       PORTAL_URL: ${PORTAL_URL}
       QUERY_API_URL: ${QUERY_API_URL}
