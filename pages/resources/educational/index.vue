@@ -51,10 +51,6 @@ export default {
     };
   },
 
-  async asyncData({$configGetter}) {
-    $configGetter()
-  },
-
   created: function() {
     this.xmlURL = this.$config.twelve_labours_xml;
   },

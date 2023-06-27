@@ -63,11 +63,7 @@ export default {
       submitted: false,
     }
   },
-
-  async asyncData({$configGetter}) {
-    $configGetter()
-  },
-
+  
   watch:{
     validCount: {
       handler: function() {
