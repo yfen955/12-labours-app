@@ -40,10 +40,6 @@ export default {
     }
   },
 
-  async asyncData({ $configGetter }) {
-    $configGetter()
-  },
-
   async fetch() {
     this.isLoading = true;
     let accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url, this.$auth.$state.loggedIn ? this.$auth.$state.user.email : "public");

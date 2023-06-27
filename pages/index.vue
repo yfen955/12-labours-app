@@ -32,8 +32,7 @@ import graphcmsQuery from '@/services/graphcmsQuery'
 export default {
   name: 'App',
 
-  async asyncData({$graphcms, $configGetter}) {
-    $configGetter()
+  async asyncData({$graphcms}) {
     const content= await graphcmsQuery.content($graphcms, 'about');    
     const topNews= await graphcmsQuery.topNews($graphcms, 3);    
     return {content,topNews}

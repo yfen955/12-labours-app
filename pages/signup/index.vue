@@ -49,8 +49,7 @@
 export default { 
   name: 'SignupPage',
 
-  async asyncData({$axios,query, $configGetter}) {
-    $configGetter()
+  async asyncData({$axios,query}) {
     const userTypes=await $axios.$get('/types')
     const strategy= query.strategy
     return {userTypes,strategy}
