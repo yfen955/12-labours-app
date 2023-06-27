@@ -157,9 +157,6 @@ export default {
         });
         this.element_list.push([]);
       }
-      
-      this.all_facets_list = this.allFilterDict.ids;
-      this.$store.dispatch('setFacets', this.all_facets_list);
 
       if (this.$route.query.facets) {
         this.selectedItems = this.$route.query.facets.split(',');
