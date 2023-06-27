@@ -90,9 +90,6 @@ export default {
   },
 
   created: function() {
-    if (this.$route.query.relation)
-      this.relation = this.$route.query.relation === 'and' ? true : false;
-
     this.dataChange(this.$route.query.type);
   },
 
@@ -107,59 +104,90 @@ export default {
         this.dataChange(this.$route.query.type);
       }
     },
+    '$route.query.facets': {
+      handler(new_val, old_val) {
+        if (new_val && old_val && new_val.length < old_val.length) {
+          old_val.split(',').forEach((item) => {
+            if (new_val.indexOf(item) == -1)
+              this.deselectFacet(item);
+          })
+        } else if (old_val && !new_val)
+          this.deselectFacet(old_val);
+        else if (!old_val && new_val)
+          this.dataChange(this.$route.query.type);
+        else if (new_val && old_val && new_val.length > old_val.length)
+          this.dataChange(this.$route.query.type);
+      }
+    },
+    '$route.query.relation': {
+      handler(val) {
+        if (val)
+          this.relation = val === 'and' ? true : false;
+        else
+          this.relation = true;
+        this.$emit('relation', this.relation);
+      }
+    },
   },
 
   methods: {
     async dataChange(val) {
       this.filters_list = [];
       this.element_list = [];
-      
+      if (this.$route.query.relation)
+        this.relation = this.$route.query.relation === 'and' ? true : false;
+      else
+        this.relation = true;
       if (val === 'dataset') {
-        for (let i = 0; i < this.allFilterDict.size; i++) {
-          this.filters_list.push({
-            index: i,
-            node: this.allFilterDict.nodes[i],
-            fieldName: this.allFilterDict.fields[i],
-            title: this.allFilterDict.titles[i],
-            filter_items: Object.keys(this.allFilterDict.elements[i]),
-            selectedItem: [],
-            checkAll: true,
-            isIndeterminate: false,
-          });
-          this.element_list.push([]);
-        }
-        
-        this.all_facets_list = this.allFilterDict.ids;
-        this.$store.dispatch('setFacets', this.all_facets_list);
+        this.convertFacets();
+      }
+    },
 
-        if (this.$route.query.facets) {
-          this.selectedItems = this.$route.query.facets.split(',');
-          let finished = false;
-          for (let i = 0; i < this.selectedItems.length; i++) {
-            let facet = this.selectedItems[i];
-            this.filters_list.map((val) => {
-              let index = val.filter_items.indexOf(facet);
-              if (index > -1) {
-                val.selectedItem.push(val.filter_items[index]);
-                if (i === this.selectedItems.length - 1)
-                  finished = true;
-                if (val.selectedItem.length === val.filter_items.length) {
-                  val.selectedItem = [];
-                  val.checkAll = true;
-                  val.isIndeterminate = false;
-                  this.handleChange(val, finished);
-                } else {
-                  val.checkAll = false;
-                  val.isIndeterminate = true;
-                  this.generateFiltersDict(val, finished);
-                }
+    convertFacets() {
+      for (let i = 0; i < this.allFilterDict.size; i++) {
+        this.filters_list.push({
+          index: i,
+          node: this.allFilterDict.nodes[i],
+          fieldName: this.allFilterDict.fields[i],
+          title: this.allFilterDict.titles[i],
+          filter_items: Object.keys(this.allFilterDict.elements[i]),
+          selectedItem: [],
+          checkAll: true,
+          isIndeterminate: false,
+        });
+        this.element_list.push([]);
+      }
+      
+      this.all_facets_list = this.allFilterDict.ids;
+      this.$store.dispatch('setFacets', this.all_facets_list);
+
+      if (this.$route.query.facets) {
+        this.selectedItems = this.$route.query.facets.split(',');
+        let finished = false;
+        for (let i = 0; i < this.selectedItems.length; i++) {
+          let facet = this.selectedItems[i];
+          this.filters_list.map((val) => {
+            let index = val.filter_items.indexOf(facet);
+            if (index > -1) {
+              val.selectedItem.push(val.filter_items[index]);
+              if (i === this.selectedItems.length - 1)
+                finished = true;
+              if (val.selectedItem.length === val.filter_items.length) {
+                val.selectedItem = [];
+                val.checkAll = true;
+                val.isIndeterminate = false;
+                this.handleChange(val, finished);
+              } else {
+                val.checkAll = false;
+                val.isIndeterminate = true;
+                this.generateFiltersDict(val, finished);
               }
-            })
-          }
-        } else {
-          this.selectedItems = [];
-          this.generateFiltersDict();
+            }
+          })
         }
+      } else {
+        this.selectedItems = [];
+        this.generateFiltersDict();
       }
     },
 
@@ -169,9 +197,8 @@ export default {
         this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
       }
 
-      if (this.selectedItems.length === 0) {
+      if (this.selectedItems.length === 0)
         this.element_list = [];
-      }
 
       if (!filter)
         await this.generateFiltersDict();
@@ -271,9 +298,9 @@ export default {
           break;
         }
       }
-      if (empty) {
+      if (empty)
         this.filters_dict = {};
-      } else {
+      else {
         if (JSON.stringify(filter) === '{}')
           delete this.filters_dict[filter_list.index];
         else
@@ -281,7 +308,7 @@ export default {
       }
 
       if (finished != false)
-        this.$emit('filter-dict', this.filters_dict);
+        this.$emit('filter-dict', this.filters_dict, this.relation);
     },
 
     // update the page, selected facets & relation in the url

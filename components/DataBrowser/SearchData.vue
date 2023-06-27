@@ -37,6 +37,7 @@ export default {
 
   created: function() {
     this.searchContent = this.$route.query.search ? this.$route.query.search: '';
+    this.onSubmit();
   },
 
   watch: {
@@ -44,7 +45,16 @@ export default {
       handler() {
         this.$emit('isLoading', this.isLoading);
       }
-    }
+    },
+    '$route.query.search': {
+      handler(val) {
+        if (val)
+          this.searchContent = val ? val : '';
+        else
+          this.searchContent = '';
+        this.onSubmit();
+      }
+    },
   },
 
   methods: {
