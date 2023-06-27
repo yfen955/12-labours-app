@@ -2,13 +2,8 @@
   <div class="page-outer">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="title" />
     <!-- loading -->
-    <div
-      v-if="isLoading"
-      v-loading="isLoading"
-      element-loading-text="Loading..."
-      element-loading-spinner="el-icon-loading"
-      class="loading-container"
-    ></div>
+    <div v-if="isLoading" v-loading="isLoading" element-loading-text="Loading..."
+      element-loading-spinner="el-icon-loading" class="loading-container"></div>
 
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
@@ -18,15 +13,10 @@
             <section class="description">
               <p>
                 <b>Contributors: </b>
-                <span v-if="detail_data.contributor_name.length!==detail_data.contributor_orcid.length" >
+                <span v-if="detail_data.contributor_name.length !== detail_data.contributor_orcid.length">
                   {{ combineNames() }}
                 </span>
-                <a
-                  v-else
-                  v-for="(name, i) in detail_data.contributor_name"
-                  :key="i"
-                  :href="modifyLink(i)"
-                >
+                <a v-else v-for="(name, i) in detail_data.contributor_name" :key="i" :href="modifyLink(i)">
                   {{ modifyName(name, i) }}
                 </a>
               </p>
@@ -34,7 +24,7 @@
               <p>
                 <b>Description: </b>
                 {{ detail_data.subtitle[0] }}
-              </p> 
+              </p>
             </section>
             <el-card shadow="never">
               <p>
@@ -73,11 +63,7 @@
         </el-card>
 
         <el-card shadow="never" class="detail-container">
-          <tab-nav class="categories-nav"
-            :tabs="datasetTabs"
-            :activeTab="currentTab"
-            v-on:tabClick="changeTab"
-          />
+          <tab-nav class="categories-nav" :tabs="datasetTabs" :activeTab="currentTab" v-on:tabClick="changeTab" />
 
           <!-- abstract content -->
           <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
@@ -93,11 +79,9 @@
             <p><b>Subject Information:</b> N/A</p>
             <p class="indent --2">
               <b>Anatomical structure:</b>
-              <nobr
-                v-for="(organ, i) in detail_data.study_organ_system"
-                :key="i"
-              >
-                <nobr v-if="i < detail_data.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }}, </nobr>
+              <nobr v-for="(organ, i) in detail_data.study_organ_system" :key="i">
+                <nobr v-if="i < detail_data.study_organ_system.length - 1">{{ organ[0].toUpperCase() + organ.slice(1) }},
+                </nobr>
                 <nobr v-else>{{ organ[0].toUpperCase() + organ.slice(1) }}</nobr>
               </nobr>
             </p>
@@ -105,13 +89,14 @@
             <p class="indent --2"><b>Sex:</b> N/A</p>
             <p class="indent --2"><b>Age range:</b> N/A</p>
             <div v-if="detail_data.number_of_samples[0] > 0 || detail_data.number_of_subjects[0] > 0">
-              <p class="indent --2"><b>Number of samples:</b> {{detail_data.number_of_samples[0]}} samples from {{detail_data.number_of_subjects[0]}} subjects</p>
+              <p class="indent --2"><b>Number of samples:</b> {{ detail_data.number_of_samples[0] }} samples from
+                {{ detail_data.number_of_subjects[0] }} subjects</p>
             </div>
             <div v-else>
               <p class="indent --2"><b>Number of samples:</b> N/A</p>
             </div>
           </span>
-          
+
           <!-- about content -->
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
             <h2>About this dataset</h2>
@@ -130,11 +115,14 @@
             <p><b>Version 3 Revision 1:</b> N/A</p>
             <p><b>Dataset DOI:</b> N/A</p>
           </span>
-          
+
           <!-- cite content -->
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
-            <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of 12-labours datasets. To make it easy, the 12-labours Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
+            <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing
+              your usage of 12-labours datasets. To make it easy, the 12-labours Portal provides the full data citation,
+              including the option of different formats, under the Cite tab of each dataset page. For more Information,
+              please see our Help page.</p>
             <div v-if="detail_data.identifier.length > 0">
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">
@@ -144,32 +132,30 @@
                 </div>
               </div>
             </div>
-            <p>Click 
-              <a
-                href="https://citation.crosscite.org/"
-                target="_blank"
-              >
-              here
+            <p>Click
+              <a href="https://citation.crosscite.org/" target="_blank">
+                here
               </a>
-            to generate citations in more formats.</p>
+              to generate citations in more formats.
+            </p>
           </span>
-          
+
           <!-- files content -->
           <span v-if="$route.query.datasetTab === 'files'" class="tab-content">
             <h2>Dataset Files</h2>
             <DatasetFiles />
           </span>
-          
+
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
             <carousel-card :cards="models_list" v-if="!isLoading" />
           </span>
-          
+
           <!-- references content -->
           <span v-if="$route.query.datasetTab === 'references'" class="tab-content">
             references
           </span>
-          
+
           <!-- versions content -->
           <span v-if="$route.query.datasetTab === 'versions'" class="tab-content">
             versions
@@ -217,64 +203,55 @@
           <hr>
           <section>
             <div class="card-content">
-              <span class="card-title">PROJECT:</span><br/>N/A
+              <span class="card-title">PROJECT:</span><br />N/A
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">TYPE:</span><br/>
+              <span class="card-title">TYPE:</span><br />
               <el-button @click="goToDataset" class="secondary" id="datasetBrowser">
                 <span class="display-ellipsis --1">Dataset</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">ANATOMICAL STRUCTURE:</span><br/>
-              <div
-                v-for="(organ, i) in detail_data.study_organ_system"
-                :key="i"
-              >
-                <el-button
-                  @click="goWithFacet(organ)"
-                  class="secondary"
-                >
+              <span class="card-title">ANATOMICAL STRUCTURE:</span><br />
+              <div v-for="(organ, i) in detail_data.study_organ_system" :key="i">
+                <el-button @click="goWithFacet(organ)" class="secondary">
                   <span class="display-ellipsis --1">{{ organ }}</span>
                 </el-button>
               </div>
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">SPECIES:</span><br/>
+              <span class="card-title">SPECIES:</span><br />
               <el-button @click="goWithFacet('Mouse')" class="secondary" :disabled="true">
                 <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">EXPERIMENTAL APPROACH:</span><br/>
+              <span class="card-title">EXPERIMENTAL APPROACH:</span><br />
               <el-button @click="goWithFacet('Anatomy')" class="secondary" :disabled="true">
                 <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">SEX:</span><br/>
+              <span class="card-title">SEX:</span><br />
               <el-button @click="goWithFacet('Male')" class="secondary" :disabled="true">
                 <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
             <hr>
             <div class="card-content">
-              <span class="card-title">CONTRIBUTORS:</span><br/>
+              <span class="card-title">CONTRIBUTORS:</span><br />
               <ul>
                 <li v-for="(name, i) in detail_data.contributor_name" :key="i">
-                  <span v-if="detail_data.contributor_name.length!==detail_data.contributor_orcid.length">
-                    {{modifyName(name, detail_data.contributor_name.length - 1)}}
+                  <span v-if="detail_data.contributor_name.length !== detail_data.contributor_orcid.length">
+                    {{ modifyName(name, detail_data.contributor_name.length - 1) }}
                   </span>
-                  <a
-                    v-else
-                    :href="modifyLink(i)"
-                  >
-                    {{modifyName(name, detail_data.contributor_name.length - 1)}}
+                  <a v-else :href="modifyLink(i)">
+                    {{ modifyName(name, detail_data.contributor_name.length - 1) }}
                   </a>
                 </li>
               </ul>
@@ -324,7 +301,7 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ 'id' ],
+  props: ['id'],
   components: { DatasetFiles },
   data: () => {
     return {
@@ -363,10 +340,10 @@ export default {
       show_pdf: false,
     }
   },
-  
-  created: async function() {
-    const get_data_path = `${this.$config.query_api_url}/graphql/query`;
-    let data = await backendQuery.fetchQueryData(get_data_path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
+
+  created: async function () {
+    let accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url, this.$auth.$state.loggedIn ? this.$auth.$state.user.email : "public");
+    let data = await backendQuery.fetchQueryData(this.$config.query_api_url, "experiment_query", { submitter_id: [`${this.$route.params.id}`] }, "", accessScope);
     this.detail_data = data[0].dataset_descriptions[0];
     this.title = data[0].dataset_descriptions[0].title[0];
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
@@ -391,7 +368,7 @@ export default {
   },
 
   computed: {
-    currentTab: function() {
+    currentTab: function () {
       return this.$route.query.datasetTab;
     },
   },
@@ -407,7 +384,7 @@ export default {
   methods: {
     goToDataset() {
       this.$router.push({
-        path:'/data/browser',
+        path: '/data/browser',
         query: {
           type: 'dataset',
           page: 1,
@@ -470,7 +447,7 @@ export default {
       })
       result = result.slice(1);
       this.$router.push({
-        path:'/data/browser',
+        path: '/data/browser',
         query: {
           type: 'dataset',
           page: 1,
@@ -486,7 +463,7 @@ export default {
         url += `/${this.$route.params.id}`;
       }
       if (is_source_of)
-        url += `/${filename.substring(0,filename.lastIndexOf("/"))}/${is_source_of}`;
+        url += `/${filename.substring(0, filename.lastIndexOf("/"))}/${is_source_of}`;
       else
         url += `/${filename}`;
       return url;
@@ -503,7 +480,7 @@ export default {
           .get(item, {
             headers: {
               "Accept": "text/x-bibliography; style=apa"
-            }      
+            }
           })
           .then((res) => {
             this.apaCitation.push(res.data);
@@ -513,7 +490,7 @@ export default {
           });
       }
     },
-    
+
     copyText(text_list) {
       let text = "";
       text_list.map(item => {
@@ -615,39 +592,52 @@ export default {
 .loading-container {
   min-height: 80vh;
 }
+
 .container-default {
   @media only screen and (min-width: $viewport-sm) {
     display: flex;
+
     @media only screen and (min-width: calc($viewport-lg - 20rem)) {
       margin: auto;
       width: 90rem;
     }
   }
+
   .left-column {
     order: 1;
+
     @media only screen and (min-width: $viewport-sm) {
       max-width: 20rem;
     }
+
     min-width: 15rem;
+
     .image-container {
       text-align: center;
+
       img {
         width: 13rem;
       }
+
       .left-top-btn {
         margin: 1rem 0 0 0;
       }
     }
+
     .related-container {
       margin-top: 2rem;
+
       .card-title {
         font-size: 1.3rem;
       }
+
       .card-content {
         margin: 1rem 0.5rem 1rem 0.5rem;
+
         .secondary {
           margin-top: 0.5rem;
           padding: 0 1.5rem 0 1.5rem;
+
           span {
             font-size: 1rem;
           }
@@ -655,111 +645,139 @@ export default {
       }
     }
   }
+
   .right-column {
     order: 2;
     min-width: 15rem;
+
     @media only screen and (min-width: $viewport-sm) {
       margin-left: 2rem;
       width: 70rem;
     }
+
     .description-container {
       padding: 1rem;
+
       .information-top {
         @media only screen and (min-width: $viewport-md) {
           display: flex;
           justify-content: space-between;
         }
+
         .description {
           margin: 1rem 1rem 1rem 0;
           width: fit-content;
         }
       }
+
       .information-bottom {
         margin: 1rem 0 1rem 0;
         display: flex;
+
         .usage {
           margin-left: 0;
         }
+
         .download {
           margin-right: 0;
         }
       }
     }
-    .detail-container{
+
+    .detail-container {
       margin-top: 2rem;
+
       @media only screen and (max-width: $viewport-sm) {
         margin-bottom: 2rem;
       }
     }
   }
 }
+
 hr {
   border: 0.5px solid #E4E7ED;
   margin: 1rem 0 1rem 0;
 }
+
 p {
   font-size: 1rem;
 }
+
 h2 {
   margin: 0.5rem 0 0.5rem 0;
   font-size: 1.5rem;
 }
+
 .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
 }
+
 .clearfix:after {
   clear: both;
 }
+
 .el-icon-data-analysis {
   font-size: 5rem;
 }
+
 .el-carousel__item {
   margin-top: 1rem;
   margin-left: calc((50% - 17rem) / 2);
   width: 17rem;
 }
+
 .carousel {
   height: 17.5rem;
   line-height: 1.5rem;
+
   .model-name {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   .model-image {
     width: 10rem;
   }
+
   .model-button {
     margin-top: 1rem;
   }
 }
+
 .tab-content {
   line-height: 2rem;
 }
+
 li {
   a {
     font-size: 1.13rem;
   }
 }
+
 .gallery-img {
   width: 10rem;
   height: 9rem;
+
   img {
     width: 10rem;
   }
 }
+
 .small-title {
   margin: 0.5rem 0 0.5rem 0;
   font-size: 1.3rem;
 }
+
 .citaiton-block {
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
   background-color: $background;
+
   #copy-btn {
     background-color: transparent;
     border: none;
@@ -769,14 +787,17 @@ li {
     font-size: 1rem;
     color: $app-primary-color;
   }
+
   .citation-content {
     padding: 0 1.5rem 1.5rem;
     font-size: 1rem;
   }
 }
+
 .categories-nav {
   margin-bottom: 1rem;
 }
+
 // .pdf-bg {
 //   position: fixed;
 //   top: 0;
@@ -804,5 +825,4 @@ li {
 // }
 // .segemtation-viewer {
 //   margin: auto;
-// }
-</style>
+// }</style>

@@ -9,11 +9,7 @@
 
         <client-only placeholder="Loading Plot ...">
           <div class="plot-container">
-            <plot-vuer
-              :data-source="{ url: source_url }"
-              :metadata="metadata"
-              :supplemental-data="supplemental_data"
-            />
+            <plot-vuer :data-source="{ url: source_url }" :metadata="metadata" :supplemental-data="supplemental_data" />
           </div>
         </client-only>
       </div>
@@ -24,7 +20,7 @@
 <script>
 import CopyLink from "../../../../components/Map/copyLink";
 import '@abi-software/scaffoldvuer/dist/scaffoldvuer.css';
-import fetchModel from "../fetchModel";
+import backendQuery from "@/services/backendQuery";
 
 export default {
   name: 'PlotViewer',
@@ -34,7 +30,7 @@ export default {
       : null,
     CopyLink
   },
-  props: [ "id" ],
+  props: ["id"],
   data: () => {
     return {
       isLoading: true,
@@ -43,14 +39,15 @@ export default {
       supplemental_data: [],
     }
   },
-  
-  async asyncData({$configGetter}) {  
+
+  async asyncData({ $configGetter }) {
     $configGetter()
   },
 
   async fetch() {
     this.isLoading = true;
-    let data = await fetchModel.fetchModelInfo(this.$config.query_api_url, this.$route.params.id);
+    let accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url, this.$auth.$state.loggedIn ? this.$auth.$state.user.email : "public");
+    let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.params.id, accessScope[0]);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
     this.source_url = `${this.$config.query_api_url}/data/download/${dataset_id}/${filename}`;

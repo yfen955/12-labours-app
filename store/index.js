@@ -19,9 +19,3 @@ export const actions = {
     commit("setFacetIds", facetIds);
   },
 };
-
-export default {
-  getters,
-  mutations,
-  actions,
-};
