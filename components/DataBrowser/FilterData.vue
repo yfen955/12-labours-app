@@ -256,13 +256,15 @@ export default {
         }
       }
 
-      // update the selectedItems list
-      for (let i = 0; i < this.filters_list.length; i++) {
-        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
-      }
+      if (filter_index) {
+        // update the selectedItems list
+        for (let i = 0; i < this.filters_list.length; i++) {
+          this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+        }
 
-      // after update the selectedItem, hangle the change to fetch data
-      this.handleChange(this.filters_list[filter_index]);
+        // after update the selectedItem, hangle the change to fetch data
+        this.handleChange(this.filters_list[filter_index]);
+      }
     },
 
     async generateFiltersDict(filter_list, finished) {
