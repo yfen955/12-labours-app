@@ -12,7 +12,7 @@ describe('map sidebar', () =>{
 
     // sidebar
     cy.get('.open-tab').click();
-    cy.contains('17 results | Showing');
+    cy.contains('18 results | Showing');
     cy.get('div').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
     cy.get('.el-cascader').find('.el-input--suffix').click();
     // choose a facet
