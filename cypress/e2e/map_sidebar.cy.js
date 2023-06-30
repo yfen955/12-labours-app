@@ -30,7 +30,7 @@ describe('map sidebar', () =>{
     // clear the facet
     cy.get('.el-icon-close').click();
     cy.wait(5000);
-    cy.contains('17 results | Showing');
+    cy.contains('18 results | Showing');
     // open a dataset button
     cy.window().then((win) => {
         cy.stub(win, 'open').as('newWindow')
