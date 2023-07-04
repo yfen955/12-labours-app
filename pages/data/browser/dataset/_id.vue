@@ -365,8 +365,8 @@ export default {
   },
   
   created: async function() {
-    const get_data_path = `${this.$config.query_api_url}/graphql/query`;
-    let data = await backendQuery.fetchQueryData(get_data_path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
+    const data_path = `${this.$config.query_api_url}/graphql/query`;
+    let data = await backendQuery.fetchQueryData(data_path, "experiment_query", {submitter_id: [`${this.$route.params.id}`],});
     this.detail_data = data[0].dataset_descriptions[0];
     this.title = data[0].dataset_descriptions[0].title[0];
     this.scaffold_thumbnail_data = data[0].scaffoldViews;
