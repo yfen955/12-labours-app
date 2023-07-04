@@ -20,18 +20,16 @@ async function revokeAccess(path) {
   let token
   if (process.client) {
     token = localStorage.getItem("accessToken")
-  }
-  if (token != undefined) {
-    await axios
-      .delete(`${path}/access/revoke`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data.detail);
-      })
-    localStorage.setItem("accessToken", undefined);
+    if (token != undefined) {
+      await axios
+        .delete(`${path}/access/revoke`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).catch((error) => {
+          localStorage.setItem("accessToken", undefined);
+        });
+    }
   }
 }
 
@@ -40,19 +38,20 @@ async function fetchAccessScope(path) {
   let token
   if (process.client) {
     token = localStorage.getItem("accessToken")
+    await axios
+      .get(`${path}/access/authorize`, {
+        headers: {
+          Authorization: `Bearer ${token == undefined ? undefined : token}`,
+        },
+      })
+      .then((response) => {
+        accessScope = response.data.access;
+      })
+      .catch((error) => {
+        localStorage.setItem("accessToken", undefined);
+        fetchAccessScope(path)
+      });
   }
-  await axios
-    .get(`${path}/access/authorize`, {
-      headers: {
-        Authorization: `Bearer ${token == undefined ? "publicaccesstoken" : token}`,
-      },
-    })
-    .then((response) => {
-      accessScope = response.data.access;
-    })
-    .catch((error) => {
-      throw new Error(`${error}`);
-    });
   return accessScope;
 }
 

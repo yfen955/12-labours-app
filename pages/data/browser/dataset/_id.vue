@@ -5,8 +5,8 @@
     <div v-if="isLoading" v-loading="isLoading" element-loading-text="Loading..."
       element-loading-spinner="el-icon-loading" class="loading-container"></div>
 
-    <el-button v-if="fetchedData.length > 1" v-for="(prog, i) in accessScope" @click="setCurrentData(i)" :key="prog">{{
-      prog }}</el-button>
+    <el-button v-if="fetchedData.length > 1" v-for="access in accessScope" @click="setCurrentData(access)" :key="access">{{
+      access }}</el-button>
 
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
@@ -348,8 +348,9 @@ export default {
   },
 
   created: async function () {
+    this.accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url);
     this.fetchedData = await backendQuery.fetchQueryData(this.$config.query_api_url, "experiment_query", { submitter_id: [`${this.$route.params.id}`] }, "");
-    this.setCurrentData(0)
+    this.setCurrentData("demo1-12L")
 
     await this.handleCitation();
 
@@ -380,8 +381,13 @@ export default {
   },
 
   methods: {
-    setCurrentData(index) {
-      this.currentData = this.fetchedData[index]
+    setCurrentData(access) {
+      for (let index = 0; index < this.fetchedData.length; index++) {
+        const element = this.fetchedData[index];
+        if (element["project_id"] == access) {
+          this.currentData = element
+        }
+      }
       this.detail_data = this.currentData.dataset_descriptions[0];
       this.title = this.currentData.dataset_descriptions[0].title[0];
       this.scaffold_thumbnail_data = this.currentData.scaffoldViews;
@@ -521,6 +527,7 @@ export default {
     },
 
     handleModels(scaffold, plot, thumbnail) {
+      this.models_list = []
       scaffold.forEach((item) => {
         let model = {
           type: "Scaffold",
