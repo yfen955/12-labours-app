@@ -86,16 +86,14 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url, this.$auth.$state.loggedIn ? this.$auth.$state.user.email : "public");
-      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation, accessScope);
+      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation);
       this.currentData = result[0];
       this.totalCount = result[1];
       this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
-      const path = `${this.$config.query_api_url}/filter/?sidebar=false`;
-      this.allFilterDict = await backendQuery.fetchFilterData(path);
+      this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url);
     },
 
     dataChange(val) {

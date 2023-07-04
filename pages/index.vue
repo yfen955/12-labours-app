@@ -28,19 +28,35 @@
 <script>
 
 import graphcmsQuery from '@/services/graphcmsQuery'
+import backendQuery from '@/services/backendQuery';
 
 export default {
   name: 'App',
 
-  async asyncData({ $graphcms}) {
+  async asyncData({ $graphcms }) {
     const content = await graphcmsQuery.content($graphcms, 'about');
     const topNews = await graphcmsQuery.topNews($graphcms, 3);
     return { content, topNews }
   },
 
-  mounted() {
+  methods: {
+    getToken() {
+      localStorage.getItem("accessToken");
+    },
+
+    storeToken(token) {
+      localStorage.setItem("accessToken", token);
+    }
+  },
+
+  async mounted() {
     const loginSuccess = this.$route.query.login
-    if (loginSuccess) this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
+    if (loginSuccess) {
+      this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
+      let accessToken = await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
+      this.storeToken(accessToken);
+      this.$router.replace('/')
+    }
   }
 }
 </script>
@@ -98,4 +114,5 @@ export default {
   a {
     font-weight: 600
   }
-}</style>
+}
+</style>

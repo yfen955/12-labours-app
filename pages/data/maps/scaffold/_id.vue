@@ -41,8 +41,7 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url, this.$auth.$state.loggedIn ? this.$auth.$state.user.email : "public");
-    let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.params.id, accessScope[0]);
+    let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.params.id);
     let dataset_id = data.experiments[0].submitter_id;
     this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
     this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;

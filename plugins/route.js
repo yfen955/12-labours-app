@@ -4,7 +4,6 @@ export default (
     beforeNuxtRender,
     $config: { login_api_key, login_secret_key, twelve_labours_xml },
   },
-  inject
 ) => {
   app.router.afterEach((to, from) => {
     if (process.server) {

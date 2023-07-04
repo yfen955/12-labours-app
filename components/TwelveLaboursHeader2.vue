@@ -2,13 +2,13 @@
   <div class="header">
     <div class="header-container">
       <button class="nav-side-menu" @click="openMobileNav">
-        <svgicon name="hamburger" height="40" width="40"/>
+        <svgicon name="hamburger" height="40" width="40" />
       </button>
       <div class="logo">
         <component :is="linkComponent" :to="{ name: 'index' }">
           <!-- Provide a way to slot in the logo -->
           <slot name="logo">
-            <twelve-labours-logo/>
+            <twelve-labours-logo />
           </slot>
         </component>
       </div>
@@ -18,7 +18,7 @@
             <div class="logo-sm">
               <component :is="linkComponent" :to="{ name: 'index' }">
                 <slot name="logo">
-                  <twelve-labours-logo/>
+                  <twelve-labours-logo />
                 </slot>
               </component>
             </div>
@@ -30,13 +30,10 @@
           </div>
           <ul>
             <li v-for="link in links" :key="link.href" style="z-index: 100;" @click="openMobileNav">
-              <component
-                :is="linkComponent"
-                :to="link.href"
-                :class="{ active: activeLink(link.href) }"
+              <component :is="linkComponent" :to="link.href" :class="{ active: activeLink(link.href) }"
                 exact-active-class="active">
-                  {{ link.displayTitle.toUpperCase() }}
-                </component>
+                {{ link.displayTitle.toUpperCase() }}
+              </component>
             </li>
           </ul>
           <!-- //undo later::
@@ -47,16 +44,16 @@
       </div>
       <div>
         <client-only>
-          <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex status1"> 
-            <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
+          <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex status1">
+            <span id="welcome">Welcome {{ $auth.user.first_name }} {{ $auth.user.last_name }}</span>
             <component :is="linkComponent" to="/profile">
               <el-button>Account</el-button>
             </component>
-            <component :is="linkComponent" @click.native="signout" to="/">
+            <component :is="linkComponent" @click.native="signOut" to="/">
               Log out
             </component>
           </div>
-          <div v-else  class="login vertical-flex status2"> 
+          <div v-else class="login vertical-flex status2">
             <component :is="linkComponent" to="/login">
               <el-button>Login</el-button>
             </component>
@@ -73,6 +70,7 @@
 <script>
 //undo later:: import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
 //undo later:: import FooterLinks from "../../FooterLinks/src/FooterLinks.vue";
+import backendQuery from '@/services/backendQuery';
 
 export default {
   name: "TwelveLaboursHeader",
@@ -83,7 +81,8 @@ export default {
     },
     links: {
       type: Array,
-      default: function() { return [
+      default: function () {
+        return [
           {
             title: "data-and-models",
             displayTitle: "Data & Models",
@@ -112,7 +111,7 @@ export default {
         ]
       }
     },
-  
+
     currentPath: {
       type: String,
       default: "/"
@@ -157,7 +156,7 @@ export default {
      * Compute if search should be visible
      * @returns {Boolean}
      */
-    shouldShowSearch: function() {
+    shouldShowSearch: function () {
       if (this.$route)
         return this.$route.name !== "data";
       else
@@ -171,7 +170,7 @@ export default {
      * mobile nav on menu click
      **/
     currentPath: {
-      handler: function(val) {
+      handler: function (val) {
         if (val) {
           this.menuOpen = false;
         }
@@ -184,7 +183,7 @@ export default {
      * to enable scrolling
      */
     menuOpen: {
-      handler: function(val) {
+      handler: function (val) {
         if (!val) {
           this.$emit("updateDisabledScrolling", false);
         }
@@ -195,17 +194,18 @@ export default {
 
   methods: {
     /* Signs out of current strategy */
-    signout:async function(){
+    signOut: async function () {
       await this.$auth.logout().then(() => {
-        this.$toast.success('Logged out of 12 Labours',{duration:3000, position: 'bottom-right'}) 
+        this.$toast.success('Logged out of 12 Labours', { duration: 3000, position: 'bottom-right' })
       })
+      await backendQuery.revokeAccess(this.$config.query_api_url);
     },
 
     /**
      * Sets a link to active based on current page
      * @param {String} query
      */
-    activeLink: function(query) {
+    activeLink: function (query) {
       if (this.currentPath === query) {
         return true;
       } else {
@@ -215,7 +215,7 @@ export default {
     /**
      * Opens the mobile version of the navigation
      */
-    openMobileNav: function() {
+    openMobileNav: function () {
       if (!this.menuOpen) {
         this.searchOpen = false; // just in case the search menu is open aconstso
         this.$emit("updateDisabledScrolling", false);
@@ -226,11 +226,11 @@ export default {
       }
     },
 
-  
+
     /**
      * Opens the mobile version of the search bar
      */
-    openMobileSearch: function() {
+    openMobileSearch: function () {
       this.searchOpen = true;
       this.menuOpen = false;
       this.$emit("updateDisabledScrolling", false);
@@ -239,7 +239,7 @@ export default {
     /**
      * Closes the mobile version of the search bar
      */
-    closeMobileSearch: function() {
+    closeMobileSearch: function () {
       this.searchOpen = false;
       this.$emit("updateDisabledScrolling", false);
     },
@@ -249,7 +249,7 @@ export default {
      * option and query
      */
 
-    executeSearch: function() {
+    executeSearch: function () {
       const option = this.searchSelectOptions.find(
         o => o.value === this.searchSelect
       );
@@ -258,8 +258,8 @@ export default {
         option.value === "data"
           ? "dataset"
           : option.value === "resources"
-          ? "sparcPartners"
-          : undefined;
+            ? "sparcPartners"
+            : undefined;
 
       this.$router.push({
         name: option.value,
@@ -279,8 +279,8 @@ export default {
 <style scoped lang="scss">
 //undo later:: @import "@/assets/_variables.scss";
 
-.header{
-  display: flex;    
+.header {
+  display: flex;
 }
 
 
@@ -290,49 +290,57 @@ export default {
   align-items: center;
   width: 100%;
   background-color: $cochlear;
-  height:6.25rem;
-  padding:0.5rem 2rem 0.5rem 2rem;
-  @media only screen and (max-width: $viewport-md){
-    padding:0 1rem 0rem 1rem;
-    .status1{
+  height: 6.25rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+
+  @media only screen and (max-width: $viewport-md) {
+    padding: 0 1rem 0rem 1rem;
+
+    .status1 {
       margin-left: 4rem
     }
-    .status2{
+
+    .status2 {
       margin-left: 6.05rem
     }
   }
 }
 
-.logo
-{
-  height: 6.25rem;   
-  width: 7.25rem;  
-  min-width: 7.25rem;  
-  @media only screen and (max-width: $viewport-md){
-    display:none;
+.logo {
+  height: 6.25rem;
+  width: 7.25rem;
+  min-width: 7.25rem;
+
+  @media only screen and (max-width: $viewport-md) {
+    display: none;
   }
 }
 
 .navigation {
-  
+
   ul {
-    padding:0 2rem 0 2rem;
+    padding: 0 2rem 0 2rem;
     display: flex;
     align-items: center;
     column-gap: 4rem;
 
     li {
       display: inline;
+
       a {
-        text-decoration: none  !important;
+        text-decoration: none !important;
         font: normal normal normal 1rem/1.13rem $font-family;
-        color:$app-primary-color !important; 
-        &.active,&:hover,&:focus {
+        color: $app-primary-color !important;
+
+        &.active,
+        &:hover,
+        &:focus {
           color: $app-primary-color;
-        }  
-        @media only screen and (max-width: $viewport-md){
-          color:$cochlear !important;
-        } 
+        }
+
+        @media only screen and (max-width: $viewport-md) {
+          color: $cochlear !important;
+        }
       }
     }
   }
@@ -340,11 +348,11 @@ export default {
   @media only screen and (max-width: $viewport-md) {
     & {
       background: $mildBlue;
-      display: none;     
-      flex-direction: column; 
+      display: none;
+      flex-direction: column;
       bottom: 0;
       left: 0;
-      top:0;
+      top: 0;
       position: fixed;
       z-index: 9999;
 
@@ -354,16 +362,17 @@ export default {
         overflow: auto;
       }
     }
+
     ul {
       flex-direction: column;
-      row-gap:1rem;
+      row-gap: 1rem;
 
       //For Firefox
       /*scrollbar-width: thin;
       scrollbar-color: $mildBlue $cochlear;*/
     }
   }
-}  
+}
 
 .nav-side-menu {
   background: none;
@@ -371,6 +380,7 @@ export default {
   display: none;
   // -webkit-appearance: none;
   position: relative;
+
   @media only screen and (max-width: $viewport-md) {
     & {
       display: block;
@@ -378,33 +388,35 @@ export default {
   }
 }
 
-.menu-close{
-  display:none;
+.menu-close {
+  display: none;
+
   @media only screen and (max-width: $viewport-md) {
-    display:flex;
-    justify-content:space-between;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
-.logo-sm
-{
-  display:none;
-  @media only screen and (max-width:$viewport-md){
-    display:block;
-    height: 3rem;   
-    width: 3rem;  
-    padding:0.25rem
+.logo-sm {
+  display: none;
+
+  @media only screen and (max-width:$viewport-md) {
+    display: block;
+    height: 3rem;
+    width: 3rem;
+    padding: 0.25rem
   }
 }
 
-.login{
-    margin-left: auto;
-    text-align:center;
-    right: 0;
-    span#welcome{
-      font-size:0.8rem;
-      font-style: italic;
-    }
+.login {
+  margin-left: auto;
+  text-align: center;
+  right: 0;
+
+  span#welcome {
+    font-size: 0.8rem;
+    font-style: italic;
   }
+}
 </style>
 

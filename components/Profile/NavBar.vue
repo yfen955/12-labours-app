@@ -32,7 +32,7 @@ export default {
 
   computed:{
     strategy() {
-      return this.$store.state.auth.strategy;
+      return this.$auth.$state.strategy;
     }
   },
 

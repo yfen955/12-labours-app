@@ -1,36 +1,63 @@
 import axios from "axios";
 
-async function fetchAccessScope(path, user) {
-  let accessScope = []
+async function fetchAccessToken(path, user) {
   let accessToken = "";
-  if (user == "public") {
-    accessToken = "publicaccesstoken";
-  } else {
-    await axios
-      .get(`${path}/access/token/${user}`)
-      .then((response) => {
-        accessToken = response.data.access_token;
-      })
-      .catch((error) => {
-        throw new Error(`${error}`);
-      });
-  }
+  let payload = {
+    email: user,
+  };
   await axios
-    .get(`${path}/access/scope`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    .post(`${path}/access/token`, payload)
     .then((response) => {
-      accessScope = response.data.access
+      accessToken = response.data.access_token;
     })
     .catch((error) => {
       throw new Error(`${error}`);
     });
-  return accessScope
+  return accessToken;
 }
 
-async function fetchPaginationData(path, filter, limit, page, search, relation, access) {
+async function revokeAccess(path) {
+  let token
+  if (process.client) {
+    token = localStorage.getItem("accessToken")
+  }
+  if (token != undefined) {
+    await axios
+      .delete(`${path}/access/revoke`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data.detail);
+      })
+    localStorage.setItem("accessToken", undefined);
+  }
+}
+
+async function fetchAccessScope(path) {
+  let accessScope = [];
+  let token
+  if (process.client) {
+    token = localStorage.getItem("accessToken")
+  }
+  await axios
+    .get(`${path}/access/authorize`, {
+      headers: {
+        Authorization: `Bearer ${token == undefined ? "publicaccesstoken" : token}`,
+      },
+    })
+    .then((response) => {
+      accessScope = response.data.access;
+    })
+    .catch((error) => {
+      throw new Error(`${error}`);
+    });
+  return accessScope;
+}
+
+async function fetchPaginationData(path, filter, limit, page, search, relation) {
+  const access = await fetchAccessScope(path)
   let fetched_data = [];
   let totalNum = 0;
   let payload = {
@@ -38,7 +65,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
-    access: access
+    access: access,
   };
   await axios
     .post(`${path}/graphql/pagination/?search=${search}`, payload)
@@ -52,13 +79,14 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
   return new Array(fetched_data, totalNum);
 }
 
-async function fetchQueryData(path, node, filter, search, access) {
+async function fetchQueryData(path, node, filter, search) {
+  const access = await fetchAccessScope(path)
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
     search: search,
-    access: access
+    access: access,
   };
   await axios
     .post(`${path}/graphql/query`, payload)
@@ -71,10 +99,11 @@ async function fetchQueryData(path, node, filter, search, access) {
   return fetched_data;
 }
 
-async function getSingleData(path, uuid, access) {
+async function getSingleData(path, uuid) {
+  const access = await fetchAccessScope(path)
   let fetched_data = [];
   let payload = {
-    access: access
+    access: access[0],
   };
   await axios
     .post(`${path}/record/${uuid}`, payload)
@@ -88,9 +117,13 @@ async function getSingleData(path, uuid, access) {
 }
 
 async function fetchFilterData(path) {
+  const access = await fetchAccessScope(path)
   let filter = {};
+  let payload = {
+    access: access,
+  };
   await axios
-    .get(path)
+    .post(`${path}/filter/?sidebar=false`, payload)
     .then((res) => {
       filter = res.data;
     })
@@ -102,15 +135,15 @@ async function fetchFilterData(path) {
 
 async function fetchFiles(path, payload) {
   let files_data = {};
-  await axios
-    .post(path, payload)
-    .then((res) => {
-      files_data = res.data;
-    })
+  await axios.post(path, payload).then((res) => {
+    files_data = res.data;
+  });
   return files_data;
 }
 
 export default {
+  fetchAccessToken,
+  revokeAccess,
   fetchAccessScope,
   fetchPaginationData,
   fetchQueryData,
