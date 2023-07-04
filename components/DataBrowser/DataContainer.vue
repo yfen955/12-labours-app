@@ -104,9 +104,9 @@ export default {
       }
     },
 
-    updateFilterDict(val) {
-      this.currentFilterDict = val;
-      this.fetchData();
+    updateFilterDict(filter_dict, relation) {
+      this.currentFilterDict = filter_dict;
+      this.updateRelation(relation);
     },
 
     updateSearchContent(val) {
