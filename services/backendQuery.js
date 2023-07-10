@@ -58,7 +58,6 @@ async function fetchAccessScope(path) {
 async function fetchPaginationData(path, filter, limit, page, search, relation) {
   const access = await fetchAccessScope(path)
   let fetched_data = [];
-  let totalNum = 0;
   let payload = {
     filter: filter,
     limit: parseInt(limit),
@@ -69,13 +68,12 @@ async function fetchPaginationData(path, filter, limit, page, search, relation) 
   await axios
     .post(`${path}/graphql/pagination/?search=${search}`, payload)
     .then((res) => {
-      fetched_data = res.data.items;
-      totalNum = res.data.total;
+      fetched_data = res.data;
     })
     .catch((err) => {
       console.log(err);
     });
-  return new Array(fetched_data, totalNum);
+  return fetched_data;
 }
 
 async function fetchQueryData(path, node, filter, search) {
@@ -115,14 +113,14 @@ async function getSingleData(path, uuid) {
   return fetched_data;
 }
 
-async function fetchFilterData(path) {
+async function fetchFilterData(path, sidebar) {
   const access = await fetchAccessScope(path)
   let filter = {};
   let payload = {
     access: access,
   };
   await axios
-    .post(`${path}/filter/?sidebar=false`, payload)
+    .post(`${path}/filter/?sidebar=${sidebar}`, payload)
     .then((res) => {
       filter = res.data;
     })

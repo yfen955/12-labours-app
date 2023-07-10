@@ -87,13 +87,13 @@ export default {
     async fetchData() {
       this.isLoadingSearch = true;
       let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation);
-      this.currentData = result[0];
-      this.totalCount = result[1];
+      this.currentData = result["items"];
+      this.totalCount = result["total"];
       this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
-      this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url);
+      this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
     },
 
     dataChange(val) {
