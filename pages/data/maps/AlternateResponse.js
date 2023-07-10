@@ -1,8 +1,8 @@
 import axios from "axios";
+import backendQuery from "../../../services/backendQuery";
 
 /* eslint-disable no-alert, no-console */
 const searchDataset = async (payload, callback) => {
-  let data = {};
   let search = "";
   let allFilter = {};
 
@@ -45,32 +45,12 @@ const searchDataset = async (payload, callback) => {
       }
     }
   }
-  let url = `${payload.queryUrl}/graphql/pagination/?search=${search}`;
-  let postPayload = {
-    filter: allFilter,
-    limit: payload.numberPerPage,
-    page: payload.page,
-  };
-  await axios
-    .post(url, postPayload)
-    .then((response) => (data = response.data))
-    .catch((err) => {
-      console.log(err);
-    });
-  const searchData = data;
+  const searchData = await backendQuery.fetchPaginationData(payload.queryUrl, allFilter, payload.numberPerPage, payload.page, search);
   callback(searchData);
 };
 
 const getFacets = async (payload, callback) => {
-  let facet = {};
-  let url = `${payload.queryUrl}/filter/?sidebar=true`;
-  await axios
-    .get(url)
-    .then((response) => (facet = response.data))
-    .catch((err) => {
-      console.log(err);
-    });
-  const facets = facet;
+  const facets = await backendQuery.fetchFilterData(payload.queryUrl, true);
   const returnedPayload = {
     data: facets,
   };
