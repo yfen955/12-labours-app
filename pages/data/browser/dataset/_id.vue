@@ -356,6 +356,7 @@ export default {
       title: '',
       scaffold_thumbnail_data: [],
       plot_manifest_data: [],
+      thumbnail_data: [],
       apaCitation: [],
       models_list: [],
       dataset_img: '',
