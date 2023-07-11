@@ -12,7 +12,7 @@ describe('map sidebar', () =>{
 
     // sidebar
     cy.get('.open-tab').click();
-    cy.contains('18 results | Showing');
+    cy.contains('19 results | Showing');
     cy.get('div').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
     cy.get('.el-cascader').find('.el-input--suffix').click();
     // choose a facet
@@ -20,7 +20,7 @@ describe('map sidebar', () =>{
     cy.get('.cascader').find('span').filter(':contains("Scaffold")').click();
     cy.get('.el-cascader').find('.el-input__suffix-inner').click();
     cy.wait(5000);
-    cy.contains('11 results | Showing');
+    cy.contains('12 results | Showing');
     cy.get('div').should('contain', 'Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig');
     cy.get('.cursor-pointer').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg`);
     // change img
@@ -30,7 +30,7 @@ describe('map sidebar', () =>{
     // clear the facet
     cy.get('.el-icon-close').click();
     cy.wait(5000);
-    cy.contains('18 results | Showing');
+    cy.contains('19 results | Showing');
     // open a dataset button
     cy.window().then((win) => {
         cy.stub(win, 'open').as('newWindow')

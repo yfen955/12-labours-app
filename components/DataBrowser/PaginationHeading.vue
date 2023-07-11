@@ -49,28 +49,28 @@ export default {
   methods: {
     // update the page and first data
     handleCurrentChange(val) {
+      let new_query = {
+        type: this.$route.query.type,
+        page: val,
+        limit: this.limit,
+      };
+      if (this.$route.query.facets) {
+        new_query.facets = this.$route.query.facets;
+        new_query.relation = this.$route.query.relation;
+      }
+      if (this.$route.query.search) {
+        new_query.search = this.$route.query.search;
+      }
       this.$router.replace({
-        path: '/data/browser',
-        query: {
-          type: this.$route.query.type,
-          page: val,
-          limit: this.$route.query.limit,
-        }
+        path: `${this.$route.path}`,
+        query: new_query
       })
-      this.$emit('pageChange', this.currentPage);
     },
 
     updatePageSize(val) {
       this.limit = val === 'View All' ?  100 : val;
-      this.$router.replace({
-        path: '/data/browser',
-        query: {
-          type: this.$route.query.type,
-          page: 1,
-          limit: this.limit,
-        }
-      })
-    }
+      this.handleCurrentChange(1);
+    },
   },
 }
 </script>
