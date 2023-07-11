@@ -23,6 +23,7 @@
                     },
                     query: {
                       datasetTab: 'abstract',
+                      access: item.belong_to
                     }
                   }">
                     {{ item.name }}
@@ -41,7 +42,7 @@
                   {{ item.numberSamples }} samples out of {{ item.numberSubjects }} objects
                 </div>
                 <div>
-                  <el-tag v-for="prog in item.belong_to" :key="prog">{{ prog }}</el-tag>
+                  <el-tag>{{ item.belong_to }}</el-tag>
                 </div>
               </section>
             </section>

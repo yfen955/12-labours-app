@@ -5,9 +5,6 @@
     <div v-if="isLoading" v-loading="isLoading" element-loading-text="Loading..."
       element-loading-spinner="el-icon-loading" class="loading-container"></div>
 
-    <el-button v-if="fetchedData.length > 1" v-for="access in accessScope" @click="setCurrentData(access)" :key="access">{{
-      access }}</el-button>
-
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
         <el-card shadow="never" class="description-container">
@@ -151,7 +148,7 @@
 
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card :cards="models_list" v-if="!isLoading" />
+            <carousel-card2 :cards="models_list" v-if="!isLoading" />
           </span>
 
           <!-- references content -->
@@ -336,21 +333,25 @@ export default {
       title: '',
       scaffold_thumbnail_data: [],
       plot_manifest_data: [],
+      thumbnail_data: [],
       apaCitation: [],
       models_list: [],
       dataset_img: '',
       show_segmentation: false,
       show_pdf: false,
-      accessScope: [],
-      fetchedData: [],
-      currentData: []
     }
   },
 
   created: async function () {
-    this.accessScope = await backendQuery.fetchAccessScope(this.$config.query_api_url);
-    this.fetchedData = await backendQuery.fetchQueryData(this.$config.query_api_url, "experiment_query", { submitter_id: [`${this.$route.params.id}`] }, "");
-    this.setCurrentData("demo1-12L")
+    const data = await backendQuery.fetchQueryData(this.$config.query_api_url, "experiment_query", { submitter_id: [this.$route.params.id] }, "", [this.$route.query.access]);
+    this.detail_data = data.dataset_descriptions[0];
+    this.title = data.dataset_descriptions[0].title[0];
+    this.scaffold_thumbnail_data = data.scaffoldViews;
+    this.plot_manifest_data = data.plots;
+    this.thumbnail_data = data.thumbnails;
+
+    this.getDatasetImg();
+    this.handleModels(this.scaffold_thumbnail_data, this.plot_manifest_data, this.thumbnail_data);
 
     await this.handleCitation();
 
@@ -381,23 +382,6 @@ export default {
   },
 
   methods: {
-    setCurrentData(access) {
-      for (let index = 0; index < this.fetchedData.length; index++) {
-        const element = this.fetchedData[index];
-        if (element["project_id"] == access) {
-          this.currentData = element
-        }
-      }
-      this.detail_data = this.currentData.dataset_descriptions[0];
-      this.title = this.currentData.dataset_descriptions[0].title[0];
-      this.scaffold_thumbnail_data = this.currentData.scaffoldViews;
-      this.plot_manifest_data = this.currentData.plots;
-      this.thumbnail_data = this.currentData.thumbnails;
-
-      this.getDatasetImg();
-      this.handleModels(this.scaffold_thumbnail_data, this.plot_manifest_data, this.thumbnail_data);
-    },
-
     goToDataset() {
       this.$router.push({
         path: '/data/browser',
@@ -405,6 +389,7 @@ export default {
           type: 'dataset',
           page: 1,
           limit: 10,
+          access: this.$route.query.access
         }
       })
     },
@@ -414,7 +399,8 @@ export default {
         path: this.$route.path,
         query: {
           datasetTab: val,
-          path: this.$route.query.path
+          path: this.$route.query.path,
+          access: this.$route.query.access
         }
       });
       if (jump)
@@ -468,7 +454,8 @@ export default {
           type: 'dataset',
           page: 1,
           limit: 10,
-          facets: result
+          facets: result,
+          access: this.$route.query.access
         }
       })
     },
