@@ -1,5 +1,18 @@
 import axios from "axios";
 
+function getCurrentToken() {
+  if (process.client) {
+    const token = localStorage.getItem("accessToken")
+    return token
+  }
+}
+
+function setDefaultToken() {
+  if (process.client) {
+    localStorage.setItem("accessToken", undefined);
+  }
+}
+
 async function fetchAccessToken(path, user) {
   let accessToken = "";
   let payload = {
@@ -17,41 +30,39 @@ async function fetchAccessToken(path, user) {
 }
 
 async function revokeAccess(path) {
-  let token
-  if (process.client) {
-    token = localStorage.getItem("accessToken")
-    if (token != undefined) {
-      await axios
-        .delete(`${path}/access/revoke`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }).catch((error) => {
-          localStorage.setItem("accessToken", undefined);
-        });
-    }
+  const token = getCurrentToken()
+  if (token != undefined) {
+    await axios
+      .delete(`${path}/access/revoke`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDefaultToken()
+      })
+      .catch((error) => {
+        setDefaultToken()
+      });
   }
 }
 
 async function fetchAccessScope(path) {
   let accessScope = [];
-  let token
-  if (process.client) {
-    token = localStorage.getItem("accessToken")
-    await axios
-      .get(`${path}/access/authorize`, {
-        headers: {
-          Authorization: `Bearer ${token == undefined ? undefined : token}`,
-        },
-      })
-      .then((response) => {
-        accessScope = response.data.access;
-      })
-      .catch((error) => {
-        localStorage.setItem("accessToken", undefined);
-        fetchAccessScope(path)
-      });
-  }
+  const token = getCurrentToken()
+  await axios
+    .get(`${path}/access/authorize`, {
+      headers: {
+        Authorization: `Bearer ${token == undefined ? undefined : token}`,
+      },
+    })
+    .then((response) => {
+      accessScope = response.data.access;
+    })
+    .catch((error) => {
+      setDefaultToken()
+      fetchAccessScope(path)
+    });
   return accessScope;
 }
 

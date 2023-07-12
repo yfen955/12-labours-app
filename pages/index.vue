@@ -40,8 +40,12 @@ export default {
   },
 
   methods: {
-    getToken() {
-      localStorage.getItem("accessToken");
+    checkToken() {
+      const token = localStorage.getItem("accessToken");
+      if (token === "undefined") {
+        return undefined
+      };
+      return token
     },
 
     storeToken(token) {
@@ -51,11 +55,10 @@ export default {
 
   async mounted() {
     const loginSuccess = this.$route.query.login
-    if (loginSuccess) {
+    if (loginSuccess && this.checkToken() == undefined) {
       this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
-      let accessToken = await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
+      const accessToken = await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
       this.storeToken(accessToken);
-      this.$router.replace('/')
     }
   }
 }
