@@ -41,9 +41,6 @@
                   <strong>Samples</strong>
                   {{ item.numberSamples }} samples out of {{ item.numberSubjects }} objects
                 </div>
-                <div>
-                  <el-tag>{{ item.belong_to }}</el-tag>
-                </div>
               </section>
             </section>
             <hr />
