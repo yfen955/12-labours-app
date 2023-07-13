@@ -4,19 +4,13 @@
       <h4>Refine results</h4>
       <hr />
       <h5>Filters applied</h5>
-      
+
       <el-card shadow="never" class="facet-card">
         <span v-if="selectedItems.length === 0" class="no-facets">
           No filters applied
         </span>
-        <el-tag
-          v-for="facet in selectedItems"
-          :key="facet"
-          class="tags"
-          disable-transitions
-          closable
-          @close="deselectFacet(facet)"
-        >
+        <el-tag v-for="facet in selectedItems" :key="facet" class="tags" disable-transitions closable
+          @close="deselectFacet(facet)">
           <span>{{ facet }}</span>
         </el-tag>
       </el-card>
@@ -26,43 +20,22 @@
         <h5>Filters relation</h5>
         <div class="filter-switch">
           <p>OR</p>
-          <el-switch
-            v-model="relation"
-            active-color="#00467F"
-            inactive-color="#D11241"
-            @change="handleSwitch"
-          >
+          <el-switch v-model="relation" active-color="#00467F" inactive-color="#D11241" @change="handleSwitch">
           </el-switch>
           <p>AND</p>
         </div>
       </div>
-      
+
       <el-collapse>
-        <el-collapse-item
-          v-for="(filter, index) in filters_list"
-          :key="index"
-          :title="filter.title"
-        >
-          <el-checkbox
-            :indeterminate="filter.isIndeterminate"
-            class="filter-selector"
-            v-model="filter.checkAll"
-            @change="handleCheckAllChange(filter, index)"
-          >
+        <el-collapse-item v-for="(filter, index) in filters_list" :key="index" :title="filter.title">
+          <el-checkbox :indeterminate="filter.isIndeterminate" class="filter-selector" v-model="filter.checkAll"
+            @change="handleCheckAllChange(filter, index)">
             Select all
           </el-checkbox>
           <hr class="checkbox-line" />
-          <el-checkbox-group
-            v-model="filter.selectedItem"
-            @change="updateCheckAll(filter, index)"
-          >
-            <el-checkbox
-              class="filter-selector"
-              v-for="(type, index) in filter.filter_items"
-              v-show="type !== 'NA'"
-              :key="index"
-              :label="type"
-            >
+          <el-checkbox-group v-model="filter.selectedItem" @change="updateCheckAll(filter, index)">
+            <el-checkbox class="filter-selector" v-for="(type, index) in filter.filter_items" v-show="type !== 'NA'"
+              :key="index" :label="type">
               {{ type }}
             </el-checkbox>
           </el-checkbox-group>
@@ -74,7 +47,7 @@
 
 <script>
 export default {
-  props: [ "allFilterDict" ],
+  props: ["allFilterDict"],
 
   data: () => {
     return {
@@ -89,7 +62,7 @@ export default {
     };
   },
 
-  created: function() {
+  created: function () {
     this.dataChange(this.$route.query.type);
   },
 
@@ -147,8 +120,8 @@ export default {
       for (let i = 0; i < this.allFilterDict.size; i++) {
         this.filters_list.push({
           index: i,
-          node: this.allFilterDict.nodes[i],
-          fieldName: this.allFilterDict.fields[i],
+          node_field: this.allFilterDict["nodes>fields"][i],
+          // fieldName: this.allFilterDict.fields[i],
           title: this.allFilterDict.titles[i],
           filter_items: Object.keys(this.allFilterDict.elements[i]),
           selectedItem: [],
@@ -278,15 +251,13 @@ export default {
         let result_list = [];
         for (let key in elements_list) {
           if (filter_list.selectedItem.includes(key)) {
-            result_list = result_list.concat(elements_list[key]);
+            result_list = result_list.concat(key);
           }
         }
         this.element_list[filter_list.index] = result_list;
-        filter['node'] = filter_list.node;
-        filter['filter'] = {};
-        filter['filter'][filter_list.fieldName] = result_list;
+        filter[filter_list.node_field] = result_list;
       }
-      
+
       let empty = true;
       for (let i = 0; i < this.element_list.length; i++) {
         if (!this.element_list[i]) {
@@ -301,9 +272,9 @@ export default {
         this.filters_dict = {};
       else {
         if (JSON.stringify(filter) === '{}')
-          delete this.filters_dict[filter_list.index];
+          delete this.filters_dict[filter_list.node_field];
         else
-          this.filters_dict[filter_list.index] = filter;
+          this.filters_dict = { ...this.filters_dict, ...filter };
       }
 
       if (finished != false)
@@ -341,59 +312,76 @@ export default {
 .filter-container {
   @media only screen and (min-width: $viewport-md) {
     width: 20rem;
+
     @media only screen and (min-width: $viewport-lg) {
       width: 25rem
     }
   }
+
   min-width: 15rem;
   border: 1px solid #E4E7ED;
   margin-top: 1rem;
 }
+
 .relation-container {
   border-top: 0.5px solid #E4E7ED;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .filter-switch {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 1rem;
 }
+
 ::v-deep .el-switch {
   margin-left: .5rem;
   margin-right: .5rem;
 }
-h4, h5 {
+
+h4,
+h5 {
   margin: 1rem;
-};
+}
+
+;
+
 hr {
   border: 0.5px solid #E4E7ED;
 }
+
 .checkbox-line {
   margin: 0.5rem 0 0.5rem 0;
 }
+
 .filter-selector {
   margin: 0;
   width: 100%;
 }
+
 .facet-card {
   height: 5rem;
   margin: 1rem;
   overflow-y: auto;
+
   .no-facets {
     font-style: italic;
     opacity: 0.5;
     font-size: 1rem;
   }
+
   .tags {
     color: $app-primary-color;
   }
 }
+
 ::v-deep .el-card__body {
   padding: 0.5rem;
 }
+
 ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
   &::after {
     transform: rotate(45deg) scale(1) !important;
@@ -401,18 +389,22 @@ hr {
     top: 0.1rem !important;
   }
 }
+
 ::v-deep .el-checkbox.is-checked {
   .el-checkbox__label {
     color: $darkRed !important;
   }
 }
+
 ::v-deep .el-checkbox__inner {
   width: 1rem;
   height: 1rem;
 }
+
 ::v-deep .el-collapse-item__header {
   font: normal normal 550 1rem/1rem Arimo;
 }
+
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   &::before {
     border-bottom: 0.01rem solid $app-primary-color;
