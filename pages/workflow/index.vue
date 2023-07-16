@@ -3,6 +3,7 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
       <h1>Workflows</h1>
+      <h3>{{ $route.query.model }}</h3>
     </div>
   </div>
 </template>

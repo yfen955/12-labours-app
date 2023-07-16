@@ -36,6 +36,10 @@ const searchTypes = [
   {
     label: '12 Labours Information',
     name: 'laboursInfo',
+  },
+  {
+    label: 'Workflows',
+    name: 'workflws',
   }
 ]
 
