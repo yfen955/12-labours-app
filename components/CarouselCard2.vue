@@ -13,7 +13,7 @@
           </p>
         </el-popover>
         <div class="model-button">
-          <el-button v-if="card.type == 'Thumbnail'" @click="downloadThumbnail(card.imageDownload)">
+          <el-button v-if="card.type == 'Thumbnail'" @click="viewThumbnail(card.imageDownload)">
             Download
           </el-button>
           <el-button v-else @click="viewModel(card.type, card.id)">
@@ -49,16 +49,11 @@ export default {
     },
 
     viewModel(model, uuid) {
-      let route = this.$router.resolve({
-        name: `data-maps-${model.toLowerCase()}-id`,
-        params: { id: uuid },
-        query: { access: this.$route.query.access }
-      });
-      window.open(route.href);
+      this.$emit("model", model, uuid)
     },
 
-    downloadThumbnail(url) {
-      window.open(url);
+    viewThumbnail(url) {
+      this.$emit("thumbnail", url)
     },
   },
 

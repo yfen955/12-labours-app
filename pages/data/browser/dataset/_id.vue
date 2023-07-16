@@ -148,7 +148,7 @@
 
           <!-- gallery content -->
           <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card2 :cards="models_list" v-if="!isLoading" />
+            <carousel-card2 :cards="models_list" v-if="!isLoading" @model="viewModel" @thumbnail="viewThumbnail" />
           </span>
 
           <!-- references content -->
@@ -588,6 +588,19 @@ export default {
         document.removeEventListener("touchmove", mo, false);
       }
     },
+
+    viewModel(model, uuid) {
+      let route = this.$router.resolve({
+        name: `data-maps-${model.toLowerCase()}-id`,
+        params: { id: uuid },
+        query: { access: this.$route.query.access }
+      });
+      window.open(route.href);
+    },
+
+    viewThumbnail(url) {
+      window.open(url);
+    }
   },
 }
 </script>
