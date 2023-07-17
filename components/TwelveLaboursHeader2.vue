@@ -29,23 +29,20 @@
             </div>
           </div>
           <ul>
-            <li v-for="link in links" :key="link.href" style="z-index: 100;" @click="openMobileNav">
+            <li v-for="link in headerLinks" :key="link.href" style="z-index: 100;" @click="openMobileNav">
               <component :is="linkComponent" :to="link.href" :class="{ active: activeLink(link.href) }"
                 exact-active-class="active">
                 {{ link.displayTitle.toUpperCase() }}
               </component>
             </li>
           </ul>
-          <!-- //undo later::
-          <div class="menu-footer">
-            <footer-links menuOnly/>
-          </div>-->
         </div>
       </div>
       <div>
         <client-only>
-          <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex status1">
-            <span id="welcome">Welcome {{ $auth.user.first_name }} {{ $auth.user.last_name }}</span>
+          <div v-if="auth.loggedIn && auth.strategy.token.status().valid()" class="login vertical-flex status1">
+            <span id="welcome">Welcome {{ auth.user.first_name }}
+              {{ auth.user.last_name }}</span>
             <component :is="linkComponent" to="/profile">
               <el-button>Account</el-button>
             </component>
@@ -68,59 +65,70 @@
 </template>
 
 <script>
-//undo later:: import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
-//undo later:: import FooterLinks from "../../FooterLinks/src/FooterLinks.vue";
-import backendQuery from '@/services/backendQuery';
+// import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
 
 export default {
   name: "TwelveLaboursHeader",
+
   props: {
-    linkComponent: {
-      type: String,
-      default: "nuxt-link"
+    auth: {
+      type: Object,
+      default: function () {
+        return {
+          loggedIn: false,
+          user: null,
+        };
+      },
     },
-    links: {
+
+    headerLinks: {
       type: Array,
       default: function () {
         return [
           {
             title: "data-and-models",
             displayTitle: "Data & Models",
-            href: "/data?type=dataset"
+            href: "/data?type=dataset",
           },
           {
             title: "resources",
             displayTitle: "Resources",
-            href: "/resources"
+            href: "/resources",
           },
           {
             title: "about",
             displayTitle: "About",
-            href: `/about`
+            href: "/about",
           },
           {
             title: "news-and-events",
             displayTitle: "News & Events",
-            href: "/news-and-events"
+            href: "/news-and-events",
           },
-          // {
-          //   title: "search",
-          //   displayTitle: "Search",
-          //   href: "/search"
-          // }
-        ]
-      }
+          {
+            title: "search",
+            displayTitle: "Search",
+            href: "/search",
+          },
+        ];
+      },
+    },
+
+    linkComponent: {
+      type: String,
+      default: "nuxt-link",
     },
 
     currentPath: {
       type: String,
-      default: "/"
-    }
+      default: "/",
+    },
   },
+
   components: {
-    //undo later:: TwelveLaboursLogo,
-    //undo later:: FooterLinks
+    // TwelveLaboursLogo,
   },
+
   data: () => ({
     menuOpen: false,
     searchOpen: false,
@@ -130,38 +138,35 @@ export default {
       {
         key: "data",
         value: "data",
-        label: "Datasets"
+        label: "Datasets",
       },
       {
         key: "resources",
         value: "resources",
-        label: "Resources"
+        label: "Resources",
       },
       {
         key: "news-and-events",
         value: "news-and-events",
-        label: "News and Events"
+        label: "News and Events",
       },
       {
         key: "help",
         value: "help",
-        label: "Support Center"
-      }
-    ]
+        label: "Support Center",
+      },
+    ],
   }),
 
   computed: {
-
     /**
      * Compute if search should be visible
      * @returns {Boolean}
      */
     shouldShowSearch: function () {
-      if (this.$route)
-        return this.$route.name !== "data";
-      else
-        return true
-    }
+      if (this.$route) return this.$route.name !== "data";
+      else return true;
+    },
   },
 
   watch: {
@@ -175,7 +180,7 @@ export default {
           this.menuOpen = false;
         }
       },
-      immediate: true
+      immediate: true,
     },
 
     /**
@@ -188,17 +193,17 @@ export default {
           this.$emit("updateDisabledScrolling", false);
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 
   methods: {
     /* Signs out of current strategy */
-    signOut: async function () {
-      await this.$auth.logout().then(() => {
+    signOut: function () {
+      this.auth.logout().then(() => {
         this.$toast.success('Logged out of 12 Labours', { duration: 3000, position: 'bottom-right' })
+        this.$emit("isSignOut", true)
       })
-      await backendQuery.revokeAccess(this.$config.query_api_url);
     },
 
     /**
@@ -212,6 +217,7 @@ export default {
         return false;
       }
     },
+
     /**
      * Opens the mobile version of the navigation
      */
@@ -225,7 +231,6 @@ export default {
         this.$emit("updateDisabledScrolling", false);
       }
     },
-
 
     /**
      * Opens the mobile version of the search bar
@@ -248,10 +253,9 @@ export default {
      * Executes a search query based on selected
      * option and query
      */
-
     executeSearch: function () {
       const option = this.searchSelectOptions.find(
-        o => o.value === this.searchSelect
+        (o) => o.value === this.searchSelect
       );
       const searchKey = option.value === "data" ? "q" : "search";
       const type =
@@ -265,24 +269,23 @@ export default {
         name: option.value,
         query: {
           type,
-          [searchKey]: this.searchQuery
-        }
+          [searchKey]: this.searchQuery,
+        },
       });
 
       this.searchQuery = "";
       this.searchSelect = "data";
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
-//undo later:: @import "@/assets/_variables.scss";
+// @import "@/assets/_variables.scss";
 
 .header {
   display: flex;
 }
-
 
 .header-container {
   display: flex;
@@ -297,11 +300,11 @@ export default {
     padding: 0 1rem 0rem 1rem;
 
     .status1 {
-      margin-left: 4rem
+      margin-left: 4rem;
     }
 
     .status2 {
-      margin-left: 6.05rem
+      margin-left: 6.05rem;
     }
   }
 }
@@ -317,7 +320,6 @@ export default {
 }
 
 .navigation {
-
   ul {
     padding: 0 2rem 0 2rem;
     display: flex;
@@ -400,12 +402,17 @@ export default {
 .logo-sm {
   display: none;
 
-  @media only screen and (max-width:$viewport-md) {
+  @media only screen and (max-width: $viewport-md) {
     display: block;
     height: 3rem;
     width: 3rem;
-    padding: 0.25rem
+    padding: 0.25rem;
   }
+}
+
+.vertical-flex {
+  display: flex;
+  flex-direction: column;
 }
 
 .login {
@@ -419,4 +426,3 @@ export default {
   }
 }
 </style>
-
