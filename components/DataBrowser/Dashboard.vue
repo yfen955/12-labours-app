@@ -5,7 +5,13 @@
       <el-input v-model="searchContent" placeholder="Search the table" />
       <el-button @click="clearFilter">Clear all filters</el-button>
     </div>
-    <el-table ref="workflowTable" :data="filtered_table_data" border :cell-style="{padding: '1rem 0 1rem'}">
+    <el-table
+      ref="workflowTable"
+      :data="filtered_table_data"
+      border
+      :cell-style="{padding: '1rem 0 1rem'}"
+      :row-class-name="tableRowClassName"
+    >
       <el-table-column
         prop="workflow"
         label="Workflow"
@@ -65,24 +71,39 @@
           </el-dropdown>
         </template>
       </el-table-column>
-      <el-table-column prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
-      <el-table-column prop="age" label="Age (years)" sortable></el-table-column>
-      <el-table-column prop="height" label="Height (cm)" sortable></el-table-column>
+      <el-table-column v-if="showTime" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
+      <el-table-column v-if="showAge" prop="age" label="Age (years)" sortable></el-table-column>
+      <el-table-column v-if="showHeight" prop="height" label="Height (cm)" sortable></el-table-column>
       <el-table-column prop="logs" label="Logs"></el-table-column>
       <el-table-column label="Action">
-        <nuxt-link :to="{
-          name: 'data-browser-dataset-id',
-          params: {
-            id: 'dataset-76-version-7',
-          },
-          query: {
-            datasetTab: 'abstract',
-          }
-        }">
-          View Dataset
-        </nuxt-link>
+        <template slot-scope="scope">
+          <nuxt-link :to="{
+            name: 'data-browser-dataset-id',
+            params: {
+              id: 'dataset-76-version-7',
+            },
+            query: {
+              datasetTab: 'abstract',
+            }
+          }">
+            View Dataset
+          </nuxt-link>, 
+          <a @click="deleteRow(scope.$index)">
+            Delete Workflow
+          </a>
+        </template>
       </el-table-column>
     </el-table>
+    <br>
+
+    <div>
+      <h3>Configure</h3>
+      <div class="btns">
+        <el-button @click="showTime = true" :disabled="showTime === true ? true : false">Add time column</el-button>
+        <el-button @click="showAge = true" :disabled="showAge === true ? true : false">Add age column</el-button>
+        <el-button @click="showHeight = true" :disabled="showHeight === true ? true : false">Add height column</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -123,6 +144,9 @@ export default {
       workflow_filter: [],
       subject_filter: [],
       searchContent: '',
+      showTime: false,
+      showAge: false,
+      showHeight: false,
     }
   },
 
@@ -203,6 +227,18 @@ export default {
     clearFilter() {
       this.$refs.workflowTable.clearFilter();
     },
+
+    deleteRow(index) {
+      this.table_data.splice(index, 1);
+    },
+
+    tableRowClassName({row}) {
+      console.log(row.progress);
+      if (row.progress === 'Finished')
+        return 'finished-row';
+      else
+        return 'in-progress-row';
+    },
   }
 }
 </script>
@@ -229,5 +265,8 @@ br{
   display: flex;
   justify-content: space-between;
   margin: 1rem 0 1rem;
+}
+::v-deep .el-table .finished-row {
+  background: $success;
 }
 </style>

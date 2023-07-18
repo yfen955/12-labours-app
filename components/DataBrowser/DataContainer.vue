@@ -50,7 +50,7 @@
     </span>
 
     <!-- display laboursInfo -->
-    <span v-if="$route.query.type === 'workflws'">
+    <span v-if="$route.query.type === 'workflows'">
       <!-- <SearchData />
       <div class="data-container">
         <FilterData />

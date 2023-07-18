@@ -39,7 +39,7 @@ const searchTypes = [
   },
   {
     label: 'Workflows',
-    name: 'workflws',
+    name: 'workflows',
   }
 ]
 
