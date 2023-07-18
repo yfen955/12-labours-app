@@ -97,4 +97,8 @@ export default {
 .flex-box {
   height: 30em;
 }
+
+.el-button+.el-button {
+  margin-left: 0;
+}
 </style>
