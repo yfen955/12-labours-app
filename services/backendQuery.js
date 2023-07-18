@@ -68,7 +68,10 @@ async function fetchAccessScope(path) {
 
 async function fetchPaginationData(path, filter, limit, page, search, relation) {
   const access = await fetchAccessScope(path)
-  let fetched_data = [];
+  let fetched_data = {
+    items: [],
+    total: 0
+  };
   let payload = {
     filter: filter,
     limit: parseInt(limit),
