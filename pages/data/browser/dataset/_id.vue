@@ -493,11 +493,6 @@ export default {
       return url;
     },
 
-    downloadImg(filename) {
-      let url = this.generateImg('download', filename);
-      window.open(url);
-    },
-
     async handleCitation() {
       for (let item of this.detail_data.identifier) {
         await axios
@@ -582,7 +577,7 @@ export default {
       } else if (this.thumbnail_data.length > 0) {
         item = this.thumbnail_data[0];
       }
-      if (!item) {
+      if (JSON.stringify(item) === '{}') {
         this.dataset_img = this.imgPlaceholder;
       } else {
         this.dataset_img = this.generateImg('preview', item.filename, item.is_source_of);
