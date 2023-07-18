@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Researcher Dashboard</h3>
-    <div class="btns">
+    <div class="input-btns">
       <el-input v-model="searchContent" placeholder="Search the table" />
       <el-button @click="clearFilter">Clear all filters</el-button>
     </div>
@@ -9,8 +9,7 @@
       ref="workflowTable"
       :data="filtered_table_data"
       border
-      :cell-style="{padding: '1rem 0 1rem'}"
-      :row-class-name="tableRowClassName"
+      :cell-style="cellStyle"
     >
       <el-table-column
         prop="workflow"
@@ -98,11 +97,18 @@
 
     <div>
       <h3>Configure</h3>
-      <div class="btns">
-        <el-button @click="showTime = true" :disabled="showTime === true ? true : false">Add time column</el-button>
-        <el-button @click="showAge = true" :disabled="showAge === true ? true : false">Add age column</el-button>
-        <el-button @click="showHeight = true" :disabled="showHeight === true ? true : false">Add height column</el-button>
-      </div>
+      <el-popover
+        placement="right"
+        width="400"
+        trigger="hover"
+      >
+        <el-checkbox v-model="showTime">Time</el-checkbox>
+        <el-checkbox v-model="showAge">Age</el-checkbox>
+        <el-checkbox v-model="showHeight">Height</el-checkbox>
+        <span slot="reference">
+          <el-button slot="reference">Add Columns</el-button>
+        </span>
+      </el-popover>
     </div>
   </div>
 </template>
@@ -232,12 +238,18 @@ export default {
       this.table_data.splice(index, 1);
     },
 
-    tableRowClassName({row}) {
-      console.log(row.progress);
+    // tableRowClassName({row}) {
+    //   if (row.progress === 'Finished')
+    //     return 'finished-row';
+    //   else
+    //     return 'in-progress-row';
+    // },
+
+    cellStyle({ row, column, rowIndex, columnIndex }) {
       if (row.progress === 'Finished')
-        return 'finished-row';
+        return { backgroundColor: '#f0f9eb', padding: '1rem 0 1rem' };
       else
-        return 'in-progress-row';
+        return { padding: '1rem 0 1rem' };
     },
   }
 }
@@ -261,12 +273,31 @@ br{
   font-size: 16px;
   color: #606266;
 }
-.btns {
+.input-btns, .btns {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0 1rem;
+  margin: 1rem 0 1rem 0;
 }
-::v-deep .el-table .finished-row {
-  background: $success;
+.btns {
+  flex-wrap: wrap;
+}
+.el-button+.el-button{
+  margin-left: 0;
+}
+::v-deep .el-input__inner {
+  width: 90%;
+}
+// ::v-deep .el-table .finished-row {
+//   background-color: $success;
+//   color: $success;
+// }
+
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409EFF;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>
