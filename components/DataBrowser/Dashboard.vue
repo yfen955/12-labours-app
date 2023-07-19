@@ -6,6 +6,7 @@
       <el-popover
         placement="right"
         trigger="hover"
+        width="200"
       >
         <span slot="reference">
           <el-button slot="reference">Configure</el-button>
@@ -28,6 +29,7 @@
       :cell-style="cellStyle"
     >
       <el-table-column
+        v-if="selected_columns.includes('Workflow')"
         prop="workflow"
         label="Workflow"
         sortable
@@ -47,6 +49,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="selected_columns.includes('Subject ID')"
         prop="subject"
         label="Subject ID"
         sortable
@@ -55,6 +58,7 @@
         :filter-method="filterHandler"
       ></el-table-column>
       <el-table-column
+        v-if="selected_columns.includes('Progress')"
         prop="progress"
         label="Progress"
         sortable
@@ -89,8 +93,8 @@
       <el-table-column v-if="selected_columns.includes('Time')" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
       <el-table-column v-if="selected_columns.includes('Age')" prop="age" label="Age (years)" sortable></el-table-column>
       <el-table-column v-if="selected_columns.includes('Height')" prop="height" label="Height (cm)" sortable></el-table-column>
-      <el-table-column prop="logs" label="Logs"></el-table-column>
-      <el-table-column label="Action">
+      <el-table-column v-if="selected_columns.includes('Logs')" prop="logs" label="Logs"></el-table-column>
+      <el-table-column v-if="selected_columns.includes('Actions')" label="Actions">
         <template slot-scope="scope">
           <nuxt-link :to="{
             name: 'data-browser-dataset-id',
@@ -104,7 +108,7 @@
             View Dataset
           </nuxt-link>, 
           <a @click="deleteRow(scope.$index)">
-            Delete Workflow
+            Terminate Process
           </a>
         </template>
       </el-table-column>
@@ -149,8 +153,8 @@ export default {
       workflow_filter: [],
       subject_filter: [],
       searchContent: '',
-      selected_columns: [],
-      columns_list: ['Time', 'Age', 'Height'],
+      selected_columns: ['Workflow', 'Subject ID', 'Progress', 'Actions'],
+      columns_list: ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Logs', 'Actions'],
       showAll: false,
     }
   },
@@ -290,8 +294,8 @@ br{
 .btns {
   flex-wrap: wrap;
 }
-.el-button+.el-button{
-  margin-left: 0;
+.el-checkbox, .el-checkbox+.el-checkbox {
+  margin-left: 0.5rem;
 }
 ::v-deep .el-input__inner {
   width: 90%;
