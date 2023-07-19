@@ -63,19 +63,14 @@ export default {
     }
   },
 
+  created: function() {
+    this.updatePagetitle(this.$route.query.type);
+  },
+
   watch: {
     '$route.query.type': {
       handler(val) {
-        if (val === 'dataset')
-          this.pageTitle = 'Data Browser';
-        else if (val === 'tools')
-          this.pageTitle = 'Tools & Resources';
-        else if (val === 'news')
-          this.pageTitle = 'News & Events';
-        else if (val === 'laboursInfo')
-          this.pageTitle = '12 Labours Information';
-        else if (val === 'workflows')
-          this.pageTitle = 'Workflows Dashboard';
+        this.updatePagetitle(val);
       }
     },
   },
@@ -107,6 +102,19 @@ export default {
           limit: this.$route.query.limit,
         }
       })
+    },
+
+    updatePagetitle(val) {
+      if (val === 'dataset')
+        this.pageTitle = 'Data Browser';
+      else if (val === 'tools')
+        this.pageTitle = 'Tools & Resources';
+      else if (val === 'news')
+        this.pageTitle = 'News & Events';
+      else if (val === 'laboursInfo')
+        this.pageTitle = '12 Labours Information';
+      else if (val === 'workflows')
+        this.pageTitle = 'Workflows Dashboard';
     }
   }
 }
