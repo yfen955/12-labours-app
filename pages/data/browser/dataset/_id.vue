@@ -81,7 +81,7 @@
 
           <!-- abstract content -->
           <span v-if="$route.query.datasetTab === 'abstract'" class="tab-content">
-            <p><b>Study Purpose:</b> N/A</p>
+            <p><b>Study Purpose:</b> {{detail_data.study_purpose.length > 0 ? detail_data.study_purpose[0] : "N/A"}}</p>
             <p><b>Completeness:</b> N/A</p>
             <p><b>Primary vs derivative data:</b> N/A</p>
             <p><b>Important Notes:</b> N/A</p>
@@ -135,7 +135,7 @@
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
             <h2>Dataset Citation</h2>
             <p>To promote reproducibility and give credit to investigators who publish their data, we recommend citing your usage of 12-labours datasets. To make it easy, the 12-labours Portal provides the full data citation, including the option of different formats, under the Cite tab of each dataset page. For more Information, please see our Help page.</p>
-            <div v-if="detail_data.identifier.length > 0">
+            <div v-if="apaCitation.length > 0">
               <h5 class="small-title">APA</h5>
               <div class="citaiton-block">
                 <el-button icon="el-icon-copy-document" id="copy-btn" @click="copyText(apaCitation)">Copy</el-button>
@@ -502,7 +502,8 @@ export default {
             }      
           })
           .then((res) => {
-            this.apaCitation.push(res.data);
+            if (!res.data.includes('<!doctype html>'))
+              this.apaCitation.push(res.data);
           })
           .catch((err) => {
             console.log(err);

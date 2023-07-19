@@ -63,6 +63,23 @@ export default {
     }
   },
 
+  watch: {
+    '$route.query.type': {
+      handler(val) {
+        if (val === 'dataset')
+          this.pageTitle = 'Data Browser';
+        else if (val === 'tools')
+          this.pageTitle = 'Tools & Resources';
+        else if (val === 'news')
+          this.pageTitle = 'News & Events';
+        else if (val === 'laboursInfo')
+          this.pageTitle = '12 Labours Information';
+        else if (val === 'workflows')
+          this.pageTitle = 'Workflows Dashboard';
+      }
+    },
+  },
+
   mounted() {
     let mo = function (e) {
       e.preventDefault();

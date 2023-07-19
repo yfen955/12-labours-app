@@ -3,7 +3,23 @@
     <h3>Researcher Dashboard</h3>
     <div class="input-btns">
       <el-input v-model="searchContent" placeholder="Search the table" />
-      <el-button @click="clearFilter">Clear all filters</el-button>
+      <el-popover
+        placement="right"
+        trigger="hover"
+      >
+        <span slot="reference">
+          <el-button slot="reference">Configure</el-button>
+        </span>
+        <h4>Add Columns</h4>
+        <el-checkbox v-model="showAll" @change="handleCheckAll">All</el-checkbox>
+        <el-checkbox-group
+          v-model="selected_columns"
+          @change="updateCheckAll"
+        >
+          <el-checkbox v-for="(column, i) in columns_list" :label="column" :key="i">{{ column }}</el-checkbox>
+        </el-checkbox-group>
+      </el-popover>
+      <!-- <el-button @click="clearFilter">Clear all filters</el-button> -->
     </div>
     <el-table
       ref="workflowTable"
@@ -70,9 +86,9 @@
           </el-dropdown>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTime" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
-      <el-table-column v-if="showAge" prop="age" label="Age (years)" sortable></el-table-column>
-      <el-table-column v-if="showHeight" prop="height" label="Height (cm)" sortable></el-table-column>
+      <el-table-column v-if="selected_columns.includes('Time')" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
+      <el-table-column v-if="selected_columns.includes('Age')" prop="age" label="Age (years)" sortable></el-table-column>
+      <el-table-column v-if="selected_columns.includes('Height')" prop="height" label="Height (cm)" sortable></el-table-column>
       <el-table-column prop="logs" label="Logs"></el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
@@ -93,23 +109,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <br>
-
-    <div>
-      <h3>Configure</h3>
-      <el-popover
-        placement="right"
-        width="400"
-        trigger="hover"
-      >
-        <el-checkbox v-model="showTime">Time</el-checkbox>
-        <el-checkbox v-model="showAge">Age</el-checkbox>
-        <el-checkbox v-model="showHeight">Height</el-checkbox>
-        <span slot="reference">
-          <el-button slot="reference">Add Columns</el-button>
-        </span>
-      </el-popover>
-    </div>
   </div>
 </template>
 
@@ -150,9 +149,9 @@ export default {
       workflow_filter: [],
       subject_filter: [],
       searchContent: '',
-      showTime: false,
-      showAge: false,
-      showHeight: false,
+      selected_columns: [],
+      columns_list: ['Time', 'Age', 'Height'],
+      showAll: false,
     }
   },
 
@@ -238,18 +237,25 @@ export default {
       this.table_data.splice(index, 1);
     },
 
-    // tableRowClassName({row}) {
-    //   if (row.progress === 'Finished')
-    //     return 'finished-row';
-    //   else
-    //     return 'in-progress-row';
-    // },
-
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (row.progress === 'Finished')
         return { backgroundColor: '#f0f9eb', padding: '1rem 0 1rem' };
       else
         return { padding: '1rem 0 1rem' };
+    },
+
+    handleCheckAll(val) {
+      if (val)
+        this.selected_columns = [...this.columns_list];
+      else
+        this.selected_columns = [];
+    },
+
+    updateCheckAll() {
+      if (this.selected_columns.length === this.columns_list.length)
+        this.showAll = true;
+      else
+        this.showAll = false;
     },
   }
 }
@@ -269,9 +275,11 @@ export default {
 br{
   line-height: 1rem;
 }
-::v-deep .el-table__column-filter-trigger i {
-  font-size: 16px;
+::v-deep .el-table__column-filter-trigger .el-icon-arrow-down:before {
+  content: "\e7bb";
+  font-size: 25px;
   color: #606266;
+  vertical-align: -4px;
 }
 .input-btns, .btns {
   width: 100%;
@@ -288,16 +296,8 @@ br{
 ::v-deep .el-input__inner {
   width: 90%;
 }
-// ::v-deep .el-table .finished-row {
-//   background-color: $success;
-//   color: $success;
-// }
-
 .el-dropdown-link {
   cursor: pointer;
-  color: #409EFF;
-}
-.el-icon-arrow-down {
-  font-size: 12px;
+  color: $app-primary-color;
 }
 </style>

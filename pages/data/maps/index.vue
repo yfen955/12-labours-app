@@ -167,6 +167,24 @@ export default {
   .el-scrollbar__bar.is-horizontal {
     overflow: hidden;
   }
+
+  .background-popper {
+    height: auto !important;
+  }
+  .backgroundControl {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    width: 1rem;
+    height: 1rem;
+  }
+  .el-radio, .el-radio+.el-radio {
+    margin-left: 0;
+  }
+  .el-radio__input.is-checked .el-radio__inner:after {
+    border: 0;
+  }
 }
 .pagination ul.el-pager li.number.active {
   background: $app-primary-color !important;
