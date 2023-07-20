@@ -41,7 +41,7 @@ export default {
 
   methods: {
     checkToken() {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("access_token");
       if (token === "undefined") {
         return undefined
       };
@@ -49,7 +49,7 @@ export default {
     },
 
     storeToken(token) {
-      localStorage.setItem("accessToken", token);
+      localStorage.setItem("access_token", token);
     }
   },
 
