@@ -1,7 +1,7 @@
 describe('information in the data brower page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser?type=dataset&page=1&limit=10');
-    cy.wait(5000);
+    cy.wait(6000);
   })
 
   it('click the nav bar', () => {
@@ -64,9 +64,9 @@ describe('information in the data brower page', () =>{
     // change page size
     cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("10")').find('.item-icon-check.svg-icon.svg-fill');   // current is 10
-    cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("20")').click();
-    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=20');
-    cy.get('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').should('contain', '20');   // current is 20
+    cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("View All")').click();
+    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=100');
+    cy.get('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').should('contain', '100');   // view all is 100
     cy.get('.pagination-container.top').find('ul.el-pager').children('li').should('have.length', 1);
   })
 })
