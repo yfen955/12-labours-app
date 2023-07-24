@@ -142,7 +142,7 @@ async function fetchAccessScope(path) {
   return accessScope;
 }
 
-async function fetchPaginationData(path, filter, limit, page, search, relation) {
+async function fetchPaginationData(path, filter, limit, page, search, relation, sortBy) {
   const access = await fetchAccessScope(path)
   let fetched_data = {
     items: [],
@@ -154,6 +154,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation) 
     page: parseInt(page),
     relation: relation,
     access: access,
+    order: sortBy
   };
   await axios
     .post(`${path}/graphql/pagination/?search=${search}`, payload)

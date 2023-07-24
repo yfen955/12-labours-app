@@ -7,9 +7,15 @@
           <FilterData :allFilterDict="allFilterDict" v-on:filter-dict="updateFilterDict" v-on:relation="updateRelation" />
         </div>
         <div>
-          <DisplayData v-loading="isLoadingSearch" element-loading-text="Loading..."
-            element-loading-spinner="el-icon-loading" :dataDetails="currentData" :isLoadingSearch="isLoadingSearch"
-            :totalCount="totalCount" />
+          <DisplayData
+            v-loading="isLoadingSearch"
+            element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading"
+            :dataDetails="currentData"
+            :isLoadingSearch="isLoadingSearch"
+            :totalCount="totalCount"
+            v-on:sort_changed="updateSort"
+          />
         </div>
       </div>
     </span>
@@ -71,6 +77,7 @@ export default {
       errorMessage: '',
       searchContent: '',
       relation: 'and',
+      sortBy: 'Published(asc)',
     }
   },
 
@@ -97,7 +104,7 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation);
+      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation, this.sortBy);
       this.currentData = result["items"];
       this.totalCount = result["total"];
       this.isLoadingSearch = false;
@@ -134,6 +141,11 @@ export default {
         this.relation = 'and';
       else
         this.relation = 'or';
+      this.fetchData();
+    },
+
+    updateSort(val) {
+      this.sortBy = val;
       this.fetchData();
     }
   },
