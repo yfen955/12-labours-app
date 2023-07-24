@@ -1,19 +1,41 @@
 <template>
-  <el-carousel :autoplay="false" trigger="click" type="card" arrow="always" height="20rem">
-    <el-carousel-item v-show="dataShowed.length > 0" v-for="card in dataShowed" :key="card.filename">
+  <el-carousel
+    :autoplay="false"
+    trigger="click"
+    type="card"
+    arrow="always"
+    height="20rem"
+  >
+    <el-carousel-item
+      v-show="dataShowed.length > 0"
+      v-for="card in dataShowed"
+      :key="card.filename"
+    >
       <el-card>
         <div class="model-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
-          <img v-else :src="card.imageUrl" :alt="card.filename" @error="replaceByDefaultImage" />
+          <img
+            v-else
+            :src="card.imageUrl"
+            :alt="card.filename"
+            @error="replaceByDefaultImage"
+          />
         </div>
         <p class="type-name">{{ card.type }}</p>
-        <el-popover placement="top-start" trigger="hover" :content="card.filename">
+        <el-popover
+          placement="top-start"
+          trigger="hover"
+          :content="card.filename"
+        >
           <p slot="reference" class="model-name">
             {{ card.filename }}
           </p>
         </el-popover>
         <div class="model-button">
-          <el-button v-if="card.type == 'Thumbnail'" @click="downloadThumbnail(card.imageDownload)">
+          <el-button
+            v-if="card.type == 'Thumbnail'"
+            @click="downloadThumbnail(card.imageDownload)"
+          >
             Download
           </el-button>
           <el-button v-else @click="viewModel(card.type, card.id)">
@@ -52,7 +74,7 @@ export default {
       let route = this.$router.resolve({
         name: `data-maps-${model.toLowerCase()}-id`,
         params: { id: uuid },
-        query: { access: this.$route.query.access }
+        query: { access: this.$route.query.access },
       });
       window.open(route.href);
     },
