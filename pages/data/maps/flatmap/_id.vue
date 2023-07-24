@@ -128,8 +128,15 @@ export default {
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
     }
-    .background-popper.el-popper[x-placement^=top] .popper__arrow {
-      border-top-color: $app-primary-color !important;
+    .background-popper {
+      border: 1px solid $app-primary-color;
+      height: auto;
+      .el-popper[x-placement^=top] .popper__arrow {
+        border-top-color: $app-primary-color !important;
+      }
+    }
+    .backgroundChoice.active {
+      border: 2px solid $app-primary-color;
     }
 
     .flatmap-tooltip-popup{
