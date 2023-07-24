@@ -37,6 +37,16 @@
         <FilterData />
       </div>
     </span>
+
+    <!-- display laboursInfo -->
+    <span v-if="$route.query.type === 'workflows'">
+      <!-- <SearchData />
+      <div class="data-container">
+        <FilterData />
+      </div> -->
+      <br>
+      <Dashboard />
+    </span>
   </div>
 </template>
 
@@ -45,10 +55,11 @@ import backendQuery from '@/services/backendQuery';
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
+import Dashboard from "./Dashboard.vue";
 
 export default {
-  components: { SearchData, FilterData, DisplayData },
-  props: ["category"],
+  components: { SearchData, FilterData, DisplayData, Dashboard },
+  props: [ "category" ],
   data: () => {
     return {
       isLoadingSearch: true,
