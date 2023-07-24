@@ -2,13 +2,13 @@
   <div class="header">
     <div class="header-container">
       <button class="nav-side-menu" @click="openMobileNav">
-        <svgicon name="hamburger" height="40" width="40"/>
+        <svgicon name="hamburger" height="40" width="40" />
       </button>
       <div class="logo">
         <component :is="linkComponent" :to="{ name: 'index' }">
           <!-- Provide a way to slot in the logo -->
           <slot name="logo">
-            <twelve-labours-logo/>
+            <twelve-labours-logo />
           </slot>
         </component>
       </div>
@@ -18,7 +18,7 @@
             <div class="logo-sm">
               <component :is="linkComponent" :to="{ name: 'index' }">
                 <slot name="logo">
-                  <twelve-labours-logo/>
+                  <twelve-labours-logo />
                 </slot>
               </component>
             </div>
@@ -29,14 +29,20 @@
             </div>
           </div>
           <ul>
-            <li v-for="link in links" :key="link.href" style="z-index: 100;" @click="openMobileNav">
+            <li
+              v-for="link in links"
+              :key="link.href"
+              style="z-index: 100;"
+              @click="openMobileNav"
+            >
               <component
                 :is="linkComponent"
                 :to="link.href"
                 :class="{ active: activeLink(link.href) }"
-                exact-active-class="active">
-                  {{ link.displayTitle.toUpperCase() }}
-                </component>
+                exact-active-class="active"
+              >
+                {{ link.displayTitle.toUpperCase() }}
+              </component>
             </li>
           </ul>
           <!-- //undo later::
@@ -47,16 +53,22 @@
       </div>
       <div>
         <client-only>
-          <div v-if="$auth.loggedIn && $auth.strategy.token.status().valid()" class="login vertical-flex status1"> 
-            <span id="welcome">Welcome {{$auth.user.first_name}} {{$auth.user.last_name}}</span>
+          <div
+            v-if="$auth.loggedIn && $auth.strategy.token.status().valid()"
+            class="login vertical-flex status1"
+          >
+            <span id="welcome"
+              >Welcome {{ $auth.user.first_name }}
+              {{ $auth.user.last_name }}</span
+            >
             <component :is="linkComponent" to="/profile">
               <el-button>Account</el-button>
             </component>
-            <component :is="linkComponent" @click.native="signout" to="/">
+            <component :is="linkComponent" @click.native="signOut" to="/">
               Log out
             </component>
           </div>
-          <div v-else  class="login vertical-flex status2"> 
+          <div v-else class="login vertical-flex status2">
             <component :is="linkComponent" to="/login">
               <el-button>Login</el-button>
             </component>
@@ -73,50 +85,52 @@
 <script>
 //undo later:: import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
 //undo later:: import FooterLinks from "../../FooterLinks/src/FooterLinks.vue";
+import backendQuery from "@/services/backendQuery";
 
 export default {
   name: "TwelveLaboursHeader",
   props: {
     linkComponent: {
       type: String,
-      default: "nuxt-link"
+      default: "nuxt-link",
     },
     links: {
       type: Array,
-      default: function() { return [
+      default: function() {
+        return [
           {
             title: "data-and-models",
             displayTitle: "Data & Models",
-            href: "/data?type=dataset"
+            href: "/data?type=dataset",
           },
           {
             title: "resources",
             displayTitle: "Resources",
-            href: "/resources"
+            href: "/resources",
           },
           {
             title: "about",
             displayTitle: "About",
-            href: `/about`
+            href: `/about`,
           },
           {
             title: "news-and-events",
             displayTitle: "News & Events",
-            href: "/news-and-events"
+            href: "/news-and-events",
           },
           // {
           //   title: "search",
           //   displayTitle: "Search",
           //   href: "/search"
           // }
-        ]
-      }
+        ];
+      },
     },
-  
+
     currentPath: {
       type: String,
-      default: "/"
-    }
+      default: "/",
+    },
   },
   components: {
     //undo later:: TwelveLaboursLogo,
@@ -131,38 +145,35 @@ export default {
       {
         key: "data",
         value: "data",
-        label: "Datasets"
+        label: "Datasets",
       },
       {
         key: "resources",
         value: "resources",
-        label: "Resources"
+        label: "Resources",
       },
       {
         key: "news-and-events",
         value: "news-and-events",
-        label: "News and Events"
+        label: "News and Events",
       },
       {
         key: "help",
         value: "help",
-        label: "Support Center"
-      }
-    ]
+        label: "Support Center",
+      },
+    ],
   }),
 
   computed: {
-
     /**
      * Compute if search should be visible
      * @returns {Boolean}
      */
     shouldShowSearch: function() {
-      if (this.$route)
-        return this.$route.name !== "data";
-      else
-        return true
-    }
+      if (this.$route) return this.$route.name !== "data";
+      else return true;
+    },
   },
 
   watch: {
@@ -176,7 +187,7 @@ export default {
           this.menuOpen = false;
         }
       },
-      immediate: true
+      immediate: true,
     },
 
     /**
@@ -189,16 +200,20 @@ export default {
           this.$emit("updateDisabledScrolling", false);
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 
   methods: {
     /* Signs out of current strategy */
-    signout:async function(){
+    signOut: async function() {
       await this.$auth.logout().then(() => {
-        this.$toast.success('Logged out of 12 Labours',{duration:3000, position: 'bottom-right'}) 
-      })
+        this.$toast.success("Logged out of 12 Labours", {
+          duration: 3000,
+          position: "bottom-right",
+        });
+      });
+      await backendQuery.revokeAccess(this.$config.query_api_url);
     },
 
     /**
@@ -226,7 +241,6 @@ export default {
       }
     },
 
-  
     /**
      * Opens the mobile version of the search bar
      */
@@ -251,7 +265,7 @@ export default {
 
     executeSearch: function() {
       const option = this.searchSelectOptions.find(
-        o => o.value === this.searchSelect
+        (o) => o.value === this.searchSelect
       );
       const searchKey = option.value === "data" ? "q" : "search";
       const type =
@@ -265,24 +279,23 @@ export default {
         name: option.value,
         query: {
           type,
-          [searchKey]: this.searchQuery
-        }
+          [searchKey]: this.searchQuery,
+        },
       });
 
       this.searchQuery = "";
       this.searchSelect = "data";
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 //undo later:: @import "@/assets/_variables.scss";
 
-.header{
-  display: flex;    
+.header {
+  display: flex;
 }
-
 
 .header-container {
   display: flex;
@@ -290,49 +303,56 @@ export default {
   align-items: center;
   width: 100%;
   background-color: $cochlear;
-  height:6.25rem;
-  padding:0.5rem 2rem 0.5rem 2rem;
-  @media only screen and (max-width: $viewport-md){
-    padding:0 1rem 0rem 1rem;
-    .status1{
-      margin-left: 4rem
+  height: 6.25rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+
+  @media only screen and (max-width: $viewport-md) {
+    padding: 0 1rem 0rem 1rem;
+
+    .status1 {
+      margin-left: 4rem;
     }
-    .status2{
-      margin-left: 6.05rem
+
+    .status2 {
+      margin-left: 6.05rem;
     }
   }
 }
 
-.logo
-{
-  height: 6.25rem;   
-  width: 7.25rem;  
-  min-width: 7.25rem;  
-  @media only screen and (max-width: $viewport-md){
-    display:none;
+.logo {
+  height: 6.25rem;
+  width: 7.25rem;
+  min-width: 7.25rem;
+
+  @media only screen and (max-width: $viewport-md) {
+    display: none;
   }
 }
 
 .navigation {
-  
   ul {
-    padding:0 2rem 0 2rem;
+    padding: 0 2rem 0 2rem;
     display: flex;
     align-items: center;
     column-gap: 4rem;
 
     li {
       display: inline;
+
       a {
-        text-decoration: none  !important;
+        text-decoration: none !important;
         font: normal normal normal 1rem/1.13rem $font-family;
-        color:$app-primary-color !important; 
-        &.active,&:hover,&:focus {
+        color: $app-primary-color !important;
+
+        &.active,
+        &:hover,
+        &:focus {
           color: $app-primary-color;
-        }  
-        @media only screen and (max-width: $viewport-md){
-          color:$cochlear !important;
-        } 
+        }
+
+        @media only screen and (max-width: $viewport-md) {
+          color: $cochlear !important;
+        }
       }
     }
   }
@@ -340,11 +360,11 @@ export default {
   @media only screen and (max-width: $viewport-md) {
     & {
       background: $mildBlue;
-      display: none;     
-      flex-direction: column; 
+      display: none;
+      flex-direction: column;
       bottom: 0;
       left: 0;
-      top:0;
+      top: 0;
       position: fixed;
       z-index: 9999;
 
@@ -354,16 +374,17 @@ export default {
         overflow: auto;
       }
     }
+
     ul {
       flex-direction: column;
-      row-gap:1rem;
+      row-gap: 1rem;
 
       //For Firefox
       /*scrollbar-width: thin;
       scrollbar-color: $mildBlue $cochlear;*/
     }
   }
-}  
+}
 
 .nav-side-menu {
   background: none;
@@ -371,6 +392,7 @@ export default {
   display: none;
   // -webkit-appearance: none;
   position: relative;
+
   @media only screen and (max-width: $viewport-md) {
     & {
       display: block;
@@ -378,33 +400,34 @@ export default {
   }
 }
 
-.menu-close{
-  display:none;
+.menu-close {
+  display: none;
+
   @media only screen and (max-width: $viewport-md) {
-    display:flex;
-    justify-content:space-between;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
-.logo-sm
-{
-  display:none;
-  @media only screen and (max-width:$viewport-md){
-    display:block;
-    height: 3rem;   
-    width: 3rem;  
-    padding:0.25rem
+.logo-sm {
+  display: none;
+
+  @media only screen and (max-width: $viewport-md) {
+    display: block;
+    height: 3rem;
+    width: 3rem;
+    padding: 0.25rem;
   }
 }
 
-.login{
-    margin-left: auto;
-    text-align:center;
-    right: 0;
-    span#welcome{
-      font-size:0.8rem;
-      font-style: italic;
-    }
+.login {
+  margin-left: auto;
+  text-align: center;
+  right: 0;
+
+  span#welcome {
+    font-size: 0.8rem;
+    font-style: italic;
   }
+}
 </style>
-

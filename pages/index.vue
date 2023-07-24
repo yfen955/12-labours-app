@@ -7,13 +7,13 @@
         </span>
       </div>
     </div>
-    <portal-help/> 
+    <portal-help />
     <div class="container-default shaded">
       <div class="top-heading">
-        <h1>{{content.values.title}}</h1>
+        <h1>{{ content.values.title }}</h1>
       </div>
       <div class="default-inner">
-        <div v-html="content.values.content.html"/>
+        <div v-html="content.values.content.html" />
         <div class="nav-about">
           <!-- <nuxt-link to="/about/">
             FIND OUT MORE ABOUT THE 12 LABOURS PROJECT
@@ -21,80 +21,101 @@
         </div>
       </div>
     </div>
-    <latest-news :news-list="topNews.newsList" hide-bg-color/>
+    <latest-news :news-list="topNews.newsList" hide-bg-color />
   </div>
 </template>
 
 <script>
 
 import graphcmsQuery from '@/services/graphcmsQuery'
+import backendQuery from '@/services/backendQuery';
 
 export default {
   name: 'App',
 
-  async asyncData({$graphcms, $configGetter}) {
-    $configGetter()
-    const content= await graphcmsQuery.content($graphcms, 'about');    
-    const topNews= await graphcmsQuery.topNews($graphcms, 3);    
-    return {content,topNews}
+  async asyncData({ $graphcms }) {
+    const content = await graphcmsQuery.content($graphcms, 'about');
+    const topNews = await graphcmsQuery.topNews($graphcms, 3);
+    return { content, topNews }
   },
 
-  mounted(){
-    const loginSuccess=this.$route.query.login
-    if(loginSuccess) this.$toast.success('Successfully Logged In!',{duration:3000, position: 'bottom-right'})
+  methods: {
+    checkToken() {
+      const token = localStorage.getItem("access_token");
+      if (token === "undefined") {
+        return undefined
+      };
+      return token
+    },
+
+    storeToken(token) {
+      localStorage.setItem("access_token", token);
+    }
+  },
+
+  async mounted() {
+    const loginSuccess = this.$route.query.login
+    if (loginSuccess && this.checkToken() == undefined) {
+      this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
+      const accessToken = await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
+      this.storeToken(accessToken);
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.banner-home {
+  display: flex;
 
-.banner-home{
-  display:flex; 
-      
-  background:url("~static/img/digital-twin.png") no-repeat center center fixed; 
+  background: url("~static/img/digital-twin.png") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  overflow:hidden;
+  overflow: hidden;
 
-  justify-content:flex-end; 
-  padding-right:3.75rem;
-  padding-top:12.81rem;
-  height:60rem; 
-  box-sizing:border-box;
-  
-  @media only screen and (max-width: $viewport-md){    
-    justify-content:center;  
-    padding:6rem 1rem;
-    height:fit-content;
+  justify-content: flex-end;
+  padding-right: 3.75rem;
+  padding-top: 12.81rem;
+  height: 60rem;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: $viewport-md) {
+    justify-content: center;
+    padding: 6rem 1rem;
+    height: fit-content;
   }
 }
-  
- .title-box{
+
+.title-box {
   min-width: 15rem;
   margin: auto;
-  height:fit-content;
-  border-radius:1.25rem;
+  height: fit-content;
+  border-radius: 1.25rem;
   background-color: $blue;
-  display:flex;
-  padding:2.25rem;
-  span{
-    font-weight:bold;
+  display: flex;
+  padding: 2.25rem;
+
+  span {
+    font-weight: bold;
     font-size: 2.5rem;
     line-height: 2.75rem;
-    color:$cochlear;
-    @media only screen and (max-width: $viewport-sm){    
+    color: $cochlear;
+
+    @media only screen and (max-width: $viewport-sm) {
       font-size: 2rem;
       line-height: 2rem;
     }
   }
 }
 
- .nav-about{
-    padding-top:1rem;
-    text-align: right; 
-    a{font-weight:600}
- }
+.nav-about {
+  padding-top: 1rem;
+  text-align: right;
 
+  a {
+    font-weight: 600
+  }
+}
 </style>

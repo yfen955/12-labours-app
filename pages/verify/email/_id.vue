@@ -43,8 +43,7 @@ export default {
     return params.id
   },
 
-  async asyncData({params,query, $configGetter}) {
-    $configGetter()
+  async asyncData({params,query}) {
     const email=params.id
     let emailSent=query.emailSent
     return{email,emailSent}

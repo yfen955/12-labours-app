@@ -67,8 +67,7 @@ export default {
   //middleware: 'auth',
   components: { NavBar },
       
-  async asyncData({$auth,redirect, $configGetter}) {
-    $configGetter()
+  async asyncData({$auth,redirect}) {
     if(!$auth.loggedIn ||  !$auth.user || !$auth.strategy.token.status().valid()){     
       return redirect('/login');
     }

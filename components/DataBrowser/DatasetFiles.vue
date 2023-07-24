@@ -147,7 +147,8 @@ export default {
           path: `${this.$route.path}`,
           query: {
             datasetTab: `${this.$route.query.datasetTab}`,
-            path: folder_path
+            path: folder_path,
+            access: this.$route.query.access
           }
         });
         this.files_data = [];

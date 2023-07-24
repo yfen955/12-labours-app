@@ -20,8 +20,7 @@ export default {
     return params.token 
   },
 
-  async asyncData({params, $configGetter}) {
-    $configGetter()
+  async asyncData({params}) {
     const access_token=params.token
     return{access_token}
   },

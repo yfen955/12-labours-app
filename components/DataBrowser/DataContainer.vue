@@ -1,26 +1,15 @@
 <template>
   <div>
     <span v-if="$route.query.type === 'dataset'">
-      <SearchData
-        v-on:search_content="updateSearchContent"
-      />
+      <SearchData v-on:search_content="updateSearchContent" />
       <div class="data-container">
         <div>
-          <FilterData
-            :allFilterDict="allFilterDict"
-            v-on:filter-dict="updateFilterDict"
-            v-on:relation="updateRelation"
-          />
+          <FilterData :allFilterDict="allFilterDict" v-on:filter-dict="updateFilterDict" v-on:relation="updateRelation" />
         </div>
         <div>
-          <DisplayData
-            v-loading="isLoadingSearch"
-            element-loading-text="Loading..."
-            element-loading-spinner="el-icon-loading"
-            :dataDetails="currentData"
-            :isLoadingSearch="isLoadingSearch"
-            :totalCount="totalCount"
-          />
+          <DisplayData v-loading="isLoadingSearch" element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading" :dataDetails="currentData" :isLoadingSearch="isLoadingSearch"
+            :totalCount="totalCount" />
         </div>
       </div>
     </span>
@@ -85,22 +74,22 @@ export default {
     }
   },
 
-  created: function() {
+  created: function () {
     // when open find data page, call the function to fetch the data
     this.dataChange(this.$route.query.type);
   },
 
   watch: {
     // if the type variable in the url changes, change the current data to the data in that category
-    '$route.query.type': function(val) {
+    '$route.query.type': function (val) {
       this.dataChange(val);
     },
 
-    '$route.query.page': function() {
+    '$route.query.page': function () {
       this.fetchData();
     },
-    
-    '$route.query.limit': function() {
+
+    '$route.query.limit': function () {
       this.fetchData();
     },
   },
@@ -108,16 +97,14 @@ export default {
   methods: {
     async fetchData() {
       this.isLoadingSearch = true;
-      let path = `${this.$config.query_api_url}/graphql/pagination/?search=${this.searchContent}`;
-      let result = await backendQuery.fetchPaginationData(path, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.relation);
-      this.currentData = result[0];
-      this.totalCount = result[1];
+      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation);
+      this.currentData = result["items"];
+      this.totalCount = result["total"];
       this.isLoadingSearch = false;
     },
 
     async fetchFilter() {
-      const path = `${this.$config.query_api_url}/filter/?sidebar=false`;
-      this.allFilterDict = await backendQuery.fetchFilterData(path);
+      this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
     },
 
     dataChange(val) {
@@ -157,9 +144,11 @@ export default {
 .data-container {
   min-width: 15rem;
   gap: 2rem;
+
   @media only screen and (min-width: $viewport-sm) {
     display: flex;
   }
+
   @media only screen and (max-width: $viewport-md) {
     gap: 1rem;
   }

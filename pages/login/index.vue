@@ -73,10 +73,6 @@ export default {
     }
   },
 
-  async asyncData({$configGetter}) {
-    $configGetter()
-  },
-
   methods: {
     fieldChange:function(fieldName){
       let field=this[fieldName]

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="(dataDetails.length > 0)">
+    <div v-if="dataDetails.length > 0">
       <!-- data summary -->
       <PaginationHeading
         :isLoadingSearch="isLoadingSearch"
@@ -9,29 +9,35 @@
       />
       <!-- data details -->
       <div class="data-container">
-        <div
-          v-for="(item, index) in dataDetails"
-          :key="index"
-        >
+        <div v-for="(item, index) in dataDetails" :key="index">
           <!-- display dataset -->
           <span v-if="$route.query.type === 'dataset'">
             <section class="element">
               <div class="dataset-img">
-                <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" @error="replaceByDefaultImage" alt="image" />
+                <img
+                  v-if="getDatasetImg(item)"
+                  :src="getDatasetImg(item)"
+                  @error="replaceByDefaultImage"
+                  alt="image"
+                />
                 <img v-else :src="imgPlaceholder" alt="image" />
               </div>
-              
+
               <section class="content">
                 <div>
-                  <nuxt-link class="title-link" :to="{
-                    name: 'data-browser-dataset-id',
-                    params: {
-                      id: item.datasetId,
-                    },
-                    query: {
-                      datasetTab: 'abstract',
-                    }
-                  }">
+                  <nuxt-link
+                    class="title-link"
+                    :to="{
+                      name: 'data-browser-dataset-id',
+                      params: {
+                        id: item.datasetId,
+                      },
+                      query: {
+                        datasetTab: 'abstract',
+                        access: item.belong_to,
+                      },
+                    }"
+                  >
                     {{ item.name }}
                   </nuxt-link>
                 </div>
@@ -43,26 +49,24 @@
                   <strong>Keywords</strong>
                   {{ displayKeywords(item.keywords) }}
                 </div>
-                <div>
-                  <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
-                    <strong>Samples</strong>
-                    {{item.numberSamples}} samples out of {{item.numberSubjects}} objects
-                  </div>
+                <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
+                  <strong>Samples</strong>
+                  {{ item.numberSamples }} samples out of
+                  {{ item.numberSubjects }} objects
                 </div>
               </section>
             </section>
-            <hr/>
+            <hr />
           </span>
 
           <!-- display tools -->
           <span v-if="$route.query.type === 'tools'"></span>
-          
+
           <!-- display news -->
           <span v-if="$route.query.type === 'news'"></span>
 
           <!-- display 12 labours information -->
           <span v-if="$route.query.type === 'laboursInfo'"></span>
-
         </div>
       </div>
       <PaginationHeading
@@ -78,17 +82,17 @@
 </template>
 
 <script>
-import PaginationHeading from "./PaginationHeading.vue"
+import PaginationHeading from "./PaginationHeading.vue";
 
 export default {
   name: "DisplayData",
   components: { PaginationHeading },
-  props: [ "isLoadingSearch", "dataDetails", "totalCount" ],
+  props: ["isLoadingSearch", "dataDetails", "totalCount"],
   data: () => {
     return {
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
-    }
+    };
   },
 
   methods: {
@@ -104,7 +108,7 @@ export default {
     },
 
     getDatasetImg(item) {
-      let url = '';
+      let url = "";
       if (item.scaffoldViews.length > 0) {
         url = this.$config.query_api_url + item.scaffoldViews[0].image_url;
       } else if (item.thumbnails.length > 0) {
@@ -119,65 +123,82 @@ export default {
       error.target.src = this.imgPlaceholder;
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
 .data-container {
-  border: 1px solid #E4E7ED;
+  border: 1px solid #e4e7ed;
   padding: 1rem;
+
   @media only screen and (max-width: $viewport-sm) {
     overflow: auto;
     white-space: normal;
   }
+
   .element {
     display: flex;
     align-items: flex-start;
+
     @media only screen and (max-width: 37rem) {
       width: 27rem;
     }
+
     padding: 1rem;
+
     .dataset-img {
       width: 10rem;
       height: 10rem;
     }
-    img, p {
+
+    img,
+    p {
       width: 10rem;
     }
+
     .content {
       margin-left: 1rem;
       line-height: 2rem;
     }
   }
 }
+
 hr {
-  border: 0.25px solid #E4E7ED;
+  border: 0.25px solid #e4e7ed;
+
   @media only screen and (max-width: 37rem) {
-    width: 27rem
+    width: 27rem;
   }
 }
+
 .no-result {
   height: 10rem;
   margin: 1rem;
   white-space: nowrap;
   text-align: center;
+
   @media only screen and (min-width: $viewport-sm) {
     padding: 0 10rem 0 10rem;
+
     @media only screen and (min-width: $viewport-md) {
       padding: 0 15rem 0 15rem;
+
       @media only screen and (min-width: 77rem) {
         padding: 0 20rem 0 20rem;
+
         @media only screen and (min-width: 90rem) {
           padding: 0 25rem 0 25rem;
         }
       }
     }
   }
+
   p {
     color: #e4e7ed;
     font-size: 2rem;
   }
 }
+
 .title-link {
   font-size: 1.5rem;
 }

@@ -69,7 +69,7 @@ export default {
     "@/plugins/vue-sphinx-xml.js",
     "@/plugins/validators.js",
     "@/plugins/vue-gtag.client.js",
-    "@/plugins/private-config-getter.js",
+    "@/plugins/route.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

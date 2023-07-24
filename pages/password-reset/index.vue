@@ -51,14 +51,6 @@ export default {
     }
   },
 
-  async asyncData({$configGetter}) {
-    $configGetter()
-  },
-
-  // watch: {
-
-  // },
-
   methods: {
     fieldChange() {
       let result = this.$validateElement(this.email);

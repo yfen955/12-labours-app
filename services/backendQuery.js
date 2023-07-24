@@ -1,35 +1,162 @@
 import axios from "axios";
 
-async function fetchPaginationData(path, filter, limit, page, relation) {
-  let fetched_data = [];
-  let totalNum = 0;
+function getLocalStorage(key) {
+  if (process.client) {
+    const token = localStorage.getItem(key)
+    if (token == "undefined") {
+      return undefined
+    }
+    return token
+  }
+}
+
+function setLocalStorage(key, value) {
+  if (process.client) {
+    localStorage.setItem(key, value);
+  }
+}
+
+function getDeviceType() {
+  const ua = navigator.userAgent;
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    // return "Tablet";
+    return "T";
+  }
+  else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    // return "Mobile";
+    return "M";
+  }
+  // return "Desktop";
+  return "D";
+};
+
+function getBrowserType() {
+  const test = regexp => {
+    return regexp.test(navigator.userAgent);
+  };
+
+  if (test(/opr\//i) || !!window.opr) {
+    // return "Opera";
+    return "O";
+  } else if (test(/edg/i)) {
+    // return "MicrosoftEdge";
+    return "ME";
+  } else if (test(/chrome|chromium|crios/i)) {
+    // return "GoogleChrome";
+    return "GC";
+  } else if (test(/firefox|fxios/i)) {
+    // return "MozillaFirefox";
+    return "MF";
+  } else if (test(/safari/i)) {
+    // return "AppleSafari";
+    return "AS";
+  } else if (test(/trident/i)) {
+    // return "MicrosoftInternetExplorer";
+    return "MIE";
+  } else if (test(/ucbrowser/i)) {
+    // return "UCBrowser";
+    return "UCB";
+  } else if (test(/samsungbrowser/i)) {
+    // return "SamsungBrowser";
+    return "SB";
+  } else {
+    // return "Unknown";
+    return "U";
+  }
+}
+
+
+function generateMachineId() {
+  const deviceType = getDeviceType();
+  const browserType = getBrowserType();
+  let result = `${deviceType}_${browserType}_`;
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < 12; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+
+function getMachineId() {
+  let machineId = getLocalStorage("machine_id");
+  if (!machineId) {
+    machineId = generateMachineId()
+    setLocalStorage("machine_id", machineId);
+  }
+  return machineId;
+}
+
+async function fetchAccessToken(path, user) {
+  let machineId = getMachineId()
+  let accessToken = "";
+  let payload = {
+    identity: `${user}>${machineId}`,
+  };
+  await axios
+    .post(`${path}/access/token`, payload)
+    .then((response) => {
+      accessToken = response.data.access_token;
+    })
+    .catch((error) => {
+      throw new Error(`${error}`);
+    });
+  return accessToken;
+}
+
+async function revokeAccess(path) {
+  const token = getLocalStorage("access_token")
+  if (token != undefined) {
+    await axios
+      .delete(`${path}/access/revoke`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setLocalStorage("access_token", undefined)
+      })
+      .catch((error) => {
+        setLocalStorage("access_token", undefined)
+      });
+  }
+}
+
+async function fetchAccessScope(path) {
+  let accessScope = [];
+  const token = getLocalStorage("access_token")
+  await axios
+    .get(`${path}/access/authorize`, {
+      headers: {
+        Authorization: `Bearer ${token == undefined ? undefined : token}`,
+      },
+    })
+    .then((response) => {
+      accessScope = response.data.access;
+    })
+    .catch((error) => {
+      setLocalStorage("access_token", undefined)
+      fetchAccessScope(path)
+    });
+  return accessScope;
+}
+
+async function fetchPaginationData(path, filter, limit, page, search, relation) {
+  const access = await fetchAccessScope(path)
+  let fetched_data = {
+    items: [],
+    total: 0
+  };
   let payload = {
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
+    access: access,
   };
   await axios
-    .post(path, payload)
-    .then((res) => {
-      fetched_data = res.data.items;
-      totalNum = res.data.total;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return new Array(fetched_data, totalNum);
-}
-
-async function fetchQueryData(path, node, filter, search = "") {
-  let fetched_data = [];
-  let payload = {
-    node: node,
-    filter: filter,
-    search: search,
-  };
-  await axios
-    .post(path, payload)
+    .post(`${path}/graphql/pagination/?search=${search}`, payload)
     .then((res) => {
       fetched_data = res.data;
     })
@@ -39,14 +166,16 @@ async function fetchQueryData(path, node, filter, search = "") {
   return fetched_data;
 }
 
-async function getSingleData(path, programName, projectName) {
+async function fetchQueryData(path, node, filter, search, access) {
   let fetched_data = [];
   let payload = {
-    program: programName,
-    project: projectName,
+    node: node,
+    filter: filter,
+    search: search,
+    access: access,
   };
   await axios
-    .post(path, payload)
+    .post(`${path}/graphql/query`, payload)
     .then((res) => {
       fetched_data = res.data[0];
     })
@@ -56,10 +185,30 @@ async function getSingleData(path, programName, projectName) {
   return fetched_data;
 }
 
-async function fetchFilterData(path) {
-  let filter = {};
+async function getSingleData(path, uuid, access) {
+  let fetched_data = [];
+  let payload = {
+    access: access,
+  };
   await axios
-    .get(path)
+    .post(`${path}/record/${uuid}`, payload)
+    .then((res) => {
+      fetched_data = res.data[0];
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return fetched_data;
+}
+
+async function fetchFilterData(path, sidebar) {
+  const access = await fetchAccessScope(path)
+  let filter = {};
+  let payload = {
+    access: access,
+  };
+  await axios
+    .post(`${path}/filter/?sidebar=${sidebar}`, payload)
     .then((res) => {
       filter = res.data;
     })
@@ -71,15 +220,16 @@ async function fetchFilterData(path) {
 
 async function fetchFiles(path, payload) {
   let files_data = {};
-  await axios
-    .post(path, payload)
-    .then((res) => {
-      files_data = res.data;
-    })
+  await axios.post(path, payload).then((res) => {
+    files_data = res.data;
+  });
   return files_data;
 }
 
 export default {
+  fetchAccessToken,
+  revokeAccess,
+  fetchAccessScope,
   fetchPaginationData,
   fetchQueryData,
   getSingleData,
