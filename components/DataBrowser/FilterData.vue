@@ -110,16 +110,22 @@ export default {
           old_val.split(",").forEach((item) => {
             if (new_val.indexOf(item) == -1) this.deselectFacet(item);
           });
-        } else if (old_val && !new_val) this.deselectFacet(old_val);
-        else if (!old_val && new_val) this.dataChange(this.$route.query.type);
-        else if (new_val && old_val && new_val.length > old_val.length)
+        } else if (old_val && !new_val) {
+          this.deselectFacet(old_val);
+        } else if (!old_val && new_val) {
           this.dataChange(this.$route.query.type);
+        } else if (new_val && old_val && new_val.length > old_val.length) {
+          this.dataChange(this.$route.query.type);
+        }
       },
     },
     "$route.query.relation": {
       handler(val) {
-        if (val) this.relation = val === "and" ? true : false;
-        else this.relation = true;
+        if (val) {
+          this.relation = val === "and" ? true : false;
+        } else {
+          this.relation = true;
+        }
         this.$emit("relation", this.relation);
       },
     },
@@ -129,9 +135,11 @@ export default {
     async dataChange(val) {
       this.filters_list = [];
       this.element_list = [];
-      if (this.$route.query.relation)
+      if (this.$route.query.relation) {
         this.relation = this.$route.query.relation === "and" ? true : false;
-      else this.relation = true;
+      } else {
+        this.relation = true;
+      }
       if (val === "dataset") {
         this.convertFacets();
       }
@@ -189,10 +197,15 @@ export default {
         );
       }
 
-      if (this.selectedItems.length === 0) this.element_list = [];
+      if (this.selectedItems.length === 0) {
+        this.element_list = [];
+      }
 
-      if (!filter) await this.generateFiltersDict();
-      else await this.generateFiltersDict(filter, finished);
+      if (!filter) {
+        await this.generateFiltersDict();
+      } else {
+        await this.generateFiltersDict(filter, finished);
+      }
 
       this.updateURL();
     },
@@ -207,7 +220,9 @@ export default {
       }
       this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
-      if (refresh) this.handleChange(filter);
+      if (refresh) {
+        this.handleChange(filter);
+      }
     },
 
     // update the checkAll state when the selected facets are changed
@@ -289,15 +304,19 @@ export default {
           break;
         }
       }
-      if (empty) this.filters_dict = {};
-      else {
-        if (JSON.stringify(filter) === "{}")
+      if (empty) {
+        this.filters_dict = {};
+      } else {
+        if (JSON.stringify(filter) === "{}") {
           delete this.filters_dict[filter_list.node_field];
-        else this.filters_dict = { ...this.filters_dict, ...filter };
+        } else {
+          this.filters_dict = { ...this.filters_dict, ...filter };
+        }
       }
 
-      if (finished != false)
+      if (finished != false) {
         this.$emit("filter-dict", this.filters_dict, this.relation);
+      }
     },
 
     // update the page, selected facets & relation in the url
@@ -311,7 +330,9 @@ export default {
         query.facets = this.selectedItems.toString();
         query.relation = this.relation ? "and" : "or";
       }
-      if (this.$route.query.search) query.search = this.$route.query.search;
+      if (this.$route.query.search) {
+        query.search = this.$route.query.search;
+      }
       this.$router.push({
         path: `${this.$route.path}`,
         query: query,

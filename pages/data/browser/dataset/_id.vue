@@ -509,10 +509,11 @@ export default {
           access: this.$route.query.access,
         },
       });
-      if (jump)
+      if (jump) {
         this.$el
           .querySelector(".detail-container")
           .scrollIntoView({ behavior: "smooth" });
+      }
     },
 
     combineNames() {
@@ -528,15 +529,19 @@ export default {
     modifyName(name, i) {
       let name_list = name.split(", ");
       let result;
-      if (i === this.detail_data.contributor_name.length - 1)
+      if (i === this.detail_data.contributor_name.length - 1) {
         result = name_list[1] + " " + name_list[0];
-      else result = name_list[1] + " " + name_list[0] + ", ";
+      } else {
+        result = name_list[1] + " " + name_list[0] + ", ";
+      }
       return result;
     },
 
     modifyLink(i) {
       let link = this.detail_data.contributor_orcid[i];
-      if (!link.includes("http")) link = "https://orcid.org/" + link;
+      if (!link.includes("http")) {
+        link = "https://orcid.org/" + link;
+      }
       return link;
     },
 
@@ -571,12 +576,14 @@ export default {
       if (!filename.includes(this.$route.params.id)) {
         url += `/${this.$route.params.id}`;
       }
-      if (is_source_of)
+      if (is_source_of) {
         url += `/${filename.substring(
           0,
           filename.lastIndexOf("/")
         )}/${is_source_of}`;
-      else url += `/${filename}`;
+      } else {
+        url += `/${filename}`;
+      }
       return url;
     },
 
@@ -633,14 +640,6 @@ export default {
         };
         this.models_list.push(model);
       });
-      let flatmap = {
-        type: "Flatmap",
-        imageUrl: this.imgPlaceholder,
-        filename: "",
-        id: 1,
-        imageDownload: "",
-      };
-      this.models_list.push(flatmap);
       plot.forEach((item) => {
         let model = {
           type: "Plot",
@@ -654,17 +653,21 @@ export default {
       thumbnail.forEach((item) => {
         let model = {
           type: "Thumbnail",
-          imageUrl: this.generateImg(
-            "preview",
-            item.filename,
-            item.is_source_of
-          ),
+          imageUrl: this.generateImg("preview", item.filename),
           filename: this.generateFilename(item.filename),
           id: item.id,
           imageDownload: this.generateImg("download", item.filename),
         };
         this.models_list.push(model);
       });
+      let flatmap = {
+        type: "Flatmap",
+        imageUrl: this.imgPlaceholder,
+        filename: "",
+        id: 1,
+        imageDownload: "",
+      };
+      this.models_list.push(flatmap);
     },
 
     getDatasetImg() {
@@ -686,9 +689,11 @@ export default {
     },
 
     changeShowState(val) {
-      if (val === "show_segmentation")
+      if (val === "show_segmentation") {
         this.show_segmentation = !this.show_segmentation;
-      else if (val === "show_pdf") this.show_pdf = !this.show_pdf;
+      } else if (val === "show_pdf") {
+        this.show_pdf = !this.show_pdf;
+      }
     },
 
     updateScroll() {
