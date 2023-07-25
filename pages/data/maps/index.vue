@@ -185,6 +185,9 @@ export default {
   .el-radio__input.is-checked .el-radio__inner:after {
     border: 0;
   }
+  .el-switch__label.is-active {
+    color: $app-primary-color !important;
+  }
 }
 .pagination ul.el-pager li.number.active {
   background: $app-primary-color !important;

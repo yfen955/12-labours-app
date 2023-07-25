@@ -2,11 +2,24 @@
   <div>
     <div v-if="dataDetails.length > 0">
       <!-- data summary -->
-      <PaginationHeading
-        :isLoadingSearch="isLoadingSearch"
-        :totalCount="totalCount"
-        class="top"
-      />
+      <div class="title-config">
+        <div>
+          Sort
+          <el-select v-model="sortBy">
+            <el-option
+              v-for="item in sort_list"
+              :key="item.value"
+              :value="item.value">
+              {{ item.value }} <i class="el-icon-check" v-if="item.value === sortBy"></i>
+            </el-option>
+          </el-select>
+        </div>
+        <PaginationHeading
+          :isLoadingSearch="isLoadingSearch"
+          :totalCount="totalCount"
+          class="top"
+        />
+      </div>
       <!-- data details -->
       <div class="data-container">
         <div v-for="(item, index) in dataDetails" :key="index">
@@ -92,7 +105,23 @@ export default {
     return {
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
-    };
+      sortBy: 'Published(asc)',
+      sort_list: [
+        {value: 'Published(asc)'},
+        {value: 'Published(desc)'},
+        {value: 'Title(asc)'},
+        {value: 'Title(desc)'},
+        {value: 'Relevance'},
+      ],
+    }
+  },
+
+  watch: {
+    'sortBy': {
+      handler() {
+        this.$emit('sort_changed', this.sortBy);
+      }
+    }
   },
 
   methods: {
@@ -201,5 +230,19 @@ hr {
 
 .title-link {
   font-size: 1.5rem;
+}
+.el-select {
+  width: 11rem;
+  margin-left: .5rem;
+  padding: 1rem 0;
+}
+.title-config {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.el-icon-check {
+  color: $app-primary-color;
 }
 </style>
