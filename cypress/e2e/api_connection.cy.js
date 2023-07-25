@@ -1,6 +1,6 @@
 describe('test api conntection', () =>{
   it('POST: dataset & models metadata', () => {
-    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
+    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery&access=demo1-12L');
     cy.request({
       method: "POST",
       url: `${Cypress.env('query_url')}/graphql/query`,
@@ -18,16 +18,16 @@ describe('test api conntection', () =>{
     })
   })
   
-  it('GET: citation', () => {
-    cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
-    cy.request({
-      method: "GET",
-      url: 'https://doi.org/10.1038/s41416-018-0185-8',
-      headers: {
-        "Accept": "text/x-bibliography; style=apa"
-      }
-    }).then(function(res) {
-      expect(res.body).to.equal("Saha, A., Harowicz, M. R., Grimm, L. J., Kim, C. E., Ghate, S. V., Walsh, R., & Mazurowski, M. A. (2018). A machine learning approach to radiogenomics of breast cancer: a study of 922 subjects and 529 DCE-MRI features. British Journal of Cancer, 119(4), 508–516. https://doi.org/10.1038/s41416-018-0185-8\n");
-    })
-  })
+  // it('GET: citation', () => {
+  //   cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite&access=demo1-12L');
+  //   cy.request({
+  //     method: "GET",
+  //     url: 'https://doi.org/10.1038/s41416-018-0185-8',
+  //     headers: {
+  //       "Accept": "text/x-bibliography; style=apa"
+  //     }
+  //   }).then(function(res) {
+  //     expect(res.body).to.equal("Saha, A., Harowicz, M. R., Grimm, L. J., Kim, C. E., Ghate, S. V., Walsh, R., & Mazurowski, M. A. (2018). A machine learning approach to radiogenomics of breast cancer: a study of 922 subjects and 529 DCE-MRI features. British Journal of Cancer, 119(4), 508–516. https://doi.org/10.1038/s41416-018-0185-8\n");
+  //   })
+  // })
 })

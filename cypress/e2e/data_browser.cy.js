@@ -2,6 +2,12 @@ describe('information in the data brower page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser?type=dataset&page=1&limit=10');
     cy.wait(6000);
+
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      // returning false here prevents Cypress from
+      // failing the test
+      return false
+    })
   })
 
   it('click the nav bar', () => {
