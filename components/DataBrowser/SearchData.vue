@@ -111,6 +111,7 @@ export default {
   width: 100%;
   min-width: 13rem;
   position: relative;
+  padding-top: 1rem;
   ::v-deep .el-input__inner {
     width: 100%;
   }
@@ -136,8 +137,12 @@ export default {
   margin-left: 0.5rem;
   height: 2.5rem;
   padding: 0 1rem 0 1rem;
+  margin-top: 1rem;
 }
 ::v-deep .el-form-item {
   margin-bottom: 0;
+}
+::v-deep .el-form--label-top .el-form-item__label {
+  padding: 0;
 }
 </style>

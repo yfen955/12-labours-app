@@ -1,6 +1,6 @@
 describe('gallery tab', () =>{
   beforeEach(function () {
-    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery');
+    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery&access=demo1-12L');
     cy.wait(3000);
   })
 
@@ -21,7 +21,7 @@ describe('gallery tab', () =>{
 
 describe('information in the duke dataset detail page', () =>{
   beforeEach(function () {
-    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite');
+    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite&access=demo1-12L');
     cy.wait(3000);
   })
 

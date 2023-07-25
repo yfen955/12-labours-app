@@ -2,11 +2,11 @@ import axios from "axios";
 
 function getLocalStorage(key) {
   if (process.client) {
-    const token = localStorage.getItem(key)
-    if (token == "undefined") {
+    const value = localStorage.getItem(key)
+    if (!value) {
       return undefined
     }
-    return token
+    return value
   }
 }
 
@@ -106,12 +106,12 @@ async function fetchAccessToken(path, user) {
 }
 
 async function revokeAccess(path) {
-  const token = getLocalStorage("access_token")
-  if (token != undefined) {
+  const accessToken = getLocalStorage("access_token")
+  if (!accessToken) {
     await axios
       .delete(`${path}/access/revoke`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
@@ -123,27 +123,8 @@ async function revokeAccess(path) {
   }
 }
 
-async function fetchAccessScope(path) {
-  let accessScope = [];
-  const token = getLocalStorage("access_token")
-  await axios
-    .get(`${path}/access/authorize`, {
-      headers: {
-        Authorization: `Bearer ${token == undefined ? undefined : token}`,
-      },
-    })
-    .then((response) => {
-      accessScope = response.data.access;
-    })
-    .catch((error) => {
-      setLocalStorage("access_token", undefined)
-      fetchAccessScope(path)
-    });
-  return accessScope;
-}
-
-async function fetchPaginationData(path, filter, limit, page, search, relation) {
-  const access = await fetchAccessScope(path)
+async function fetchPaginationData(path, filter, limit, page, search, relation, sortBy) {
+  const accessToken = getLocalStorage("access_token")
   let fetched_data = {
     items: [],
     total: 0
@@ -153,10 +134,14 @@ async function fetchPaginationData(path, filter, limit, page, search, relation) 
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
-    access: access,
+    order: sortBy
   };
   await axios
-    .post(`${path}/graphql/pagination/?search=${search}`, payload)
+    .post(`${path}/graphql/pagination/?search=${search}`, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
       fetched_data = res.data;
     })
@@ -202,13 +187,14 @@ async function getSingleData(path, uuid, access) {
 }
 
 async function fetchFilterData(path, sidebar) {
-  const access = await fetchAccessScope(path)
+  const accessToken = getLocalStorage("access_token")
   let filter = {};
-  let payload = {
-    access: access,
-  };
   await axios
-    .post(`${path}/filter/?sidebar=${sidebar}`, payload)
+    .get(`${path}/filter/?sidebar=${sidebar}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
       filter = res.data;
     })
@@ -229,7 +215,6 @@ async function fetchFiles(path, payload) {
 export default {
   fetchAccessToken,
   revokeAccess,
-  fetchAccessScope,
   fetchPaginationData,
   fetchQueryData,
   getSingleData,
