@@ -122,8 +122,8 @@ export default {
 
     updateSearchContent(val) {
       const isSearchChanged = this.searchContent === val ? false : true;
-      this.searchContent = val;
       if (isSearchChanged) {
+        this.searchContent = val;
         this.fetchData();
       }
     },
