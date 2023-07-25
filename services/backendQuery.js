@@ -133,7 +133,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
-    relation: relation
+    relation: relation,
     order: sortBy
   };
   await axios
