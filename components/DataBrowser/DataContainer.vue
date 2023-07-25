@@ -121,8 +121,11 @@ export default {
     },
 
     updateSearchContent(val) {
+      const isSearchChanged = this.searchContent === val ? false : true;
       this.searchContent = val;
-      this.fetchData();
+      if (isSearchChanged) {
+        this.fetchData();
+      }
     },
 
     updateLoading(val) {
