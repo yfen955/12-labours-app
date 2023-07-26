@@ -40,25 +40,20 @@ export default {
   },
 
   methods: {
-    checkToken() {
+    tokenExist() {
       const token = localStorage.getItem("access_token");
-      if (token === "undefined") {
-        return undefined
+      if (!token || token === "undefined") {
+        return false
       };
-      return token
-    },
-
-    storeToken(token) {
-      localStorage.setItem("access_token", token);
+      return true
     }
   },
 
   async mounted() {
     const loginSuccess = this.$route.query.login
-    if (loginSuccess && this.checkToken() == undefined) {
+    if (loginSuccess && !this.tokenExist()) {
       this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
-      const accessToken = await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
-      this.storeToken(accessToken);
+      await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
     }
   }
 }
