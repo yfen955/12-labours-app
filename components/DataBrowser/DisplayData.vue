@@ -116,10 +116,27 @@ export default {
     }
   },
 
+  created: function () {
+    let val = this.$route.query.order;
+    if (val)
+      this.determineOrder(val);
+    else
+      this.$route.query.order = this.sortBy;
+  },
+
   watch: {
     'sortBy': {
       handler() {
+        this.updateUrl(this.sortBy);
         this.$emit('sort_changed', this.sortBy);
+      }
+    },
+    '$route.query.order': {
+      handler(val) {
+        if (val)
+          this.determineOrder(val);
+        else
+          this.sortBy = 'Published(asc)';
       }
     }
   },
@@ -151,6 +168,33 @@ export default {
     replaceByDefaultImage(error) {
       error.target.src = this.imgPlaceholder;
     },
+
+    determineOrder(val) {
+      if (JSON.stringify(this.sort_list).includes(val))
+        this.sortBy = val;
+      else
+        this.updateUrl();
+    },
+
+    updateUrl(val) {
+      let query = {
+          type: this.$route.query.type,
+          page: 1,
+          limit: this.$route.query.limit,
+        };
+        if (this.$route.query.facets) {
+          query.facets = this.$route.query.facets;
+          query.relation = this.$route.query.relation;
+        }
+        if (this.$route.query.search)
+          query.search = this.$route.query.search;
+        if (val !== 'Published(asc)')
+          query.order = val;
+        this.$router.push({
+          path: `${this.$route.path}`,
+          query: query
+        })
+    }
   },
 };
 </script>
