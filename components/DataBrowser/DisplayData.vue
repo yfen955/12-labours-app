@@ -1,8 +1,25 @@
 <template>
   <div>
-    <div v-if="(dataDetails.length > 0)">
+    <div v-if="dataDetails.length > 0">
       <!-- data summary -->
-      <PaginationHeading :isLoadingSearch="isLoadingSearch" :totalCount="totalCount" class="top" />
+      <div class="title-config">
+        <div>
+          Sort
+          <el-select v-model="sortBy">
+            <el-option
+              v-for="item in sort_list"
+              :key="item.value"
+              :value="item.value">
+              {{ item.value }} <i class="el-icon-check" v-if="item.value === sortBy"></i>
+            </el-option>
+          </el-select>
+        </div>
+        <PaginationHeading
+          :isLoadingSearch="isLoadingSearch"
+          :totalCount="totalCount"
+          class="top"
+        />
+      </div>
       <!-- data details -->
       <div class="data-container">
         <div v-for="(item, index) in dataDetails" :key="index">
@@ -10,22 +27,30 @@
           <span v-if="$route.query.type === 'dataset'">
             <section class="element">
               <div class="dataset-img">
-                <img v-if="getDatasetImg(item)" :src="getDatasetImg(item)" @error="replaceByDefaultImage" alt="image" />
+                <img
+                  v-if="getDatasetImg(item)"
+                  :src="getDatasetImg(item)"
+                  @error="replaceByDefaultImage"
+                  alt="image"
+                />
                 <img v-else :src="imgPlaceholder" alt="image" />
               </div>
 
               <section class="content">
                 <div>
-                  <nuxt-link class="title-link" :to="{
-                    name: 'data-browser-dataset-id',
-                    params: {
-                      id: item.datasetId,
-                    },
-                    query: {
-                      datasetTab: 'abstract',
-                      access: item.belong_to
-                    }
-                  }">
+                  <nuxt-link
+                    class="title-link"
+                    :to="{
+                      name: 'data-browser-dataset-id',
+                      params: {
+                        id: item.datasetId,
+                      },
+                      query: {
+                        datasetTab: 'abstract',
+                        access: item.belong_to,
+                      },
+                    }"
+                  >
                     {{ item.name }}
                   </nuxt-link>
                 </div>
@@ -39,7 +64,8 @@
                 </div>
                 <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
                   <strong>Samples</strong>
-                  {{ item.numberSamples }} samples out of {{ item.numberSubjects }} objects
+                  {{ item.numberSamples }} samples out of
+                  {{ item.numberSubjects }} objects
                 </div>
               </section>
             </section>
@@ -54,10 +80,13 @@
 
           <!-- display 12 labours information -->
           <span v-if="$route.query.type === 'laboursInfo'"></span>
-
         </div>
       </div>
-      <PaginationHeading :isLoadingSearch="isLoadingSearch" :totalCount="totalCount" class="bottom" />
+      <PaginationHeading
+        :isLoadingSearch="isLoadingSearch"
+        :totalCount="totalCount"
+        class="bottom"
+      />
     </div>
     <div v-else class="no-result">
       <p>No result</p>
@@ -66,7 +95,7 @@
 </template>
 
 <script>
-import PaginationHeading from "./PaginationHeading.vue"
+import PaginationHeading from "./PaginationHeading.vue";
 
 export default {
   name: "DisplayData",
@@ -76,6 +105,22 @@ export default {
     return {
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
+      sortBy: 'Published(asc)',
+      sort_list: [
+        {value: 'Published(asc)'},
+        {value: 'Published(desc)'},
+        {value: 'Title(asc)'},
+        {value: 'Title(desc)'},
+        {value: 'Relevance'},
+      ],
+    }
+  },
+
+  watch: {
+    'sortBy': {
+      handler() {
+        this.$emit('sort_changed', this.sortBy);
+      }
     }
   },
 
@@ -92,7 +137,7 @@ export default {
     },
 
     getDatasetImg(item) {
-      let url = '';
+      let url = "";
       if (item.scaffoldViews.length > 0) {
         url = this.$config.query_api_url + item.scaffoldViews[0].image_url;
       } else if (item.thumbnails.length > 0) {
@@ -107,12 +152,12 @@ export default {
       error.target.src = this.imgPlaceholder;
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
 .data-container {
-  border: 1px solid #E4E7ED;
+  border: 1px solid #e4e7ed;
   padding: 1rem;
 
   @media only screen and (max-width: $viewport-sm) {
@@ -148,10 +193,10 @@ export default {
 }
 
 hr {
-  border: 0.25px solid #E4E7ED;
+  border: 0.25px solid #e4e7ed;
 
   @media only screen and (max-width: 37rem) {
-    width: 27rem
+    width: 27rem;
   }
 }
 
@@ -185,5 +230,19 @@ hr {
 
 .title-link {
   font-size: 1.5rem;
+}
+.el-select {
+  width: 11rem;
+  margin-left: .5rem;
+  padding: 1rem 0;
+}
+.title-config {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.el-icon-check {
+  color: $app-primary-color;
 }
 </style>

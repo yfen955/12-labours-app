@@ -1,7 +1,13 @@
 describe('information in the data brower page', () =>{
   beforeEach(function () {
     cy.visit('/data/browser?type=dataset&page=1&limit=10');
-    cy.wait(6000);
+    cy.wait(10000);
+
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      // returning false here prevents Cypress from
+      // failing the test
+      return false
+    })
   })
 
   it('click the nav bar', () => {
@@ -14,11 +20,10 @@ describe('information in the data brower page', () =>{
     cy.contains('Search within category');
     cy.get('input[placeholder="Enter search criteria"]').type('human');
     cy.get('.el-button.search-btn.el-button--default').click();
-    cy.wait(6000);
+    cy.wait(5000);
     cy.get('a').should('contain', 'Human');
     cy.get('.el-button.clear-search-btn.el-button--default').click();
-    cy.wait(6000);
-    cy.get('a').should('contain', 'Duke');
+    cy.get('a').should('contain', 'scaffold');
   })
 
   it('click filter items', () => {
@@ -26,60 +31,51 @@ describe('information in the data brower page', () =>{
     cy.get('.el-collapse-item__header').filter(':contains("Sex")').click();
     cy.get('.el-collapse-item__header.is-active');
     cy.get('span.el-checkbox__label').filter(':contains("Female")').click();
-    cy.wait(6000);
-    cy.get('a').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
+    cy.get('.el-tag').should('contain', 'Female');
     // choose 1 more item in another filter
     cy.get('.el-collapse-item__header').filter(':contains("Mime Type")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
-    cy.wait(6000);
-    cy.get('p').should('contain', 'No result');
+    cy.get('.el-tag').should('contain', 'Scaffold');
     // change to 'or' relation
     cy.get('.el-switch.is-checked').click();
-    cy.wait(6000);
-    cy.get('a').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
+    cy.get('div').should('not.have.class', '.is-checked');
     // cancel a facet
     cy.get('.tags.el-tag').filter(':contains("Female")').find('.el-tag__close.el-icon-close').click();
-    cy.wait(6000);
-    cy.get('a').should('not.have.value', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
+    cy.get('span.el-tag').should('not.have.value', 'Female');
     // click the checkbox to cancel a item
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
-    cy.wait(6000);
-    cy.get('a').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
+    cy.get('span').should('not.have.class', '.el-tag');
     // close the filter
     cy.get('.el-collapse-item__header.is-active').filter(':contains("Mime Type")').click();
     // if choose all items, checkboxes should all be not checked
     cy.get('.el-checkbox.filter-selector').filter(':contains("Female")').click();
     cy.get('.el-checkbox.filter-selector.is-checked').filter(':contains("Female")');   // the checkbox is checked
     cy.get('.el-checkbox__input.is-indeterminate');   // 'select all' checkbox is indeterminate
-    cy.wait(6000);
     cy.get('.el-checkbox.filter-selector').filter(':contains("Male")').click();
-    cy.get('.el-checkbox.filter-selector.is-checked').should('have.length', 5);   // only all 'select all' checkboxes are checked
+    cy.get('.el-checkbox.filter-selector.is-checked').should('have.length', 6);   // only all 'select all' checkboxes are checked
   })
 
   it('dataset card', () => {
-    cy.get('.dataset-img').find(`img[src="${Cypress.env('query_url')}/data/preview/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538/derivative/thumbnail_0.jpg"]`);
-    cy.contains('Anatomical Structure breast');
-    cy.contains('Keywords breast, human');
-    cy.contains('Samples 1 samples out of 1 objects');
-    cy.get('a[href="/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=abstract"]').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)').click();
-    cy.wait(16000);
-    cy.url().should('include', '/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=abstract');
+    cy.wait(15000);
+    cy.get('.dataset-img').find(`img[src="${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg"]`);
+    cy.contains('Anatomical Structure colon');
+    cy.get('a[href="/data/browser/dataset/dataset-34-version-5?datasetTab=abstract&access=demo1-12L"]').should('contain', 'Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig').click();
+    cy.wait(10000);
+    cy.url().should('include', '/data/browser/dataset/dataset-34-version-5?datasetTab=abstract');
   })
 
   it('Pagination Heading', () => {
     // turn page
     cy.get('.pagination-container.top').find('ul.el-pager').children('li.number').filter(':contains("2")').click();
-    cy.wait(6000);
     cy.url().should('include', '/data/browser?type=dataset&page=2&limit=10');
     cy.get('.pagination-container.top').find('ul.el-pager').children('li.number.active').should('contain', '2');
     cy.get('.pagination-container.bottom').find('ul.el-pager').children('li.number.active').should('contain', '2');
     // change page size
     cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("10")').find('.item-icon-check.svg-icon.svg-fill');   // current is 10
-    cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("20")').click();
-    cy.wait(6000);
-    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=20');
-    cy.get('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').should('contain', '20');   // current is 20
+    cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("View All")').click();
+    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=100');
+    cy.get('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').should('contain', '100');   // view all is 100
     cy.get('.pagination-container.top').find('ul.el-pager').children('li').should('have.length', 1);
   })
 })

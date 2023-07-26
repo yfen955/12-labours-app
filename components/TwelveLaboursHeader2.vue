@@ -29,9 +29,18 @@
             </div>
           </div>
           <ul>
-            <li v-for="link in headerLinks" :key="link.href" style="z-index: 100;" @click="openMobileNav">
-              <component :is="linkComponent" :to="link.href" :class="{ active: activeLink(link.href) }"
-                exact-active-class="active">
+            <li
+              v-for="link in links"
+              :key="link.href"
+              style="z-index: 100;"
+              @click="openMobileNav"
+            >
+              <component
+                :is="linkComponent"
+                :to="link.href"
+                :class="{ active: activeLink(link.href) }"
+                exact-active-class="active"
+              >
                 {{ link.displayTitle.toUpperCase() }}
               </component>
             </li>
@@ -40,9 +49,14 @@
       </div>
       <div>
         <client-only>
-          <div v-if="auth.loggedIn && auth.strategy.token.status().valid()" class="login vertical-flex status1">
-            <span id="welcome">Welcome {{ auth.user.first_name }}
-              {{ auth.user.last_name }}</span>
+          <div
+            v-if="auth.loggedIn && auth.strategy.token.status().valid()"
+            class="login vertical-flex status1"
+          >
+            <span id="welcome"
+              >Welcome {{ auth.user.first_name }}
+              {{ auth.user.last_name }}</span
+            >
             <component :is="linkComponent" to="/profile">
               <el-button>Account</el-button>
             </component>
@@ -73,7 +87,7 @@ export default {
   props: {
     auth: {
       type: Object,
-      default: function () {
+      default: function() {
         return {
           loggedIn: false,
           user: null,
@@ -83,7 +97,7 @@ export default {
 
     headerLinks: {
       type: Array,
-      default: function () {
+      default: function() {
         return [
           {
             title: "data-and-models",
@@ -163,7 +177,7 @@ export default {
      * Compute if search should be visible
      * @returns {Boolean}
      */
-    shouldShowSearch: function () {
+    shouldShowSearch: function() {
       if (this.$route) return this.$route.name !== "data";
       else return true;
     },
@@ -175,7 +189,7 @@ export default {
      * mobile nav on menu click
      **/
     currentPath: {
-      handler: function (val) {
+      handler: function(val) {
         if (val) {
           this.menuOpen = false;
         }
@@ -188,7 +202,7 @@ export default {
      * to enable scrolling
      */
     menuOpen: {
-      handler: function (val) {
+      handler: function(val) {
         if (!val) {
           this.$emit("updateDisabledScrolling", false);
         }
@@ -199,18 +213,21 @@ export default {
 
   methods: {
     /* Signs out of current strategy */
-    signOut: function () {
+    signOut: function() {
       this.auth.logout().then(() => {
-        this.$toast.success('Logged out of 12 Labours', { duration: 3000, position: 'bottom-right' })
-        this.$emit("isSignOut", true)
-      })
+        this.$toast.success("Logged out of 12 Labours", {
+          duration: 3000,
+          position: "bottom-right",
+        });
+        this.$emit("isSignOut", true);
+      });
     },
 
     /**
      * Sets a link to active based on current page
      * @param {String} query
      */
-    activeLink: function (query) {
+    activeLink: function(query) {
       if (this.currentPath === query) {
         return true;
       } else {
@@ -221,7 +238,7 @@ export default {
     /**
      * Opens the mobile version of the navigation
      */
-    openMobileNav: function () {
+    openMobileNav: function() {
       if (!this.menuOpen) {
         this.searchOpen = false; // just in case the search menu is open aconstso
         this.$emit("updateDisabledScrolling", false);
@@ -235,7 +252,7 @@ export default {
     /**
      * Opens the mobile version of the search bar
      */
-    openMobileSearch: function () {
+    openMobileSearch: function() {
       this.searchOpen = true;
       this.menuOpen = false;
       this.$emit("updateDisabledScrolling", false);
@@ -244,7 +261,7 @@ export default {
     /**
      * Closes the mobile version of the search bar
      */
-    closeMobileSearch: function () {
+    closeMobileSearch: function() {
       this.searchOpen = false;
       this.$emit("updateDisabledScrolling", false);
     },
@@ -253,7 +270,7 @@ export default {
      * Executes a search query based on selected
      * option and query
      */
-    executeSearch: function () {
+    executeSearch: function() {
       const option = this.searchSelectOptions.find(
         (o) => o.value === this.searchSelect
       );
@@ -262,8 +279,8 @@ export default {
         option.value === "data"
           ? "dataset"
           : option.value === "resources"
-            ? "sparcPartners"
-            : undefined;
+          ? "sparcPartners"
+          : undefined;
 
       this.$router.push({
         name: option.value,

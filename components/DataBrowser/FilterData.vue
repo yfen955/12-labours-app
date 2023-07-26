@@ -9,8 +9,14 @@
         <span v-if="selectedItems.length === 0" class="no-facets">
           No filters applied
         </span>
-        <el-tag v-for="facet in selectedItems" :key="facet" class="tags" disable-transitions closable
-          @close="deselectFacet(facet)">
+        <el-tag
+          v-for="facet in selectedItems"
+          :key="facet"
+          class="tags"
+          disable-transitions
+          closable
+          @close="deselectFacet(facet)"
+        >
           <span>{{ facet }}</span>
         </el-tag>
       </el-card>
@@ -20,22 +26,43 @@
         <h5>Filters relation</h5>
         <div class="filter-switch">
           <p>OR</p>
-          <el-switch v-model="relation" active-color="#00467F" inactive-color="#D11241" @change="handleSwitch">
+          <el-switch
+            v-model="relation"
+            active-color="#00467F"
+            inactive-color="#D11241"
+            @change="handleSwitch"
+          >
           </el-switch>
           <p>AND</p>
         </div>
       </div>
 
       <el-collapse>
-        <el-collapse-item v-for="(filter, index) in filters_list" :key="index" :title="filter.title">
-          <el-checkbox :indeterminate="filter.isIndeterminate" class="filter-selector" v-model="filter.checkAll"
-            @change="handleCheckAllChange(filter, index)">
+        <el-collapse-item
+          v-for="(filter, index) in filters_list"
+          :key="index"
+          :title="filter.title"
+        >
+          <el-checkbox
+            :indeterminate="filter.isIndeterminate"
+            class="filter-selector"
+            v-model="filter.checkAll"
+            @change="handleCheckAllChange(filter, index)"
+          >
             Select all
           </el-checkbox>
           <hr class="checkbox-line" />
-          <el-checkbox-group v-model="filter.selectedItem" @change="updateCheckAll(filter, index)">
-            <el-checkbox class="filter-selector" v-for="(type, index) in filter.filter_items" v-show="type !== 'NA'"
-              :key="index" :label="type">
+          <el-checkbox-group
+            v-model="filter.selectedItem"
+            @change="updateCheckAll(filter, index)"
+          >
+            <el-checkbox
+              class="filter-selector"
+              v-for="(type, index) in filter.filter_items"
+              v-show="type !== 'NA'"
+              :key="index"
+              :label="type"
+            >
               {{ type }}
             </el-checkbox>
           </el-checkbox-group>
@@ -62,44 +89,45 @@ export default {
     };
   },
 
-  created: function () {
+  created: function() {
     this.dataChange(this.$route.query.type);
   },
 
   watch: {
-    '$route.query.type': {
+    "$route.query.type": {
       handler() {
         this.dataChange(this.$route.query.type);
-      }
+      },
     },
-    'allFilterDict': {
+    allFilterDict: {
       handler() {
         this.dataChange(this.$route.query.type);
-      }
+      },
     },
-    '$route.query.facets': {
+    "$route.query.facets": {
       handler(new_val, old_val) {
         if (new_val && old_val && new_val.length < old_val.length) {
-          old_val.split(',').forEach((item) => {
-            if (new_val.indexOf(item) == -1)
-              this.deselectFacet(item);
-          })
-        } else if (old_val && !new_val)
+          old_val.split(",").forEach((item) => {
+            if (new_val.indexOf(item) == -1) this.deselectFacet(item);
+          });
+        } else if (old_val && !new_val) {
           this.deselectFacet(old_val);
-        else if (!old_val && new_val)
+        } else if (!old_val && new_val) {
           this.dataChange(this.$route.query.type);
-        else if (new_val && old_val && new_val.length > old_val.length)
+        } else if (new_val && old_val && new_val.length > old_val.length) {
           this.dataChange(this.$route.query.type);
-      }
+        }
+      },
     },
-    '$route.query.relation': {
+    "$route.query.relation": {
       handler(val) {
-        if (val)
-          this.relation = val === 'and' ? true : false;
-        else
+        if (val) {
+          this.relation = val === "and" ? true : false;
+        } else {
           this.relation = true;
-        this.$emit('relation', this.relation);
-      }
+        }
+        this.$emit("relation", this.relation);
+      },
     },
   },
 
@@ -107,11 +135,12 @@ export default {
     async dataChange(val) {
       this.filters_list = [];
       this.element_list = [];
-      if (this.$route.query.relation)
-        this.relation = this.$route.query.relation === 'and' ? true : false;
-      else
+      if (this.$route.query.relation) {
+        this.relation = this.$route.query.relation === "and" ? true : false;
+      } else {
         this.relation = true;
-      if (val === 'dataset') {
+      }
+      if (val === "dataset") {
         this.convertFacets();
       }
     },
@@ -132,7 +161,7 @@ export default {
       }
 
       if (this.$route.query.facets) {
-        this.selectedItems = this.$route.query.facets.split(',');
+        this.selectedItems = this.$route.query.facets.split(",");
         let finished = false;
         for (let i = 0; i < this.selectedItems.length; i++) {
           let facet = this.selectedItems[i];
@@ -140,8 +169,7 @@ export default {
             let index = val.filter_items.indexOf(facet);
             if (index > -1) {
               val.selectedItem.push(val.filter_items[index]);
-              if (i === this.selectedItems.length - 1)
-                finished = true;
+              if (i === this.selectedItems.length - 1) finished = true;
               if (val.selectedItem.length === val.filter_items.length) {
                 val.selectedItem = [];
                 val.checkAll = true;
@@ -153,7 +181,7 @@ export default {
                 this.generateFiltersDict(val, finished);
               }
             }
-          })
+          });
         }
       } else {
         this.selectedItems = [];
@@ -164,22 +192,27 @@ export default {
     async handleChange(filter, finished) {
       this.selectedItems = [];
       for (let i = 0; i < this.filters_list.length; i++) {
-        this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+        this.selectedItems = this.selectedItems.concat(
+          this.filters_list[i].selectedItem
+        );
       }
 
-      if (this.selectedItems.length === 0)
+      if (this.selectedItems.length === 0) {
         this.element_list = [];
+      }
 
-      if (!filter)
+      if (!filter) {
         await this.generateFiltersDict();
-      else
+      } else {
         await this.generateFiltersDict(filter, finished);
+      }
 
       this.updateURL();
     },
 
     handleCheckAllChange(filter, i) {
-      let refresh = this.filters_list[i].selectedItem.length === 0 ? false : true;
+      let refresh =
+        this.filters_list[i].selectedItem.length === 0 ? false : true;
       if (filter.checkAll) {
         this.filters_list[i].selectedItem = [];
       } else {
@@ -187,8 +220,9 @@ export default {
       }
       this.filters_list[i].isIndeterminate = false;
       // don't fetch data when already has selected all
-      if (refresh)
+      if (refresh) {
         this.handleChange(filter);
+      }
     },
 
     // update the checkAll state when the selected facets are changed
@@ -232,7 +266,9 @@ export default {
       if (filter_index) {
         // update the selectedItems list
         for (let i = 0; i < this.filters_list.length; i++) {
-          this.selectedItems = this.selectedItems.concat(this.filters_list[i].selectedItem);
+          this.selectedItems = this.selectedItems.concat(
+            this.filters_list[i].selectedItem
+          );
         }
 
         // after update the selectedItem, hangle the change to fetch data
@@ -268,17 +304,19 @@ export default {
           break;
         }
       }
-      if (empty)
+      if (empty) {
         this.filters_dict = {};
-      else {
-        if (JSON.stringify(filter) === '{}')
+      } else {
+        if (JSON.stringify(filter) === "{}") {
           delete this.filters_dict[filter_list.node_field];
-        else
+        } else {
           this.filters_dict = { ...this.filters_dict, ...filter };
+        }
       }
 
-      if (finished != false)
-        this.$emit('filter-dict', this.filters_dict, this.relation);
+      if (finished != false) {
+        this.$emit("filter-dict", this.filters_dict, this.relation);
+      }
     },
 
     // update the page, selected facets & relation in the url
@@ -290,22 +328,23 @@ export default {
       };
       if (this.selectedItems.length > 0) {
         query.facets = this.selectedItems.toString();
-        query.relation = this.relation ? 'and' : 'or';
+        query.relation = this.relation ? "and" : "or";
       }
-      if (this.$route.query.search)
+      if (this.$route.query.search) {
         query.search = this.$route.query.search;
+      }
       this.$router.push({
         path: `${this.$route.path}`,
-        query: query
-      })
+        query: query,
+      });
     },
 
     handleSwitch(val) {
       this.updateURL();
-      this.$emit('relation', val);
-    }
+      this.$emit("relation", val);
+    },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -314,17 +353,17 @@ export default {
     width: 20rem;
 
     @media only screen and (min-width: $viewport-lg) {
-      width: 25rem
+      width: 25rem;
     }
   }
 
   min-width: 15rem;
-  border: 1px solid #E4E7ED;
+  border: 1px solid #e4e7ed;
   margin-top: 1rem;
 }
 
 .relation-container {
-  border-top: 0.5px solid #E4E7ED;
+  border-top: 0.5px solid #e4e7ed;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -338,8 +377,8 @@ export default {
 }
 
 ::v-deep .el-switch {
-  margin-left: .5rem;
-  margin-right: .5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 h4,
@@ -347,10 +386,8 @@ h5 {
   margin: 1rem;
 }
 
-;
-
 hr {
-  border: 0.5px solid #E4E7ED;
+  border: 0.5px solid #e4e7ed;
 }
 
 .checkbox-line {

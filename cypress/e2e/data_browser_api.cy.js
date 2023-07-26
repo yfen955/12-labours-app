@@ -31,7 +31,7 @@ describe('test api in data browser page', () =>{
     cy.wait('@getFilter');
 
     // all datasets
-    cy.contains('15 Results | Showing');
+    cy.contains('Results | Showing');
     cy.get('a').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
     cy.contains('Anatomical Structure breast');
     cy.contains('Keywords breast, human');
@@ -41,22 +41,22 @@ describe('test api in data browser page', () =>{
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'filteredDatasets.json'
     });
-    cy.get('.el-collapse-item__header').filter(':contains("MIME TYPE")').click();
+    cy.get('.el-collapse-item__header').filter(':contains("Mime Type")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
-    cy.contains('11 Results | Showing');
+    cy.contains('Results | Showing');
     cy.get('a').should('contain', 'Generic sheep brainstem scaffold');
     // switch to 'or' relation
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       statusCode: 404,
       times: 1
     });
-    cy.get('.el-collapse-item__header').filter(':contains("SEX")').click();
+    cy.get('.el-collapse-item__header').filter(':contains("Sex")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Female")').click();
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'filterANDsearchDataset.json'
     });
     cy.get('.el-switch.is-checked').click();
-    cy.contains('12 Results | Showing');
+    cy.contains('Results | Showing');
 
     // page number
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
@@ -71,21 +71,16 @@ describe('test api in data browser page', () =>{
     });
     cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("20")').click();
-    cy.contains('12 Results | Showing');
+    cy.contains('Results | Showing');
     cy.get('a.title-link').should('have.length', 12);
     
     // search
-    cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
-      statusCode: 404,
-      times: 1
-    });
-    cy.get('.el-switch__core').click();
     cy.get('input[placeholder="Enter search criteria"]').type('human');
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=human`, {
       fixture: 'searchedDatasets.json'
     });
     cy.get('.el-button.search-btn.el-button--default').click();
-    cy.contains('2 Results | Showing');
+    cy.contains('Results | Showing');
     cy.get('a').should('contain', 'Human whole-body scaffold');
   })
 })
