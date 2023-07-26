@@ -116,10 +116,42 @@ export default {
     }
   },
 
+  created: function () {
+    if (this.$route.query.order)
+      this.sortBy = this.$route.query.order;
+    else
+      this.$route.query.order = this.sortBy;
+  },
+
   watch: {
     'sortBy': {
       handler() {
+        let query = {
+          type: this.$route.query.type,
+          page: 1,
+          limit: this.$route.query.limit,
+        };
+        if (this.$route.query.facets) {
+          query.facets = this.$route.query.facets;
+          query.relation = this.$route.query.relation;
+        }
+        if (this.$route.query.search)
+          query.search = this.$route.query.search;
+        if (this.sortBy !== 'Published(asc)')
+          query.order = this.sortBy;
+        this.$router.push({
+          path: `${this.$route.path}`,
+          query: query
+        })
         this.$emit('sort_changed', this.sortBy);
+      }
+    },
+    '$route.query.order': {
+      handler(val) {
+        if (val)
+          this.sortBy = this.$route.query.order;
+        else
+          this.sortBy = 'Published(asc)';
       }
     }
   },
