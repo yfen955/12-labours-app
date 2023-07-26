@@ -120,7 +120,7 @@ export default {
   background: none;
   border: none;
   height: 100%;
-  padding: 0.5rem;
+  padding: 1.65rem 0.5rem;
   position: absolute;
   right: 0;
   top: 0;

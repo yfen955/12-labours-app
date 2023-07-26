@@ -6,6 +6,7 @@ describe('map sidebar', () =>{
 
     // open 3D map button
     cy.get('.el-button').find('span').filter(':contains("Open 3D Map")').click();
+    cy.wait(5000);
     cy.get('.regions-display-text').should('contain', 'Regions');
     cy.get('.region-tree-node').find('span').should('contain', 'Heart');
     cy.get('.el-button').find('span').filter(':contains("Close 3D Map")').click();

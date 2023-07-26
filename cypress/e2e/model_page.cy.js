@@ -1,5 +1,5 @@
 describe('map viewer page', () =>{
-  it('test ocpy link button', () => {
+  it('test copy link button', () => {
     cy.visit('/data/maps/scaffold/8b407bfe-e9d6-4a45-a81c-386184beecdd?access=demo1-12L');
     cy.contains('Scaffold Viewer');
     cy.get('.copy-btn').should('contain', 'Copy the link').click();
@@ -8,7 +8,7 @@ describe('map viewer page', () =>{
 
   it('test scaffold is loaded', () => {
     cy.visit('/data/maps/scaffold/8b407bfe-e9d6-4a45-a81c-386184beecdd?access=demo1-12L');
-    cy.wait(5000);
+    cy.wait(10000);
     // box in the bottom left corner
     cy.get('.traditional-container').should('contain', 'Regions');
     // content in the box
