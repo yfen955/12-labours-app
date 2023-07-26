@@ -178,6 +178,7 @@ export default {
               } else {
                 val.checkAll = false;
                 val.isIndeterminate = true;
+                console.log("1");
                 this.generateFiltersDict(val, finished);
               }
             }
@@ -185,6 +186,7 @@ export default {
         }
       } else {
         this.selectedItems = [];
+        console.log("2");
         this.generateFiltersDict();
       }
     },
@@ -202,8 +204,10 @@ export default {
       }
 
       if (!filter) {
+        console.log("3");
         await this.generateFiltersDict();
       } else {
+        console.log("4");
         await this.generateFiltersDict(filter, finished);
       }
 

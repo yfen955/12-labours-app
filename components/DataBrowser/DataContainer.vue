@@ -4,7 +4,11 @@
       <SearchData v-on:search_content="updateSearchContent" />
       <div class="data-container">
         <div>
-          <FilterData :allFilterDict="allFilterDict" v-on:filter-dict="updateFilterDict" v-on:relation="updateRelation" />
+          <FilterData
+            :allFilterDict="allFilterDict"
+            v-on:filter-dict="updateFilterDict"
+            v-on:relation="updateRelation"
+          />
         </div>
         <div>
           <DisplayData
@@ -50,14 +54,14 @@
       <div class="data-container">
         <FilterData />
       </div> -->
-      <br>
+      <br />
       <Dashboard />
     </span>
   </div>
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
+import backendQuery from "@/services/backendQuery";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
@@ -65,7 +69,7 @@ import Dashboard from "./Dashboard.vue";
 
 export default {
   components: { SearchData, FilterData, DisplayData, Dashboard },
-  props: [ "category" ],
+  props: ["category"],
   data: () => {
     return {
       isLoadingSearch: true,
@@ -81,22 +85,22 @@ export default {
     }
   },
 
-  created: function () {
+  created: function() {
     // when open find data page, call the function to fetch the data
     this.dataChange(this.$route.query.type);
   },
 
   watch: {
     // if the type variable in the url changes, change the current data to the data in that category
-    '$route.query.type': function (val) {
+    "$route.query.type": function(val) {
       this.dataChange(val);
     },
 
-    '$route.query.page': function () {
+    "$route.query.page": function() {
       this.fetchData();
     },
 
-    '$route.query.limit': function () {
+    "$route.query.limit": function() {
       this.fetchData();
     },
   },
@@ -111,25 +115,66 @@ export default {
     },
 
     async fetchFilter() {
-      this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
+      this.allFilterDict = await backendQuery.fetchFilterData(
+        this.$config.query_api_url,
+        false
+      );
     },
 
     dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
-      if (val === 'dataset') {
+      if (val === "dataset") {
         this.fetchFilter();
       }
     },
 
-    updateFilterDict(filter_dict, relation) {
-      this.currentFilterDict = filter_dict;
-      this.updateRelation(relation);
+    compare2Filter(oldFilter, newFilter) {
+      let isDifferent = false;
+      if (Object.keys(newFilter).length !== Object.keys(oldFilter).length) {
+        isDifferent = true;
+      } else {
+        const greaterEqualFilter =
+        Object.keys(newFilter).length <= Object.keys(oldFilter).length
+        ? oldFilter
+        : newFilter;
+        const lessFilter =
+        Object.keys(newFilter).length > Object.keys(oldFilter).length
+        ? oldFilter
+        : newFilter;
+        for (const key in greaterEqualFilter) {
+          if (key in lessFilter) {
+            if (lessFilter[key].length !== greaterEqualFilter[key].length) {
+              isDifferent = true;
+            }
+          } else {
+            isDifferent = true;
+          }
+        }
+      }
+      return isDifferent;
     },
 
+    updateFilterDict(filter_dict, relation) {
+      const isEmptyFilter =
+        Object.keys(filter_dict).length === 0 &&
+        filter_dict.constructor === Object;
+      const isFilterChanged = this.compare2Filter(
+        this.currentFilterDict,
+        filter_dict
+      );
+      this.updateRelation(relation, isFilterChanged);
+      if (isEmptyFilter || isFilterChanged) {
+        console.log("filter fetch");
+        this.currentFilterDict = filter_dict;
+        this.fetchData();
+      }
+    },
+    
     updateSearchContent(val) {
       const isSearchChanged = this.searchContent === val ? false : true;
       if (isSearchChanged) {
+        console.log("search fetch");
         this.searchContent = val;
         this.fetchData();
       }
@@ -139,12 +184,16 @@ export default {
       this.isLoadingSearch = val;
     },
 
-    updateRelation(val) {
-      if (val)
-        this.relation = 'and';
-      else
-        this.relation = 'or';
-      this.fetchData();
+    updateRelation(val, filterChanged = false) {
+      const newRelation = val ? "and" : "or";
+      const isRelationChanged = newRelation === this.relation ? false : true;
+      if (isRelationChanged) {
+        if (!filterChanged) {
+          console.log("relation fetch");
+          this.relation = newRelation;
+          this.fetchData();
+        }
+      }
     },
 
     updateSort(val) {
@@ -152,7 +201,7 @@ export default {
       this.fetchData();
     }
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
