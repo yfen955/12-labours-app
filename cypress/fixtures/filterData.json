@@ -1,40 +1,42 @@
 {
-    "size": 5,
+    "size": 6,
     "titles": [
-        "AGE CATEGORY",
-        "ANATOMICAL STRUCTURE",
-        "SEX",
-        "MIME TYPE",
-        "SPECIES"
+        "Age Category",
+        "Anatomical Structure",
+        "Sex",
+        "Mime Type",
+        "Species",
+        "Access Scope"
     ],
-    "nodes": [
-        "case_filter",
-        "dataset_description_filter",
-        "case_filter",
-        "manifest_filter",
-        "case_filter"
-    ],
-    "fields": [
-        "age_category",
-        "keywords",
-        "sex",
-        "additional_types",
-        "species"
+    "nodes>fields": [
+        "case_filter>age_category",
+        "dataset_description_filter>study_organ_system",
+        "case_filter>sex",
+        "manifest_filter>additional_types",
+        "case_filter>species",
+        "experiment_filter>project_id"
     ],
     "elements": [
         {
             "Adolescent": "Adolescent",
-            "Adult": "prime adult stage",
-            "Juvenile": "Juvenile"
+            "Juvenile": "Juvenile",
+            "Prime Adult Stage": "prime adult stage",
+            "Young Adult": "young adult"
         },
         {
+            "Body Proper": "body proper",
             "Brainstem": "brainstem",
             "Breast": "breast",
+            "Cardiac Nerve Plexus": "cardiac nerve plexus",
             "Colon": "colon",
+            "Diaphragm": "diaphragm",
             "Heart": "heart",
-            "Lungs": "lungs",
+            "Lung": "lung",
+            "Skin Epidermis": "skin epidermis",
             "Spinal Cord": "spinal cord",
-            "Stomach": "stomach"
+            "Stomach": "stomach",
+            "Urinary Bladder": "urinary bladder",
+            "Vagus Nerve": "vagus nerve"
         },
         {
             "Female": "Female",
@@ -57,19 +59,29 @@
             "Mouse": "Mus musculus",
             "Pig": "Sus scrofa",
             "Rat": "Rattus norvegicus"
+        },
+        {
+            "Demo1-12L": "demo1-12L"
         }
     ],
     "ids": [
         "Adolescent",
-        "Adult",
         "Juvenile",
+        "Prime Adult Stage",
+        "Young Adult",
+        "Body Proper",
         "Brainstem",
         "Breast",
+        "Cardiac Nerve Plexus",
         "Colon",
+        "Diaphragm",
         "Heart",
-        "Lungs",
+        "Lung",
+        "Skin Epidermis",
         "Spinal Cord",
         "Stomach",
+        "Urinary Bladder",
+        "Vagus Nerve",
         "Female",
         "Male",
         "Plot",
@@ -78,6 +90,7 @@
         "Human",
         "Mouse",
         "Pig",
-        "Rat"
+        "Rat",
+        "Demo1-12L"
     ]
 }

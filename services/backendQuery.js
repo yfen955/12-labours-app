@@ -3,7 +3,7 @@ import axios from "axios";
 function getLocalStorage(key) {
   if (process.client) {
     const value = localStorage.getItem(key)
-    if (!value) {
+    if (!value || value === "undefined") {
       return undefined
     }
     return value
@@ -89,25 +89,23 @@ function getMachineId() {
 }
 
 async function fetchAccessToken(path, user) {
-  let machineId = getMachineId()
-  let accessToken = "";
-  let payload = {
+  const machineId = getMachineId()
+  const payload = {
     identity: `${user}>${machineId}`,
   };
   await axios
     .post(`${path}/access/token`, payload)
     .then((response) => {
-      accessToken = response.data.access_token;
+      setLocalStorage("access_token", response.data.access_token)
     })
     .catch((error) => {
       throw new Error(`${error}`);
     });
-  return accessToken;
 }
 
 async function revokeAccess(path) {
   const accessToken = getLocalStorage("access_token")
-  if (!accessToken) {
+  if (accessToken) {
     await axios
       .delete(`${path}/access/revoke`, {
         headers: {
@@ -129,11 +127,11 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
     items: [],
     total: 0
   };
-  let payload = {
+  const payload = {
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
-    relation: relation
+    relation: relation,
     order: sortBy
   };
   await axios
