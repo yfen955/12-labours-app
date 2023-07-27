@@ -334,9 +334,10 @@ export default {
         query.facets = this.selectedItems.toString();
         query.relation = this.relation ? "and" : "or";
       }
-      if (this.$route.query.search) {
+      if (this.$route.query.search)
         query.search = this.$route.query.search;
-      }
+      if (this.$route.query.order)
+        query.order = this.$route.query.order;
       this.$router.push({
         path: `${this.$route.path}`,
         query: query,

@@ -114,18 +114,11 @@ export default {
       this.isLoadingSearch = false;
     },
 
-    async fetchFilter() {
-      this.allFilterDict = await backendQuery.fetchFilterData(
-        this.$config.query_api_url,
-        false
-      );
-    },
-
-    dataChange(val) {
+    async dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
-      if (val === "dataset") {
-        this.fetchFilter();
+      if (val === 'dataset') {
+        this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
       }
     },
 

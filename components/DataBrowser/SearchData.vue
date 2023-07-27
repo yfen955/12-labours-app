@@ -72,9 +72,10 @@ export default {
         query.facets = this.$route.query.facets;
         query.relation = this.$route.query.relation;
       }
-      if (this.searchContent !== '') {
+      if (this.searchContent !== '')
         query.search = this.searchContent;
-      }
+      if (this.$route.query.order)
+        query.order = this.$route.query.order;
       this.$router.push({
         path: `${this.$route.path}`,
         query: query
