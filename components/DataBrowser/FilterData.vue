@@ -207,7 +207,7 @@ export default {
         await this.generateFiltersDict(filter, finished);
       }
 
-      this.updateURL();
+      this.updateURL(1);
     },
 
     handleCheckAllChange(filter, i) {
@@ -320,10 +320,10 @@ export default {
     },
 
     // update the page, selected facets & relation in the url
-    updateURL() {
+    updateURL(page) {
       let query = {
         type: this.$route.query.type,
-        page: 1,
+        page: page,
         limit: this.$route.query.limit,
       };
       if (this.selectedItems.length > 0) {
@@ -341,7 +341,7 @@ export default {
     },
 
     handleSwitch(val) {
-      this.updateURL();
+      this.updateURL(1);
       this.$emit("relation", val);
     },
   },
