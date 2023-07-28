@@ -78,11 +78,11 @@ export default {
       allFilterDict: {},
       currentFilterDict: {},
       file_type: [],
-      errorMessage: '',
-      searchContent: '',
-      relation: 'and',
-      sortBy: 'Published(asc)',
-    }
+      errorMessage: "",
+      searchContent: "",
+      relation: "and",
+      sortBy: "Published(asc)",
+    };
   },
 
   created: function() {
@@ -106,9 +106,24 @@ export default {
   },
 
   methods: {
+    async fetchFilter() {
+      this.allFilterDict = await backendQuery.fetchFilterData(
+        this.$config.query_api_url,
+        false
+      );
+    },
+
     async fetchData() {
       this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation, this.sortBy);
+      let result = await backendQuery.fetchPaginationData(
+        this.$config.query_api_url,
+        this.currentFilterDict,
+        this.$route.query.limit,
+        this.$route.query.page,
+        this.searchContent,
+        this.relation,
+        this.sortBy
+      );
       this.currentData = result["items"];
       this.totalCount = result["total"];
       this.isLoadingSearch = false;
@@ -117,8 +132,8 @@ export default {
     async dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
-      if (val === 'dataset') {
-        this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
+      if (val === "dataset") {
+        this.fetchFilter()
       }
     },
 
@@ -128,13 +143,13 @@ export default {
         isDifferent = true;
       } else {
         const greaterEqualFilter =
-        Object.keys(newFilter).length <= Object.keys(oldFilter).length
-        ? oldFilter
-        : newFilter;
+          Object.keys(newFilter).length <= Object.keys(oldFilter).length
+            ? oldFilter
+            : newFilter;
         const lessFilter =
-        Object.keys(newFilter).length > Object.keys(oldFilter).length
-        ? oldFilter
-        : newFilter;
+          Object.keys(newFilter).length > Object.keys(oldFilter).length
+            ? oldFilter
+            : newFilter;
         for (const key in greaterEqualFilter) {
           if (key in lessFilter) {
             if (lessFilter[key].length !== greaterEqualFilter[key].length) {
@@ -148,7 +163,7 @@ export default {
       return isDifferent;
     },
 
-    updateFilterDict(filter_dict, relation) {
+    updateFilterDict(filter_dict) {
       const isEmptyFilter =
         Object.keys(filter_dict).length === 0 &&
         filter_dict.constructor === Object;
@@ -156,14 +171,13 @@ export default {
         this.currentFilterDict,
         filter_dict
       );
-      this.updateRelation(relation, isFilterChanged);
       if (isEmptyFilter || isFilterChanged) {
         console.log("filter fetch");
         this.currentFilterDict = filter_dict;
         this.fetchData();
       }
     },
-    
+
     updateSearchContent(val) {
       const isSearchChanged = this.searchContent === val ? false : true;
       if (isSearchChanged) {
@@ -177,22 +191,20 @@ export default {
       this.isLoadingSearch = val;
     },
 
-    updateRelation(val, filterChanged = false) {
+    updateRelation(val) {
       const newRelation = val ? "and" : "or";
       const isRelationChanged = newRelation === this.relation ? false : true;
       if (isRelationChanged) {
-        if (!filterChanged) {
-          console.log("relation fetch");
-          this.relation = newRelation;
-          this.fetchData();
-        }
+        console.log("relation fetch");
+        this.relation = newRelation;
+        this.fetchData();
       }
     },
 
     updateSort(val) {
       this.sortBy = val;
       this.fetchData();
-    }
+    },
   },
 };
 </script>
