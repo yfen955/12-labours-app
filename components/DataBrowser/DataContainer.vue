@@ -106,6 +106,14 @@ export default {
   },
 
   methods: {
+    async dataChange(val) {
+      this.isLoadingSearch = true;
+      this.currentData = [];
+      if (val === "dataset") {
+        this.fetchFilter();
+      }
+    },
+
     async fetchFilter() {
       this.allFilterDict = await backendQuery.fetchFilterData(
         this.$config.query_api_url,
@@ -127,14 +135,6 @@ export default {
       this.currentData = result["items"];
       this.totalCount = result["total"];
       this.isLoadingSearch = false;
-    },
-
-    async dataChange(val) {
-      this.isLoadingSearch = true;
-      this.currentData = [];
-      if (val === "dataset") {
-        this.fetchFilter()
-      }
     },
 
     compare2Filter(oldFilter, newFilter) {
@@ -173,7 +173,7 @@ export default {
       );
       if (isEmptyFilter || isFilterChanged) {
         console.log("filter fetch");
-        this.currentFilterDict = filter_dict;
+        this.currentFilterDict = JSON.parse(JSON.stringify(filter_dict));
         this.fetchData();
       }
     },
@@ -185,10 +185,6 @@ export default {
         this.searchContent = val;
         this.fetchData();
       }
-    },
-
-    updateLoading(val) {
-      this.isLoadingSearch = val;
     },
 
     updateRelation(val) {
