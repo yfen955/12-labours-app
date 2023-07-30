@@ -105,7 +105,7 @@ export default {
   },
 
   methods: {
-    async dataChange(val) {
+    dataChange() {
       this.isLoadingSearch = true;
       this.currentData = [];
     },

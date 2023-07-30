@@ -30,7 +30,7 @@
             v-model="relation"
             active-color="#00467F"
             inactive-color="#D11241"
-            @change="handleSwitch"
+            @change="handleRelation"
           >
           </el-switch>
           <p>AND</p>
@@ -119,16 +119,11 @@ export default {
     //     }
     //   },
     // },
-    // "$route.query.relation": {
-    //   handler(val) {
-    //     if (val) {
-    //       this.relation = val === "and" ? true : false;
-    //     } else {
-    //       this.relation = true;
-    //     }
-    //     this.$emit("relation", this.relation);
-    //   },
-    // },
+    "$route.query.relation": {
+      handler(val) {
+        this.handleRelation(val);
+      },
+    },
   },
 
   methods: {
@@ -301,6 +296,19 @@ export default {
       this.$emit("filter-dict", this.filterDictResult);
     },
 
+    handleRelation(val) {
+      if (val || val === "and") {
+        this.relation = true;
+      } else if (!val || val === "or") {
+        this.relation = false;
+      }
+      // check whether relation is changed through el-switch
+      if (typeof val == "boolean") {
+        this.updateURL();
+      }
+      this.$emit("relation", this.relation);
+    },
+
     // update the page, selected facets & relation in the url
     updateURL() {
       let query = {
@@ -322,11 +330,6 @@ export default {
         path: `${this.$route.path}`,
         query: query,
       });
-    },
-
-    handleSwitch(val) {
-      this.updateURL();
-      this.$emit("relation", val);
     },
   },
 };
