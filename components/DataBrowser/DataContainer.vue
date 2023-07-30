@@ -5,7 +5,6 @@
       <div class="data-container">
         <div>
           <FilterData
-            :allFilterDict="allFilterDict"
             v-on:filter-dict="updateFilterDict"
             v-on:relation="updateRelation"
           />
@@ -109,16 +108,6 @@ export default {
     async dataChange(val) {
       this.isLoadingSearch = true;
       this.currentData = [];
-      if (val === "dataset") {
-        this.fetchFilter();
-      }
-    },
-
-    async fetchFilter() {
-      this.allFilterDict = await backendQuery.fetchFilterData(
-        this.$config.query_api_url,
-        false
-      );
     },
 
     async fetchData() {

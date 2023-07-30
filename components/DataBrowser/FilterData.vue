@@ -73,11 +73,12 @@
 </template>
 
 <script>
-export default {
-  props: ["allFilterDict"],
+import backendQuery from "@/services/backendQuery";
 
+export default {
   data: () => {
     return {
+      allFilterDict: {},
       convertedFilterList: [],
       selectedFacetList: [],
       selectedFilterDict: {},
@@ -88,7 +89,6 @@ export default {
 
   created: function() {
     this.dataChange(this.$route.query.type);
-    console.log("dataChange1");
   },
 
   watch: {
@@ -99,8 +99,7 @@ export default {
     },
     allFilterDict: {
       handler() {
-        console.log("dataChange2");
-        this.dataChange(this.$route.query.type);
+        this.convertFacets();
       },
     },
     // "$route.query.facets": {
@@ -133,6 +132,13 @@ export default {
   },
 
   methods: {
+    async fetchFilter() {
+      this.allFilterDict = await backendQuery.fetchFilterData(
+        this.$config.query_api_url,
+        false
+      );
+    },
+
     dataChange(val) {
       if (this.$route.query.relation) {
         this.relation = this.$route.query.relation === "and" ? true : false;
@@ -140,7 +146,7 @@ export default {
         this.relation = true;
       }
       if (val === "dataset") {
-        this.convertFacets();
+        this.fetchFilter();
       }
     },
 
@@ -292,7 +298,6 @@ export default {
           this.filterDictResult[nodeField] = selectedFilter.selectedFacet;
         }
       }
-      console.log(this.filterDictResult);
       this.$emit("filter-dict", this.filterDictResult);
     },
 
