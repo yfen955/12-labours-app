@@ -211,9 +211,7 @@ export default {
           this.selectedFilterDict[filter.nodeField] = filter.selectedFacet;
         }
       }
-
       this.generateFiltersDict(filter);
-      this.updateURL();
     },
 
     handleCheckAll(filter, index) {
@@ -269,6 +267,17 @@ export default {
       }
     },
 
+    handleRelation(val) {
+      if (typeof val === "boolean") {
+        this.relation = val;
+      } else if (val === "and") {
+        this.relation = true;
+      } else if (val === "or") {
+        this.relation = false;
+      }
+      this.handleChange();
+    },
+
     generateFiltersDict(selectedFilter = undefined) {
       if (!selectedFilter) {
         if (this.selectedFacetList.length === 0) {
@@ -293,43 +302,9 @@ export default {
           this.filterDictResult[nodeField] = selectedFilter.selectedFacet;
         }
       }
+      this.$emit("facet", this.selectedFacetList);
       this.$emit("filter", this.filterDictResult);
-    },
-
-    handleRelation(val) {
-      if (val || val === "and") {
-        this.relation = true;
-      } else if (!val || val === "or") {
-        this.relation = false;
-      }
-      // check whether relation is changed through el-switch
-      if (typeof val == "boolean") {
-        this.updateURL();
-      }
       this.$emit("relation", this.relation);
-    },
-
-    // update the page, selected facets & relation in the url
-    updateURL() {
-      let query = {
-        type: this.$route.query.type,
-        page: 1,
-        limit: this.$route.query.limit,
-      };
-      if (this.selectedFacetList.length > 0) {
-        query.facets = this.selectedFacetList.toString();
-        query.relation = this.relation ? "and" : "or";
-      }
-      if (this.$route.query.search) {
-        query.search = this.$route.query.search;
-      }
-      if (this.$route.query.order) {
-        query.order = this.$route.query.order;
-      }
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: query,
-      });
     },
   },
 };

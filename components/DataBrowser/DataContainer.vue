@@ -5,6 +5,7 @@
       <div class="data-container">
         <div>
           <FilterData
+            v-on:facet="updateFacet"
             v-on:filter="updateFilter"
             v-on:relation="updateRelation"
           />
@@ -74,6 +75,7 @@ export default {
       isLoading: true,
       totalCount: 0,
       currentData: [],
+      facetList: [],
       filterDict: {},
       searchContent: "",
       relationType: "and",
@@ -93,6 +95,7 @@ export default {
 
   methods: {
     async fetchData() {
+      this.updateURL()
       this.isLoading = true;
       let result = await backendQuery.fetchPaginationData(
         this.$config.query_api_url,
@@ -143,6 +146,10 @@ export default {
       return isDifferent;
     },
 
+    updateFacet(val) {
+      this.facetList = val
+    },
+
     updateFilter(val) {
       const isEmptyFilter =
         Object.keys(val).length === 0 && val.constructor === Object;
@@ -168,6 +175,28 @@ export default {
     updateSort(val) {
       this.sortBy = val;
       this.fetchData();
+    },
+
+    updateURL() {
+      let query = {
+        type: this.$route.query.type,
+        page: 1,
+        limit: this.$route.query.limit,
+      };
+      if (this.facetList.length > 0) {
+        query.facets = this.facetList.toString();
+        query.relation = this.relationType;
+      }
+      // if (this.$route.query.search) {
+      //   query.search = this.$route.query.search;
+      // }
+      // if (this.$route.query.order) {
+      //   query.order = this.$route.query.order;
+      // }
+      this.$router.push({
+        path: `${this.$route.path}`,
+        query: query,
+      });
     },
   },
 };
