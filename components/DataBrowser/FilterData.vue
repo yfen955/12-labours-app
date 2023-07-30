@@ -293,7 +293,7 @@ export default {
           this.filterDictResult[nodeField] = selectedFilter.selectedFacet;
         }
       }
-      this.$emit("filter-dict", this.filterDictResult);
+      this.$emit("filter", this.filterDictResult);
     },
 
     handleRelation(val) {

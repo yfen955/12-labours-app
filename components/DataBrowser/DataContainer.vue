@@ -1,21 +1,21 @@
 <template>
   <div>
     <span v-if="$route.query.type === 'dataset'">
-      <SearchData v-on:search_content="updateSearchContent" />
+      <SearchData v-on:search_content="updateSearch" />
       <div class="data-container">
         <div>
           <FilterData
-            v-on:filter-dict="updateFilterDict"
+            v-on:filter="updateFilter"
             v-on:relation="updateRelation"
           />
         </div>
         <div>
           <DisplayData
-            v-loading="isLoadingSearch"
+            v-loading="isLoading"
             element-loading-text="Loading..."
             element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
-            :isLoadingSearch="isLoadingSearch"
+            :isLoadingSearch="isLoading"
             :totalCount="totalCount"
             v-on:sort_changed="updateSort"
           />
@@ -71,30 +71,17 @@ export default {
   props: ["category"],
   data: () => {
     return {
-      isLoadingSearch: true,
+      isLoading: true,
       totalCount: 0,
       currentData: [],
-      allFilterDict: {},
-      currentFilterDict: {},
-      file_type: [],
-      errorMessage: "",
+      filterDict: {},
       searchContent: "",
-      relation: "and",
+      relationType: "and",
       sortBy: "Published(asc)",
     };
   },
 
-  created: function() {
-    // when open find data page, call the function to fetch the data
-    this.dataChange(this.$route.query.type);
-  },
-
   watch: {
-    // if the type variable in the url changes, change the current data to the data in that category
-    "$route.query.type": function(val) {
-      this.dataChange(val);
-    },
-
     "$route.query.page": function() {
       this.fetchData();
     },
@@ -105,25 +92,29 @@ export default {
   },
 
   methods: {
-    dataChange() {
-      this.isLoadingSearch = true;
-      this.currentData = [];
-    },
-
     async fetchData() {
-      this.isLoadingSearch = true;
+      this.isLoading = true;
       let result = await backendQuery.fetchPaginationData(
         this.$config.query_api_url,
-        this.currentFilterDict,
+        this.filterDict,
         this.$route.query.limit,
         this.$route.query.page,
         this.searchContent,
-        this.relation,
+        this.relationType,
         this.sortBy
       );
       this.currentData = result["items"];
       this.totalCount = result["total"];
-      this.isLoadingSearch = false;
+      this.isLoading = false;
+    },
+
+    updateSearch(val) {
+      const isSearchChanged = this.searchContent === val ? false : true;
+      if (isSearchChanged) {
+        console.log("search fetch");
+        this.searchContent = val;
+        this.fetchData();
+      }
     },
 
     compare2Filter(oldFilter, newFilter) {
@@ -152,36 +143,24 @@ export default {
       return isDifferent;
     },
 
-    updateFilterDict(filter_dict) {
+    updateFilter(val) {
       const isEmptyFilter =
-        Object.keys(filter_dict).length === 0 &&
-        filter_dict.constructor === Object;
-      const isFilterChanged = this.compare2Filter(
-        this.currentFilterDict,
-        filter_dict
-      );
+        Object.keys(val).length === 0 && val.constructor === Object;
+      const isFilterChanged = this.compare2Filter(this.filterDict, val);
       if (isEmptyFilter || isFilterChanged) {
         console.log("filter fetch");
-        this.currentFilterDict = JSON.parse(JSON.stringify(filter_dict));
-        this.fetchData();
-      }
-    },
-
-    updateSearchContent(val) {
-      const isSearchChanged = this.searchContent === val ? false : true;
-      if (isSearchChanged) {
-        console.log("search fetch");
-        this.searchContent = val;
+        this.filterDict = JSON.parse(JSON.stringify(val));
         this.fetchData();
       }
     },
 
     updateRelation(val) {
       const newRelation = val ? "and" : "or";
-      const isRelationChanged = newRelation === this.relation ? false : true;
+      const isRelationChanged =
+        newRelation === this.relationType ? false : true;
       if (isRelationChanged) {
         console.log("relation fetch");
-        this.relation = newRelation;
+        this.relationType = newRelation;
         this.fetchData();
       }
     },
