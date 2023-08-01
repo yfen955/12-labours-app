@@ -501,13 +501,15 @@ export default {
     },
 
     changeTab(val, jump = false) {
+      let query = { datasetTab: val };
+      if (this.$route.query.path && this.$route.query.path !== 'files')
+        query.path = this.$route.query.path;
+      else if (val === 'files' && !this.$route.query.path)
+        query.path = 'files';
+      query.access = this.$route.query.access;
       this.$router.push({
         path: this.$route.path,
-        query: {
-          datasetTab: val,
-          path: this.$route.query.path,
-          access: this.$route.query.access,
-        },
+        query: query,
       });
       if (jump) {
         this.$el
