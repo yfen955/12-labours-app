@@ -77,7 +77,7 @@ export default {
   watch: {
     '$route.query.path': {
       handler(new_val, old_val) {
-      let file_path = `/${this.$route.params.id}`;
+        let file_path = `/${this.$route.params.id}`;
         if (this.breadcrumb[this.breadcrumb.length - 1].to !== new_val) {
           if (new_val && new_val !== 'files')
             file_path = file_path + `/${new_val.slice(new_val.indexOf('/') + 1)}`;
