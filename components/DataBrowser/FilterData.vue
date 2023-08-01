@@ -156,7 +156,7 @@ export default {
           index: i,
           nodeField: nodeField,
           title: this.allFilterDict.titles[i],
-          filterFacetName: Object.keys(this.allFilterDict.elements[i]),
+          filterFacetName: this.allFilterDict.elements[i],
           selectedFacet: [],
           checkAll: true,
           isIndeterminate: false,
