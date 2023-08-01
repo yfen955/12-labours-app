@@ -102,23 +102,25 @@ export default {
         this.convertFacets();
       },
     },
-    // "$route.query.facets": {
-    //   handler(new_val, old_val) {
-    //     if (new_val && old_val && new_val.length < old_val.length) {
-    //       old_val.split(",").forEach((item) => {
-    //         if (new_val.indexOf(item) == -1) this.deselectFacet(item);
-    //       });
-    //     } else if (old_val && !new_val) {
-    //       this.deselectFacet(old_val);
-    //     } else if (!old_val && new_val) {
-    //       console.log("dataChange4");
-    //       this.dataChange(this.$route.query.type);
-    //     } else if (new_val && old_val && new_val.length > old_val.length) {
-    //       console.log("dataChange5");
-    //       this.dataChange(this.$route.query.type);
-    //     }
-    //   },
-    // },
+    "$route.query.facets": {
+      handler(new_val, old_val) {
+        if (new_val && old_val) {
+          if (new_val.length < old_val.length) {
+            old_val.split(",").forEach((item) => {
+              if (new_val.indexOf(item) === -1) {
+                this.deselectFacet(item);
+              }
+            });
+          } else if (new_val.length > old_val.length) {
+            this.convertFacets();
+          }
+        } else if (old_val && !new_val) {
+          this.deselectFacet(old_val);
+        } else if (!old_val && new_val) {
+          this.convertFacets();
+        }
+      },
+    },
     "$route.query.relation": {
       handler(val) {
         this.handleRelation(val);
@@ -152,7 +154,6 @@ export default {
         const nodeField = this.allFilterDict["nodes>fields"][i];
         this.convertedFilterList.push({
           index: i,
-
           nodeField: nodeField,
           title: this.allFilterDict.titles[i],
           filterFacetName: Object.keys(this.allFilterDict.elements[i]),
