@@ -287,17 +287,6 @@ export default {
 
         // after update the selectedItem, hangle the change to fetch data
         this.handleChange(this.filters_list[filter_index]);
-      // } else {
-      //   console.log('else');
-      //   this.$router.push({
-      //     path: "/data/browser",
-      //     query: {
-      //       type: "dataset",
-      //       page: 1,
-      //       limit: 10,
-      //       access: this.$route.query.access,
-      //     },
-      //   });
       }
     },
 
