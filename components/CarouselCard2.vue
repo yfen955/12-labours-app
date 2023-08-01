@@ -12,7 +12,7 @@
       :key="card.filename"
     >
       <el-card>
-        <div class="model-image">
+        <div class="card-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
           <img
             v-else
@@ -27,11 +27,11 @@
           trigger="hover"
           :content="card.filename"
         >
-          <p slot="reference" class="model-name">
+          <p slot="reference" class="card-name">
             {{ card.filename }}
           </p>
         </el-popover>
-        <div class="model-button">
+        <div class="card-button">
           <el-button
             v-if="card.type == 'Thumbnail'"
             @click="viewThumbnail(card.imageDownload)"
@@ -104,22 +104,22 @@ export default {
     margin-bottom: 0.25rem;
   }
 
-  .model-name {
+  .card-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .model-image {
+  .card-image {
     width: 10rem;
     height: 9rem;
 
     img {
-      width: 10rem;
+      width: 9rem;
     }
   }
 
-  .model-button {
+  .card-button {
     margin-top: 1rem;
   }
 }
