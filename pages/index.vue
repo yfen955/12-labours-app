@@ -1,5 +1,5 @@
 <template>
-  <div class="page-outer">
+  <!-- <div class="page-outer">
     <div class="banner-home">
       <div class="title-box">
         <span>
@@ -15,14 +15,15 @@
       <div class="default-inner">
         <div v-html="content.values.content.html" />
         <div class="nav-about">
-          <!-- <nuxt-link to="/about/">
+          <nuxt-link to="/about/">
             FIND OUT MORE ABOUT THE 12 LABOURS PROJECT
-          </nuxt-link> -->
+          </nuxt-link>
         </div>
       </div>
     </div>
     <latest-news :news-list="topNews.newsList" hide-bg-color />
-  </div>
+  </div> -->
+  <div></div>
 </template>
 
 <script>
