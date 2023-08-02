@@ -168,6 +168,7 @@ export default {
 
     handleURLFacet() {
       if (this.$route.query.facets) {
+        let isExist = false;
         this.selectedFacetList = this.$route.query.facets.split(",");
         for (let i = 0; i < this.selectedFacetList.length; i++) {
           const facet = this.selectedFacetList[i];
@@ -190,7 +191,12 @@ export default {
                 filter.checkAll = false;
                 filter.isIndeterminate = true;
               }
+              isExist = true;
             }
+          }
+          if (!isExist) {
+            this.selectedFacetList = [];
+            break;
           }
         }
       }

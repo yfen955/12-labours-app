@@ -117,17 +117,15 @@ export default {
   },
 
   created: function () {
-    let val = this.$route.query.order;
-    if (val)
-      this.determineOrder(val);
-    else
-      this.$route.query.order = this.sortBy;
+    if (this.$route.query.order)
+      this.determineOrder(this.$route.query.order);
   },
 
   watch: {
     'sortBy': {
-      handler() {
-        this.updateUrl(this.sortBy);
+      handler(val) {
+        if (val !== this.$route.query.order)
+          this.updateUrl(1, val);
         this.$emit('sort_changed', this.sortBy);
       }
     },
@@ -173,13 +171,13 @@ export default {
       if (JSON.stringify(this.sort_list).includes(val))
         this.sortBy = val;
       else
-        this.updateUrl();
+        this.updateUrl(1);
     },
 
-    updateUrl(val) {
+    updateUrl(page, order) {
       let query = {
           type: this.$route.query.type,
-          page: 1,
+          page: page,
           limit: this.$route.query.limit,
         };
         if (this.$route.query.facets) {
@@ -188,8 +186,8 @@ export default {
         }
         if (this.$route.query.search)
           query.search = this.$route.query.search;
-        if (val !== 'Published(asc)')
-          query.order = val;
+        if (order !== 'Published(asc)')
+          query.order = order;
         this.$router.push({
           path: `${this.$route.path}`,
           query: query

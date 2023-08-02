@@ -58,10 +58,11 @@ export default {
         new_query.facets = this.$route.query.facets;
         new_query.relation = this.$route.query.relation;
       }
-      if (this.$route.query.search) {
+      if (this.$route.query.search)
         new_query.search = this.$route.query.search;
-      }
-      this.$router.replace({
+      if (this.$route.query.order !== 'Published(asc)')
+        new_query.order = this.$route.query.order;
+      this.$router.push({
         path: `${this.$route.path}`,
         query: new_query
       })
