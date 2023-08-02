@@ -1,17 +1,21 @@
 <template>
   <div>
-    <!-- <twelve-labours-header2>
-      <template v-slot:logo>
-        <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours">
-      </template>
-    </twelve-labours-header2>
-    <nuxt />
-    <twelve-labours-footer :footerLinks="footerLinks">
-      <template v-slot:logo>
-        <img class="footer-logo" :src="footerLogo" alt="Logo for 12 Labours">
-      </template>
-    </twelve-labours-footer> -->
-    <img :src="logo" alt="happy birthday">
+    <div v-if="!showImg">
+      <twelve-labours-header2>
+        <template v-slot:logo>
+          <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours">
+        </template>
+      </twelve-labours-header2>
+      <nuxt />
+      <twelve-labours-footer :footerLinks="footerLinks">
+        <template v-slot:logo>
+          <img class="footer-logo" :src="footerLogo" alt="Logo for 12 Labours">
+        </template>
+      </twelve-labours-footer>
+    </div>
+    <div v-else>
+      <img :src="logo" alt="happy birthday">
+    </div>
   </div>
 </template>
 
@@ -19,6 +23,8 @@
 export default {
   data: function() {
     return {
+      second: 1,
+      showImg: false,
       logo: require('../static/img/color-glossy-happy-birthday-balloons-banner-background-illustration-free-vector.jpg'),
       headerLogo: require('../static/img/12-labours-logo-black.png'),
       footerLogo: require('../static/img/12-labours-logo-primary.png'),
@@ -45,6 +51,15 @@ export default {
         }
       ]
     }
+  },
+  created() {
+    let timer = setInterval(() => {
+      this.second--;
+      if (this.second == 0) {
+        clearInterval(timer);
+        this.showImg = true;
+      }
+    }, 1000);
   }
 }
 </script>
