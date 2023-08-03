@@ -211,6 +211,7 @@
             class="tab-content"
           >
             <carousel-card2 :cards="models_list" v-if="!isLoading" />
+            <!-- <el-button @click="showSegmentation">View Segmentation</el-button> -->
           </span>
 
           <!-- references content -->
@@ -247,15 +248,10 @@
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
           </div> -->
+          <!-- <div class="pdf-bg" v-show="show_segmentation">
+            <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
+          </div> -->
           <!-- <div>
-            <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
-            <div class="pdf-bg" v-show="show_segmentation">
-              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
-              <iframe src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" style="height: 800px; width: 90%;"></iframe>
-            </div>
-          </div>
-          <br>
-          <div>
             <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
             <div class="pdf-bg" v-show="show_pdf">
               <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
@@ -433,8 +429,7 @@ export default {
       apaCitation: [],
       models_list: [],
       dataset_img: "",
-      show_segmentation: false,
-      show_pdf: false,
+      // show_pdf: false,
     };
   },
 
@@ -461,14 +456,12 @@ export default {
 
     await this.handleCitation();
 
-    this.show_segmentation = false;
-    this.show_pdf = false;
+    // this.show_pdf = false;
 
     this.isLoading = false;
   },
 
   mounted() {
-    this.show_segmentation = false;
     this.show_pdf = false;
     this.updateScroll();
   },
@@ -670,6 +663,14 @@ export default {
         imageDownload: "",
       };
       this.models_list.push(flatmap);
+      let segmentation = {
+        type: "Segmentation",
+        imageUrl: "",
+        filename: "case1",
+        id: "case1",
+        imageDownload: "",
+      };
+      this.models_list.push(segmentation);
     },
 
     getDatasetImg() {
@@ -690,13 +691,17 @@ export default {
       }
     },
 
-    changeShowState(val) {
-      if (val === "show_segmentation") {
-        this.show_segmentation = !this.show_segmentation;
-      } else if (val === "show_pdf") {
-        this.show_pdf = !this.show_pdf;
-      }
-    },
+    // showSegmentation() {
+    //   window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/case1`, '_blank');
+    // },
+
+    // changeShowState(val) {
+    //   if (val === "show_segmentation") {
+    //     this.show_segmentation = !this.show_segmentation;
+    //   } else if (val === "show_pdf") {
+    //     this.show_pdf = !this.show_pdf;
+    //   }
+    // },
 
     updateScroll() {
       let mo = function(e) {

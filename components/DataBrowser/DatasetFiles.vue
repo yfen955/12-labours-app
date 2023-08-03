@@ -37,6 +37,7 @@
           <p v-if="scope.row.type === 'Folder'">-</p>
           <div v-else>
             <el-button @click="downloadFile(scope.row.path)" class="icon-btn"><i class="el-icon-download"></i></el-button>
+            <el-button @click="showSegmentation('case1')" class="icon-btn"><i class="el-icon-first-aid-kit"></i></el-button>
           </div>
         </template>
       </el-table-column>
@@ -172,6 +173,10 @@ export default {
       let download_path = `${this.$config.query_api_url}/data/download/${file_path}`;
       window.open(download_path, "_self");
     },
+
+    showSegmentation(id) {
+      window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/${id}`, '_blank');
+    }
   }
 }
 </script>

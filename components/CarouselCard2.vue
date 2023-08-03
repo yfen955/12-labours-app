@@ -14,8 +14,9 @@
       <el-card>
         <div class="model-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
+          <i v-if="card.type == 'Segmentation'" class="el-icon-first-aid-kit"></i>
           <img
-            v-else
+            v-if="card.type !== 'Plot' && card.type !== 'Segmentation'"
             :src="card.imageUrl"
             :alt="card.filename"
             @error="replaceByDefaultImage"
@@ -38,7 +39,17 @@
           >
             Download
           </el-button>
-          <el-button v-else @click="viewModel(card.type, card.id)">
+          <el-button
+            class="segmentation-btn"
+            v-if="card.type == 'Segmentation'"
+            @click="openSegmentation(card.id)"
+          >
+            View Segmentation
+          </el-button>
+          <el-button
+            v-if="card.type !== 'Thumbnail' && card.type !== 'Segmentation'"
+            @click="viewModel(card.type, card.id)"
+          >
             View {{ card.type }}
           </el-button>
         </div>
@@ -82,6 +93,10 @@ export default {
     downloadThumbnail(url) {
       window.open(url);
     },
+
+    openSegmentation(id) {
+      window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/${id}`, '_blank');
+    }
   },
 
   created() {
@@ -91,8 +106,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-icon-data-analysis {
-  font-size: 5rem;
+.el-icon-data-analysis, .el-icon-first-aid-kit {
+  font-size: 8rem;
 }
 
 .el-carousel__item {
@@ -126,6 +141,10 @@ export default {
 
   .model-button {
     margin-top: 1rem;
+  }
+
+  .segmentation-btn {
+    padding: 0.25rem 1rem;
   }
 }
 </style>
