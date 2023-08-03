@@ -23,7 +23,7 @@
 export default {
   data: function() {
     return {
-      second: 1,
+      second: 3,
       showImg: false,
       logo: require('../static/img/color-glossy-happy-birthday-balloons-banner-background-illustration-free-vector.jpg'),
       headerLogo: require('../static/img/12-labours-logo-black.png'),
