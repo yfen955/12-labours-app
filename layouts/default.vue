@@ -23,7 +23,6 @@
 export default {
   data: function() {
     return {
-      second: 3,
       showImg: false,
       logo: require('../static/img/color-glossy-happy-birthday-balloons-banner-background-illustration-free-vector.jpg'),
       headerLogo: require('../static/img/12-labours-logo-black.png'),
@@ -54,8 +53,8 @@ export default {
   },
   created() {
     let timer = setInterval(() => {
-      this.second--;
-      if (this.second == 0) {
+      this.$config.timer--;
+      if (this.$config.timer == 0) {
         clearInterval(timer);
         this.showImg = true;
       }

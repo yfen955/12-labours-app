@@ -21,6 +21,7 @@ export default {
   },
 
   publicRuntimeConfig: {
+    timer: process.env.TIMER,
     portal_url: process.env.PORTAL_URL || "http://localhost:3000",
     query_api_url: process.env.QUERY_API_URL || "http://localhost:8000",
     login_api_url: process.env.LOGIN_API_URL || "http://localhost:8080",
