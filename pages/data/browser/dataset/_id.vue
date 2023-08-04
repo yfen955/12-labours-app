@@ -237,10 +237,13 @@
 
       <div class="left-column">
         <el-card shadow="never" class="image-container">
-          <div v-if="dataset_img">
-            <img :src="dataset_img" alt="image" />
+          <div>
+            <img
+              :src="datasetImage"
+              alt="image"
+              @error="replaceByDefaultImage"
+            />
           </div>
-          <img v-else :src="imgPlaceholder" alt="image" />
           <!-- <div>
             <el-button class="left-top-btn" @click="changeTab('files', true)">
               <span class="display-ellipsis --1">Get Dataset</span>
@@ -428,7 +431,7 @@ export default {
       ],
       isLoading: true,
       datasetTabs,
-      imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
+      imagePlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       detail_data: {},
       title: "",
       scaffold_view_data: [],
@@ -436,7 +439,7 @@ export default {
       apaCitation: [],
       spotlight_cards_list: [],
       cards_list: [],
-      dataset_img: "",
+      datasetImage: "",
       show_segmentation: false,
       show_pdf: false,
     };
@@ -455,7 +458,7 @@ export default {
 
     this.scaffold_view_data = data.scaffoldViews;
     this.thumbnail_data = data.thumbnails;
-    this.getDatasetImg();
+    this.getDatasetImage();
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
@@ -579,7 +582,7 @@ export default {
       });
     },
 
-    generateImg(method, filename, is_source_of) {
+    generateImage(method, filename, is_source_of) {
       let url = `${this.$config.query_api_url}/data/${method}`;
       if (!filename.includes(this.$route.params.id)) {
         url += `/${this.$route.params.id}`;
@@ -642,7 +645,7 @@ export default {
             type: cardType,
             url:
               cardType === "Scaffold" || cardType === "Thumbnail"
-                ? this.generateImg(
+                ? this.generateImage(
                     "preview",
                     element.filename,
                     element.is_source_of
@@ -669,7 +672,11 @@ export default {
       this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
     },
 
-    getDatasetImg() {
+    replaceByDefaultImage(error) {
+      error.target.src = this.imagePlaceholder;
+    },
+
+    getDatasetImage() {
       let item = {};
       if (this.scaffold_view_data.length > 0) {
         item = this.scaffold_view_data[0];
@@ -677,9 +684,9 @@ export default {
         item = this.thumbnail_data[0];
       }
       if (JSON.stringify(item) === "{}") {
-        this.dataset_img = this.imgPlaceholder;
+        this.datasetImage = this.imagePlaceholder;
       } else {
-        this.dataset_img = this.generateImg(
+        this.datasetImage = this.generateImage(
           "preview",
           item.filename,
           item.is_source_of
