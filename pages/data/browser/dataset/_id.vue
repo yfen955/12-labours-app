@@ -206,8 +206,15 @@
           </span>
 
           <!-- gallery content -->
-          <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
-            <carousel-card2 :cards="models_list" v-if="!isLoading" @cardInfo="viewContent" />
+          <span
+            v-if="$route.query.datasetTab === 'gallery'"
+            class="tab-content"
+          >
+            <carousel-card2
+              :cards="cards_list"
+              v-if="!isLoading"
+              @cardInfo="viewContent"
+            />
           </span>
 
           <!-- references content -->
@@ -446,10 +453,10 @@ export default {
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
 
-    this.scaffold_view_data = data.scaffoldViews
-    this.thumbnail_data = data.thumbnails
+    this.scaffold_view_data = data.scaffoldViews;
+    this.thumbnail_data = data.thumbnails;
     this.getDatasetImg();
-    
+
     const cardsData = {
       Scaffold: data.scaffoldViews,
       Plot: data.plots,

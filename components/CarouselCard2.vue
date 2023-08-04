@@ -67,6 +67,7 @@ export default {
     view(type, url, uuid) {
       this.$emit("cardInfo", type, url, uuid);
     },
+  },
 
   created() {
     this.dataShowed = this.cards;
