@@ -210,7 +210,7 @@
             v-if="$route.query.datasetTab === 'gallery'"
             class="tab-content"
           >
-            <carousel-card2 :cards="models_list" v-if="!isLoading" />
+            <carousel-card2 :cards="cards_list" v-if="!isLoading" />
           </span>
 
           <!-- references content -->
@@ -427,11 +427,11 @@ export default {
       imgPlaceholder: require("../../../../static/img/12-labours-logo-black.png"),
       detail_data: {},
       title: "",
-      scaffold_thumbnail_data: [],
-      plot_manifest_data: [],
+      scaffold_view_data: [],
       thumbnail_data: [],
       apaCitation: [],
-      models_list: [],
+      spotlight_cards_list: [],
+      cards_list: [],
       dataset_img: "",
       show_segmentation: false,
       show_pdf: false,
@@ -448,16 +448,19 @@ export default {
     );
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
-    this.scaffold_thumbnail_data = data.scaffoldViews;
-    this.plot_manifest_data = data.plots;
-    this.thumbnail_data = data.thumbnails;
 
+    this.scaffold_view_data = data.scaffoldViews
+    this.thumbnail_data = data.thumbnails
     this.getDatasetImg();
-    this.handleModels(
-      this.scaffold_thumbnail_data,
-      this.plot_manifest_data,
-      this.thumbnail_data
-    );
+    
+    const cardsData = {
+      Scaffold: data.scaffoldViews,
+      Plot: data.plots,
+      Thumbnail: data.thumbnails,
+      Segmentation: data.segmentations,
+      DICOM: data.dicomImages,
+    };
+    this.handleCards(cardsData);
 
     await this.handleCitation();
 
@@ -502,10 +505,9 @@ export default {
 
     changeTab(val, jump = false) {
       let query = { datasetTab: val };
-      if (this.$route.query.path && this.$route.query.path !== 'files')
+      if (this.$route.query.path && this.$route.query.path !== "files")
         query.path = this.$route.query.path;
-      else if (val === 'files' && !this.$route.query.path)
-        query.path = 'files';
+      else if (val === "files" && !this.$route.query.path) query.path = "files";
       query.access = this.$route.query.access;
       this.$router.push({
         path: this.$route.path,
@@ -626,56 +628,47 @@ export default {
       this.$message.success("copied");
     },
 
-    handleModels(scaffold, plot, thumbnail) {
-      this.models_list = [];
-      scaffold.forEach((item) => {
-        let model = {
-          type: "Scaffold",
-          imageUrl: this.generateImg(
-            "preview",
-            item.filename,
-            item.is_source_of
-          ),
-          filename: this.generateFilename(item.filename),
-          id: item.id,
-          imageDownload: "",
-        };
-        this.models_list.push(model);
-      });
-      plot.forEach((item) => {
-        let model = {
-          type: "Plot",
-          imageUrl: "",
-          filename: this.generateFilename(item.filename),
-          id: item.id,
-          imageDownload: "",
-        };
-        this.models_list.push(model);
-      });
-      thumbnail.forEach((item) => {
-        let model = {
-          type: "Thumbnail",
-          imageUrl: this.generateImg("preview", item.filename),
-          filename: this.generateFilename(item.filename),
-          id: item.id,
-          imageDownload: this.generateImg("download", item.filename),
-        };
-        this.models_list.push(model);
-      });
-      let flatmap = {
-        type: "Flatmap",
-        imageUrl: this.imgPlaceholder,
-        filename: "",
-        id: 1,
-        imageDownload: "",
-      };
-      this.models_list.push(flatmap);
+    handleCards(allCards) {
+      this.spotlight_cards_list = [];
+      this.cards_list = [];
+      for (const cardType in allCards) {
+        const cards = allCards[cardType];
+        cards.forEach((element) => {
+          const card = {
+            type: cardType,
+            url:
+              cardType === "Scaffold" || cardType === "Thumbnail"
+                ? this.generateImg(
+                    "preview",
+                    element.filename,
+                    element.is_source_of
+                  )
+                : "",
+            filename: this.generateFilename(element.filename),
+            id: element.id,
+          };
+          if (element.additional_metadata !== null) {
+            const spotlight =
+              JSON.parse(
+                element.additional_metadata
+                  .replace("True", "'True'")
+                  .replace(/'/g, '"')
+              ).spotlight == "True";
+            if (spotlight) {
+              this.spotlight_cards_list.push(card);
+            }
+          } else {
+            this.cards_list.push(card);
+          }
+        });
+      }
+      this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
     },
 
     getDatasetImg() {
       let item = {};
-      if (this.scaffold_thumbnail_data.length > 0) {
-        item = this.scaffold_thumbnail_data[0];
+      if (this.scaffold_view_data.length > 0) {
+        item = this.scaffold_view_data[0];
       } else if (this.thumbnail_data.length > 0) {
         item = this.thumbnail_data[0];
       }
@@ -842,36 +835,6 @@ h2 {
 
 .clearfix:after {
   clear: both;
-}
-
-.el-icon-data-analysis {
-  font-size: 5rem;
-}
-
-.el-carousel__item {
-  margin-top: 1rem;
-  margin-left: calc((50% - 17rem) / 2);
-  width: 17rem;
-}
-
-.carousel {
-  height: 17.5rem;
-  line-height: 1.5rem;
-
-  .model-name {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .model-image {
-    width: 10rem;
-  }
-
-  .model-button {
-    margin-top: 1rem;
-  }
 }
 
 .tab-content {
