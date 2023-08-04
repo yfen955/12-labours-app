@@ -1,6 +1,6 @@
 <template>
   <div>
-    <twelve-labours-header2>
+    <twelve-labours-header2 :auth="$auth" :headerLinks="headerLinks" @isSignOut="signOut">
       <template v-slot:logo>
         <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours">
       </template>
@@ -15,10 +15,39 @@
 </template>
 
 <script>
+import backendQuery from '@/services/backendQuery';
+
 export default {
-  data: function() {
+  data: function () {
     return {
       headerLogo: require('../static/img/12-labours-logo-black.png'),
+      headerLinks: [
+        {
+          title: "data-and-models",
+          displayTitle: "Data & Models",
+          href: "/data?type=dataset",
+        },
+        {
+          title: "resources",
+          displayTitle: "Resources",
+          href: "/resources",
+        },
+        {
+          title: "about",
+          displayTitle: "About",
+          href: "/about",
+        },
+        {
+          title: "news-and-events",
+          displayTitle: "News & Events",
+          href: "/news-and-events",
+        },
+        // {
+        //   title: "search",
+        //   displayTitle: "Search",
+        //   href: "/search",
+        // },
+      ],
       footerLogo: require('../static/img/12-labours-logo-primary.png'),
       footerLinks: [
         {
@@ -43,6 +72,14 @@ export default {
         }
       ]
     }
+  },
+
+  methods: {
+    async signOut(bool) {
+      if (bool) {
+        await backendQuery.revokeAccess(this.$config.query_api_url);
+      }
+    }
   }
 }
 </script>
@@ -53,11 +90,10 @@ export default {
   height: auto;
   width: 100%;
 }
-.footer-logo
-{
-  height: 12.5rem;   
-  width:14.56rem;  
+
+.footer-logo {
+  height: 12.5rem;
+  width: 14.56rem;
   white-space: nowrap;
 }
-
 </style>

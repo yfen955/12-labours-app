@@ -65,18 +65,8 @@ export default {
     },
 
     view(type, url, uuid) {
-      if (type === "Thumbnail") {
-        window.open(url);
-      } else if (type === "Scaffold" || type === "Plot") {
-        const route = this.$router.resolve({
-          name: `data-maps-${type.toLowerCase()}-id`,
-          params: { id: uuid },
-          query: { access: this.$route.query.access },
-        });
-        window.open(route.href);
-      }
+      this.$emit("cardInfo", type, url, uuid);
     },
-  },
 
   created() {
     this.dataShowed = this.cards;
@@ -114,7 +104,7 @@ export default {
     height: 9rem;
 
     img {
-      width: 10rem;
+      width: 9rem;
     }
   }
 

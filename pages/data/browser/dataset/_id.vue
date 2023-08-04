@@ -206,11 +206,8 @@
           </span>
 
           <!-- gallery content -->
-          <span
-            v-if="$route.query.datasetTab === 'gallery'"
-            class="tab-content"
-          >
-            <carousel-card2 :cards="cards_list" v-if="!isLoading" />
+          <span v-if="$route.query.datasetTab === 'gallery'" class="tab-content">
+            <carousel-card2 :cards="models_list" v-if="!isLoading" @cardInfo="viewContent" />
           </span>
 
           <!-- references content -->
@@ -701,6 +698,19 @@ export default {
       } else {
         document.body.style.overflow = "";
         document.removeEventListener("touchmove", mo, false);
+      }
+    },
+
+    viewContent(type, url, uuid) {
+      if (type === "Thumbnail") {
+        window.open(url);
+      } else if (type === "Scaffold" || type === "Plot") {
+        const route = this.$router.resolve({
+          name: `data-maps-${type.toLowerCase()}-id`,
+          params: { id: uuid },
+          query: { access: this.$route.query.access },
+        });
+        window.open(route.href);
       }
     },
   },
