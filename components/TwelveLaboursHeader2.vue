@@ -30,7 +30,7 @@
           </div>
           <ul>
             <li
-              v-for="link in links"
+              v-for="link in headerLinks"
               :key="link.href"
               style="z-index: 100;"
               @click="openMobileNav"
