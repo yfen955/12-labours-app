@@ -17,7 +17,7 @@
               v-if="searchContent"
               class="clear-search-btn"
               icon="el-icon-close"
-              @click="clearSearch"
+              @click="clearSearch()"
             />
           </div>
           <el-button
@@ -59,12 +59,13 @@ export default {
       this.onSubmit();
     },
 
-    onSubmit() {
-      this.$emit("searchContent", this.searchContent);
-    },
-
     clearSearch() {
       this.searchContent = "";
+      this.onSubmit();
+    },
+
+    onSubmit() {
+      this.$emit("searchContent", this.searchContent);
     },
   },
 };
