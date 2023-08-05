@@ -88,6 +88,11 @@ export default {
   },
 
   created: function() {
+    if (this.$route.query.relation) {
+      this.relation = this.$route.query.relation === "and" ? true : false;
+    } else {
+      this.relation = true;
+    }
     this.dataChange(this.$route.query.type);
   },
 
@@ -137,11 +142,6 @@ export default {
     },
 
     dataChange(val) {
-      if (this.$route.query.relation) {
-        this.relation = this.$route.query.relation === "and" ? true : false;
-      } else {
-        this.relation = true;
-      }
       if (val === "dataset") {
         this.fetchFilter();
       }
@@ -309,8 +309,7 @@ export default {
           this.filterDictResult[nodeField] = selectedFilter.selectedFacet;
         }
       }
-      this.$emit("facet", this.selectedFacetList);
-      this.$emit("filter", this.filterDictResult);
+      this.$emit("filter-facet", this.filterDictResult, this.selectedFacetList);
       this.$emit("relation", this.relation);
     },
   },

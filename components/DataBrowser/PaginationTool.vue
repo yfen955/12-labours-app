@@ -63,20 +63,6 @@ export default {
   },
 
   watch: {
-    "$route.query.page": function(val) {
-      if (val != this.page) {
-        console.log("watch page change");
-        this.handlePage(val);
-      }
-    },
-
-    "$route.query.limit": function(val) {
-      if (val != this.limit) {
-        console.log("watch limit change");
-        this.handlePageSize(val);
-      }
-    },
-
     "$route.query.order": {
       handler(val) {
         this.handleOrder(val);
@@ -85,7 +71,7 @@ export default {
 
     orderBy: {
       handler() {
-        this.$emit("sort", this.orderBy);
+        this.$emit("order", this.orderBy);
       },
     },
   },
@@ -94,21 +80,17 @@ export default {
     // update the page and first data
     handlePage(val) {
       const intPage = parseInt(val);
-      if (intPage !== this.page) {
       console.log("page change");
       this.page = intPage;
       this.$emit("page-limit", this.page, this.limit);
-      }
     },
 
     handlePageSize(val, created = false) {
       const intLimit = val === "View All" ? 100 : parseInt(val);
-      if (intLimit !== this.limit) {
       console.log("limit change");
       this.limit = intLimit;
       if (!created) {
         this.handlePage(1);
-      }
       }
     },
 

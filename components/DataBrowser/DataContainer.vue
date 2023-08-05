@@ -5,8 +5,7 @@
       <div class="data-container">
         <div>
           <FilterData
-            v-on:facet="updateFacet"
-            v-on:filter="updateFilter"
+            v-on:filter-facet="updateFilterFacet"
             v-on:relation="updateRelation"
           />
         </div>
@@ -15,7 +14,7 @@
             :totalCount="totalCount"
             :toolType="'header'"
             v-on:page-limit="updatePageLimit"
-            v-on:sort="updateSort"
+            v-on:order="updateOrder"
           />
           <DisplayData
             v-loading="isLoading"
@@ -30,7 +29,7 @@
             :toolType="'footer'"
             v-on:page="updatePage"
             v-on:limit="updateLimit"
-            v-on:sort="updateSort"
+            v-on:order="updateOrder"
           /> -->
         </div>
       </div>
@@ -98,18 +97,29 @@ export default {
       filterDict: {},
       searchContent: "",
       relationType: "and",
-      currentSort: "Published(asc)",
+      currentOrder: "Published(asc)",
     };
   },
 
   created: function() {
-    this.fetchData();
+    if (this.$route.query.facets) {
+      this.facetList = this.$route.query.facets;
+      this.relationType = this.$route.query.relation;
+    } else {
+      this.fetchData();
+    }
+    if (this.$route.query.search) {
+      this.searchContent = this.$route.query.search;
+    }
+    if (this.$route.query.order) {
+      this.currentOrder = this.$route.query.order;
+    }
   },
 
   watch: {
     "$route.query": {
       handler() {
-        console.log(this.$route.query);
+        console.log(this.$route);
         this.fetchData();
       },
     },
@@ -118,14 +128,14 @@ export default {
   methods: {
     async fetchData() {
       this.isLoading = true;
-      let result = await backendQuery.fetchPaginationData(
+      const result = await backendQuery.fetchPaginationData(
         this.$config.query_api_url,
         this.filterDict,
         this.$route.query.limit,
         this.$route.query.page,
         this.searchContent,
         this.relationType,
-        this.currentSort
+        this.currentOrder
       );
       this.currentData = result["items"];
       this.totalCount = result["total"];
@@ -158,18 +168,17 @@ export default {
       return isDifferent;
     },
 
-    updateFacet(val) {
-      this.facetList = val;
-    },
-
-    updateFilter(val) {
-      const isEmptyFilter =
-        Object.keys(val).length === 0 && val.constructor === Object;
-      const isFilterChanged = this.compare2Filter(this.filterDict, val);
-      if (isEmptyFilter || isFilterChanged) {
+    updateFilterFacet(filterVal, facetVal) {
+      const isRefreshWithFacet = Object.keys(this.filterDict).length === 0 && this.facetList.length !== 0;
+      const isFilterChanged = this.compare2Filter(this.filterDict, filterVal);
+      if (isFilterChanged) {
         console.log("filter fetch");
-        this.filterDict = JSON.parse(JSON.stringify(val));
-        this.updateURL();
+        this.filterDict = JSON.parse(JSON.stringify(filterVal));
+        this.facetList = facetVal;
+        if (isRefreshWithFacet) {
+          this.fetchData();
+        }
+        this.updateURL(1);
       }
     },
 
@@ -180,7 +189,7 @@ export default {
       if (isRelationChanged) {
         console.log("relation fetch");
         this.relationType = newRelation;
-        this.updateURL();
+        this.updateURL(1);
       }
     },
 
@@ -189,20 +198,24 @@ export default {
       if (isSearchChanged) {
         console.log("search fetch");
         this.searchContent = val;
-        this.updateURL();
+        this.updateURL(1);
       }
     },
 
     updatePageLimit(pageVal, limitVal) {
+      console.log("pageVal");
+      console.log(pageVal);
+      console.log("limitVal");
+      console.log(limitVal);
       this.updateURL(pageVal, limitVal);
     },
 
-    updateSort(val) {
-      const isSortChange = this.currentSort === val ? false : true;
-      if (isSortChange) {
-        console.log("sort fetch");
-        this.currentSort = val;
-        this.updateURL();
+    updateOrder(val) {
+      const isOrderChange = this.currentOrder === val ? false : true;
+      if (isOrderChange) {
+        console.log("order fetch");
+        this.currentOrder = val;
+        this.updateURL(1);
       }
     },
 
@@ -212,6 +225,7 @@ export default {
         page: page,
         limit: limit,
       };
+
       if (this.facetList.length > 0) {
         query.facets = this.facetList.toString();
         query.relation = this.relationType;
@@ -219,7 +233,7 @@ export default {
       if (this.searchContent !== "") {
         query.search = this.searchContent;
       }
-      query.order = this.currentSort;
+      query.order = this.currentOrder;
 
       this.$router.push({
         path: this.$route.path,
