@@ -1,7 +1,7 @@
 <template>
   <div>
     <span v-if="$route.query.type === 'dataset'">
-      <SearchData v-on:search_content="updateSearch" />
+      <SearchData v-on:searchContent="updateSearch" />
       <div class="data-container">
         <div>
           <FilterData
@@ -11,6 +11,12 @@
           />
         </div>
         <div>
+          <PaginationTool
+            :totalCount="totalCount"
+            :toolType="'header'"
+            v-on:page-limit="updatePageLimit"
+            v-on:sort="updateSort"
+          />
           <DisplayData
             v-loading="isLoading"
             element-loading-text="Loading..."
@@ -18,8 +24,14 @@
             :dataDetails="currentData"
             :isLoadingSearch="isLoading"
             :totalCount="totalCount"
-            v-on:sort_changed="updateSort"
           />
+          <!-- <PaginationTool
+            :totalCount="totalCount"
+            :toolType="'footer'"
+            v-on:page="updatePage"
+            v-on:limit="updateLimit"
+            v-on:sort="updateSort"
+          /> -->
         </div>
       </div>
     </span>
@@ -62,13 +74,20 @@
 
 <script>
 import backendQuery from "@/services/backendQuery";
+import PaginationTool from "./PaginationTool.vue";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
 import Dashboard from "./Dashboard.vue";
 
 export default {
-  components: { SearchData, FilterData, DisplayData, Dashboard },
+  components: {
+    PaginationTool,
+    SearchData,
+    FilterData,
+    DisplayData,
+    Dashboard,
+  },
   props: ["category"],
   data: () => {
     return {
@@ -79,23 +98,25 @@ export default {
       filterDict: {},
       searchContent: "",
       relationType: "and",
-      sortBy: "Published(asc)",
+      currentSort: "Published(asc)",
     };
   },
 
-  watch: {
-    "$route.query.page": function() {
-      this.fetchData();
-    },
+  created: function() {
+    this.fetchData();
+  },
 
-    "$route.query.limit": function() {
-      this.fetchData();
+  watch: {
+    "$route.query": {
+      handler() {
+        console.log(this.$route.query);
+        this.fetchData();
+      },
     },
   },
 
   methods: {
     async fetchData() {
-      this.updateURL()
       this.isLoading = true;
       let result = await backendQuery.fetchPaginationData(
         this.$config.query_api_url,
@@ -104,20 +125,11 @@ export default {
         this.$route.query.page,
         this.searchContent,
         this.relationType,
-        this.sortBy
+        this.currentSort
       );
       this.currentData = result["items"];
       this.totalCount = result["total"];
       this.isLoading = false;
-    },
-
-    updateSearch(val) {
-      const isSearchChanged = this.searchContent === val ? false : true;
-      if (isSearchChanged) {
-        console.log("search fetch");
-        this.searchContent = val;
-        this.fetchData();
-      }
     },
 
     compare2Filter(oldFilter, newFilter) {
@@ -147,7 +159,7 @@ export default {
     },
 
     updateFacet(val) {
-      this.facetList = val
+      this.facetList = val;
     },
 
     updateFilter(val) {
@@ -157,7 +169,7 @@ export default {
       if (isEmptyFilter || isFilterChanged) {
         console.log("filter fetch");
         this.filterDict = JSON.parse(JSON.stringify(val));
-        this.fetchData();
+        this.updateURL();
       }
     },
 
@@ -168,33 +180,49 @@ export default {
       if (isRelationChanged) {
         console.log("relation fetch");
         this.relationType = newRelation;
-        this.fetchData();
+        this.updateURL();
       }
     },
 
-    updateSort(val) {
-      this.sortBy = val;
-      this.fetchData();
+    updateSearch(val) {
+      const isSearchChanged = this.searchContent === val ? false : true;
+      if (isSearchChanged) {
+        console.log("search fetch");
+        this.searchContent = val;
+        this.updateURL();
+      }
     },
 
-    updateURL() {
+    updatePageLimit(pageVal, limitVal) {
+      this.updateURL(pageVal, limitVal);
+    },
+
+    updateSort(val) {
+      const isSortChange = this.currentSort === val ? false : true;
+      if (isSortChange) {
+        console.log("sort fetch");
+        this.currentSort = val;
+        this.updateURL();
+      }
+    },
+
+    updateURL(page = this.$route.query.page, limit = this.$route.query.limit) {
       let query = {
         type: this.$route.query.type,
-        page: 1,
-        limit: this.$route.query.limit,
+        page: page,
+        limit: limit,
       };
       if (this.facetList.length > 0) {
         query.facets = this.facetList.toString();
         query.relation = this.relationType;
       }
-      // if (this.$route.query.search) {
-      //   query.search = this.$route.query.search;
-      // }
-      // if (this.$route.query.order) {
-      //   query.order = this.$route.query.order;
-      // }
+      if (this.searchContent !== "") {
+        query.search = this.searchContent;
+      }
+      query.order = this.currentSort;
+
       this.$router.push({
-        path: `${this.$route.path}`,
+        path: this.$route.path,
         query: query,
       });
     },
