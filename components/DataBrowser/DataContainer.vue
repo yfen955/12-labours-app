@@ -11,8 +11,8 @@
         </div>
         <div>
           <PaginationTool
-            :totalCount="totalCount"
             :toolType="'header'"
+            :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
           />
@@ -24,13 +24,12 @@
             :isLoadingSearch="isLoading"
             :totalCount="totalCount"
           />
-          <!-- <PaginationTool
-            :totalCount="totalCount"
+          <PaginationTool
             :toolType="'footer'"
-            v-on:page="updatePage"
-            v-on:limit="updateLimit"
+            :totalCount="totalCount"
+            v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
-          /> -->
+          />
         </div>
       </div>
     </span>
@@ -119,7 +118,7 @@ export default {
   watch: {
     "$route.query": {
       handler() {
-        console.log(this.$route);
+        console.log(this.$route.query);
         this.fetchData();
       },
     },
@@ -169,16 +168,18 @@ export default {
     },
 
     updateFilterFacet(filterVal, facetVal) {
-      const isRefreshWithFacet = Object.keys(this.filterDict).length === 0 && this.facetList.length !== 0;
+      const isRefreshWithFacet =
+        Object.keys(this.filterDict).length === 0 &&
+        this.facetList.length !== 0;
       const isFilterChanged = this.compare2Filter(this.filterDict, filterVal);
       if (isFilterChanged) {
-        console.log("filter fetch");
         this.filterDict = JSON.parse(JSON.stringify(filterVal));
         this.facetList = facetVal;
         if (isRefreshWithFacet) {
           this.fetchData();
+        } else {
+          this.updateURL(1);
         }
-        this.updateURL(1);
       }
     },
 
@@ -187,7 +188,6 @@ export default {
       const isRelationChanged =
         newRelation === this.relationType ? false : true;
       if (isRelationChanged) {
-        console.log("relation fetch");
         this.relationType = newRelation;
         this.updateURL(1);
       }
@@ -196,24 +196,18 @@ export default {
     updateSearch(val) {
       const isSearchChanged = this.searchContent === val ? false : true;
       if (isSearchChanged) {
-        console.log("search fetch");
         this.searchContent = val;
         this.updateURL(1);
       }
     },
 
     updatePageLimit(pageVal, limitVal) {
-      console.log("pageVal");
-      console.log(pageVal);
-      console.log("limitVal");
-      console.log(limitVal);
       this.updateURL(pageVal, limitVal);
     },
 
     updateOrder(val) {
       const isOrderChange = this.currentOrder === val ? false : true;
       if (isOrderChange) {
-        console.log("order fetch");
         this.currentOrder = val;
         this.updateURL(1);
       }

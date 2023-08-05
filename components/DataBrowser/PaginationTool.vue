@@ -69,6 +69,12 @@ export default {
       },
     },
 
+    "$route.query.page": {
+      handler(val) {
+        this.handlePage(val);
+      },
+    },
+
     orderBy: {
       handler() {
         this.$emit("order", this.orderBy);
@@ -80,14 +86,12 @@ export default {
     // update the page and first data
     handlePage(val) {
       const intPage = parseInt(val);
-      console.log("page change");
       this.page = intPage;
       this.$emit("page-limit", this.page, this.limit);
     },
-
+    
     handlePageSize(val, created = false) {
       const intLimit = val === "View All" ? 100 : parseInt(val);
-      console.log("limit change");
       this.limit = intLimit;
       if (!created) {
         this.handlePage(1);
