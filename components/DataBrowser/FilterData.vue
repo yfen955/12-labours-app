@@ -108,15 +108,15 @@ export default {
       handler(new_val, old_val) {
         if (new_val && old_val && new_val.length < old_val.length) {
           old_val.split(",").forEach((item) => {
-            if (new_val.indexOf(item) == -1) this.deselectFacet(item);
+            if (new_val.indexOf(item) == -1)
+              this.deselectFacet(item);
           });
-        } else if (old_val && !new_val) {
+        } else if (old_val && !new_val)
           this.deselectFacet(old_val);
-        } else if (!old_val && new_val) {
+        else if (!old_val && new_val)
           this.dataChange(this.$route.query.type);
-        } else if (new_val && old_val && new_val.length > old_val.length) {
+        else if (new_val && old_val && new_val.length > old_val.length)
           this.dataChange(this.$route.query.type);
-        }
       },
     },
     "$route.query.relation": {
@@ -163,6 +163,7 @@ export default {
       if (this.$route.query.facets) {
         this.selectedItems = this.$route.query.facets.split(",");
         let finished = false;
+        let found = false;
         for (let i = 0; i < this.selectedItems.length; i++) {
           let facet = this.selectedItems[i];
           this.filters_list.map((val) => {
@@ -180,7 +181,20 @@ export default {
                 val.isIndeterminate = true;
                 this.generateFiltersDict(val, finished);
               }
+              found = true;
             }
+              
+          });
+        }
+        if (!found) {
+          this.$router.push({
+            path: "/data/browser",
+            query: {
+              type: "dataset",
+              page: 1,
+              limit: 10,
+              access: this.$route.query.access,
+            },
           });
         }
       } else {
@@ -207,7 +221,7 @@ export default {
         await this.generateFiltersDict(filter, finished);
       }
 
-      this.updateURL();
+      this.updateURL(1);
     },
 
     handleCheckAllChange(filter, i) {
@@ -320,19 +334,20 @@ export default {
     },
 
     // update the page, selected facets & relation in the url
-    updateURL() {
+    updateURL(page) {
       let query = {
         type: this.$route.query.type,
-        page: 1,
+        page: page,
         limit: this.$route.query.limit,
       };
       if (this.selectedItems.length > 0) {
         query.facets = this.selectedItems.toString();
         query.relation = this.relation ? "and" : "or";
       }
-      if (this.$route.query.search) {
+      if (this.$route.query.search)
         query.search = this.$route.query.search;
-      }
+      if (this.$route.query.order)
+        query.order = this.$route.query.order;
       this.$router.push({
         path: `${this.$route.path}`,
         query: query,
@@ -340,7 +355,7 @@ export default {
     },
 
     handleSwitch(val) {
-      this.updateURL();
+      this.updateURL(1);
       this.$emit("relation", val);
     },
   },

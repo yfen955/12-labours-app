@@ -7,7 +7,7 @@
             <el-input
               v-model="searchContent"
               placeholder="Enter search criteria"
-              @keyup.enter.native="onSubmit"
+              @keyup.enter.native="onSubmit(1)"
             />
             <el-button
               v-if="searchContent"
@@ -16,7 +16,7 @@
               @click="clearSearch"
             />
           </div>
-          <el-button icon="el-icon-search" class="search-btn" @click="onSubmit()">
+          <el-button icon="el-icon-search" class="search-btn" @click="onSubmit(1)">
             <span class="display-ellipsis --1">Search</span>
           </el-button>
         </div>
@@ -37,7 +37,8 @@ export default {
 
   created: function() {
     this.searchContent = this.$route.query.search ? this.$route.query.search: '';
-    this.onSubmit();
+    const page = this.$route.query.page ? this.$route.query.page : 1;
+    this.onSubmit(page);
   },
 
   watch: {
@@ -52,29 +53,31 @@ export default {
           this.searchContent = val ? val : '';
         else
           this.searchContent = '';
-        this.onSubmit();
+        const page = this.$route.query.page ? this.$route.query.page : 1;
+        this.onSubmit(page);
       }
     },
   },
 
   methods: {
-    async onSubmit() {
+    async onSubmit(page) {
       this.isLoading = true;
       this.$emit('search_content', this.searchContent);
 
       // update the page and search content in the url
       let query = {
         type: this.$route.query.type,
-        page: 1,
+        page: page,
         limit: this.$route.query.limit,
       };
       if (this.$route.query.facets) {
         query.facets = this.$route.query.facets;
         query.relation = this.$route.query.relation;
       }
-      if (this.searchContent !== '') {
+      if (this.searchContent !== '')
         query.search = this.searchContent;
-      }
+      if (this.$route.query.order !== 'Published(asc)')
+        query.order = this.$route.query.order;
       this.$router.push({
         path: `${this.$route.path}`,
         query: query
@@ -85,7 +88,7 @@ export default {
 
     async clearSearch() {
       this.searchContent = '';
-      this.onSubmit();
+      this.onSubmit(1);
     }
   }
 }

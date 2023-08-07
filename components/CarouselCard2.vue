@@ -16,7 +16,7 @@
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
           <img
             v-else
-            :src="card.imageUrl"
+            :src="card.url"
             :alt="card.filename"
             @error="replaceByDefaultImage"
           />
@@ -32,14 +32,8 @@
           </p>
         </el-popover>
         <div class="card-button">
-          <el-button
-            v-if="card.type == 'Thumbnail'"
-            @click="viewThumbnail(card.imageDownload)"
-          >
-            Download
-          </el-button>
-          <el-button v-else @click="viewModel(card.type, card.id)">
-            View {{ card.type }}
+          <el-button @click="view(card.type, card.url, card.id)">
+            {{ card.type }}
           </el-button>
         </div>
       </el-card>
@@ -70,12 +64,8 @@ export default {
       error.target.src = this.imagePlaceholder;
     },
 
-    viewModel(model, uuid) {
-      this.$emit("model", model, uuid);
-    },
-
-    viewThumbnail(url) {
-      this.$emit("thumbnail", url);
+    view(type, url, uuid) {
+      this.$emit("cardInfo", type, url, uuid);
     },
   },
 
