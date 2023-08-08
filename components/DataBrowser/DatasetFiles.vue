@@ -175,7 +175,8 @@ export default {
     },
 
     showSegmentation(id) {
-      window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/${id}`, '_blank');
+      // window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/${id}`, '_blank');
+      this.$router.push({ path: "/incomplete" });
     }
   }
 }
