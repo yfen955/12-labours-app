@@ -30,7 +30,7 @@
           </div>
           <ul>
             <li
-              v-for="link in links"
+              v-for="link in headerLinks"
               :key="link.href"
               style="z-index: 100;"
               @click="openMobileNav"
@@ -45,21 +45,17 @@
               </component>
             </li>
           </ul>
-          <!-- //undo later::
-          <div class="menu-footer">
-            <footer-links menuOnly/>
-          </div>-->
         </div>
       </div>
       <div>
         <client-only>
           <div
-            v-if="$auth.loggedIn && $auth.strategy.token.status().valid()"
+            v-if="auth.loggedIn && auth.strategy.token.status().valid()"
             class="login vertical-flex status1"
           >
             <span id="welcome"
-              >Welcome {{ $auth.user.first_name }}
-              {{ $auth.user.last_name }}</span
+              >Welcome {{ auth.user.first_name }}
+              {{ auth.user.last_name }}</span
             >
             <component :is="linkComponent" to="/profile">
               <el-button>Account</el-button>
@@ -83,18 +79,23 @@
 </template>
 
 <script>
-//undo later:: import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
-//undo later:: import FooterLinks from "../../FooterLinks/src/FooterLinks.vue";
-import backendQuery from "@/services/backendQuery";
+// import TwelveLaboursLogo from "../../TwelveLaboursLogo/src/TwelveLaboursLogo.vue";
 
 export default {
   name: "TwelveLaboursHeader",
+
   props: {
-    linkComponent: {
-      type: String,
-      default: "nuxt-link",
+    auth: {
+      type: Object,
+      default: function() {
+        return {
+          loggedIn: false,
+          user: null,
+        };
+      },
     },
-    links: {
+
+    headerLinks: {
       type: Array,
       default: function() {
         return [
@@ -111,20 +112,25 @@ export default {
           {
             title: "about",
             displayTitle: "About",
-            href: `/about`,
+            href: "/about",
           },
           {
             title: "news-and-events",
             displayTitle: "News & Events",
             href: "/news-and-events",
           },
-          // {
-          //   title: "search",
-          //   displayTitle: "Search",
-          //   href: "/search"
-          // }
+          {
+            title: "search",
+            displayTitle: "Search",
+            href: "/search",
+          },
         ];
       },
+    },
+
+    linkComponent: {
+      type: String,
+      default: "nuxt-link",
     },
 
     currentPath: {
@@ -132,10 +138,11 @@ export default {
       default: "/",
     },
   },
+
   components: {
-    //undo later:: TwelveLaboursLogo,
-    //undo later:: FooterLinks
+    // TwelveLaboursLogo,
   },
+
   data: () => ({
     menuOpen: false,
     searchOpen: false,
@@ -206,14 +213,14 @@ export default {
 
   methods: {
     /* Signs out of current strategy */
-    signOut: async function() {
-      await this.$auth.logout().then(() => {
+    signOut: function() {
+      this.auth.logout().then(() => {
         this.$toast.success("Logged out of 12 Labours", {
           duration: 3000,
           position: "bottom-right",
         });
+        this.$emit("isSignOut", true);
       });
-      await backendQuery.revokeAccess(this.$config.query_api_url);
     },
 
     /**
@@ -227,6 +234,7 @@ export default {
         return false;
       }
     },
+
     /**
      * Opens the mobile version of the navigation
      */
@@ -262,7 +270,6 @@ export default {
      * Executes a search query based on selected
      * option and query
      */
-
     executeSearch: function() {
       const option = this.searchSelectOptions.find(
         (o) => o.value === this.searchSelect
@@ -291,7 +298,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-//undo later:: @import "@/assets/_variables.scss";
+// @import "@/assets/_variables.scss";
 
 .header {
   display: flex;
@@ -418,6 +425,11 @@ export default {
     width: 3rem;
     padding: 0.25rem;
   }
+}
+
+.vertical-flex {
+  display: flex;
+  flex-direction: column;
 }
 
 .login {
