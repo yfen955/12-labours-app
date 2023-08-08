@@ -12,12 +12,12 @@
       :key="card.filename"
     >
       <el-card>
-        <div class="model-image">
+        <div class="card-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
           <i v-if="card.type == 'Segmentation'" class="el-icon-first-aid-kit"></i>
           <img
             v-if="card.type !== 'Plot' && card.type !== 'Segmentation'"
-            :src="card.imageUrl"
+            :src="card.url"
             :alt="card.filename"
             @error="replaceByDefaultImage"
           />
@@ -28,29 +28,13 @@
           trigger="hover"
           :content="card.filename"
         >
-          <p slot="reference" class="model-name">
+          <p slot="reference" class="card-name">
             {{ card.filename }}
           </p>
         </el-popover>
-        <div class="model-button">
-          <el-button
-            v-if="card.type == 'Thumbnail'"
-            @click="downloadThumbnail(card.imageDownload)"
-          >
-            Download
-          </el-button>
-          <el-button
-            class="segmentation-btn"
-            v-if="card.type == 'Segmentation'"
-            @click="openSegmentation(card.id)"
-          >
-            View Segmentation
-          </el-button>
-          <el-button
-            v-if="card.type !== 'Thumbnail' && card.type !== 'Segmentation'"
-            @click="viewModel(card.type, card.id)"
-          >
-            View {{ card.type }}
+        <div class="card-button">
+          <el-button @click="view(card.type, card.url, card.id)">
+            {{ card.type }}
           </el-button>
         </div>
       </el-card>
@@ -81,23 +65,9 @@ export default {
       error.target.src = this.imagePlaceholder;
     },
 
-    viewModel(model, uuid) {
-      let route = this.$router.resolve({
-        name: `data-maps-${model.toLowerCase()}-id`,
-        params: { id: uuid },
-        query: { access: this.$route.query.access },
-      });
-      window.open(route.href);
+    view(type, url, uuid) {
+      this.$emit("cardInfo", type, url, uuid);
     },
-
-    downloadThumbnail(url) {
-      window.open(url);
-    },
-
-    openSegmentation(id) {
-      // window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/${id}`, '_blank');
-      this.$router.push({ path: "/incomplete" });
-    }
   },
 
   created() {
@@ -125,22 +95,22 @@ export default {
     margin-bottom: 0.25rem;
   }
 
-  .model-name {
+  .card-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .model-image {
+  .card-image {
     width: 10rem;
     height: 9rem;
 
     img {
-      width: 10rem;
+      width: 9rem;
     }
   }
 
-  .model-button {
+  .card-button {
     margin-top: 1rem;
   }
 
