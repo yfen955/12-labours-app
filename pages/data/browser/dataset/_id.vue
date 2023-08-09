@@ -457,7 +457,11 @@ export default {
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
-      Flatmap: { id: 1 },
+      Flatmap: [{
+        id: 1,
+        filename: "",
+        additional_metadata: null,
+      }],
       Plot: data.plots,
       Thumbnail: data.thumbnails,
       Segmentation: data.segmentations,
@@ -688,10 +692,6 @@ export default {
       }
     },
 
-    // showSegmentation() {
-    //   window.open(`http://localhost:5173/NRRD_Segmentation_Tool/#/case1`, '_blank');
-    // },
-
     // changeShowState(val) {
     //   if (val === "show_segmentation") {
     //     this.show_segmentation = !this.show_segmentation;
@@ -719,10 +719,12 @@ export default {
       } else if (type === "Scaffold" || type === "Plot") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
-          params: { id: type === "Segmentation" ? "case1" : uuid },
+          params: { id: uuid },
           query: { access: this.$route.query.access },
         });
         window.open(route.href);
+      } else if (type === "Segmentation") {
+        this.$router.push({ path: "/incomplete" });
       }
     },
   },
