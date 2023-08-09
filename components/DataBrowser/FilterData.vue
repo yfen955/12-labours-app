@@ -192,8 +192,7 @@ export default {
             query: {
               type: "dataset",
               page: 1,
-              limit: 10,
-              access: this.$route.query.access,
+              limit: 10
             },
           });
         }

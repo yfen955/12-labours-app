@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h3>Researcher Dashboard</h3>
+    <div class="dashboard-switch">
+      <h3 :class="dashboard ? 'hide-title' : ''">Researcher Dashboard</h3>
+      <el-switch
+        v-model="dashboard"
+        active-color="#D11241"
+        inactive-color="#00467F"
+      >
+      </el-switch>
+      <h3 :class="dashboard ? '' : 'hide-title'">Clinician Dashboard</h3>
+    </div>
     <div class="input-btns">
       <el-input v-model="searchContent" placeholder="Search the table" />
       <el-popover
@@ -93,7 +102,7 @@
       <el-table-column v-if="selected_columns.includes('Time')" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
       <el-table-column v-if="selected_columns.includes('Age')" prop="age" label="Age (years)" sortable></el-table-column>
       <el-table-column v-if="selected_columns.includes('Height')" prop="height" label="Height (cm)" sortable></el-table-column>
-      <el-table-column v-if="selected_columns.includes('Logs')" prop="logs" label="Logs"></el-table-column>
+      <el-table-column v-if="!dashboard && selected_columns.includes('Logs')" prop="logs" label="Logs"></el-table-column>
       <el-table-column v-if="selected_columns.includes('Actions')" label="Actions">
         <template slot-scope="scope">
           <nuxt-link :to="{
@@ -154,8 +163,8 @@ export default {
       subject_filter: [],
       searchContent: '',
       selected_columns: ['Workflow', 'Subject ID', 'Progress', 'Actions'],
-      columns_list: ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Logs', 'Actions'],
       showAll: false,
+      dashboard: false,    // if false, show researcher dashboard; if true, show clinician dashboard
     }
   },
 
@@ -187,6 +196,12 @@ export default {
         })
         return data;
       }
+    },
+    columns_list: function() {
+      if (!this.dashboard)
+        return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Logs', 'Actions'];
+      else
+        return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Actions'];
     }
   },
 
@@ -303,5 +318,16 @@ br{
 .el-dropdown-link {
   cursor: pointer;
   color: $app-primary-color;
+}
+.dashboard-switch {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .hide-title {
+    color: $lineColor1;
+  }
+  .el-switch {
+    margin: 0 1rem 0 1rem;
+  }
 }
 </style>

@@ -254,15 +254,10 @@
               <span class="display-ellipsis --1">Cite Dataset</span>
             </el-button>
           </div> -->
+          <!-- <div class="pdf-bg" v-show="show_segmentation">
+            <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
+          </div> -->
           <!-- <div>
-            <el-button @click="changeShowState('show_segmentation')">{{ show_segmentation ? "Hide Segmentation" : "View Segmentation" }}</el-button>
-            <div class="pdf-bg" v-show="show_segmentation">
-              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
-              <iframe src="https://linkungao.github.io/NRRD_Segmentation_Tool/#/" style="height: 800px; width: 90%;"></iframe>
-            </div>
-          </div>
-          <br>
-          <div>
             <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
             <div class="pdf-bg" v-show="show_pdf">
               <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
@@ -440,8 +435,8 @@ export default {
       spotlight_cards_list: [],
       cards_list: [],
       datasetImage: "",
-      show_segmentation: false,
-      show_pdf: false,
+      // show_segmentation: false,
+      // show_pdf: false,
     };
   },
 
@@ -462,6 +457,11 @@ export default {
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
+      Flatmap: [{
+        id: 1,
+        filename: "",
+        additional_metadata: null,
+      }],
       Plot: data.plots,
       Thumbnail: data.thumbnails,
       Segmentation: data.segmentations,
@@ -471,14 +471,12 @@ export default {
 
     await this.handleCitation();
 
-    this.show_segmentation = false;
-    this.show_pdf = false;
+    // this.show_pdf = false;
 
     this.isLoading = false;
   },
 
   mounted() {
-    this.show_segmentation = false;
     this.show_pdf = false;
     this.updateScroll();
   },
@@ -694,13 +692,13 @@ export default {
       }
     },
 
-    changeShowState(val) {
-      if (val === "show_segmentation") {
-        this.show_segmentation = !this.show_segmentation;
-      } else if (val === "show_pdf") {
-        this.show_pdf = !this.show_pdf;
-      }
-    },
+    // changeShowState(val) {
+    //   if (val === "show_segmentation") {
+    //     this.show_segmentation = !this.show_segmentation;
+    //   } else if (val === "show_pdf") {
+    //     this.show_pdf = !this.show_pdf;
+    //   }
+    // },
 
     updateScroll() {
       let mo = function(e) {
@@ -718,13 +716,15 @@ export default {
     viewContent(type, url, uuid) {
       if (type === "Thumbnail") {
         window.open(url);
-      } else if (type === "Scaffold" || type === "Plot") {
+      } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
           query: { access: this.$route.query.access },
         });
         window.open(route.href);
+      } else if (type === "Segmentation") {
+        this.$router.push({ path: "/incomplete" });
       }
     },
   },
