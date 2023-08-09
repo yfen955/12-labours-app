@@ -716,7 +716,7 @@ export default {
     viewContent(type, url, uuid) {
       if (type === "Thumbnail") {
         window.open(url);
-      } else if (type === "Scaffold" || type === "Plot") {
+      } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
