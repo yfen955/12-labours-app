@@ -102,7 +102,7 @@ export default {
 
   created: function() {
     if (this.$route.query.facets) {
-      this.facetList = this.$route.query.facets;
+      this.facetList = this.$route.query.facets.split(",");
       this.relationType = this.$route.query.relation;
     } else {
       this.fetchData();
@@ -167,18 +167,26 @@ export default {
       return isDifferent;
     },
 
+    compare2Facet(oldFacet, newFacet) {
+      let isDifferent = false;
+      if (newFacet.length !== oldFacet.length) {
+        isDifferent = true;
+      }
+      return isDifferent;
+    },
+
     updateFilterFacet(filterVal, facetVal) {
       const isRefreshWithFacet =
         Object.keys(this.filterDict).length === 0 &&
         this.facetList.length !== 0;
       const isFilterChanged = this.compare2Filter(this.filterDict, filterVal);
-      if (isFilterChanged) {
+      const isFacetChanged = this.compare2Facet(this.facetList, facetVal);
+      if (isFilterChanged || isFacetChanged) {
         this.filterDict = JSON.parse(JSON.stringify(filterVal));
         this.facetList = facetVal;
+        this.updateURL(isRefreshWithFacet ? this.$route.query.page : 1);
         if (isRefreshWithFacet) {
           this.fetchData();
-        } else {
-          this.updateURL(1);
         }
       }
     },
