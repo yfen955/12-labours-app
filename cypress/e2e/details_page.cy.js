@@ -5,16 +5,16 @@ describe('gallery tab', () =>{
   })
 
   it('test carousel number & thumbnail', () => {
-    cy.get('.el-carousel__item').should('have.length', 3);
-    cy.get('.model-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
+    cy.get('.el-carousel__item').should('have.length', 2);
+    cy.get('.card-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
   })
 
   it('open a scaffold in gallery', () => {
-    cy.get('.model-button').first().click();
+    cy.get('.card-button').first().click();
     cy.window().then((win) => {
       cy.stub(win, 'open').as("popup");
     })
-    cy.get('.model-button').first().click();
+    cy.get('.card-button').first().click();
     cy.get('@popup').should("be.called");
   })
 })
