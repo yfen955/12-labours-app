@@ -14,9 +14,9 @@
       <el-card>
         <div class="card-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
-          <i v-if="card.type == 'Segmentation'" class="el-icon-first-aid-kit"></i>
+          <i v-if="card.type == 'MRI'" class="el-icon-first-aid-kit"></i>
           <img
-            v-if="card.type !== 'Plot' && card.type !== 'Segmentation'"
+            v-if="card.type !== 'Plot' && card.type !== 'MRI'"
             :src="card.url"
             :alt="card.filename"
             @error="replaceByDefaultImage"

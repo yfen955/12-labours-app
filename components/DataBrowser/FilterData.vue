@@ -160,7 +160,7 @@ export default {
         this.element_list.push([]);
       }
 
-      if (this.$route.query.facets) {
+      if (this.$route.query.facets && JSON.stringify(this.allFilterDict) !== "{}") {
         this.selectedItems = this.$route.query.facets.split(",");
         let finished = false;
         let found = false;
@@ -183,7 +183,6 @@ export default {
               }
               found = true;
             }
-              
           });
         }
         if (!found) {

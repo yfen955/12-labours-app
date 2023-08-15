@@ -45,7 +45,7 @@
               <p>
                 <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <div v-if="detail_data.identifier.length > 0">
+              <div v-if="detail_data.identifier_type[0] === 'DOI'">
                 <b>DOI: </b>
                 <div
                   v-for="(item, i) in detail_data.identifier"
@@ -464,7 +464,7 @@ export default {
       }],
       Plot: data.plots,
       Thumbnail: data.thumbnails,
-      Segmentation: data.segmentations,
+      MRI: data.segmentations,
       DICOM: data.dicomImages,
     };
     this.handleCards(cardsData);
@@ -726,7 +726,7 @@ export default {
           },
         });
         window.open(route.href);
-      } else if (type === "Segmentation") {
+      } else if (type === "MRI") {
         this.$router.push({ path: "/incomplete" });
       }
     },
