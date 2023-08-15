@@ -14,8 +14,9 @@
       <el-card>
         <div class="card-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
+          <i v-if="card.type == 'Segmentation'" class="el-icon-first-aid-kit"></i>
           <img
-            v-else
+            v-if="card.type !== 'Plot' && card.type !== 'Segmentation'"
             :src="card.url"
             :alt="card.filename"
             @error="replaceByDefaultImage"
@@ -76,8 +77,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-icon-data-analysis {
-  font-size: 5rem;
+.el-icon-data-analysis, .el-icon-first-aid-kit {
+  font-size: 8rem;
 }
 
 .el-carousel__item {
@@ -111,6 +112,10 @@ export default {
 
   .card-button {
     margin-top: 1rem;
+  }
+
+  .segmentation-btn {
+    padding: 0.25rem 1rem;
   }
 }
 </style>
