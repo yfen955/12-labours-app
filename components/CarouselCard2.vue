@@ -34,7 +34,7 @@
         </el-popover>
         <div class="card-button">
           <el-button @click="view(card.type, card.url, card.id)">
-            {{ card.type }}
+            View {{ card.type }}
           </el-button>
         </div>
       </el-card>

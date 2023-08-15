@@ -10,6 +10,7 @@
               :options="options"
               :share-link="shareLink"
               @updateShareLinkRequested="updateUUID"
+              v-on:isReady="mapMounted"
             />
           </div>
         </client-only>
@@ -20,6 +21,7 @@
 
 <script>
 import { mySearch } from "./AlternateResponse.js";
+import backendQuery from "@/services/backendQuery";
 
 export default {
   name: 'MapViewer',
@@ -42,18 +44,44 @@ export default {
         queryUrl: undefined,
       },
       shareLink: undefined,
+      startingMap: "AC",
+      currentEntry: undefined,
       alternateSearch: mySearch,
     };
   },
+
   created: function() {
+    this.isLoading = true;
     this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
     this.options= {
       flatmapAPI: this.$config.flatmap_api,
       rootUrl: this.$config.portal_url,
       queryUrl: this.$config.query_api_url,
-    }
+    };
+    this.openViewWithQuery();
+    this.isLoading = false;
   },
+
   methods: {
+    fetchScaffold: async function() {
+      let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id, [this.$route.query.access]);
+      let dataset_id = data.experiments[0].submitter_id;
+      this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
+      this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
+    },
+
+    openViewWithQuery: async function () {
+      if (this.$route.query.type === 'scaffold') {
+        await this.fetchScaffold();
+        this.currentEntry = {
+          type: "Scaffold",
+          // label: "Colon",
+          url: this.url,
+          viewUrl: this.viewUrl
+        };
+      }
+    },
+
     updateUUID: function() {
       let url = this.options.sparcApi + `map/getshareid`
       let state = this.$refs.map.getState()
@@ -74,7 +102,17 @@ export default {
             }
           )
         })
-    }
+    },
+
+    currentEntryUpdated: function () {
+      if (this.$refs.map && this.currentEntry) {
+        this.$refs.map.setCurrentEntry(this.currentEntry);
+      }
+    },
+    
+    mapMounted: function () {
+      this.currentEntryUpdated();
+    },
   }
 }
 </script>

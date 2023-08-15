@@ -718,9 +718,12 @@ export default {
         window.open(url);
       } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
         const route = this.$router.resolve({
-          name: `data-maps-${type.toLowerCase()}-id`,
-          params: { id: uuid },
-          query: { access: this.$route.query.access },
+          name: `data-maps`,
+          query: {
+            type: type.toLowerCase(),
+            id: uuid,
+            access: this.$route.query.access
+          },
         });
         window.open(route.href);
       } else if (type === "Segmentation") {
