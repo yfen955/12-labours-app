@@ -44,14 +44,57 @@ export default {
         queryUrl: undefined,
       },
       shareLink: undefined,
-      startingMap: "AC",
       currentEntry: undefined,
+      flatmap_dict: {
+        "Cat": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9685',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Human Male": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9606',
+          biologicalSex: "PATO:0000384",
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Human Female": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9606',
+          biologicalSex: "PATO:0000383",
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Mouse": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:10090',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Pig": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9823',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Rat": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:10114',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+      },
+      
       alternateSearch: mySearch,
     };
   },
 
   created: function() {
-    this.isLoading = true;
     this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
     this.options= {
       flatmapAPI: this.$config.flatmap_api,
@@ -59,7 +102,6 @@ export default {
       queryUrl: this.$config.query_api_url,
     };
     this.openViewWithQuery();
-    this.isLoading = false;
   },
 
   methods: {
@@ -79,6 +121,8 @@ export default {
           url: this.url,
           viewUrl: this.viewUrl
         };
+      } else if (this.$route.query.type === 'flatmap') {
+        this.currentEntry = this.flatmap_dict[this.$route.query.id];
       }
     },
 

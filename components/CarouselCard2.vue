@@ -8,8 +8,8 @@
   >
     <el-carousel-item
       v-show="dataShowed.length > 0"
-      v-for="card in dataShowed"
-      :key="card.filename"
+      v-for="card, i in dataShowed"
+      :key="i"
     >
       <el-card>
         <div class="card-image">

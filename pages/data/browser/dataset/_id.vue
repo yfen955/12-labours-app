@@ -435,6 +435,13 @@ export default {
       spotlight_cards_list: [],
       cards_list: [],
       datasetImage: "",
+      species_dict: {
+        "Felis catus": "Cat",
+        "Homo sapiens": "Human",
+        "Mus musculus": "Mouse",
+        "Sus scrofa": "Pig",
+        "Rattus norvegicus": "Rat",
+      },
       // show_segmentation: false,
       // show_pdf: false,
     };
@@ -454,14 +461,13 @@ export default {
     this.scaffold_view_data = data.scaffoldViews;
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
+    let flatmap_data = [];
+    if (data.cases.length > 0)
+      flatmap_data = this.handleSpecies(data.cases);
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
-      Flatmap: [{
-        id: 1,
-        filename: "",
-        additional_metadata: null,
-      }],
+      Flatmap: flatmap_data,
       Plot: data.plots,
       Thumbnail: data.thumbnails,
       MRI: data.segmentations,
@@ -471,8 +477,8 @@ export default {
 
     await this.handleCitation();
 
-    // this.show_pdf = false;
 
+    // this.show_pdf = false;
     this.isLoading = false;
   },
 
@@ -730,6 +736,29 @@ export default {
         this.$router.push({ path: "/incomplete" });
       }
     },
+
+    handleSpecies(cases) {
+      let species_list = [];
+      const all_species = Object.keys(this.species_dict);
+      cases.forEach((item) => {
+        let species = this.species_dict[item.species];
+        if (all_species.indexOf(item.species) !== -1) {
+          if (species === "Human")
+            species = `${species} ${item.sex}`;
+          if (species_list.indexOf(species) === -1)
+            species_list.push(species);
+        }
+      })
+      let flatmap_data = [];
+      species_list.forEach((item) => {
+        flatmap_data.push({
+          id: item,
+          filename: item,
+          additional_metadata: null,
+        })
+      })
+      return flatmap_data;
+    }
   },
 };
 </script>
