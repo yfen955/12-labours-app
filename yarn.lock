@@ -5863,6 +5863,15 @@ duplexify@^3.4.2, duplexify@^3.4.5, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+dwv@0.31.2:
+  version "0.31.2"
+  resolved "https://registry.yarnpkg.com/dwv/-/dwv-0.31.2.tgz#4c64d6784a5eaed0ad0f8c8f45e0991dab5b5888"
+  integrity sha512-vrB+lJpILElvMc5qCrEcd9dE+SOw9sMBYajgvBZMKZXw6Zcw572IIVn+jC2p4eR0yuMKR3YbQa64swX8wSPObw==
+  dependencies:
+    jszip "~3.7.0"
+    konva "~8.3.0"
+    magic-wand-tool "~1.1.7"
+
 earcut@^2.1.5, earcut@^2.2.2, earcut@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/earcut/-/earcut-2.2.4.tgz"
@@ -8219,6 +8228,11 @@ image-size@^0.7.5:
   resolved "https://registry.npmjs.org/image-size/-/image-size-0.7.5.tgz"
   integrity sha512-Hiyv+mXHfFEP7LzUL/llg9RwFxxY+o9N3JVLIeG5E7iFIFAalxvRU9UZthBdYDEVnzHMgjnKJPPpay5BWf1g9g==
 
+immediate@~3.0.5:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
+  integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/import-cwd/-/import-cwd-2.1.0.tgz"
@@ -9547,6 +9561,16 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
+jszip@~3.7.0:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.7.1.tgz#bd63401221c15625a1228c556ca8a68da6fda3d9"
+  integrity sha512-ghL0tz1XG9ZEmRMcEN2vt7xabrDdqHHeykgARpmZ0BiIctWxM47Vt63ZO2dnp4QYt/xJVLLy5Zv1l/xRdh2byg==
+  dependencies:
+    lie "~3.3.0"
+    pako "~1.0.2"
+    readable-stream "~2.3.6"
+    set-immediate-shim "~1.0.1"
+
 jwa@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/jwa/-/jwa-2.0.0.tgz"
@@ -9615,6 +9639,11 @@ klona@^2.0.4:
   resolved "https://registry.npmjs.org/klona/-/klona-2.0.4.tgz"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
+konva@~8.3.0:
+  version "8.3.14"
+  resolved "https://registry.yarnpkg.com/konva/-/konva-8.3.14.tgz#691ecb6f4568c58818359af369f03e7438ea3640"
+  integrity sha512-6I/TZppgY3Frs//AvZ87YVQLFxLywitb8wLS3qMM+Ih9e4QcB5Yy8br6eq7DdUzxPdbsYTz1FQBHzNxs08M1Tw==
+
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/last-call-webpack-plugin/-/last-call-webpack-plugin-3.0.0.tgz"
@@ -9667,6 +9696,13 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lie@~3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/lie/-/lie-3.3.0.tgz#dcf82dee545f46074daf200c7c1c5a08e0f40f6a"
+  integrity sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==
+  dependencies:
+    immediate "~3.0.5"
 
 listr2@^3.8.3:
   version "3.14.0"
@@ -9852,6 +9888,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+magic-wand-tool@~1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/magic-wand-tool/-/magic-wand-tool-1.1.7.tgz#c1d49c5f26307bec06eb8c6ac51e03fff5b9d61b"
+  integrity sha512-S4rHzCs/bAp7nhQGKeg+McWuqrdyZKpnu8Ahd8AU7NzuLTm/Hh8tkpv1tW91Kmm59foIrXzip1d+P9NDoyxrZA==
 
 make-dir@^1.0.0:
   version "1.3.0"
@@ -11124,7 +11165,7 @@ pad-left@^1.0.2:
   dependencies:
     repeat-string "^1.3.0"
 
-pako@~1.0.5:
+pako@~1.0.2, pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.npmjs.org/pako/-/pako-1.0.11.tgz"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
@@ -13418,6 +13459,11 @@ set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/set-blocking/-/set-blocking-2.0.0.tgz"
   integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
+
+set-immediate-shim@~1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
+  integrity sha512-Li5AOqrZWCVA2n5kryzEmqai6bKSIvpz5oUJHPVj6+dsbD3X1ixtsY5tEnsaNpH3pFAHmG8eIHUrtEtohrg+UQ==
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"

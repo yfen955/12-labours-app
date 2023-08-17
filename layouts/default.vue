@@ -47,6 +47,11 @@ export default {
         //   displayTitle: "Search",
         //   href: "/search",
         // },
+        {
+          title: "dicom",
+          displayTitle: "Dicom",
+          href: "/dicom",
+        },
       ],
       footerLogo: require('../static/img/12-labours-logo-primary.png'),
       footerLinks: [
