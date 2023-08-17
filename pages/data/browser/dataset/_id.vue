@@ -722,7 +722,7 @@ export default {
     viewContent(type, url, uuid) {
       if (type === "Thumbnail") {
         window.open(url);
-      } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
+      } else if (type === "Scaffold" || type === "Flatmap") {
         const route = this.$router.resolve({
           name: `data-maps`,
           query: {
@@ -730,6 +730,13 @@ export default {
             id: uuid,
             access: this.$route.query.access
           },
+        });
+        window.open(route.href);
+      } else if (type === "Plot") {
+        const route = this.$router.resolve({
+          name: `data-maps-${type.toLowerCase()}-id`,
+          params: { id: uuid },
+          query: { access: this.$route.query.access },
         });
         window.open(route.href);
       } else if (type === "MRI") {

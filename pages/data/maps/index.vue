@@ -270,6 +270,10 @@ export default {
   .el-switch__label.is-active {
     color: $app-primary-color !important;
   }
+
+  .time-slider-container .el-row {
+    margin-bottom: 1rem !important;
+  }
 }
 .pagination ul.el-pager li.number.active {
   background: $app-primary-color !important;

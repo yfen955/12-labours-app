@@ -19,7 +19,6 @@
 
 <script>
 import CopyLink from "../../../../components/Map/copyLink";
-import '@abi-software/scaffoldvuer/dist/scaffoldvuer.css';
 import backendQuery from "@/services/backendQuery";
 
 export default {
@@ -59,20 +58,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .model-container {
-//   border: 1px solid #E4E7ED;
-//   min-width: 15rem;
-// }
-// .model-title {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   @media only screen and (max-width: $viewport-sm) {
-//     flex-direction: column;
-//   }
-//   margin: 1rem 2rem 1rem 2rem;
-// }
-.plot-container {
-  height: 70vh;
+.model-container .plot-container {
+  height: 80vh;
 }
 </style>
