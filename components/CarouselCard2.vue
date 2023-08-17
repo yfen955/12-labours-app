@@ -8,15 +8,15 @@
   >
     <el-carousel-item
       v-show="dataShowed.length > 0"
-      v-for="card in dataShowed"
-      :key="card.filename"
+      v-for="card, i in dataShowed"
+      :key="i"
     >
       <el-card>
         <div class="card-image">
           <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
-          <i v-if="card.type == 'Segmentation'" class="el-icon-first-aid-kit"></i>
+          <i v-if="card.type == 'MRI'" class="el-icon-first-aid-kit"></i>
           <img
-            v-if="card.type !== 'Plot' && card.type !== 'Segmentation'"
+            v-if="card.type !== 'Plot' && card.type !== 'MRI'"
             :src="card.url"
             :alt="card.filename"
             @error="replaceByDefaultImage"
@@ -34,7 +34,7 @@
         </el-popover>
         <div class="card-button">
           <el-button @click="view(card.type, card.url, card.id)">
-            {{ card.type }}
+            View {{ card.type }}
           </el-button>
         </div>
       </el-card>
