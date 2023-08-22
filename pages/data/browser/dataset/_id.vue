@@ -212,6 +212,7 @@
           >
             <carousel-card2
               :cards="cards_list"
+              :all_models="all_models"
               v-if="!isLoading"
               @cardInfo="viewContent"
             />
@@ -434,6 +435,7 @@ export default {
       apaCitation: [],
       spotlight_cards_list: [],
       cards_list: [],
+      all_models: undefined,
       datasetImage: "",
       species_dict: {
         "Felis catus": "Cat",
@@ -642,9 +644,11 @@ export default {
     handleCards(allCards) {
       this.spotlight_cards_list = [];
       this.cards_list = [];
+      let model_set = new Set();
       for (const cardType in allCards) {
         const cards = allCards[cardType];
         cards.forEach((element) => {
+          model_set.add(cardType);
           const card = {
             type: cardType,
             url:
@@ -673,6 +677,7 @@ export default {
           }
         });
       }
+      this.all_models = model_set;
       this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
     },
 
