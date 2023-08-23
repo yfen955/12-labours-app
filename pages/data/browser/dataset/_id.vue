@@ -450,7 +450,7 @@ export default {
   },
 
   created: async function() {
-    const data = await backendQuery.fetchQueryData(
+    let {data, facet} = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
@@ -478,7 +478,6 @@ export default {
     this.handleCards(cardsData);
 
     await this.handleCitation();
-
 
     // this.show_pdf = false;
     this.isLoading = false;
@@ -728,13 +727,16 @@ export default {
       if (type === "Thumbnail") {
         window.open(url);
       } else if (type === "Scaffold" || type === "Flatmap") {
+        let query = {
+          type: type.toLowerCase(),
+          id: uuid,
+          access: this.$route.query.access,
+        }
+        if (type === "Scaffold")
+          query.dataset_id = this.$route.params.id;
         const route = this.$router.resolve({
           name: `data-maps`,
-          query: {
-            type: type.toLowerCase(),
-            id: uuid,
-            access: this.$route.query.access
-          },
+          query: query
         });
         window.open(route.href);
       } else if (type === "Plot") {

@@ -1,15 +1,37 @@
-describe('gallery tab', () =>{
-  beforeEach(function () {
-    cy.visit('/data/browser/dataset/dataset-102-version-4?datasetTab=gallery&access=demo1-12L');
+describe('test details page', () =>{
+  it('test left column button', () => {
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=abstract&access=demo1-12L');
     cy.wait(3000);
+    cy.contains('Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig');
+    cy.get("#datasetBrowser").click();
+    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=10');
   })
 
-  it('test carousel number & thumbnail', () => {
-    cy.get('.el-carousel__item').should('have.length', 1);
-    cy.get('.card-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
-  })
+  it('test the gallery', () => {
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=gallery&access=demo1-12L');
+    cy.wait(3000);
 
-  it('open a scaffold in gallery', () => {
+    cy.get('.el-carousel__item').should('have.length', 5);
+    cy.get('.card-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg`);
+    
+    // test the checkbox
+    cy.get('.el-checkbox').should('have.length', 4);
+    cy.get('.el-checkbox-group').find('.el-checkbox').first().click();
+    cy.get('.el-checkbox').find('.is-checked').should('have.length', 2);
+    cy.get('.el-carousel__item').should('have.length', 2);
+    cy.get('.el-checkbox').find('.is-indeterminate').should('have.length', 1);
+    cy.get('.el-carousel__item').find('p').should('not.have.value', 'Scaffold');
+
+    cy.get('.el-checkbox-group').find('.el-checkbox').first().click();
+    cy.get('.el-checkbox').find('.is-checked').should('have.length', 4);
+    cy.get('.el-carousel__item').should('have.length', 5);
+
+    cy.get('.el-checkbox').first().click();
+    cy.get('.el-checkbox').find('.is-checked').should('have.length', 0);
+    cy.get('.el-carousel__item').should('have.length', 0);
+    cy.get('.el-checkbox').first().click();
+
+    // test open a scaffold in gallery
     cy.get('.card-button').first().click();
     cy.window().then((win) => {
       cy.stub(win, 'open').as("popup");
@@ -17,30 +39,44 @@ describe('gallery tab', () =>{
     cy.get('.card-button').first().click();
     cy.get('@popup').should("be.called");
   })
-})
 
-describe('information in the duke dataset detail page', () =>{
-  beforeEach(function () {
-    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite&access=demo1-12L');
+  it('test dataset files', () => {
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=files&access=demo1-12L');
     cy.wait(3000);
+
+    cy.get('a').filter(':contains("Code")').click();
+    cy.get('.el-breadcrumb').last().find('span').filter(':contains("files")').first().click();
+    cy.get('a').should('contain', 'Code');
+
+    cy.window().document().then(function (doc) {
+      doc.addEventListener('click', () => {
+        setTimeout(function () { doc.location.reload() })
+      })
+      cy.intercept('GET', `${Cypress.env('query_url')}/data/download/dataset-34-version-5/dataset_description.json`);
+      cy.get('.el-button').find('.el-icon-download').first().click();
+    });
+
+    cy.get('.el-button').find('.el-icon-first-aid-kit').first().click();
+    cy.url().should('include', '/incomplete');
   })
-
-  it('test left column button', () => {
-    cy.contains('Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
-    cy.get("#datasetBrowser").click();
-    cy.url().should('include', '/data/browser?type=dataset&page=1&limit=10');
-  })
-
-  // it('test citation & copy button', () => {
-  //   cy.get("#copy-btn").click();
-  //   cy.contains('copied');
-  // })
-
-  // it('test doi link', () => {
-  //   cy.contains("https://wiki.cancerimagingarchive.net/");
-  //   cy.get('a[href="https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903"]').should('have.attr', 'target', '_blank').invoke('removeAttr', 'target').click();
-  //   cy.on('url:changed', url => {
-  //     cy.contains(url, "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903");
-  //   })
-  // })
 })
+
+// describe('information in the duke dataset detail page', () =>{
+//   beforeEach(function () {
+//     cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite&access=demo1-12L');
+//     cy.wait(3000);
+//   })
+
+//   it('test citation & copy button', () => {
+//     cy.get("#copy-btn").click();
+//     cy.contains('copied');
+//   })
+
+//   it('test doi link', () => {
+//     cy.contains("https://wiki.cancerimagingarchive.net/");
+//     cy.get('a[href="https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903"]').should('have.attr', 'target', '_blank').invoke('removeAttr', 'target').click();
+//     cy.on('url:changed', url => {
+//       cy.contains(url, "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903");
+//     })
+//   })
+// })
