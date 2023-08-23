@@ -23,7 +23,7 @@
     </div>
 
     <div class="table">
-      <el-table v-if="searched.length > 0" :data="searched" height="400">
+      <el-table v-if="searched.length > 0" :data="searched" height="500">
         <el-table-column label="Name" prop="name" min-width="300">
         </el-table-column>
         <el-table-column label="Value" prop="value" min-width="300">
@@ -33,7 +33,7 @@
         v-else
         :data="[{ empty: `No tags found for this ${search} query.` }]"
         style="width: 100%"
-        height="400"
+        height="500"
       >
         <el-table-column label="Empty" prop="empty" min-width="600">
         </el-table-column>
@@ -123,7 +123,7 @@ const getTagReducer = (tagData, instanceNumber, prefix) => {
 
 export default {
   name: "TagsTable",
-  props: ["tagsData"],
+  props: ["tagsData", "instance"],
   data: () => ({
     search: null,
     searched: [],
@@ -131,6 +131,13 @@ export default {
     sliderMax: undefined,
     instanceNumber: undefined,
   }),
+  watch: {
+    instance: {
+      handler() {
+        this.onSliderChange(this.instance);
+      },
+    },
+  },
   methods: {
     searchOnTable() {
       const metaArray = getMetaArray(this.tagsData, this.instanceNumber);

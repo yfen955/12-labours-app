@@ -50,7 +50,11 @@
     <div id="layerGroup0"></div>
 
     <!-- dicom tags table-->
-    <tagsTable v-if="metaData !== null" :tagsData="metaData" />
+    <tagsTable
+      v-if="metaData !== null"
+      :tagsData="metaData"
+      :instance="instanceNumber"
+    />
   </div>
 </template>
 
@@ -162,6 +166,7 @@ export default {
       dwv: null,
       loadFromOrthanc: false,
       dicom: [],
+      instanceNumber: 0,
     };
     res.toolNames = Object.keys(res.tools);
     return res;
@@ -268,6 +273,9 @@ export default {
         });
         this.dwvApp.addEventListener("loadabort", (/*event*/) => {
           ++nReceivedLoadAbort;
+        });
+        this.dwvApp.addEventListener("positionchange", (event) => {
+          this.instanceNumber = event.value[0][2];
         });
         // handle key events
         this.dwvApp.addEventListener("keydown", (event) => {
@@ -514,15 +522,15 @@ export default {
 /* Layers */
 ::v-deep .layerGroup {
   display: inline-block;
-  height: 300px;
-  width: max(30%, 300px);
-  margin: 5px;
+  height: 250px;
+  width: 250px;
+  margin: 10px;
   /* allow child centering */
   position: relative;
-}
-::v-deep canvas {
-  /* avoid parent auto-resize */
-  vertical-align: middle;
+  canvas {
+    /* avoid parent auto-resize */
+    vertical-align: middle;
+  }
 }
 
 /* drag&drop */
