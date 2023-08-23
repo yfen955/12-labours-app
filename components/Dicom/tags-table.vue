@@ -1,47 +1,45 @@
 <template>
-  <client-only placeholder="Loading Dicom Viewer ...">
-    <div>
-      <div class="toolbar">
-        <div class="name">
-          <h1>DICOM Tags</h1>
-        </div>
-        <div class="search">
-          <el-input
-            v-model="search"
-            placeholder="Type to search"
-            @input="searchOnTable"
-          />
-        </div>
-        <div class="slider">
-          <el-slider
-            :disabled="sliderMin === sliderMax ? true : false"
-            :min="sliderMin"
-            :max="sliderMax"
-            v-model="instanceNumber"
-            @input="onSliderChange"
-          />
-        </div>
+  <div>
+    <div class="toolbar">
+      <div class="name">
+        <h1>DICOM Tags</h1>
       </div>
-
-      <div class="toolbar">
-        <el-table v-if="searched.length > 0" :data="searched" height="500">
-          <el-table-column label="Name" prop="name" min-width="300">
-          </el-table-column>
-          <el-table-column label="Value" prop="value" min-width="300">
-          </el-table-column>
-        </el-table>
-        <el-table
-          v-else
-          :data="[{ empty: `No tags found for this ${search} query.` }]"
-          style="width: 100%"
-          height="500"
-        >
-          <el-table-column label="Empty" prop="empty" min-width="600">
-          </el-table-column>
-        </el-table>
+      <div class="search">
+        <el-input
+          v-model="search"
+          placeholder="Type to search"
+          @input="searchOnTable"
+        />
+      </div>
+      <div class="slider">
+        <el-slider
+          :disabled="sliderMin === sliderMax ? true : false"
+          :min="sliderMin"
+          :max="sliderMax"
+          v-model="instanceNumber"
+          @input="onSliderChange"
+        />
       </div>
     </div>
-  </client-only>
+
+    <div class="table">
+      <el-table v-if="searched.length > 0" :data="searched" height="400">
+        <el-table-column label="Name" prop="name" min-width="300">
+        </el-table-column>
+        <el-table-column label="Value" prop="value" min-width="300">
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-else
+        :data="[{ empty: `No tags found for this ${search} query.` }]"
+        style="width: 100%"
+        height="400"
+      >
+        <el-table-column label="Empty" prop="empty" min-width="600">
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script>

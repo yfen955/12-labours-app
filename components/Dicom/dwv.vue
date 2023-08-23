@@ -1,67 +1,57 @@
 <template>
-  <client-only placeholder="Loading Dicom Viewer ...">
-    <div id="dwv">
-      <el-progress :show-text="false" :percentage="loadProgress" />
-      <div class="button-row">
-        <!-- action buttons -->
-        <el-button
-          type="primary"
-          v-for="tool in toolNames"
-          :key="tool"
-          :id="tool"
-          :title="tool"
-          v-on:click="onChangeTool(tool)"
-          :disabled="!dataLoaded || !canRunTool(tool)"
-          :icon="getToolIcon(tool)"
-          circle
-        />
+  <div id="dwv">
+    <el-progress :show-text="false" :percentage="loadProgress" />
+    <div class="button-row">
+      <!-- action buttons -->
+      <el-button
+        type="primary"
+        v-for="tool in toolNames"
+        :key="tool"
+        :id="tool"
+        :title="tool"
+        v-on:click="onChangeTool(tool)"
+        :disabled="!dataLoaded || !canRunTool(tool) || tool === 'Draw'"
+        :icon="getToolIcon(tool)"
+        circle
+      />
 
-        <el-button
-          type="primary"
-          title="Reset"
-          v-on:click="onReset()"
-          :disabled="!dataLoaded"
-          icon="el-icon-refresh-right"
-          circle
-        />
+      <el-button
+        type="primary"
+        title="Reset"
+        v-on:click="onReset()"
+        :disabled="!dataLoaded"
+        icon="el-icon-refresh-right"
+        circle
+      />
 
-        <el-button
-          type="primary"
-          title="Toggle Orientation"
-          v-on:click="toggleOrientation()"
-          :disabled="!dataLoaded"
-          icon="el-icon-camera"
-          circle
-        />
+      <el-button
+        type="primary"
+        title="Toggle Orientation"
+        v-on:click="toggleOrientation()"
+        :disabled="!dataLoaded || mode !== 0"
+        icon="el-icon-camera"
+        circle
+      />
 
-        <el-button
-          type="primary"
-          title="Tags"
-          v-on:click="showDicomTags = true"
-          :disabled="!dataLoaded"
-          icon="el-icon-document"
-          circle
-        />
-        <!-- dicom tags dialog-->
-        <el-dialog :show-close="false" :visible.sync="showDicomTags">
-          <tagsTable :tagsData="metaData" />
-        </el-dialog>
-      </div>
+      <el-button
+        type="primary"
+        title="Mode"
+        v-on:click="onChangeDataView()"
+        :disabled="!dataLoaded"
+        :icon="mode === 0 ? 'el-icon-turn-off' : 'el-icon-open'"
+        circle
+      />
 
-      <div id="layerGroup0" class="layerGroup">
+      <div class="dropBox0">
         <div id="dropBox"></div>
       </div>
-      <!-- <div>
-        <p>
-          Powered by
-          <a href="https://github.com/ivmartel/dwv" title="dwv on github">dwv</a>
-          {{ versions.dwv }} and
-          <a href="https://github.com/vuejs/vue" title="vue on github">Vue.js</a>
-          {{ versions.vue }}
-        </p>
-      </div> -->
     </div>
-  </client-only>
+
+    <div id="layerGroup0"></div>
+
+    <!-- dicom tags table-->
+    <tagsTable v-if="metaData !== null" :tagsData="metaData" />
+  </div>
 </template>
 
 <script>
@@ -79,10 +69,67 @@ Vue.use(Button);
 Vue.use(Dialog);
 
 // import
-// import dwv from 'dwv'
 import tagsTable from "./tags-table";
 
 // gui overrides
+
+/**
+ * Append a layer div in the root 'dwv' one.
+ *
+ * @param {string} id The id of the layer.
+ */
+const addLayerGroup = (id) => {
+  const layerDiv = document.createElement("div");
+  layerDiv.id = id;
+  layerDiv.className = "layerGroup";
+  const root = document.getElementById("layerGroup0");
+  root.appendChild(layerDiv);
+};
+
+/**
+ * Create simple view config(s).
+ *
+ * @returns {object} The view config.
+ */
+const prepareAndGetSimpleDataViewConfig = () => {
+  // clean up
+  const dwvDiv = document.getElementById("layerGroup0");
+  dwvDiv.innerHTML = "";
+  // add divs
+  addLayerGroup("layerGroupACS");
+  return { "*": [{ divId: "layerGroupACS" }] };
+};
+
+/**
+ * Create MPR view config(s).
+ *
+ * @returns {object} The view config.
+ */
+const prepareAndGetMPRDataViewConfig = () => {
+  // clean up
+  const dwvDiv = document.getElementById("layerGroup0");
+  dwvDiv.innerHTML = "";
+  // add divs
+  addLayerGroup("layerGroupA");
+  addLayerGroup("layerGroupC");
+  addLayerGroup("layerGroupS");
+  return {
+    "*": [
+      {
+        divId: "layerGroupA",
+        orientation: "axial",
+      },
+      {
+        divId: "layerGroupC",
+        orientation: "coronal",
+      },
+      {
+        divId: "layerGroupS",
+        orientation: "sagittal",
+      },
+    ],
+  };
+};
 
 export default {
   name: "dwv-vue",
@@ -91,10 +138,6 @@ export default {
   },
   data: function() {
     let res = {
-      // versions: {
-      //   dwv: dwv.getVersion(),
-      //   vue: Vue.version
-      // },
       dwvApp: null,
       tools: {
         Scroll: {},
@@ -104,32 +147,34 @@ export default {
           options: ["Ruler"],
         },
       },
-
+      mode: 0,
+      dataViewConfigs: null,
+      viewOnFirstLoadItem: true,
       selectedTool: "Select Tool",
       loadProgress: 0,
       dataLoaded: false,
       metaData: null,
       orientation: undefined,
-      showDicomTags: false,
       dropboxDivId: "dropBox",
       dropboxClassName: "dropBox",
       borderClassName: "dropBoxBorder",
       hoverClassName: "hover",
-      folderPath: null,
+      dwv: null,
+      loadFromOrthanc: false,
       dicom: [],
     };
     res.toolNames = Object.keys(res.tools);
     return res;
   },
-  // created() {
-  //   if (window.location.pathname !== '/') {
-  //     this.folderPath = window.location.pathname
-  //   }
-  // },
+  created() {
+    if (this.$route.query.id) {
+      this.loadFromOrthanc = true;
+    }
+  },
   mounted() {
-    // create app
     if (process.client) {
       import("dwv").then((dwv) => {
+        this.dwv = dwv;
         // Image decoders (for web workers)
         dwv.image.decoderScripts = {
           jpeg2000: "assets/dwv/decoders/pdfjs/decode-jpeg2000.js",
@@ -137,13 +182,24 @@ export default {
           "jpeg-baseline": "assets/dwv/decoders/pdfjs/decode-jpegbaseline.js",
           rle: "assets/dwv/decoders/dwv/decode-rle.js",
         };
-        
+        if (this.mode === 0) {
+          // simplest: one layer group
+          this.dataViewConfigs = prepareAndGetSimpleDataViewConfig();
+        } else if (this.mode === 1) {
+          // MPR
+          this.viewOnFirstLoadItem = false;
+          this.dataViewConfigs = prepareAndGetMPRDataViewConfig();
+        }
+        // app config
+        const config = {
+          dataViewConfigs: this.dataViewConfigs,
+          tools: this.tools,
+          viewOnFirstLoadItem: this.viewOnFirstLoadItem,
+        };
+        // create app
         this.dwvApp = new dwv.App();
         // initialise app
-        this.dwvApp.init({
-          dataViewConfigs: { "*": [{ divId: "layerGroup0" }] },
-          tools: this.tools,
-        });
+        this.dwvApp.init(config);
         // handle load events
         let nLoadItem = null;
         let nReceivedLoadError = null;
@@ -160,24 +216,19 @@ export default {
           this.showDropbox(false);
         });
         this.dwvApp.addEventListener("loadprogress", (event) => {
-          this.loadProgress = event.loaded;
-        });
-        this.dwvApp.addEventListener("renderend", (/*event*/) => {
-          if (isFirstRender) {
-            isFirstRender = false;
-            // available tools
-            let selectedTool = "ZoomAndPan";
-            if (this.dwvApp.canScroll()) {
-              selectedTool = "Scroll";
-            }
-            this.onChangeTool(selectedTool);
+          if (this.loadFromOrthanc) {
+            this.loadProgress = event.loaded * 2;
+          } else {
+            this.loadProgress = event.loaded;
           }
         });
         this.dwvApp.addEventListener("load", (/*event*/) => {
-          // set dicom tags
-          this.metaData = this.dwvApp.getMetaData(0);
-          // set data loaded flag
-          this.dataLoaded = true;
+          if (!this.viewOnFirstLoadItem) {
+            // render data
+            for (let i = 0; i < this.dwvApp.getNumberOfLoadedData(); ++i) {
+              this.dwvApp.render(i);
+            }
+          }
         });
         this.dwvApp.addEventListener("loadend", (/*event*/) => {
           if (nReceivedLoadError) {
@@ -193,6 +244,20 @@ export default {
             alert("Load was aborted.");
             this.showDropbox(true);
           }
+          // set dicom tags
+          this.metaData = this.dwvApp.getMetaData(0);
+          // set data loaded flag
+          this.dataLoaded = true;
+
+          if (isFirstRender) {
+            isFirstRender = false;
+            // available tools
+            let selectedTool = "ZoomAndPan";
+            if (this.dwvApp.canScroll()) {
+              selectedTool = "Scroll";
+            }
+            this.onChangeTool(selectedTool);
+          }
         });
         this.dwvApp.addEventListener("loaditem", (/*event*/) => {
           ++nLoadItem;
@@ -204,37 +269,27 @@ export default {
         this.dwvApp.addEventListener("loadabort", (/*event*/) => {
           ++nReceivedLoadAbort;
         });
-
         // handle key events
         this.dwvApp.addEventListener("keydown", (event) => {
           this.dwvApp.defaultOnKeydown(event);
         });
-        // handle window resize
-        window.addEventListener("resize", this.dwvApp.onResize);
-
-        if (this.folderPath) {
-          this.onUrl();
+        // // handle window resize
+        // window.addEventListener('resize', function () {
+        //   this.dwvApp.onResize()
+        // })
+        if (this.loadFromOrthanc) {
+          // load dicom files from url path
+          this.setupDICOMPath();
         } else {
           // setup drop box
           this.setupDropbox();
         }
-
         // possible load from location
         dwv.utils.loadFromUri(window.location.href, this.dwvApp);
       });
     }
   },
   methods: {
-    getDICOMFile: async function() {
-      const queryPath = process.env.VUE_APP_QUERY + "/collection";
-      await axios.post(queryPath, { path: this.folderPath }).then((res) => {
-        res.data.files.forEach((element) => {
-          const dicomPath =
-            process.env.VUE_APP_QUERY + "/data/preview" + element.path;
-          this.dicom.push(dicomPath);
-        });
-      });
-    },
     getToolIcon: function(tool) {
       var res;
       if (tool === "Scroll") {
@@ -294,7 +349,7 @@ export default {
       const config = {
         "*": [
           {
-            divId: "layerGroup0",
+            divId: "layerGroupACS",
             orientation: this.orientation,
           },
         ],
@@ -312,6 +367,51 @@ export default {
     },
     onReset: function() {
       this.dwvApp.resetDisplay();
+    },
+    onChangeDataView: function() {
+      if (this.mode === 0) {
+        // MPR
+        this.dataViewConfigs = prepareAndGetMPRDataViewConfig();
+        this.mode = 1;
+      } else if (this.mode === 1) {
+        // simplest: one layer group
+        this.dataViewConfigs = prepareAndGetSimpleDataViewConfig();
+        this.mode = 0;
+      }
+      // set config
+      this.dwvApp.setDataViewConfig(this.dataViewConfigs);
+      // render data
+      for (var i = 0; i < this.dwvApp.getNumberOfLoadedData(); ++i) {
+        this.dwvApp.render(i);
+      }
+      const propList = ["WindowLevel", "Position", "Zoom", "Offset", "Opacity"];
+      const binders = [];
+      // add all binders when use mpr view
+      for (var b = 0; b < propList.length; ++b) {
+        binders.push(new this.dwv.gui[propList[b] + "Binder"]());
+      }
+      this.dwvApp.setLayerGroupsBinders(binders);
+    },
+    setupDICOMPath: async function() {
+      const queryPath = `${process.env.VUE_APP_QUERY}/instance`;
+      const payload = {
+        study:
+          // replace by studyInstanceUID
+          "1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538",
+        series:
+          // replace by seriesInstanceUID
+          "1.3.6.1.4.1.14519.5.2.1.175414966301645518238419021688341658582",
+      };
+      await axios.post(queryPath, payload).then((res) => {
+        res.data.forEach((id) => {
+          const dicomPath = `${process.env.VUE_APP_QUERY}/dicom/${id}`;
+          this.dicom.push(dicomPath);
+        });
+      });
+      this.onUrl();
+    },
+    onUrl: function() {
+      this.dwvApp.loadURLs(this.dicom);
     },
     setupDropbox() {
       this.showDropbox(true);
@@ -342,18 +442,12 @@ export default {
       // load files
       this.dwvApp.loadFiles(event.dataTransfer.files);
     },
-    onUrl: async function() {
-      if (this.folderPath) {
-        await this.getDICOMFile();
-        this.dwvApp.loadURLs(this.dicom);
-      }
-    },
     showDropbox: function(show) {
       const box = document.getElementById(this.dropboxDivId);
       if (!box) {
         return;
       }
-      const layerDiv = document.getElementById("layerGroup0");
+      const boxDiv = document.getElementById("dropBox");
 
       if (show) {
         // reset css class
@@ -367,13 +461,10 @@ export default {
         // show box
         box.setAttribute("style", "display:initial");
         // stop layer listening
-        if (layerDiv) {
-          layerDiv.removeEventListener("dragover", this.defaultHandleDragEvent);
-          layerDiv.removeEventListener(
-            "dragleave",
-            this.defaultHandleDragEvent
-          );
-          layerDiv.removeEventListener("drop", this.onDrop);
+        if (boxDiv) {
+          boxDiv.removeEventListener("dragover", this.defaultHandleDragEvent);
+          boxDiv.removeEventListener("dragleave", this.defaultHandleDragEvent);
+          boxDiv.removeEventListener("drop", this.onDrop);
         }
         // listen to box events
         box.addEventListener("dragover", this.onBoxDragOver);
@@ -391,10 +482,10 @@ export default {
         box.removeEventListener("dragleave", this.onBoxDragLeave);
         box.removeEventListener("drop", this.onDrop);
         // listen to layer events
-        if (layerDiv) {
-          layerDiv.addEventListener("dragover", this.defaultHandleDragEvent);
-          layerDiv.addEventListener("dragleave", this.defaultHandleDragEvent);
-          layerDiv.addEventListener("drop", this.onDrop);
+        if (boxDiv) {
+          boxDiv.addEventListener("dragover", this.defaultHandleDragEvent);
+          boxDiv.addEventListener("dragleave", this.defaultHandleDragEvent);
+          boxDiv.addEventListener("drop", this.onDrop);
         }
       }
     },
@@ -406,7 +497,6 @@ export default {
 <style scoped>
 #dwv {
   font-family: Arial, Helvetica, sans-serif;
-  height: 90%;
 }
 
 .button-row {
@@ -418,23 +508,30 @@ export default {
   margin: 2px;
 }
 #dwv button.active {
-  /* background-color: var(--md-theme-default-accent); */
+  background-color: var(--md-theme-default-accent);
 }
 
 /* Layers */
-.layerGroup {
+::v-deep .layerGroup {
+  display: inline-block;
+  height: 300px;
+  width: max(30%, 300px);
+  margin: 5px;
+  /* allow child centering */
+  position: relative;
+}
+::v-deep canvas {
+  /* avoid parent auto-resize */
+  vertical-align: middle;
+}
+
+/* drag&drop */
+.dropBox0 {
   position: relative;
   padding: 0;
   display: flex;
   justify-content: center;
-  height: 90%;
 }
-.layer {
-  position: absolute;
-  pointer-events: none;
-}
-
-/* drag&drop */
 .dropBox {
   margin: auto;
   text-align: center;
@@ -446,18 +543,6 @@ export default {
   border: 5px dashed rgba(68, 138, 255, 0.38);
 }
 .dropBoxBorder.hover {
-  /* border: 5px dashed var(--md-theme-default-primary); */
-}
-
-/* element ui */
-::v-deep .el-dialog__header {
-  padding: 0;
-}
-</style>
-<!-- non "scoped" style -->
-<style>
-.layer {
-  position: absolute;
-  pointer-events: none;
+  border: 5px dashed var(--md-theme-default-primary);
 }
 </style>
