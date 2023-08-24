@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-    <dicomViewer />
-  </div>
+  <client-only>
+    <div id="app">
+      <dicomViewer />
+    </div>
+  </client-only>
 </template>
 
 <script>
