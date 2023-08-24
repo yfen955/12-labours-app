@@ -1,5 +1,5 @@
-[
-    {
+{
+    "data": {
         "cases": [
             {
                 "age": "041Y",
@@ -846,5 +846,32 @@
                 "type": "manifest"
             }
         ]
-    }
-]
+    },
+    "facets": [
+        {
+            "facet": "Scaffold",
+            "term": "Mime type",
+            "facetPropPath": "manifest_filter>additional_types"
+        },
+        {
+            "facet": "Young adult",
+            "term": "Age category",
+            "facetPropPath": "case_filter>age_category"
+        },
+        {
+            "facet": "Male",
+            "term": "Sex",
+            "facetPropPath": "case_filter>sex"
+        },
+        {
+            "facet": "Pig",
+            "term": "Species",
+            "facetPropPath": "case_filter>species"
+        },
+        {
+            "facet": "Female",
+            "term": "Sex",
+            "facetPropPath": "case_filter>sex"
+        }
+    ]
+}

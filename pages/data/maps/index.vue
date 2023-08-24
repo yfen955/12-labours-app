@@ -89,7 +89,7 @@ export default {
           organ: undefined,
         },
       },
-      
+      relevant_facets: [],
       alternateSearch: mySearch,
     };
   },
@@ -101,7 +101,6 @@ export default {
       rootUrl: this.$config.portal_url,
       queryUrl: this.$config.query_api_url,
     };
-    this.openViewWithQuery();
   },
 
   methods: {
@@ -121,9 +120,8 @@ export default {
           url: this.url,
           viewUrl: this.viewUrl
         };
-      } else if (this.$route.query.type === 'flatmap') {
+      } else if (this.$route.query.type === 'flatmap')
         this.currentEntry = this.flatmap_dict[this.$route.query.id];
-      }
     },
 
     updateUUID: function() {
@@ -148,14 +146,35 @@ export default {
         })
     },
 
-    currentEntryUpdated: function () {
-      if (this.$refs.map && this.currentEntry) {
+    currentEntryUpdated: async function () {
+      await this.openViewWithQuery();
+      if (this.$refs.map)
         this.$refs.map.setCurrentEntry(this.currentEntry);
-      }
+    },
+
+    getFacets: async function () {
+      if (this.$route.query.type === 'scaffold') {
+        let data = await backendQuery.fetchQueryData(
+          this.$config.query_api_url,
+          "experiment_query",
+          { submitter_id: [this.$route.query.dataset_id] },
+          "",
+          [this.$route.query.access]
+        );
+        this.relevant_facets = data.facets;
+      } else if (this.$route.query.type === 'flatmap')
+        this.relevant_facets = [{facet: this.$route.query.id, term:'Species', facetPropPath: 'case_filter>species'}];
+    },
+
+    setFacets: async function() {
+      await this.getFacets();
+      if (this.$refs.map)
+        this.$refs.map.openSearch(this.relevant_facets, '');
     },
     
     mapMounted: function () {
       this.currentEntryUpdated();
+      this.setFacets();
     },
   }
 }
