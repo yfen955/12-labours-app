@@ -1,6 +1,9 @@
 <template>
   <div id="dwv">
-    <el-progress :show-text="false" :percentage="loadProgress" />
+    <el-progress
+      :show-text="false"
+      :percentage="loadProgress"
+    />
     <div class="button-row">
       <!-- action buttons -->
       <el-button
@@ -558,5 +561,10 @@ export default {
 /* Tags table */
 .tags-table {
   width: 80%;
+}
+
+/* Element ui */
+::v-deep .el-progress {
+  width: 100%;
 }
 </style>
