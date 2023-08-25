@@ -147,7 +147,7 @@ export default {
     onSliderChange(value) {
       this.instanceNumber = value;
       this.searchOnTable();
-      this.$emit('instanceNumber', this.instanceNumber)
+      this.$emit("instanceNumber", this.instanceNumber);
     },
   },
   created() {
@@ -159,7 +159,7 @@ export default {
     // convert string to numbers
     const numbers = instanceNumbers.map(Number);
     numbers.sort((a, b) => a - b);
-
+    
     this.sliderMin = numbers[0];
     this.sliderMax = numbers[numbers.length - 1];
     this.instanceNumber = numbers[0];
@@ -177,10 +177,10 @@ export default {
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: center;
-  .name,
-  .search,
-  .slider {
-    min-width: 250px;
-  }
+}
+.name,
+.search,
+.slider {
+  min-width: 250px;
 }
 </style>

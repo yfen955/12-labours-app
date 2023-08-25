@@ -1,9 +1,9 @@
 <template>
-  <client-only>
-    <div id="app">
+  <div class="page-outer">
+    <client-only>
       <dicomViewer />
-    </div>
-  </client-only>
+    </client-only>
+  </div>
 </template>
 
 <script>
@@ -17,9 +17,4 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  text-align: center;
-  height: 100vh;
-}
-</style>
+<style></style>
