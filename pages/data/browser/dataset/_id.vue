@@ -450,7 +450,7 @@ export default {
   },
 
   created: async function() {
-    let {data, facet} = await backendQuery.fetchQueryData(
+    let { data, facet } = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
@@ -463,8 +463,9 @@ export default {
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
     let flatmap_data = [];
-    if (data.cases.length > 0)
+    if (data.cases.length > 0) {
       flatmap_data = this.handleSpecies(data.cases);
+    }
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
@@ -472,7 +473,7 @@ export default {
       Plot: data.plots,
       Thumbnail: data.thumbnails,
       MRI: data.mris,
-      DICOM: data.dicomImage,
+      DICOM: data.dicomImages,
     };
     this.handleCards(cardsData);
 
@@ -729,20 +730,19 @@ export default {
         let query = {
           type: type.toLowerCase(),
           id: uuid,
-          access: this.$route.query.access,
-        }
-        if (type === "Scaffold")
+        };
+        if (type === "Scaffold") {
           query.dataset_id = this.$route.params.id;
+        }
         const route = this.$router.resolve({
           name: `data-maps`,
-          query: query
+          query: query,
         });
         window.open(route.href);
-      } else if (type === "Plot") {
+      } else if (type === "Plot" || type === "DICOM") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
-          query: { access: this.$route.query.access },
         });
         window.open(route.href);
       } else if (type === "MRI") {
@@ -756,22 +756,20 @@ export default {
       cases.forEach((item) => {
         let species = this.species_dict[item.species];
         if (all_species.indexOf(item.species) !== -1) {
-          if (species === "Human")
-            species = `${species} ${item.sex}`;
-          if (species_list.indexOf(species) === -1)
-            species_list.push(species);
+          if (species === "Human") species = `${species} ${item.sex}`;
+          if (species_list.indexOf(species) === -1) species_list.push(species);
         }
-      })
+      });
       let flatmap_data = [];
       species_list.forEach((item) => {
         flatmap_data.push({
           id: item,
           filename: item,
           additional_metadata: null,
-        })
-      })
+        });
+      });
       return flatmap_data;
-    }
+    },
   },
 };
 </script>

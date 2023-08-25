@@ -152,6 +152,7 @@ export default {
   components: {
     tagsTable,
   },
+  props: ["study", "series"],
   data: function() {
     let res = {
       dwvApp: null,
@@ -185,7 +186,7 @@ export default {
     return res;
   },
   created() {
-    if (this.$route.query.id) {
+    if (this.$route.params.id) {
       this.loadFromOrthanc = true;
     }
   },
@@ -464,12 +465,8 @@ export default {
     setupDICOMPath: async function() {
       const queryPath = `${this.$config.query_api_url}/instance`;
       const payload = {
-        study:
-          // replace by studyInstanceUID
-          "1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538",
-        series:
-          // replace by seriesInstanceUID
-          "1.3.6.1.4.1.14519.5.2.1.175414966301645518238419021688341658582",
+        study: this.study,
+        series: this.series,
       };
       await axios.post(queryPath, payload).then((res) => {
         res.data.forEach((id) => {

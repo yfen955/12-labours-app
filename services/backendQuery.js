@@ -176,7 +176,7 @@ async function getSingleData(path, uuid) {
   const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
   await axios
-    .post(`${path}/record/${uuid}`, {
+    .get(`${path}/record/${uuid}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
