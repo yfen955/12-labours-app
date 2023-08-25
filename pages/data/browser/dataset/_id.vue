@@ -45,7 +45,7 @@
               <p>
                 <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <div v-if="detail_data.identifier.length > 0">
+              <div v-if="detail_data.identifier_type[0] === 'DOI'">
                 <b>DOI: </b>
                 <div
                   v-for="(item, i) in detail_data.identifier"
@@ -212,6 +212,7 @@
           >
             <carousel-card2
               :cards="cards_list"
+              :all_models="all_models"
               v-if="!isLoading"
               @cardInfo="viewContent"
             />
@@ -434,7 +435,15 @@ export default {
       apaCitation: [],
       spotlight_cards_list: [],
       cards_list: [],
+      all_models: undefined,
       datasetImage: "",
+      species_dict: {
+        "Felis catus": "Cat",
+        "Homo sapiens": "Human",
+        "Mus musculus": "Mouse",
+        "Sus scrofa": "Pig",
+        "Rattus norvegicus": "Rat",
+      },
       // show_segmentation: false,
       // show_pdf: false,
     };
@@ -454,25 +463,24 @@ export default {
     this.scaffold_view_data = data.scaffoldViews;
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
+    let flatmap_data = [];
+    if (data.cases.length > 0)
+      flatmap_data = this.handleSpecies(data.cases);
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
-      Flatmap: [{
-        id: 1,
-        filename: "",
-        additional_metadata: null,
-      }],
+      Flatmap: flatmap_data,
       Plot: data.plots,
       Thumbnail: data.thumbnails,
-      Segmentation: data.segmentations,
+      MRI: data.segmentations,
       DICOM: data.dicomImages,
     };
     this.handleCards(cardsData);
 
     await this.handleCitation();
 
-    // this.show_pdf = false;
 
+    // this.show_pdf = false;
     this.isLoading = false;
   },
 
@@ -636,9 +644,11 @@ export default {
     handleCards(allCards) {
       this.spotlight_cards_list = [];
       this.cards_list = [];
+      let model_set = new Set();
       for (const cardType in allCards) {
         const cards = allCards[cardType];
         cards.forEach((element) => {
+          model_set.add(cardType);
           const card = {
             type: cardType,
             url:
@@ -667,6 +677,7 @@ export default {
           }
         });
       }
+      this.all_models = model_set;
       this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
     },
 
@@ -716,17 +727,50 @@ export default {
     viewContent(type, url, uuid) {
       if (type === "Thumbnail") {
         window.open(url);
-      } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
+      } else if (type === "Scaffold" || type === "Flatmap") {
+        const route = this.$router.resolve({
+          name: `data-maps`,
+          query: {
+            type: type.toLowerCase(),
+            id: uuid,
+            access: this.$route.query.access
+          },
+        });
+        window.open(route.href);
+      } else if (type === "Plot") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
           query: { access: this.$route.query.access },
         });
         window.open(route.href);
-      } else if (type === "Segmentation") {
+      } else if (type === "MRI") {
         this.$router.push({ path: "/incomplete" });
       }
     },
+
+    handleSpecies(cases) {
+      let species_list = [];
+      const all_species = Object.keys(this.species_dict);
+      cases.forEach((item) => {
+        let species = this.species_dict[item.species];
+        if (all_species.indexOf(item.species) !== -1) {
+          if (species === "Human")
+            species = `${species} ${item.sex}`;
+          if (species_list.indexOf(species) === -1)
+            species_list.push(species);
+        }
+      })
+      let flatmap_data = [];
+      species_list.forEach((item) => {
+        flatmap_data.push({
+          id: item,
+          filename: item,
+          additional_metadata: null,
+        })
+      })
+      return flatmap_data;
+    }
   },
 };
 </script>

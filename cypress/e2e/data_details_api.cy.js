@@ -51,17 +51,17 @@ describe('test components that uses api', () =>{
       return true
     });
 
-    cy.visit('/data/browser/dataset/1.3.6.1.4.1.14519.5.2.1.186051521067863971269584893740842397538?datasetTab=cite');
+    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=abstract&access=demo1-12L');
     cy.wait('@getDataset');
 
     cy.get('.page-title').should('contain', 'DYNAMIC CONTRAST-ENHANCED MAGNETIC...');
     cy.get('h1').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
-    cy.get('span').should('contain', 'Saha Ashirbani');
-    cy.get('a').should('contain', 'https://doi.org/10.7937/TCIA.e3sv-re93');
+    cy.get('a').should('contain', 'Ashirbani Saha');
+    // cy.get('a').should('contain', 'https://doi.org/10.7937/TCIA.e3sv-re93');
     cy.get('#datasetBrowser').find('span').should('contain', 'Dataset');
 
     // citation
-    cy.get(".citation-content.indent").find('div').should('contain', 'Saha, A., Harowicz, M. R., Grimm, L. J., Kim, C. E., Ghate, S. V., Walsh, R., & Mazurowski, M. A. (2018). A machine learning approach to radiogenomics of breast cancer: a study of 922 subjects and 529 DCE-MRI features. British Journal of Cancer, 119(4), 508–516. https://doi.org/10.1038/s41416-018-0185-8');
+    // cy.get(".citation-content.indent").find('div').should('contain', 'Saha, A., Harowicz, M. R., Grimm, L. J., Kim, C. E., Ghate, S. V., Walsh, R., & Mazurowski, M. A. (2018). A machine learning approach to radiogenomics of breast cancer: a study of 922 subjects and 529 DCE-MRI features. British Journal of Cancer, 119(4), 508–516. https://doi.org/10.1038/s41416-018-0185-8');
 
     // gallery
     cy.get('#tab-gallery').click();

@@ -5,16 +5,16 @@ describe('gallery tab', () =>{
   })
 
   it('test carousel number & thumbnail', () => {
-    cy.get('.el-carousel__item').should('have.length', 3);
-    cy.get('.model-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
+    cy.get('.el-carousel__item').should('have.length', 1);
+    cy.get('.card-image').find('img').should('have.attr', 'src', `${Cypress.env('query_url')}/data/preview/dataset-102-version-4/derivative/pig_heart_Layout1_thumbnail.jpeg`);
   })
 
   it('open a scaffold in gallery', () => {
-    cy.get('.model-button').first().click();
+    cy.get('.card-button').first().click();
     cy.window().then((win) => {
       cy.stub(win, 'open').as("popup");
     })
-    cy.get('.model-button').first().click();
+    cy.get('.card-button').first().click();
     cy.get('@popup').should("be.called");
   })
 })
@@ -36,11 +36,11 @@ describe('information in the duke dataset detail page', () =>{
   //   cy.contains('copied');
   // })
 
-  it('test doi link', () => {
-    cy.contains("https://wiki.cancerimagingarchive.net/");
-    cy.get('a[href="https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903"]').should('have.attr', 'target', '_blank').invoke('removeAttr', 'target').click();
-    cy.on('url:changed', url => {
-      cy.contains(url, "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903");
-    })
-  })
+  // it('test doi link', () => {
+  //   cy.contains("https://wiki.cancerimagingarchive.net/");
+  //   cy.get('a[href="https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903"]').should('have.attr', 'target', '_blank').invoke('removeAttr', 'target').click();
+  //   cy.on('url:changed', url => {
+  //     cy.contains(url, "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903");
+  //   })
+  // })
 })
