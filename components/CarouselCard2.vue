@@ -100,6 +100,7 @@ export default {
     handleCheckAll() {
       this.selected_models = this.showAll ? [...this.all_models] : [];
       this.dataShowed = this.showAll ? [...this.cards] : [];
+      this.isIndeterminate = this.selected_models.length < this.all_models.size && this.selected_models.length > 0;
     },
 
     updateCheckAll() {
