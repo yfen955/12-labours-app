@@ -454,8 +454,7 @@ export default {
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
-      "",
-      [this.$route.query.access]
+      ""
     );
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
@@ -472,8 +471,8 @@ export default {
       Flatmap: flatmap_data,
       Plot: data.plots,
       Thumbnail: data.thumbnails,
-      MRI: data.segmentations,
-      DICOM: data.dicomImages,
+      MRI: data.mris,
+      DICOM: data.dicomImage,
     };
     this.handleCards(cardsData);
 

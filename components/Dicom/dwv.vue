@@ -1,9 +1,6 @@
 <template>
   <div id="dwv">
-    <el-progress
-      :show-text="false"
-      :percentage="loadProgress"
-    />
+    <el-progress :show-text="false" :percentage="loadProgress" />
     <div class="button-row">
       <!-- action buttons -->
       <el-button
@@ -45,6 +42,15 @@
         circle
       />
 
+      <el-button
+        type="primary"
+        title="Size"
+        v-on:click="onChangeViewSize(viewSize)"
+        :disabled="!dataLoaded"
+        icon="el-icon-full-screen"
+        circle
+      />
+
       <div class="dropBox0">
         <div id="dropBox"></div>
       </div>
@@ -58,6 +64,7 @@
         v-if="metaData !== null"
         :tagsData="metaData"
         :instance="instanceNumber"
+        v-on:instanceNumber="onChangeInstance"
       />
     </div>
   </div>
@@ -169,6 +176,7 @@ export default {
       borderClassName: "dropBoxBorder",
       hoverClassName: "hover",
       dwv: null,
+      viewSize: 0,
       loadFromOrthanc: false,
       dicom: [],
       instanceNumber: 0,
@@ -226,11 +234,7 @@ export default {
           this.showDropbox(false);
         });
         this.dwvApp.addEventListener("loadprogress", (event) => {
-          if (this.loadFromOrthanc) {
-            this.loadProgress = event.loaded * 2;
-          } else {
-            this.loadProgress = event.loaded;
-          }
+          this.loadProgress = event.loaded;
         });
         this.dwvApp.addEventListener("load", (/*event*/) => {
           if (!this.viewOnFirstLoadItem) {
@@ -404,6 +408,56 @@ export default {
         binders.push(new this.dwv.gui[propList[b] + "Binder"]());
       }
       this.dwvApp.setLayerGroupsBinders(binders);
+      this.onChangeViewSize(this.viewSize - 1 < 0 ? 2 : this.viewSize - 1);
+    },
+    setupViewSize: function(size) {
+      const layer = document.querySelectorAll(".layerGroup");
+      for (let i = 0; i < layer.length; i++) {
+        layer[i].setAttribute("style", `height: ${size}px; width: ${size}px`);
+      }
+      const canvas = document.querySelectorAll("canvas");
+      for (let i = 0; i < canvas.length; i++) {
+        canvas[i].setAttribute("style", `height: ${size}px; width: ${size}px`);
+      }
+    },
+    setupViewDirection: function(size) {
+      const width = window.innerWidth;
+      if (this.mode === 1) {
+        const rootLayer = document.querySelector("#layerGroup0");
+        if (width >= (size + 10) * 3) {
+          rootLayer.style.flexDirection = "row";
+        } else if (width < (size + 20) * 3) {
+          rootLayer.style.flexDirection = "column";
+        }
+      }
+    },
+    onChangeViewSize: function(view) {
+      let displaySize;
+      const small = 250;
+      const median = 500;
+      const large = 750;
+      if (view === 0) {
+        displaySize = median;
+        this.viewSize = 1;
+      } else if (view === 1) {
+        displaySize = large;
+        this.viewSize = 2;
+      } else if (view === 2) {
+        displaySize = small;
+        this.viewSize = 0;
+      }
+      this.setupViewDirection(displaySize);
+      this.setupViewSize(displaySize);
+    },
+    onChangeInstance: function(index) {
+      const viewController = this.dwvApp
+        .getActiveLayerGroup()
+        .getActiveViewLayer()
+        .getViewController();
+      const currentIndex = viewController.getCurrentIndex().getValues();
+      viewController.setCurrentIndex(
+        new dwv.math.Index([currentIndex[0], currentIndex[1], index])
+      );
     },
     setupDICOMPath: async function() {
       const queryPath = `${process.env.VUE_APP_QUERY}/instance`;
@@ -417,7 +471,7 @@ export default {
       };
       await axios.post(queryPath, payload).then((res) => {
         res.data.forEach((id) => {
-          const dicomPath = `${process.env.VUE_APP_QUERY}/dicom/${id}`;
+          const dicomPath = `${process.env.VUE_APP_QUERY}/dicom/export/${id}`;
           this.dicom.push(dicomPath);
         });
       });

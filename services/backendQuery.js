@@ -149,16 +149,20 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
   return fetched_data;
 }
 
-async function fetchQueryData(path, node, filter, search, access) {
+async function fetchQueryData(path, node, filter, search) {
+  const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
-    search: search,
-    access: access,
+    search: search
   };
   await axios
-    .post(`${path}/graphql/query`, payload)
+    .post(`${path}/graphql/query`, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
       fetched_data = res.data;
     })
@@ -168,13 +172,15 @@ async function fetchQueryData(path, node, filter, search, access) {
   return fetched_data;
 }
 
-async function getSingleData(path, uuid, access) {
+async function getSingleData(path, uuid) {
+  const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
-  let payload = {
-    access: access,
-  };
   await axios
-    .post(`${path}/record/${uuid}`, payload)
+    .post(`${path}/record/${uuid}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
       fetched_data = res.data[0];
     })
