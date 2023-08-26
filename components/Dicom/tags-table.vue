@@ -159,7 +159,7 @@ export default {
     // convert string to numbers
     const numbers = instanceNumbers.map(Number);
     numbers.sort((a, b) => a - b);
-    
+
     this.sliderMin = numbers[0];
     this.sliderMax = numbers[numbers.length - 1];
     this.instanceNumber = numbers[0];
