@@ -1,11 +1,15 @@
 <template>
   <div>
-    <el-checkbox :indeterminate="isIndeterminate" v-model="showAll" @change="handleCheckAll">Show All Models</el-checkbox>
-    <el-checkbox-group
-      v-model="selected_models"
-      @change="updateCheckAll"
+    <el-checkbox
+      :indeterminate="isIndeterminate"
+      v-model="showAll"
+      @change="handleCheckAll"
+      >Show All Models</el-checkbox
     >
-      <el-checkbox v-for="(item, i) in all_models" :label="item" :key="i">{{ item }}</el-checkbox>
+    <el-checkbox-group v-model="selected_models" @change="updateCheckAll">
+      <el-checkbox v-for="(item, i) in all_models" :label="item" :key="i">
+        {{ item }}
+      </el-checkbox>
     </el-checkbox-group>
 
     <el-carousel
@@ -17,7 +21,7 @@
     >
       <el-carousel-item
         v-show="dataShowed.length > 0"
-        v-for="card, i in dataShowed"
+        v-for="(card, i) in dataShowed"
         :key="i"
       >
         <el-card>
@@ -43,14 +47,13 @@
           </el-popover>
           <div class="card-button">
             <el-button @click="view(card.type, card.url, card.id)">
-              View {{ card.type }}
+              {{ card.type }}
             </el-button>
           </div>
         </el-card>
       </el-carousel-item>
     </el-carousel>
   </div>
-  
 </template>
 
 <script>
@@ -91,9 +94,8 @@ export default {
     updateDataShowed() {
       let data = [];
       this.cards.forEach((item) => {
-        if (this.selected_models.includes(item.type))
-          data.push(item);
-      })
+        if (this.selected_models.includes(item.type)) data.push(item);
+      });
       this.dataShowed = [...data];
     },
 
@@ -104,7 +106,9 @@ export default {
 
     updateCheckAll() {
       this.showAll = this.selected_models.length === this.all_models.size;
-      this.isIndeterminate = this.selected_models.length < this.all_models.size && this.selected_models.length > 0;
+      this.isIndeterminate =
+        this.selected_models.length < this.all_models.size &&
+        this.selected_models.length > 0;
       this.updateDataShowed();
     },
   },
@@ -117,7 +121,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-icon-data-analysis, .el-icon-first-aid-kit {
+.el-icon-data-analysis,
+.el-icon-first-aid-kit {
   font-size: 8rem;
 }
 
@@ -160,12 +165,12 @@ export default {
 }
 
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner:before {
-  border-bottom: 0.2rem solid #00467F;
+  border-bottom: 0.2rem solid #00467f;
   background-color: $app-primary-color;
   top: 0.5rem;
 }
 
-.el-checkbox+.el-checkbox {
-  margin-left: .75rem;
+.el-checkbox + .el-checkbox {
+  margin-left: 0.75rem;
 }
 </style>

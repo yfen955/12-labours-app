@@ -182,7 +182,7 @@ async function getSingleData(path, uuid) {
       },
     })
     .then((res) => {
-      fetched_data = res.data[0];
+      fetched_data = res.data.record;
     })
     .catch((err) => {
       console.log(err);
