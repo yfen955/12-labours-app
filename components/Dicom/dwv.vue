@@ -423,8 +423,7 @@ export default {
         canvas[i].setAttribute("style", `height: ${size}px; width: ${size}px`);
       }
     },
-    setupViewDirection: function(size) {
-      const width = window.innerWidth;
+    setupViewDirection: function(width, size) {
       if (this.mode === 1) {
         const rootLayer = document.querySelector("#layerGroup0");
         if (width >= (size + 10) * 3) {
@@ -435,21 +434,28 @@ export default {
       }
     },
     onChangeViewSize: function(view) {
+      const width = window.innerWidth;
       let displaySize;
       const small = 250;
       const median = 500;
       const large = 750;
       if (view === 0) {
+        if (width < median) {
+          return;
+        }
         displaySize = median;
         this.viewSize = 1;
       } else if (view === 1) {
+        if (width < large) {
+          return;
+        }
         displaySize = large;
         this.viewSize = 2;
       } else if (view === 2) {
         displaySize = small;
         this.viewSize = 0;
       }
-      this.setupViewDirection(displaySize);
+      this.setupViewDirection(width, displaySize);
       this.setupViewSize(displaySize);
     },
     onChangeInstance: function(index) {
