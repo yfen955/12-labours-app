@@ -1,127 +1,123 @@
 <template>
   <div>
-    <div class="dashboard-switch">
-      <h3 :class="dashboard ? 'hide-title' : ''">Researcher Dashboard</h3>
-      <el-switch
-        v-model="dashboard"
-        active-color="#D11241"
-        inactive-color="#00467F"
-      >
-      </el-switch>
-      <h3 :class="dashboard ? '' : 'hide-title'">Clinician Dashboard</h3>
-    </div>
-    <div class="input-btns">
-      <el-input v-model="searchContent" placeholder="Search the table" />
-      <el-popover
-        placement="right"
-        trigger="hover"
-        width="200"
-      >
-        <span slot="reference">
-          <el-button slot="reference">Configure</el-button>
-        </span>
-        <h4>Add Columns</h4>
-        <el-checkbox v-model="showAll" @change="handleCheckAll">All</el-checkbox>
-        <el-checkbox-group
-          v-model="selected_columns"
-          @change="updateCheckAll"
+    <div v-if="user">
+      <h3>{{ user.type_name }} Dashboard</h3>
+      <div class="input-btns">
+        <el-input v-model="searchContent" placeholder="Search the table" />
+        <el-popover
+          placement="right"
+          trigger="hover"
+          width="200"
         >
-          <el-checkbox v-for="(column, i) in columns_list" :label="column" :key="i">{{ column }}</el-checkbox>
-        </el-checkbox-group>
-      </el-popover>
-      <!-- <el-button @click="clearFilter">Clear all filters</el-button> -->
+          <span slot="reference">
+            <el-button slot="reference">Configure</el-button>
+          </span>
+          <h4>Add Columns</h4>
+          <el-checkbox v-model="showAll" @change="handleCheckAll">All</el-checkbox>
+          <el-checkbox-group
+            v-model="selected_columns"
+            @change="updateCheckAll"
+          >
+            <el-checkbox v-for="(column, i) in columns_list" :label="column" :key="i">{{ column }}</el-checkbox>
+          </el-checkbox-group>
+        </el-popover>
+        <!-- <el-button @click="clearFilter">Clear all filters</el-button> -->
+      </div>
+      <el-table
+        ref="workflowTable"
+        :data="filtered_table_data"
+        border
+        :cell-style="cellStyle"
+      >
+        <el-table-column
+          v-if="selected_columns.includes('Workflow')"
+          prop="workflow"
+          label="Workflow"
+          sortable
+          column-key="workflow"
+          :filters="workflow_filter"
+          :filter-method="filterHandler"
+        >
+          <template slot-scope="scope">
+            <nuxt-link :to="{
+              name: 'workflow',
+              query: {
+                model: scope.row.workflow
+              }
+            }">
+              {{ scope.row.workflow }}
+            </nuxt-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="selected_columns.includes('Subject ID')"
+          prop="subject"
+          label="Subject ID"
+          sortable
+          column-key="subject"
+          :filters="subject_filter"
+          :filter-method="filterHandler"
+        ></el-table-column>
+        <el-table-column
+          v-if="selected_columns.includes('Progress')"
+          prop="progress"
+          label="Progress"
+          sortable
+          :sort-method="sortByProgress"
+          column-key="progress"
+          :filters="[{ text: 'Finished', value: 'Finished' }, { text: 'In Progress', value: 'In Progress' }]"
+          :filter-method="filterProgress"
+        >
+          <template slot-scope="scope">
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                {{ scope.row.progress }}<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="i in 5" :key="i">
+                  <nuxt-link :to="{
+                    name: 'data-browser-dataset-id',
+                    params: {
+                      id: 'dataset-102-version-4',
+                    },
+                    query: {
+                      datasetTab: 'abstract',
+                    }
+                  }">
+                    Step {{ i }}
+                  </nuxt-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="selected_columns.includes('Time')" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
+        <el-table-column v-if="selected_columns.includes('Age')" prop="age" label="Age (years)" sortable></el-table-column>
+        <el-table-column v-if="selected_columns.includes('Height')" prop="height" label="Height (cm)" sortable></el-table-column>
+        <el-table-column v-if="selected_columns.includes('Logs')" prop="logs" label="Logs"></el-table-column>
+        <el-table-column v-if="selected_columns.includes('Actions')" label="Actions">
+          <template slot-scope="scope">
+            <nuxt-link :to="{
+              name: 'data-browser-dataset-id',
+              params: {
+                id: 'dataset-76-version-7',
+              },
+              query: {
+                datasetTab: 'abstract',
+              }
+            }">
+              View Dataset
+            </nuxt-link>, 
+            <a @click="deleteRow(scope.$index)">
+              Terminate Process
+            </a>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <el-table
-      ref="workflowTable"
-      :data="filtered_table_data"
-      border
-      :cell-style="cellStyle"
-    >
-      <el-table-column
-        v-if="selected_columns.includes('Workflow')"
-        prop="workflow"
-        label="Workflow"
-        sortable
-        column-key="workflow"
-        :filters="workflow_filter"
-        :filter-method="filterHandler"
-      >
-        <template slot-scope="scope">
-          <nuxt-link :to="{
-            name: 'workflow',
-            query: {
-              model: scope.row.workflow
-            }
-          }">
-            {{ scope.row.workflow }}
-          </nuxt-link>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="selected_columns.includes('Subject ID')"
-        prop="subject"
-        label="Subject ID"
-        sortable
-        column-key="subject"
-        :filters="subject_filter"
-        :filter-method="filterHandler"
-      ></el-table-column>
-      <el-table-column
-        v-if="selected_columns.includes('Progress')"
-        prop="progress"
-        label="Progress"
-        sortable
-        :sort-method="sortByProgress"
-        column-key="progress"
-        :filters="[{ text: 'Finished', value: 'Finished' }, { text: 'In Progress', value: 'In Progress' }]"
-        :filter-method="filterProgress"
-      >
-        <template slot-scope="scope">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              {{ scope.row.progress }}<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="i in 5" :key="i">
-                <nuxt-link :to="{
-                  name: 'data-browser-dataset-id',
-                  params: {
-                    id: 'dataset-102-version-4',
-                  },
-                  query: {
-                    datasetTab: 'abstract',
-                  }
-                }">
-                  Step {{ i }}
-                </nuxt-link>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="selected_columns.includes('Time')" prop="time" label="Time" sortable :sort-method="sortByTime"></el-table-column>
-      <el-table-column v-if="selected_columns.includes('Age')" prop="age" label="Age (years)" sortable></el-table-column>
-      <el-table-column v-if="selected_columns.includes('Height')" prop="height" label="Height (cm)" sortable></el-table-column>
-      <el-table-column v-if="!dashboard && selected_columns.includes('Logs')" prop="logs" label="Logs"></el-table-column>
-      <el-table-column v-if="selected_columns.includes('Actions')" label="Actions">
-        <template slot-scope="scope">
-          <nuxt-link :to="{
-            name: 'data-browser-dataset-id',
-            params: {
-              id: 'dataset-76-version-7',
-            },
-            query: {
-              datasetTab: 'abstract',
-            }
-          }">
-            View Dataset
-          </nuxt-link>, 
-          <a @click="deleteRow(scope.$index)">
-            Terminate Process
-          </a>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div v-else>
+      <h3>Please log in to use this feature.</h3>
+    </div>
   </div>
 </template>
 
@@ -164,7 +160,6 @@ export default {
       searchContent: '',
       selected_columns: ['Workflow', 'Subject ID', 'Progress', 'Actions'],
       showAll: false,
-      dashboard: false,    // if false, show researcher dashboard; if true, show clinician dashboard
     }
   },
 
@@ -176,6 +171,9 @@ export default {
   },
 
   computed: {
+    user: function() {
+      return this.$auth.user;
+    },
     filtered_table_data: function() {
       if (this.searchContent === '')
         return this.table_data;
@@ -198,11 +196,11 @@ export default {
       }
     },
     columns_list: function() {
-      if (!this.dashboard)
+      if (this.user.type_name && this.user.type_name === 'Researcher')
         return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Logs', 'Actions'];
       else
         return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Actions'];
-    }
+    },
   },
 
   methods: {
@@ -318,16 +316,5 @@ br{
 .el-dropdown-link {
   cursor: pointer;
   color: $app-primary-color;
-}
-.dashboard-switch {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  .hide-title {
-    color: $lineColor1;
-  }
-  .el-switch {
-    margin: 0 1rem 0 1rem;
-  }
 }
 </style>
