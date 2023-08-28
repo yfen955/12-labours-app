@@ -40,6 +40,10 @@ const searchTypes = [
   {
     label: 'Workflows',
     name: 'workflows',
+  },
+  {
+    label: 'Dashboard',
+    name: 'dashboard',
   }
 ]
 
@@ -114,7 +118,9 @@ export default {
       else if (val === 'laboursInfo')
         this.pageTitle = '12 Labours Information';
       else if (val === 'workflows')
-        this.pageTitle = 'Workflows Dashboard';
+        this.pageTitle = 'Workflows';
+      else if (val === 'dashboard')
+        this.pageTitle = 'Dashboard';
     }
   }
 }
@@ -135,5 +141,8 @@ export default {
     margin: auto;
     width: 90rem;
   }
+}
+.el-scrollbar__wrap {
+  overflow: hidden;
 }
 </style>

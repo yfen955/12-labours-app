@@ -286,32 +286,31 @@
               >
                 <span class="display-ellipsis --1">Dataset</span>
               </el-button>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <div class="card-content" v-if="detail_data.study_organ_system.length > 0">
               <span class="card-title">ANATOMICAL STRUCTURE:</span><br />
-              <div
-                v-for="(organ, i) in detail_data.study_organ_system"
-                :key="i"
-              >
-                <el-button @click="goWithFacet(organ)" class="secondary">
-                  <span class="display-ellipsis --1">{{ organ }}</span>
-                </el-button>
+              <div>
+                <div v-for="(organ, i) in detail_data.study_organ_system" :key="i">
+                  <el-button @click="goWithFacet(organ)" class="secondary">
+                    <span class="display-ellipsis --1">{{ organ }}</span>
+                  </el-button>
+                </div>
               </div>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <div class="card-content" v-if="species_list.length > 0">
               <span class="card-title">SPECIES:</span><br />
-              <el-button
-                @click="goWithFacet('Mouse')"
-                class="secondary"
-                :disabled="true"
-              >
-                <span class="display-ellipsis --1">N/A</span>
-              </el-button>
+              <div>
+                <div v-for="(species, i) in species_list" :key="i">
+                  <el-button @click="goWithFacet(species)" class="secondary">
+                    <span class="display-ellipsis --1">{{ species }}</span>
+                  </el-button>
+                </div>
+              </div>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <!-- <div class="card-content">
               <span class="card-title">EXPERIMENTAL APPROACH:</span><br />
               <el-button
                 @click="goWithFacet('Anatomy')"
@@ -321,18 +320,18 @@
                 <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
-            <hr />
-            <div class="card-content">
+            <hr /> -->
+            <div class="card-content" v-if="sex_list.length > 0">
               <span class="card-title">SEX:</span><br />
-              <el-button
-                @click="goWithFacet('Male')"
-                class="secondary"
-                :disabled="true"
-              >
-                <span class="display-ellipsis --1">N/A</span>
-              </el-button>
+              <div>
+                <div v-for="(sex, i) in sex_list" :key="i">
+                  <el-button @click="goWithFacet(sex)" class="secondary">
+                    <span class="display-ellipsis --1">{{ sex }}</span>
+                  </el-button>
+                </div>
+              </div>
+              <hr />
             </div>
-            <hr />
             <div class="card-content">
               <span class="card-title">CONTRIBUTORS:</span><br />
               <ul>
@@ -437,25 +436,22 @@ export default {
       cards_list: [],
       all_models: undefined,
       datasetImage: "",
-      species_dict: {
-        "Felis catus": "Cat",
-        "Homo sapiens": "Human",
-        "Mus musculus": "Mouse",
-        "Sus scrofa": "Pig",
-        "Rattus norvegicus": "Rat",
-      },
+      species_list: [],
+      sex_list: [],
       // show_segmentation: false,
       // show_pdf: false,
     };
   },
 
   created: async function() {
-    let { data, facet } = await backendQuery.fetchQueryData(
+    let { data, facets } = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
       ""
     );
+    this.handleFacets(facets);
+    
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
 
@@ -463,9 +459,8 @@ export default {
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
     let flatmap_data = [];
-    if (data.cases.length > 0) {
-      flatmap_data = this.handleSpecies(data.cases);
-    }
+    if (this.species_list.length > 0)
+      flatmap_data = this.handleSpecies();
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
@@ -750,18 +745,9 @@ export default {
       }
     },
 
-    handleSpecies(cases) {
-      let species_list = [];
-      const all_species = Object.keys(this.species_dict);
-      cases.forEach((item) => {
-        let species = this.species_dict[item.species];
-        if (all_species.indexOf(item.species) !== -1) {
-          if (species === "Human") species = `${species} ${item.sex}`;
-          if (species_list.indexOf(species) === -1) species_list.push(species);
-        }
-      });
+    handleSpecies() {
       let flatmap_data = [];
-      species_list.forEach((item) => {
+      this.species_list.forEach((item) => {
         flatmap_data.push({
           id: item,
           filename: item,
@@ -769,6 +755,15 @@ export default {
         });
       });
       return flatmap_data;
+    },
+
+    handleFacets(facets) {
+      facets.forEach((item) => {
+        if (item.term === "Species")
+          this.species_list.push(item.facet);
+        else if (item.term === "Sex")
+          this.sex_list.push(item.facet);
+      })
     },
   },
 };

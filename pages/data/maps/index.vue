@@ -174,7 +174,8 @@ export default {
     
     mapMounted: function () {
       this.currentEntryUpdated();
-      this.setFacets();
+      if (JSON.stringify(this.$route.query) !== "{}")
+        this.setFacets();
     },
   }
 }
