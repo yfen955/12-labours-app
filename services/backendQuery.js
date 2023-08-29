@@ -121,7 +121,7 @@ async function revokeAccess(path) {
   }
 }
 
-async function fetchPaginationData(path, filter, limit, page, search, relation, sortBy) {
+async function fetchPaginationData(path, filter, limit, page, search, relation, sort) {
   const accessToken = getLocalStorage("access_token")
   let fetched_data = {
     items: [],
@@ -132,7 +132,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
-    order: sortBy
+    order: sort
   };
   await axios
     .post(`${path}/graphql/pagination/?search=${search}`, payload, {

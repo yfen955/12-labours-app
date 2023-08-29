@@ -47,7 +47,6 @@
                       },
                       query: {
                         datasetTab: 'abstract',
-                        access: item.belong_to,
                       },
                     }"
                   >

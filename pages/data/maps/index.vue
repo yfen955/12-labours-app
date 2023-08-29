@@ -158,8 +158,7 @@ export default {
           this.$config.query_api_url,
           "experiment_query",
           { submitter_id: [this.$route.query.dataset_id] },
-          "",
-          [this.$route.query.access]
+          ""
         );
         this.relevant_facets = data.facets;
       } else if (this.$route.query.type === 'flatmap')

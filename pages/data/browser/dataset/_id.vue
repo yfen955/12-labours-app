@@ -505,7 +505,6 @@ export default {
           type: "dataset",
           page: 1,
           limit: 10,
-          access: this.$route.query.access,
         },
       });
     },
@@ -515,7 +514,6 @@ export default {
       if (this.$route.query.path && this.$route.query.path !== "files")
         query.path = this.$route.query.path;
       else if (val === "files" && !this.$route.query.path) query.path = "files";
-      query.access = this.$route.query.access;
       this.$router.push({
         path: this.$route.path,
         query: query,
@@ -577,7 +575,6 @@ export default {
           page: 1,
           limit: 10,
           facets: result,
-          access: this.$route.query.access,
         },
       });
     },
