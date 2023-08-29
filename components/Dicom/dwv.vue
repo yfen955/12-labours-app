@@ -51,7 +51,11 @@
       </div>
     </div>
 
-    <div id="layerGroup0"></div>
+    <div
+      id="layerGroup0"
+      @mouseover="mouseHover(true)"
+      @mouseout="mouseHover(false)"
+    ></div>
 
     <!-- dicom tags table-->
     <div class="tags-table">
@@ -60,6 +64,8 @@
         :tagsData="metaData"
         :instance="instanceNumber"
         v-on:instanceNumber="onChangeInstance"
+        @mouseover="mouseHover(true)"
+        @mouseout="mouseHover(false)"
       />
     </div>
   </div>
@@ -172,7 +178,7 @@ export default {
       borderClassName: "dropBoxBorder",
       hoverClassName: "hover",
       dwv: null,
-      viewSize: 0,
+      viewSize: 1,
       loadFromOrthanc: false,
       dicom: [],
       instanceNumber: 1,
@@ -220,6 +226,11 @@ export default {
         let nReceivedLoadAbort = null;
         let isFirstRender = null;
         this.dwvApp.addEventListener("loadstart", (/*event*/) => {
+          // load to display in small size if not enough width
+          // else display in medium by default
+          if (window.innerWidth < 500) {
+            this.onChangeViewSize(2);
+          }
           // reset flags
           this.dataLoaded = false;
           nLoadItem = 0;
@@ -303,10 +314,17 @@ export default {
     }
   },
   methods: {
+    mouseHover: function(hover) {
+      if (hover) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    },
     getToolIcon: function(tool) {
       var res;
       if (tool === "Scroll") {
-        res = "el-icon-menu";
+        res = "el-icon-sort";
       } else if (tool === "ZoomAndPan") {
         res = "el-icon-search";
       } else if (tool === "WindowLevel") {
@@ -561,7 +579,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 #dwv {
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
@@ -583,10 +601,13 @@ export default {
 #layerGroup0 {
   display: flex;
   flex-direction: row;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid $app-primary-color;
 }
 ::v-deep .layerGroup {
-  height: 250px;
-  width: 250px;
+  height: 500px;
+  width: 500px;
   margin: 10px;
   /* allow child centering */
   position: relative;
@@ -614,7 +635,8 @@ export default {
 
 /* Tags table */
 .tags-table {
-  width: 80%;
+  width: 60%;
+  margin-bottom: 50px;
 }
 
 /* Element ui */

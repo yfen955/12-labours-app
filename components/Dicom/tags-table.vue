@@ -24,20 +24,23 @@
     </div>
 
     <div class="table">
-      <el-table v-if="searched.length > 0" :data="searched" height="500">
-        <el-table-column label="Name" prop="name" min-width="300">
-        </el-table-column>
-        <el-table-column label="Value" prop="value" min-width="300">
-        </el-table-column>
+      <el-table
+        v-if="searched.length > 0"
+        :data="searched"
+        height="500"
+        :cell-style="{ padding: '10px 0 10px 0' }"
+      >
+        <el-table-column label="Name" prop="name" min-width="250" />
+        <el-table-column label="Value" prop="value" min-width="250" />
       </el-table>
       <el-table
         v-else
         :data="[{ empty: `No tags found for this ${search} query.` }]"
         style="width: 100%"
         height="500"
+        :cell-style="{ padding: '10px 0 10px 0' }"
       >
-        <el-table-column label="Empty" prop="empty" min-width="600">
-        </el-table-column>
+        <el-table-column label="Empty" prop="empty" min-width="500" />
       </el-table>
     </div>
   </div>
