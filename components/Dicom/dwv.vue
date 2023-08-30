@@ -9,10 +9,37 @@
         :id="tool"
         :title="tool"
         v-on:click="onChangeTool(tool)"
-        :disabled="!dataLoaded || !canRunTool(tool) || tool === 'Draw'"
+        :disabled="!dataLoaded || !canRunTool(tool)"
         :icon="getToolIcon(tool)"
         circle
       />
+
+      <el-popover placement="bottom" trigger="click">
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+        >
+          Check all
+        </el-checkbox>
+        <hr />
+        <el-checkbox-group
+          class="binders-group"
+          v-model="checkedBinders"
+          @change="handleCheckedBindersChange"
+        >
+          <el-checkbox v-for="binder in binders" :label="binder" :key="binder">
+            {{ binder }}
+          </el-checkbox>
+        </el-checkbox-group>
+        <el-button
+          slot="reference"
+          title="Binder"
+          :disabled="!dataLoaded || mode === 0"
+          icon="el-icon-connection"
+          circle
+        />
+      </el-popover>
 
       <el-button
         title="Reset"
@@ -25,7 +52,7 @@
       <el-button
         title="Toggle Orientation"
         v-on:click="toggleOrientation()"
-        :disabled="!dataLoaded || mode !== 0"
+        :disabled="!dataLoaded || mode === 1"
         icon="el-icon-camera"
         circle
       />
@@ -75,13 +102,23 @@
 // import
 import axios from "axios";
 import Vue from "vue";
-import { Progress, Button, Dialog } from "element-ui";
+import {
+  Progress,
+  Popover,
+  Checkbox,
+  CheckboxGroup,
+  Button,
+  Dialog,
+} from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import lang from "element-ui/lib/locale/lang/en";
 import locale from "element-ui/lib/locale";
 
 locale.use(lang);
 Vue.use(Progress);
+Vue.use(Popover);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
 Vue.use(Button);
 Vue.use(Dialog);
 
@@ -161,9 +198,9 @@ export default {
         Scroll: {},
         ZoomAndPan: {},
         WindowLevel: {},
-        Draw: {
-          options: ["Ruler"],
-        },
+        // Draw: {
+        //   options: ["Ruler"],
+        // },
       },
       mode: 0,
       dataViewConfigs: null,
@@ -177,6 +214,10 @@ export default {
       dropboxClassName: "dropBox",
       borderClassName: "dropBoxBorder",
       hoverClassName: "hover",
+      checkAll: true,
+      checkedBinders: ["WindowLevel", "Position", "Zoom", "Offset", "Opacity"],
+      binders: ["WindowLevel", "Position", "Zoom", "Offset", "Opacity"],
+      isIndeterminate: false,
       dwv: null,
       viewSize: 1,
       loadFromOrthanc: false,
@@ -326,11 +367,11 @@ export default {
       if (tool === "Scroll") {
         res = "el-icon-sort";
       } else if (tool === "ZoomAndPan") {
-        res = "el-icon-search";
+        res = "el-icon-thumb";
       } else if (tool === "WindowLevel") {
         res = "el-icon-s-operation";
-      } else if (tool === "Draw") {
-        res = "el-icon-edit";
+        // } else if (tool === "Draw") {
+        //   res = "el-icon-edit";
       }
       return res;
     },
@@ -341,9 +382,9 @@ export default {
       }
       this.activateTool(tool, true);
       this.dwvApp.setTool(tool);
-      if (tool === "Draw") {
-        this.onChangeShape(this.tools.Draw.options[0]);
-      }
+      // if (tool === "Draw") {
+      //   this.onChangeShape(this.tools.Draw.options[0]);
+      // }
     },
     canRunTool: function(tool) {
       let res;
@@ -355,6 +396,26 @@ export default {
         res = true;
       }
       return res;
+    },
+    onChangeBinder: function() {
+      const binders = [];
+      // add all binders when use mpr view
+      for (var b = 0; b < this.checkedBinders.length; ++b) {
+        binders.push(new this.dwv.gui[this.checkedBinders[b] + "Binder"]());
+      }
+      this.dwvApp.setLayerGroupsBinders(binders);
+    },
+    handleCheckAllChange(val) {
+      this.checkedBinders = val ? this.binders : [];
+      this.isIndeterminate = false;
+      this.onChangeBinder();
+    },
+    handleCheckedBindersChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.binders.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.binders.length;
+      this.onChangeBinder();
     },
     activateTool: function(tool, flag) {
       if (flag) {
@@ -392,11 +453,11 @@ export default {
       }
       this.onChangeInstance(this.instanceNumber);
     },
-    onChangeShape: function(shape) {
-      if (this.dwvApp && this.selectedTool === "Draw") {
-        this.dwvApp.setToolFeatures({ shapeName: shape });
-      }
-    },
+    // onChangeShape: function(shape) {
+    //   if (this.dwvApp && this.selectedTool === "Draw") {
+    //     this.dwvApp.setToolFeatures({ shapeName: shape });
+    //   }
+    // },
     onReset: function() {
       this.dwvApp.resetDisplay();
     },
@@ -416,13 +477,7 @@ export default {
       for (var i = 0; i < this.dwvApp.getNumberOfLoadedData(); ++i) {
         this.dwvApp.render(i);
       }
-      const propList = ["WindowLevel", "Position", "Zoom", "Offset", "Opacity"];
-      const binders = [];
-      // add all binders when use mpr view
-      for (var b = 0; b < propList.length; ++b) {
-        binders.push(new this.dwv.gui[propList[b] + "Binder"]());
-      }
-      this.dwvApp.setLayerGroupsBinders(binders);
+      this.onChangeBinder();
       this.onChangeViewSize(this.viewSize - 1 < 0 ? 2 : this.viewSize - 1);
       this.onChangeInstance(this.instanceNumber);
     },
@@ -597,6 +652,24 @@ export default {
   margin: 2px;
 }
 
+.binders-group {
+  display: flex;
+  flex-direction: column;
+}
+
+hr {
+  margin: 5px 0 5px 0;
+}
+
+::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  &::before {
+    border-bottom: 3px solid $app-primary-color;
+    background-color: $app-primary-color;
+    top: 8.5px;
+    left: 1px
+  }
+}
+
 /* Layers */
 #layerGroup0 {
   display: flex;
@@ -646,5 +719,8 @@ export default {
 ::v-deep .el-button {
   height: 50px;
   width: 50px;
+}
+::v-deep .el-checkbox+.el-checkbox {
+  margin-left: .75rem;
 }
 </style>
