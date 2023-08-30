@@ -5,6 +5,7 @@
       <!-- action buttons -->
       <el-button
         v-for="tool in toolNames"
+        :class="activateTool(tool)"
         :key="tool"
         :id="tool"
         :title="tool"
@@ -378,10 +379,6 @@ export default {
     },
     onChangeTool: function(tool) {
       this.selectedTool = tool;
-      for (const t of this.toolNames) {
-        this.activateTool(t, false);
-      }
-      this.activateTool(tool, true);
       this.dwvApp.setTool(tool);
       // if (tool === "Draw") {
       //   this.onChangeShape(this.tools.Draw.options[0]);
@@ -397,6 +394,12 @@ export default {
         res = true;
       }
       return res;
+    },
+    activateTool: function(tool) {
+      const flag = tool === this.selectedTool ? true : false
+      if (flag) {
+        return 'secondary'
+      }
     },
     onChangeBinder: function() {
       const binders = [];
@@ -417,13 +420,6 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.binders.length;
       this.onChangeBinder();
-    },
-    activateTool: function(tool, flag) {
-      if (flag) {
-        document.getElementById(tool).classList.add("secondary");
-      } else {
-        document.getElementById(tool).classList.remove("secondary");
-      }
     },
     toggleOrientation: function() {
       if (typeof this.orientation !== "undefined") {
@@ -702,7 +698,7 @@ hr {
   height: 75%;
 }
 .dropBoxBorder {
-  border: 5px dashed rgba(68, 138, 255, 0.38);
+  border: 5px dashed $app-primary-color;
 }
 .dropBoxBorder.hover {
   border: 5px dashed var(--md-theme-default-primary);
