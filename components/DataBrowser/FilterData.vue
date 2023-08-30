@@ -152,7 +152,7 @@ export default {
           node_field: this.allFilterDict["nodes>fields"][i],
           // fieldName: this.allFilterDict.fields[i],
           title: this.allFilterDict.titles[i],
-          filter_items: Object.keys(this.allFilterDict.elements[i]),
+          filter_items: this.allFilterDict.elements[i],
           selectedItem: [],
           checkAll: true,
           isIndeterminate: false,
