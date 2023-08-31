@@ -396,9 +396,9 @@ export default {
       return res;
     },
     activateTool: function(tool) {
-      const flag = tool === this.selectedTool ? true : false
+      const flag = tool === this.selectedTool ? true : false;
       if (flag) {
-        return 'secondary'
+        return "secondary";
       }
     },
     onChangeBinder: function() {
