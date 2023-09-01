@@ -1,6 +1,6 @@
 <template>
   <div class="tool-container">
-    <div v-if="toolType === 'header'">
+    <div>
       <span>Sort</span>
       <el-select v-model="orderBy">
         <el-option
@@ -13,11 +13,9 @@
         </el-option>
       </el-select>
     </div>
-    <div v-else></div>
-    <div class="pagination" v-if="!isLoading">
+    <div class="pagination" v-if="totalCount">
       <div>
-        <span v-if="totalCount">{{ totalCount }} Results | Showing</span>
-        <span v-else>Results | Showing</span>
+        <span>{{ totalCount }} Results | Showing</span>
         <pagination-menu
           :page-size="limit"
           :pageSizeOptions="pageSizeOptions"
@@ -39,11 +37,11 @@
 <script>
 export default {
   name: "PaginationTool",
-  props: ["isLoading", "totalCount", "toolType"],
+  props: ["totalCount"],
   data: () => {
     return {
-      limit: 10,
       page: 1,
+      limit: 10,
       pageSizeOptions: [10, 20, 50, "View All"],
       orderBy: "Published(asc)",
       orderList: [
@@ -57,8 +55,7 @@ export default {
   },
 
   created: function() {
-    this.handlePageSize(this.$route.query.limit, true);
-    this.handlePage(this.$route.query.page);
+    this.handlePageLimit(this.$route.query.page, this.$route.query.limit);
     this.handleOrder(this.$route.query.order);
   },
 
@@ -66,12 +63,6 @@ export default {
     "$route.query.order": {
       handler(val) {
         this.handleOrder(val);
-      },
-    },
-
-    "$route.query.page": {
-      handler(val) {
-        this.handlePage(val);
       },
     },
 
@@ -85,17 +76,19 @@ export default {
   methods: {
     // update the page and first data
     handlePage(val) {
-      const intPage = parseInt(val);
-      this.page = intPage;
-      this.$emit("page-limit", this.page, this.limit);
+      this.page = val;
+      this.handlePageLimit(this.page, this.limit);
     },
-    
-    handlePageSize(val, created = false) {
-      const intLimit = val === "View All" ? 100 : parseInt(val);
-      this.limit = intLimit;
-      if (!created) {
-        this.handlePage(1);
-      }
+
+    handlePageSize(val) {
+      this.limit = val;
+      this.handlePage(1);
+    },
+
+    handlePageLimit(page, limit) {
+      this.page = parseInt(page);
+      this.limit = parseInt(limit);
+      this.$emit("page-limit", this.page, this.limit);
     },
 
     handleOrder(val) {

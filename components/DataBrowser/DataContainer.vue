@@ -11,7 +11,6 @@
         </div>
         <div>
           <PaginationTool
-            :toolType="'header'"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
@@ -24,12 +23,12 @@
             :isLoadingSearch="isLoading"
             :totalCount="totalCount"
           />
-          <PaginationTool
-            :toolType="'footer'"
+          <!-- <PaginationTool
+            v-if="!isLoading"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
-          />
+          /> -->
         </div>
       </div>
     </span>
@@ -118,7 +117,6 @@ export default {
   watch: {
     "$route.query": {
       handler() {
-        console.log(this.$route.query);
         this.fetchData();
       },
     },
