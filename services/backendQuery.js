@@ -160,7 +160,7 @@ async function fetchQueryData(path, node, filter, search, access) {
   await axios
     .post(`${path}/graphql/query`, payload)
     .then((res) => {
-      fetched_data = res.data[0];
+      fetched_data = res.data;
     })
     .catch((err) => {
       console.log(err);

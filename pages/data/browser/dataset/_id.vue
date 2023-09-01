@@ -45,7 +45,7 @@
               <p>
                 <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
               </p>
-              <div v-if="detail_data.identifier.length > 0">
+              <div v-if="detail_data.identifier_type[0] === 'DOI'">
                 <b>DOI: </b>
                 <div
                   v-for="(item, i) in detail_data.identifier"
@@ -212,6 +212,7 @@
           >
             <carousel-card2
               :cards="cards_list"
+              :all_models="all_models"
               v-if="!isLoading"
               @cardInfo="viewContent"
             />
@@ -285,32 +286,31 @@
               >
                 <span class="display-ellipsis --1">Dataset</span>
               </el-button>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <div class="card-content" v-if="detail_data.study_organ_system.length > 0">
               <span class="card-title">ANATOMICAL STRUCTURE:</span><br />
-              <div
-                v-for="(organ, i) in detail_data.study_organ_system"
-                :key="i"
-              >
-                <el-button @click="goWithFacet(organ)" class="secondary">
-                  <span class="display-ellipsis --1">{{ organ }}</span>
-                </el-button>
+              <div>
+                <div v-for="(organ, i) in detail_data.study_organ_system" :key="i">
+                  <el-button @click="goWithFacet(organ)" class="secondary">
+                    <span class="display-ellipsis --1">{{ organ }}</span>
+                  </el-button>
+                </div>
               </div>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <div class="card-content" v-if="species_list.length > 0">
               <span class="card-title">SPECIES:</span><br />
-              <el-button
-                @click="goWithFacet('Mouse')"
-                class="secondary"
-                :disabled="true"
-              >
-                <span class="display-ellipsis --1">N/A</span>
-              </el-button>
+              <div>
+                <div v-for="(species, i) in species_list" :key="i">
+                  <el-button @click="goWithFacet(species)" class="secondary">
+                    <span class="display-ellipsis --1">{{ species }}</span>
+                  </el-button>
+                </div>
+              </div>
+              <hr />
             </div>
-            <hr />
-            <div class="card-content">
+            <!-- <div class="card-content">
               <span class="card-title">EXPERIMENTAL APPROACH:</span><br />
               <el-button
                 @click="goWithFacet('Anatomy')"
@@ -320,18 +320,18 @@
                 <span class="display-ellipsis --1">N/A</span>
               </el-button>
             </div>
-            <hr />
-            <div class="card-content">
+            <hr /> -->
+            <div class="card-content" v-if="sex_list.length > 0">
               <span class="card-title">SEX:</span><br />
-              <el-button
-                @click="goWithFacet('Male')"
-                class="secondary"
-                :disabled="true"
-              >
-                <span class="display-ellipsis --1">N/A</span>
-              </el-button>
+              <div>
+                <div v-for="(sex, i) in sex_list" :key="i">
+                  <el-button @click="goWithFacet(sex)" class="secondary">
+                    <span class="display-ellipsis --1">{{ sex }}</span>
+                  </el-button>
+                </div>
+              </div>
+              <hr />
             </div>
-            <hr />
             <div class="card-content">
               <span class="card-title">CONTRIBUTORS:</span><br />
               <ul>
@@ -434,37 +434,41 @@ export default {
       apaCitation: [],
       spotlight_cards_list: [],
       cards_list: [],
+      all_models: undefined,
       datasetImage: "",
+      species_list: [],
+      sex_list: [],
       // show_segmentation: false,
       // show_pdf: false,
     };
   },
 
   created: async function() {
-    const data = await backendQuery.fetchQueryData(
+    let {data, facets} = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
       "",
       [this.$route.query.access]
     );
+    this.handleFacets(facets);
+    
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
 
     this.scaffold_view_data = data.scaffoldViews;
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
+    let flatmap_data = [];
+    if (this.species_list.length > 0)
+      flatmap_data = this.handleSpecies();
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
-      Flatmap: [{
-        id: 1,
-        filename: "",
-        additional_metadata: null,
-      }],
+      Flatmap: flatmap_data,
       Plot: data.plots,
       Thumbnail: data.thumbnails,
-      Segmentation: data.segmentations,
+      MRI: data.segmentations,
       DICOM: data.dicomImages,
     };
     this.handleCards(cardsData);
@@ -472,7 +476,6 @@ export default {
     await this.handleCitation();
 
     // this.show_pdf = false;
-
     this.isLoading = false;
   },
 
@@ -636,9 +639,11 @@ export default {
     handleCards(allCards) {
       this.spotlight_cards_list = [];
       this.cards_list = [];
+      let model_set = new Set();
       for (const cardType in allCards) {
         const cards = allCards[cardType];
         cards.forEach((element) => {
+          model_set.add(cardType);
           const card = {
             type: cardType,
             url:
@@ -667,6 +672,7 @@ export default {
           }
         });
       }
+      this.all_models = model_set;
       this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
     },
 
@@ -716,16 +722,50 @@ export default {
     viewContent(type, url, uuid) {
       if (type === "Thumbnail") {
         window.open(url);
-      } else if (type === "Scaffold" || type === "Plot" || type === "Flatmap") {
+      } else if (type === "Scaffold" || type === "Flatmap") {
+        let query = {
+          type: type.toLowerCase(),
+          id: uuid,
+          access: this.$route.query.access,
+        }
+        if (type === "Scaffold")
+          query.dataset_id = this.$route.params.id;
+        const route = this.$router.resolve({
+          name: `data-maps`,
+          query: query
+        });
+        window.open(route.href);
+      } else if (type === "Plot") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
           query: { access: this.$route.query.access },
         });
         window.open(route.href);
-      } else if (type === "Segmentation") {
+      } else if (type === "MRI") {
         this.$router.push({ path: "/incomplete" });
       }
+    },
+
+    handleSpecies() {
+      let flatmap_data = [];
+      this.species_list.forEach((item) => {
+        flatmap_data.push({
+          id: item,
+          filename: item,
+          additional_metadata: null,
+        })
+      })
+      return flatmap_data;
+    },
+
+    handleFacets(facets) {
+      facets.forEach((item) => {
+        if (item.term === "Species")
+          this.species_list.push(item.facet);
+        else if (item.term === "Sex")
+          this.sex_list.push(item.facet);
+      })
     },
   },
 };

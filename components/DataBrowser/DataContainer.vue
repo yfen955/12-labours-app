@@ -57,8 +57,16 @@
       </div>
     </span>
 
-    <!-- display laboursInfo -->
+    <!-- display workflows -->
     <span v-if="$route.query.type === 'workflows'">
+      <SearchData />
+      <div class="data-container">
+        <FilterData />
+      </div>
+    </span>
+
+    <!-- display dashboard -->
+    <span v-if="$route.query.type === 'dashboard'">
       <!-- <SearchData />
       <div class="data-container">
         <FilterData />

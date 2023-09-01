@@ -10,6 +10,7 @@
               :options="options"
               :share-link="shareLink"
               @updateShareLinkRequested="updateUUID"
+              v-on:isReady="mapMounted"
             />
           </div>
         </client-only>
@@ -20,6 +21,7 @@
 
 <script>
 import { mySearch } from "./AlternateResponse.js";
+import backendQuery from "@/services/backendQuery";
 
 export default {
   name: 'MapViewer',
@@ -42,18 +44,86 @@ export default {
         queryUrl: undefined,
       },
       shareLink: undefined,
+      currentEntry: undefined,
+      flatmap_dict: {
+        "Cat": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9685',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Human Male": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9606',
+          biologicalSex: "PATO:0000384",
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Human Female": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9606',
+          biologicalSex: "PATO:0000383",
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Mouse": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:10090',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Pig": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:9823',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+        "Rat": {
+          type: 'MultiFlatmap',
+          taxo: 'NCBITaxon:10114',
+          biologicalSex: undefined,
+          uuid: undefined,
+          organ: undefined,
+        },
+      },
+      relevant_facets: [],
       alternateSearch: mySearch,
     };
   },
+
   created: function() {
     this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
     this.options= {
       flatmapAPI: this.$config.flatmap_api,
       rootUrl: this.$config.portal_url,
       queryUrl: this.$config.query_api_url,
-    }
+    };
   },
+
   methods: {
+    fetchScaffold: async function() {
+      let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id, [this.$route.query.access]);
+      let dataset_id = data.experiments[0].submitter_id;
+      this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
+      this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
+    },
+
+    openViewWithQuery: async function () {
+      if (this.$route.query.type === 'scaffold') {
+        await this.fetchScaffold();
+        this.currentEntry = {
+          type: "Scaffold",
+          // label: "Colon",
+          url: this.url,
+          viewUrl: this.viewUrl
+        };
+      } else if (this.$route.query.type === 'flatmap')
+        this.currentEntry = this.flatmap_dict[this.$route.query.id];
+    },
+
     updateUUID: function() {
       let url = this.options.sparcApi + `map/getshareid`
       let state = this.$refs.map.getState()
@@ -74,7 +144,39 @@ export default {
             }
           )
         })
-    }
+    },
+
+    currentEntryUpdated: async function () {
+      await this.openViewWithQuery();
+      if (this.$refs.map)
+        this.$refs.map.setCurrentEntry(this.currentEntry);
+    },
+
+    getFacets: async function () {
+      if (this.$route.query.type === 'scaffold') {
+        let data = await backendQuery.fetchQueryData(
+          this.$config.query_api_url,
+          "experiment_query",
+          { submitter_id: [this.$route.query.dataset_id] },
+          "",
+          [this.$route.query.access]
+        );
+        this.relevant_facets = data.facets;
+      } else if (this.$route.query.type === 'flatmap')
+        this.relevant_facets = [{facet: this.$route.query.id, term:'Species', facetPropPath: 'case_filter>species'}];
+    },
+
+    setFacets: async function() {
+      await this.getFacets();
+      if (this.$refs.map)
+        this.$refs.map.openSearch(this.relevant_facets, '');
+    },
+    
+    mapMounted: function () {
+      this.currentEntryUpdated();
+      if (JSON.stringify(this.$route.query) !== "{}")
+        this.setFacets();
+    },
   }
 }
 </script>
@@ -187,6 +289,10 @@ export default {
   }
   .el-switch__label.is-active {
     color: $app-primary-color !important;
+  }
+
+  .time-slider-container .el-row {
+    margin-bottom: 1rem !important;
   }
 }
 .pagination ul.el-pager li.number.active {
