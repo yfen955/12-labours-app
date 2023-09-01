@@ -23,12 +23,11 @@
             :isLoadingSearch="isLoading"
             :totalCount="totalCount"
           />
-          <!-- <PaginationTool
-            v-if="!isLoading"
+          <PaginationTool
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
-          /> -->
+          />
         </div>
       </div>
     </span>
