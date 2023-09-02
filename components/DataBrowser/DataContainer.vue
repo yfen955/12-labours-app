@@ -11,6 +11,7 @@
         </div>
         <div>
           <PaginationTool
+            v-if="totalCount"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
@@ -24,6 +25,7 @@
             :totalCount="totalCount"
           />
           <PaginationTool
+            v-if="totalCount"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"

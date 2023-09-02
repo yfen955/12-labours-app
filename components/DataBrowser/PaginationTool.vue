@@ -2,18 +2,18 @@
   <div class="tool-container">
     <div>
       <span>Sort</span>
-      <el-select v-model="orderBy">
+      <el-select v-model="order" @change="handleOrder">
         <el-option
           v-for="item in orderList"
           :key="item.value"
           :value="item.value"
         >
           {{ item.value }}
-          <i class="el-icon-check" v-if="item.value === orderBy"></i>
+          <i class="el-icon-check" v-if="item.value === order"></i>
         </el-option>
       </el-select>
     </div>
-    <div class="pagination" v-if="totalCount">
+    <div class="pagination">
       <div>
         <span>{{ totalCount }} Results | Showing</span>
         <pagination-menu
@@ -43,7 +43,7 @@ export default {
       page: 1,
       limit: 10,
       pageSizeOptions: [10, 20, 50, "View All"],
-      orderBy: "Published(asc)",
+      order: "Published(asc)",
       orderList: [
         { value: "Published(asc)" },
         { value: "Published(desc)" },
@@ -59,6 +59,7 @@ export default {
     this.handleOrder(this.$route.query.order);
   },
 
+  // sync two pagination toll display
   watch: {
     "$route.query.page": {
       handler() {
@@ -71,38 +72,36 @@ export default {
         this.handleOrder(val);
       },
     },
-
-    orderBy: {
-      handler() {
-        this.$emit("order", this.orderBy);
-      },
-    },
   },
 
   methods: {
-    // update the page and first data
+    // handle component return data
     handlePage(val) {
       this.page = val;
       this.handlePageLimit(this.page, this.limit);
     },
-
+    // handle component return data
     handlePageSize(val) {
       this.limit = val;
       this.handlePage(1);
     },
-
+    // handle first render/refresh page
+    // handle emit page/limit change
     handlePageLimit(page, limit) {
       this.page = parseInt(page);
       this.limit = parseInt(limit);
       this.$emit("page-limit", this.page, this.limit);
     },
-
+    // handle page render/refresh page
+    // handle component return data
+    // handle emit page/limit change
     handleOrder(val) {
       if (JSON.stringify(this.orderList).includes(val)) {
-        this.orderBy = val;
+        this.order = val;
       } else {
-        this.orderBy = "Published(asc)";
+        this.order = "Published(asc)";
       }
+      this.$emit("order", this.order);
     },
   },
 };
