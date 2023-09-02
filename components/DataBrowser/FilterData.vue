@@ -168,9 +168,9 @@ export default {
 
     handleURLFacet() {
       if (this.$route.query.facets) {
-        let isExist = false;
         this.selectedFacetList = this.$route.query.facets.split(",");
         for (let i = 0; i < this.selectedFacetList.length; i++) {
+          let isExist = false;
           const facet = this.selectedFacetList[i];
           for (let j = 0; j < this.convertedFilterList.length; j++) {
             const filter = this.convertedFilterList[j];
