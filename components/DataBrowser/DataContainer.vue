@@ -98,20 +98,22 @@ export default {
   data: () => {
     return {
       isLoading: true,
-      totalCount: 0,
+      totalCount: undefined,
       currentData: [],
+      pageNumber: undefined,
+      limitNumber: undefined,
       facetList: [],
       filterDict: {},
       searchContent: "",
-      relationType: "and",
-      currentOrder: "Published(asc)",
+      relationType: true,
+      currentOrder: undefined,
     };
   },
 
   created: function() {
     if (this.$route.query.facets) {
       this.facetList = this.$route.query.facets.split(",");
-      this.relationType = this.$route.query.relation;
+      this.relationType = this.$route.query.relation === "and" ? true : false;
     } else {
       this.fetchData();
     }
@@ -140,7 +142,7 @@ export default {
         this.$route.query.limit,
         this.$route.query.page,
         this.searchContent,
-        this.relationType,
+        this.relationType ? "and" : "or",
         this.currentOrder
       );
       this.currentData = result["items"];
@@ -148,7 +150,7 @@ export default {
       this.isLoading = false;
     },
 
-    compare2Filter(oldFilter, newFilter) {
+    compareFilter(oldFilter, newFilter) {
       let isDifferent = false;
       if (Object.keys(newFilter).length !== Object.keys(oldFilter).length) {
         isDifferent = true;
@@ -174,24 +176,25 @@ export default {
       return isDifferent;
     },
 
-    compare2Facet(oldFacet, newFacet) {
-      let isDifferent = false;
+    compareFacet(oldFacet, newFacet) {
       if (newFacet.length !== oldFacet.length) {
-        isDifferent = true;
+        return true;
       }
-      return isDifferent;
+      return false;
     },
 
     updateFilterFacet(filterVal, facetVal) {
       const isRefreshWithFacet =
         Object.keys(this.filterDict).length === 0 &&
         this.facetList.length !== 0;
-      const isFilterChanged = this.compare2Filter(this.filterDict, filterVal);
-      const isFacetChanged = this.compare2Facet(this.facetList, facetVal);
+      const isFilterChanged = this.compareFilter(this.filterDict, filterVal);
+      const isFacetChanged = this.compareFacet(this.facetList, facetVal);
       if (isFilterChanged || isFacetChanged) {
         this.filterDict = JSON.parse(JSON.stringify(filterVal));
         this.facetList = facetVal;
         this.updateURL(isRefreshWithFacet ? this.$route.query.page : 1);
+        // url query not change, cannot trigger watch
+        // force fetch
         if (isRefreshWithFacet) {
           this.fetchData();
         }
@@ -199,11 +202,10 @@ export default {
     },
 
     updateRelation(val) {
-      const newRelation = val ? "and" : "or";
-      const isRelationChanged =
-        newRelation === this.relationType ? false : true;
+      // const relationVal = val ? "and" : "or";
+      const isRelationChanged = this.relationType === val ? false : true;
       if (isRelationChanged) {
-        this.relationType = newRelation;
+        this.relationType = val;
         this.updateURL(1);
       }
     },
@@ -217,12 +219,18 @@ export default {
     },
 
     updatePageLimit(pageVal, limitVal) {
-      this.updateURL(pageVal, limitVal);
+      const isPageChanged = this.pageNumber === pageVal ? false : true;
+      const isLimitChanged = this.limitNumber === limitVal ? false : true;
+      if (isPageChanged || isLimitChanged) {
+        this.pageNumber = pageVal;
+        this.limitNumber = limitVal;
+        this.updateURL(pageVal, limitVal);
+      }
     },
 
     updateOrder(val) {
-      const isOrderChange = this.currentOrder === val ? false : true;
-      if (isOrderChange) {
+      const isOrderChanged = this.currentOrder === val ? false : true;
+      if (isOrderChanged) {
         this.currentOrder = val;
         this.updateURL(1);
       }
@@ -237,7 +245,7 @@ export default {
 
       if (this.facetList.length > 0) {
         query.facets = this.facetList.toString();
-        query.relation = this.relationType;
+        query.relation = this.relationType ? "and" : "or";
       }
       if (this.searchContent !== "") {
         query.search = this.searchContent;
