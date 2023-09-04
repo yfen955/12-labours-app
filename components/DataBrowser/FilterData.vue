@@ -27,7 +27,7 @@
         <div class="filter-switch">
           <p>OR</p>
           <el-switch
-            v-model="relation"
+            v-model="relationAND"
             active-color="#00467F"
             inactive-color="#D11241"
             @change="handleRelation"
@@ -83,15 +83,15 @@ export default {
       selectedFacetList: [],
       selectedFilterDict: {},
       filterDictResult: {},
-      relation: true,
+      relationAND: true,
     };
   },
 
   created: function() {
     if (this.$route.query.relation) {
-      this.relation = this.$route.query.relation === "and" ? true : false;
+      this.relationAND = this.$route.query.relation === "and" ? true : false;
     } else {
-      this.relation = true;
+      this.relationAND = true;
     }
     this.dataChange(this.$route.query.type);
   },
@@ -276,11 +276,11 @@ export default {
 
     handleRelation(val) {
       if (typeof val === "boolean") {
-        this.relation = val;
+        this.relationAND = val;
       } else if (val === "and") {
-        this.relation = true;
+        this.relationAND = true;
       } else if (val === "or") {
-        this.relation = false;
+        this.relationAND = false;
       }
       this.handleChange();
     },
@@ -310,7 +310,7 @@ export default {
         }
       }
       this.$emit("filter-facet", this.filterDictResult, this.selectedFacetList);
-      this.$emit("relation", this.relation);
+      this.$emit("relation", this.relationAND);
     },
   },
 };

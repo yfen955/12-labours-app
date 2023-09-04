@@ -11,7 +11,7 @@
         </div>
         <div>
           <PaginationTool
-            v-if="totalCount"
+            v-if="totalCount >= 0"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
@@ -25,7 +25,7 @@
             :totalCount="totalCount"
           />
           <PaginationTool
-            v-if="totalCount"
+            v-if="totalCount >= 0"
             :totalCount="totalCount"
             v-on:page-limit="updatePageLimit"
             v-on:order="updateOrder"
@@ -98,14 +98,14 @@ export default {
   data: () => {
     return {
       isLoading: true,
-      totalCount: undefined,
+      totalCount: -1,
       currentData: [],
-      pageNumber: undefined,
-      limitNumber: undefined,
+      pageNumber: -1,
+      limitNumber: -1,
       facetList: [],
       filterDict: {},
       searchContent: "",
-      relationType: true,
+      relationAND: true,
       currentOrder: undefined,
     };
   },
@@ -113,7 +113,7 @@ export default {
   created: function() {
     if (this.$route.query.facets) {
       this.facetList = this.$route.query.facets.split(",");
-      this.relationType = this.$route.query.relation === "and" ? true : false;
+      this.relationAND = this.$route.query.relation === "and" ? true : false;
     } else {
       this.fetchData();
     }
@@ -142,7 +142,7 @@ export default {
         this.$route.query.limit,
         this.$route.query.page,
         this.searchContent,
-        this.relationType ? "and" : "or",
+        this.relationAND ? "and" : "or",
         this.currentOrder
       );
       this.currentData = result["items"];
@@ -150,19 +150,15 @@ export default {
       this.isLoading = false;
     },
 
-    compareFilter(oldFilter, newFilter) {
+    compareFilter(oldFilter, oldFilterLength, newFilter, newFilterLength) {
       let isDifferent = false;
-      if (Object.keys(newFilter).length !== Object.keys(oldFilter).length) {
+      if (newFilterLength !== oldFilterLength) {
         isDifferent = true;
       } else {
         const greaterEqualFilter =
-          Object.keys(newFilter).length <= Object.keys(oldFilter).length
-            ? oldFilter
-            : newFilter;
+          newFilterLength <= oldFilterLength ? oldFilter : newFilter;
         const lessFilter =
-          Object.keys(newFilter).length > Object.keys(oldFilter).length
-            ? oldFilter
-            : newFilter;
+          newFilterLength > oldFilterLength ? oldFilter : newFilter;
         for (const key in greaterEqualFilter) {
           if (key in lessFilter) {
             if (lessFilter[key].length !== greaterEqualFilter[key].length) {
@@ -184,10 +180,16 @@ export default {
     },
 
     updateFilterFacet(filterVal, facetVal) {
+      const currentFilterLength = Object.keys(this.filterDict).length;
+      const incomingFilterLength = Object.keys(filterVal).length;
       const isRefreshWithFacet =
-        Object.keys(this.filterDict).length === 0 &&
-        this.facetList.length !== 0;
-      const isFilterChanged = this.compareFilter(this.filterDict, filterVal);
+        currentFilterLength === 0 && this.facetList.length !== 0;
+      const isFilterChanged = this.compareFilter(
+        this.filterDict,
+        currentFilterLength,
+        filterVal,
+        incomingFilterLength
+      );
       const isFacetChanged = this.compareFacet(this.facetList, facetVal);
       if (isFilterChanged || isFacetChanged) {
         this.filterDict = JSON.parse(JSON.stringify(filterVal));
@@ -203,9 +205,9 @@ export default {
 
     updateRelation(val) {
       // const relationVal = val ? "and" : "or";
-      const isRelationChanged = this.relationType === val ? false : true;
+      const isRelationChanged = this.relationAND === val ? false : true;
       if (isRelationChanged) {
-        this.relationType = val;
+        this.relationAND = val;
         this.updateURL(1);
       }
     },
@@ -245,7 +247,7 @@ export default {
 
       if (this.facetList.length > 0) {
         query.facets = this.facetList.toString();
-        query.relation = this.relationType ? "and" : "or";
+        query.relation = this.relationAND ? "and" : "or";
       }
       if (this.searchContent !== "") {
         query.search = this.searchContent;
