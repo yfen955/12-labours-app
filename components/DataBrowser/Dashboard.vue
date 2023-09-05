@@ -40,7 +40,7 @@
         >
           <template slot-scope="scope">
             <nuxt-link :to="{
-              name: 'workflow',
+              name: 'data-browser-workflow',
               query: {
                 model: scope.row.workflow
               }
