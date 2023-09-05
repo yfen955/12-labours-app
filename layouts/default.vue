@@ -79,8 +79,26 @@ export default {
       if (bool) {
         await backendQuery.revokeAccess(this.$config.query_api_url);
       }
+    },
+
+    // clean the access_token after auto logout
+    checkAutoLogout() {
+      let expiration = localStorage.getItem("auth.strategy") === "local" ? localStorage.getItem("auth._token_expiration.local") : localStorage.getItem("auth._token_expiration.google");
+      let current = new Date().getTime();
+      if (expiration && expiration < current && localStorage.getItem("access_token"))
+        this.signOut(true);
     }
-  }
+  },
+
+  mounted: function() {
+    this.checkAutoLogout();
+  },
+  
+  watch: {
+    '$route.fullPath': function () {
+      this.checkAutoLogout();
+    },
+  },
 }
 </script>
 
