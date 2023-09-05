@@ -89,9 +89,10 @@ function getMachineId() {
 }
 
 async function fetchAccessToken(path, user) {
-  const machineId = getMachineId()
+  const machineId = getMachineId();
+  const expiration = getLocalStorage("auth.strategy") === "local" ? getLocalStorage("auth._token_expiration.local") : getLocalStorage("auth._token_expiration.google");
   const payload = {
-    identity: `${user}>${machineId}`,
+    identity: `${user}>${machineId}>${expiration}`,
   };
   await axios
     .post(`${path}/access/token`, payload)
