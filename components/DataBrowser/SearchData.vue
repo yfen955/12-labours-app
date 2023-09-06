@@ -1,22 +1,30 @@
 <template>
   <div class="search-container">
-    <el-form label-position="top" v-model="searchContent" @submit.native.prevent>
+    <el-form
+      label-position="top"
+      v-model="searchContent"
+      @submit.native.prevent
+    >
       <el-form-item label="Search within category">
         <div class="search">
           <div class="input-box">
             <el-input
               v-model="searchContent"
               placeholder="Enter search criteria"
-              @keyup.enter.native="onSubmit(1)"
+              @keyup.enter.native="onSubmit()"
             />
             <el-button
               v-if="searchContent"
               class="clear-search-btn"
               icon="el-icon-close"
-              @click="clearSearch"
+              @click="clearSearch()"
             />
           </div>
-          <el-button icon="el-icon-search" class="search-btn" @click="onSubmit(1)">
+          <el-button
+            icon="el-icon-search"
+            class="search-btn"
+            @click="onSubmit()"
+          >
             <span class="display-ellipsis --1">Search</span>
           </el-button>
         </div>
@@ -27,78 +35,47 @@
 
 <script>
 export default {
-  props: [ "currentFilterDict" ],
   data() {
     return {
-      isLoading: false,
-      searchContent: '',
-    }
+      searchContent: "",
+    };
   },
 
   created: function() {
-    this.searchContent = this.$route.query.search ? this.$route.query.search: '';
-    const page = this.$route.query.page ? this.$route.query.page : 1;
-    this.onSubmit(page);
+    this.handleSearchContent(this.$route.query.search);
   },
 
   watch: {
-    'isLoading': {
-      handler() {
-        this.$emit('isLoading', this.isLoading);
-      }
-    },
-    '$route.query.search': {
+    "$route.query.search": {
       handler(val) {
-        if (val)
-          this.searchContent = val ? val : '';
-        else
-          this.searchContent = '';
-        const page = this.$route.query.page ? this.$route.query.page : 1;
-        this.onSubmit(page);
-      }
+        this.handleSearchContent(val);
+      },
     },
   },
 
   methods: {
-    async onSubmit(page) {
-      this.isLoading = true;
-      this.$emit('search_content', this.searchContent);
-
-      // update the page and search content in the url
-      let query = {
-        type: this.$route.query.type,
-        page: page,
-        limit: this.$route.query.limit,
-      };
-      if (this.$route.query.facets) {
-        query.facets = this.$route.query.facets;
-        query.relation = this.$route.query.relation;
-      }
-      if (this.searchContent !== '')
-        query.search = this.searchContent;
-      if (this.$route.query.order !== 'Published(asc)')
-        query.order = this.$route.query.order;
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: query
-      })
-      
-      this.isLoading = false;
+    handleSearchContent(search) {
+      this.searchContent = search ? search : "";
+      this.onSubmit();
     },
 
-    async clearSearch() {
-      this.searchContent = '';
-      this.onSubmit(1);
-    }
-  }
-}
+    clearSearch() {
+      this.searchContent = "";
+      this.onSubmit();
+    },
+
+    onSubmit() {
+      this.$emit("searchContent", this.searchContent);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
 .search-container {
   min-width: 13rem;
   margin: 1rem 0 1rem 0;
-  border: 1px solid #E4E7ED;
+  border: 1px solid #e4e7ed;
   padding: 1rem;
 }
 .search {
@@ -119,19 +96,19 @@ export default {
     width: 100%;
   }
   .clear-search-btn {
-  color: #000000;
-  background: none;
-  border: none;
-  height: 100%;
-  padding: 1.65rem 0.5rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-  &:hover,
-  &:active {
-    opacity: 0.5;
+    color: #000000;
+    background: none;
+    border: none;
+    height: 100%;
+    padding: 1.65rem 0.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    &:hover,
+    &:active {
+      opacity: 0.5;
+    }
   }
-}
 }
 .search-btn {
   display: flex;
