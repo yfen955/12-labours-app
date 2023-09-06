@@ -41,7 +41,7 @@ export default {
 
   async fetch() {
     this.isLoading = true;
-    let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.params.id, [this.$route.query.access]);
+    let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.params.id);
     let filename = data.filename;
     let dataset_id = data.experiments[0].submitter_id;
     this.source_url = `${this.$config.query_api_url}/data/download/${dataset_id}/${filename}`;

@@ -1,6 +1,6 @@
 describe('test details page', () =>{
   it('test left column button', () => {
-    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=abstract&access=demo1-12L');
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=abstract');
     cy.wait(3000);
     cy.contains('Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig');
     cy.get("#datasetBrowser").click();
@@ -8,7 +8,7 @@ describe('test details page', () =>{
   })
 
   it('test the gallery', () => {
-    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=gallery&access=demo1-12L');
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=gallery');
     cy.wait(3000);
 
     cy.get('.el-carousel__item').should('have.length', 5);
@@ -41,7 +41,7 @@ describe('test details page', () =>{
   })
 
   it('test dataset files', () => {
-    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=files&access=demo1-12L');
+    cy.visit('/data/browser/dataset/dataset-34-version-5?datasetTab=files');
     cy.wait(3000);
 
     cy.get('a').filter(':contains("Code")').click();
@@ -63,7 +63,7 @@ describe('test details page', () =>{
 
 // describe('information in the duke dataset detail page', () =>{
 //   beforeEach(function () {
-//     cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite&access=demo1-12L');
+//     cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=cite');
 //     cy.wait(3000);
 //   })
 

@@ -105,7 +105,7 @@ export default {
 
   methods: {
     fetchScaffold: async function() {
-      let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id, [this.$route.query.access]);
+      let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id);
       let dataset_id = data.experiments[0].submitter_id;
       this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
       this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
@@ -158,8 +158,7 @@ export default {
           this.$config.query_api_url,
           "experiment_query",
           { submitter_id: [this.$route.query.dataset_id] },
-          "",
-          [this.$route.query.access]
+          ""
         );
         this.relevant_facets = data.facets;
       } else if (this.$route.query.type === 'flatmap')
