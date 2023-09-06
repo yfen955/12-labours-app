@@ -106,7 +106,7 @@ export default {
       filterDict: {},
       searchContent: "",
       relationAND: true,
-      currentOrder: undefined,
+      currentOrder: "Published(asc)",
     };
   },
 
@@ -114,15 +114,12 @@ export default {
     if (this.$route.query.facets) {
       this.facetList = this.$route.query.facets.split(",");
       this.relationAND = this.$route.query.relation === "and" ? true : false;
-    } else {
-      this.fetchData();
-    }
-    if (this.$route.query.search) {
+    } else if (this.$route.query.search) {
       this.searchContent = this.$route.query.search;
-    }
-    if (this.$route.query.order) {
+    } else if (this.$route.query.order) {
       this.currentOrder = this.$route.query.order;
     }
+    this.fetchData();
   },
 
   watch: {
@@ -204,7 +201,6 @@ export default {
     },
 
     updateRelation(val) {
-      // const relationVal = val ? "and" : "or";
       const isRelationChanged = this.relationAND === val ? false : true;
       if (isRelationChanged) {
         this.relationAND = val;
@@ -252,8 +248,9 @@ export default {
       if (this.searchContent !== "") {
         query.search = this.searchContent;
       }
-      query.order = this.currentOrder;
-
+      if (this.currentOrder !== "Published(asc)") {
+        query.order = this.currentOrder;
+      }
       this.$router.push({
         path: this.$route.path,
         query: query,
