@@ -1,25 +1,6 @@
 <template>
   <div>
     <div v-if="dataDetails.length > 0">
-      <!-- data summary -->
-      <div class="title-config">
-        <div>
-          Sort
-          <el-select v-model="sortBy">
-            <el-option
-              v-for="item in sort_list"
-              :key="item.value"
-              :value="item.value">
-              {{ item.value }} <i class="el-icon-check" v-if="item.value === sortBy"></i>
-            </el-option>
-          </el-select>
-        </div>
-        <PaginationHeading
-          :isLoadingSearch="isLoadingSearch"
-          :totalCount="totalCount"
-          class="top"
-        />
-      </div>
       <!-- data details -->
       <div class="data-container">
         <div v-for="(item, index) in dataDetails" :key="index">
@@ -47,7 +28,6 @@
                       },
                       query: {
                         datasetTab: 'abstract',
-                        access: item.belong_to,
                       },
                     }"
                   >
@@ -82,11 +62,6 @@
           <span v-if="$route.query.type === 'laboursInfo'"></span>
         </div>
       </div>
-      <PaginationHeading
-        :isLoadingSearch="isLoadingSearch"
-        :totalCount="totalCount"
-        class="bottom"
-      />
     </div>
     <div v-else class="no-result">
       <p>No result</p>
@@ -95,48 +70,14 @@
 </template>
 
 <script>
-import PaginationHeading from "./PaginationHeading.vue";
-
 export default {
   name: "DisplayData",
-  components: { PaginationHeading },
-  props: ["isLoadingSearch", "dataDetails", "totalCount"],
+  props: ["dataDetails"],
   data: () => {
     return {
       dataShowed: [],
       imgPlaceholder: require("../../static/img/12-labours-logo-black.png"),
-      sortBy: 'Published(asc)',
-      sort_list: [
-        {value: 'Published(asc)'},
-        {value: 'Published(desc)'},
-        {value: 'Title(asc)'},
-        {value: 'Title(desc)'},
-        {value: 'Relevance'},
-      ],
-    }
-  },
-
-  created: function () {
-    if (this.$route.query.order)
-      this.determineOrder(this.$route.query.order);
-  },
-
-  watch: {
-    'sortBy': {
-      handler(val) {
-        if (val !== this.$route.query.order)
-          this.updateUrl(1, val);
-        this.$emit('sort_changed', this.sortBy);
-      }
-    },
-    '$route.query.order': {
-      handler(val) {
-        if (val)
-          this.determineOrder(val);
-        else
-          this.sortBy = 'Published(asc)';
-      }
-    }
+    };
   },
 
   methods: {
@@ -166,33 +107,6 @@ export default {
     replaceByDefaultImage(error) {
       error.target.src = this.imgPlaceholder;
     },
-
-    determineOrder(val) {
-      if (JSON.stringify(this.sort_list).includes(val))
-        this.sortBy = val;
-      else
-        this.updateUrl(1);
-    },
-
-    updateUrl(page, order) {
-      let query = {
-          type: this.$route.query.type,
-          page: page,
-          limit: this.$route.query.limit,
-        };
-        if (this.$route.query.facets) {
-          query.facets = this.$route.query.facets;
-          query.relation = this.$route.query.relation;
-        }
-        if (this.$route.query.search)
-          query.search = this.$route.query.search;
-        if (order !== 'Published(asc)')
-          query.order = order;
-        this.$router.push({
-          path: `${this.$route.path}`,
-          query: query
-        })
-    }
   },
 };
 </script>
@@ -272,19 +186,5 @@ hr {
 
 .title-link {
   font-size: 1.5rem;
-}
-.el-select {
-  width: 11rem;
-  margin-left: .5rem;
-  padding: 1rem 0;
-}
-.title-config {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.el-icon-check {
-  color: $app-primary-color;
 }
 </style>

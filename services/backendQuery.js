@@ -122,7 +122,7 @@ async function revokeAccess(path) {
   }
 }
 
-async function fetchPaginationData(path, filter, limit, page, search, relation, sortBy) {
+async function fetchPaginationData(path, filter, limit, page, search, relation, sort) {
   const accessToken = getLocalStorage("access_token")
   let fetched_data = {
     items: [],
@@ -133,7 +133,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
-    order: sortBy
+    order: sort
   };
   await axios
     .post(`${path}/graphql/pagination/?search=${search}`, payload, {
@@ -150,16 +150,20 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
   return fetched_data;
 }
 
-async function fetchQueryData(path, node, filter, search, access) {
+async function fetchQueryData(path, node, filter, search) {
+  const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
-    search: search,
-    access: access,
+    search: search
   };
   await axios
-    .post(`${path}/graphql/query`, payload)
+    .post(`${path}/graphql/query`, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
       fetched_data = res.data;
     })
@@ -169,15 +173,17 @@ async function fetchQueryData(path, node, filter, search, access) {
   return fetched_data;
 }
 
-async function getSingleData(path, uuid, access) {
+async function getSingleData(path, uuid) {
+  const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
-  let payload = {
-    access: access,
-  };
   await axios
-    .post(`${path}/record/${uuid}`, payload)
+    .get(`${path}/record/${uuid}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then((res) => {
-      fetched_data = res.data[0];
+      fetched_data = res.data.record;
     })
     .catch((err) => {
       console.log(err);

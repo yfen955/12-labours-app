@@ -1,26 +1,30 @@
 <template>
   <div>
-    <twelve-labours-header2 :auth="$auth" :headerLinks="headerLinks" @isSignOut="signOut">
+    <twelve-labours-header2
+      :auth="$auth"
+      :headerLinks="headerLinks"
+      @isSignOut="signOut"
+    >
       <template v-slot:logo>
-        <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours">
+        <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours" />
       </template>
     </twelve-labours-header2>
     <nuxt />
     <twelve-labours-footer :footerLinks="footerLinks">
       <template v-slot:logo>
-        <img class="footer-logo" :src="footerLogo" alt="Logo for 12 Labours">
+        <img class="footer-logo" :src="footerLogo" alt="Logo for 12 Labours" />
       </template>
     </twelve-labours-footer>
   </div>
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
+import backendQuery from "@/services/backendQuery";
 
 export default {
-  data: function () {
+  data: function() {
     return {
-      headerLogo: require('../static/img/12-labours-logo-black.png'),
+      headerLogo: require("../static/img/12-labours-logo-black.png"),
       headerLinks: [
         {
           title: "data-and-models",
@@ -48,30 +52,30 @@ export default {
         //   href: "/search",
         // },
       ],
-      footerLogo: require('../static/img/12-labours-logo-primary.png'),
+      footerLogo: require("../static/img/12-labours-logo-primary.png"),
       footerLinks: [
         {
           title: "terms-of-service",
           displayTitle: "Terms of Service",
-          href: "/terms-of-service"
+          href: "/terms-of-service",
         },
         {
           title: "privacy-policy",
           displayTitle: "Privacy Policy",
-          href: "/"
+          href: "/",
         },
         {
           title: "site-feedback",
           displayTitle: "Site Feedback",
-          href: "/site-feedback"
+          href: "/site-feedback",
         },
         {
           title: "contact",
           displayTitle: "Contact",
-          href: "/contact"
-        }
-      ]
-    }
+          href: "/contact",
+        },
+      ],
+    };
   },
 
   methods: {

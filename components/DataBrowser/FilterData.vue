@@ -6,11 +6,11 @@
       <h5>Filters applied</h5>
 
       <el-card shadow="never" class="facet-card">
-        <span v-if="selectedItems.length === 0" class="no-facets">
+        <span v-if="selectedFacetList.length === 0" class="no-facets">
           No filters applied
         </span>
         <el-tag
-          v-for="facet in selectedItems"
+          v-for="facet in selectedFacetList"
           :key="facet"
           class="tags"
           disable-transitions
@@ -27,10 +27,10 @@
         <div class="filter-switch">
           <p>OR</p>
           <el-switch
-            v-model="relation"
+            v-model="relationAND"
             active-color="#00467F"
             inactive-color="#D11241"
-            @change="handleSwitch"
+            @change="handleRelation"
           >
           </el-switch>
           <p>AND</p>
@@ -39,7 +39,7 @@
 
       <el-collapse>
         <el-collapse-item
-          v-for="(filter, index) in filters_list"
+          v-for="(filter, index) in convertedFilterList"
           :key="index"
           :title="filter.title"
         >
@@ -47,18 +47,18 @@
             :indeterminate="filter.isIndeterminate"
             class="filter-selector"
             v-model="filter.checkAll"
-            @change="handleCheckAllChange(filter, index)"
+            @change="handleCheckAll(filter, index)"
           >
             Select all
           </el-checkbox>
           <hr class="checkbox-line" />
           <el-checkbox-group
-            v-model="filter.selectedItem"
-            @change="updateCheckAll(filter, index)"
+            v-model="filter.selectedFacet"
+            @change="handleCheckBox(filter, index)"
           >
             <el-checkbox
               class="filter-selector"
-              v-for="(type, index) in filter.filter_items"
+              v-for="(type, index) in filter.filterFacetName"
               v-show="type !== 'NA'"
               :key="index"
               :label="type"
@@ -73,23 +73,26 @@
 </template>
 
 <script>
-export default {
-  props: ["allFilterDict"],
+import backendQuery from "@/services/backendQuery";
 
+export default {
   data: () => {
     return {
-      filters_list: [],
-      selectedItems: [],
-      filteredData: [],
-      filters_dict: {},
-      newTotalCount: 0,
-      element_list: [],
-      all_facets_list: [],
-      relation: true,
+      allFilterDict: {},
+      convertedFilterList: [],
+      selectedFacetList: [],
+      selectedFilterDict: {},
+      filterDictResult: {},
+      relationAND: true,
     };
   },
 
   created: function() {
+    if (this.$route.query.relation) {
+      this.relationAND = this.$route.query.relation === "and" ? true : false;
+    } else {
+      this.relationAND = true;
+    }
     this.dataChange(this.$route.query.type);
   },
 
@@ -101,260 +104,213 @@ export default {
     },
     allFilterDict: {
       handler() {
-        this.dataChange(this.$route.query.type);
+        this.convertFacets();
       },
     },
     "$route.query.facets": {
       handler(new_val, old_val) {
-        if (new_val && old_val && new_val.length < old_val.length) {
-          old_val.split(",").forEach((item) => {
-            if (new_val.indexOf(item) == -1)
-              this.deselectFacet(item);
-          });
-        } else if (old_val && !new_val)
+        if (new_val && old_val) {
+          if (new_val.length < old_val.length) {
+            old_val.split(",").forEach((item) => {
+              if (new_val.indexOf(item) === -1) {
+                this.deselectFacet(item);
+              }
+            });
+          } else if (new_val.length > old_val.length) {
+            this.convertFacets();
+          }
+        } else if (old_val && !new_val) {
           this.deselectFacet(old_val);
-        else if (!old_val && new_val)
-          this.dataChange(this.$route.query.type);
-        else if (new_val && old_val && new_val.length > old_val.length)
-          this.dataChange(this.$route.query.type);
+        } else if (!old_val && new_val) {
+          this.convertFacets();
+        }
       },
     },
     "$route.query.relation": {
       handler(val) {
-        if (val) {
-          this.relation = val === "and" ? true : false;
-        } else {
-          this.relation = true;
-        }
-        this.$emit("relation", this.relation);
+        this.handleRelation(val);
       },
     },
   },
 
   methods: {
-    async dataChange(val) {
-      this.filters_list = [];
-      this.element_list = [];
-      if (this.$route.query.relation) {
-        this.relation = this.$route.query.relation === "and" ? true : false;
-      } else {
-        this.relation = true;
-      }
+    async fetchFilter() {
+      this.allFilterDict = await backendQuery.fetchFilterData(
+        this.$config.query_api_url,
+        false
+      );
+    },
+
+    dataChange(val) {
       if (val === "dataset") {
-        this.convertFacets();
+        this.fetchFilter();
       }
     },
 
     convertFacets() {
+      this.convertedFilterList = [];
+      this.selectedFilterDict = {};
       for (let i = 0; i < this.allFilterDict.size; i++) {
-        this.filters_list.push({
+        const nodeField = this.allFilterDict["nodes>fields"][i];
+        this.convertedFilterList.push({
           index: i,
-          node_field: this.allFilterDict["nodes>fields"][i],
-          // fieldName: this.allFilterDict.fields[i],
+          nodeField: nodeField,
           title: this.allFilterDict.titles[i],
-          filter_items: Object.keys(this.allFilterDict.elements[i]),
-          selectedItem: [],
+          filterFacetName: this.allFilterDict.elements[i],
+          selectedFacet: [],
           checkAll: true,
           isIndeterminate: false,
         });
-        this.element_list.push([]);
+        this.selectedFilterDict[nodeField] = [];
       }
+      this.handleURLFacet();
+    },
 
-      if (this.$route.query.facets && JSON.stringify(this.allFilterDict) !== "{}") {
-        this.selectedItems = this.$route.query.facets.split(",");
-        let finished = false;
-        let found = false;
-        for (let i = 0; i < this.selectedItems.length; i++) {
-          let facet = this.selectedItems[i];
-          this.filters_list.map((val) => {
-            let index = val.filter_items.indexOf(facet);
+    handleURLFacet() {
+      if (this.$route.query.facets) {
+        this.selectedFacetList = this.$route.query.facets.split(",");
+        for (let i = 0; i < this.selectedFacetList.length; i++) {
+          let isExist = false;
+          const facet = this.selectedFacetList[i];
+          for (let j = 0; j < this.convertedFilterList.length; j++) {
+            const filter = this.convertedFilterList[j];
+            // check whether facet in URL is valid
+            const index = filter.filterFacetName.indexOf(facet);
             if (index > -1) {
-              val.selectedItem.push(val.filter_items[index]);
-              if (i === this.selectedItems.length - 1) finished = true;
-              if (val.selectedItem.length === val.filter_items.length) {
-                val.selectedItem = [];
-                val.checkAll = true;
-                val.isIndeterminate = false;
-                this.handleChange(val, finished);
+              // Add facets from URL
+              filter.selectedFacet.push(filter.filterFacetName[index]);
+              this.selectedFilterDict[filter.nodeField] = filter.selectedFacet;
+
+              const selectedFacetLength = filter.selectedFacet.length;
+              const filterFacetNameLength = filter.filterFacetName.length;
+              if (selectedFacetLength === filterFacetNameLength) {
+                filter.selectedFacet = [];
+                filter.checkAll = true;
+                filter.isIndeterminate = false;
               } else {
-                val.checkAll = false;
-                val.isIndeterminate = true;
-                this.generateFiltersDict(val, finished);
+                filter.checkAll = false;
+                filter.isIndeterminate = true;
               }
-              found = true;
+              isExist = true;
             }
-          });
+          }
+          if (!isExist) {
+            this.selectedFacetList = [];
+            break;
+          }
         }
-        if (!found) {
-          this.$router.push({
-            path: "/data/browser",
-            query: {
-              type: "dataset",
-              page: 1,
-              limit: 10
-            },
-          });
-        }
-      } else {
-        this.selectedItems = [];
-        this.generateFiltersDict();
       }
+      this.handleChange();
     },
 
-    async handleChange(filter, finished) {
-      this.selectedItems = [];
-      for (let i = 0; i < this.filters_list.length; i++) {
-        this.selectedItems = this.selectedItems.concat(
-          this.filters_list[i].selectedItem
-        );
-      }
+    handleChange(filter = undefined) {
+      if (filter) {
+        this.selectedFacetList = [];
+        for (let i = 0; i < this.convertedFilterList.length; i++) {
+          this.selectedFacetList = this.selectedFacetList.concat(
+            this.convertedFilterList[i].selectedFacet
+          );
+        }
 
-      if (this.selectedItems.length === 0) {
-        this.element_list = [];
+        if (filter.selectedFacet.length === 0) {
+          this.selectedFilterDict[filter.nodeField] = [];
+        } else {
+          this.selectedFilterDict[filter.nodeField] = filter.selectedFacet;
+        }
       }
-
-      if (!filter) {
-        await this.generateFiltersDict();
-      } else {
-        await this.generateFiltersDict(filter, finished);
-      }
-
-      this.updateURL(1);
+      this.generateFiltersDict(filter);
     },
 
-    handleCheckAllChange(filter, i) {
-      let refresh =
-        this.filters_list[i].selectedItem.length === 0 ? false : true;
-      if (filter.checkAll) {
-        this.filters_list[i].selectedItem = [];
-      } else {
-        this.filters_list[i].checkAll = true;
-      }
-      this.filters_list[i].isIndeterminate = false;
-      // don't fetch data when already has selected all
-      if (refresh) {
+    handleCheckAll(filter, index) {
+      const isCheckAll =
+        this.convertedFilterList[index].selectedFacet.length === 0
+          ? false
+          : true;
+      this.convertedFilterList[index].selectedFacet = [];
+      this.convertedFilterList[index].checkAll = true;
+      this.convertedFilterList[index].isIndeterminate = false;
+      if (isCheckAll) {
         this.handleChange(filter);
       }
     },
 
     // update the checkAll state when the selected facets are changed
-    updateCheckAll(filter, i) {
-      let checkedCount = filter.selectedItem.length;
-      let allFacetsLength = filter.filter_items.length;
+    handleCheckBox(filter, index) {
+      const checkedCount = filter.selectedFacet.length;
+      const allFacetsLength = filter.filterFacetName.length;
       if (checkedCount === allFacetsLength || checkedCount === 0) {
-        this.element_list[i] = [];
-        this.filters_list[i].checkAll = true;
-        this.filters_list[i].isIndeterminate = false;
-        this.filters_list[i].selectedItem = [];
+        this.selectedFilterDict[filter.nodeField] = [];
+        this.convertedFilterList[index].selectedFacet = [];
+        this.convertedFilterList[index].checkAll = true;
+        this.convertedFilterList[index].isIndeterminate = false;
       } else {
-        this.filters_list[i].checkAll = false;
-        this.filters_list[i].isIndeterminate = true;
+        this.convertedFilterList[index].checkAll = false;
+        this.convertedFilterList[index].isIndeterminate = true;
       }
       this.handleChange(filter);
     },
 
     // if a tag is closed, it will call this function
-    deselectFacet(item) {
-      // find and remove the item that is deselected
-      let filter_index;
-      for (let i = 0; i < this.filters_list.length; i++) {
-        let index = this.filters_list[i].selectedItem.indexOf(item);
+    deselectFacet(facet) {
+      // find and remove the facet that is deselected
+      for (let i = 0; i < this.convertedFilterList.length; i++) {
+        let index = this.convertedFilterList[i].selectedFacet.indexOf(facet);
         if (index > -1) {
-          filter_index = i;
-          this.filters_list[i].selectedItem.splice(index, 1);
-          // update the 'select all' checkbox
-          if (this.filters_list[i].selectedItem.length === 0) {
-            this.element_list[i] = [];
-            this.filters_list[i].checkAll = true;
-            this.filters_list[i].isIndeterminate = false;
+          // remove from selectedFacet
+          this.convertedFilterList[i].selectedFacet.splice(index, 1);
+          // update the 'select all' checkbox when no facet selected
+          if (this.convertedFilterList[i].selectedFacet.length === 0) {
+            const nodeField = this.convertedFilterList[i].nodeField;
+            this.selectedFilterDict[nodeField] = [];
+            this.convertedFilterList[i].checkAll = true;
+            this.convertedFilterList[i].isIndeterminate = false;
           } else {
-            this.filters_list[i].checkAll = false;
-            this.filters_list[i].isIndeterminate = true;
+            this.convertedFilterList[i].checkAll = false;
+            this.convertedFilterList[i].isIndeterminate = true;
           }
+          this.handleChange(this.convertedFilterList[i]);
           break;
         }
-      }
-
-      if (filter_index) {
-        // update the selectedItems list
-        for (let i = 0; i < this.filters_list.length; i++) {
-          this.selectedItems = this.selectedItems.concat(
-            this.filters_list[i].selectedItem
-          );
-        }
-
-        // after update the selectedItem, hangle the change to fetch data
-        this.handleChange(this.filters_list[filter_index]);
       }
     },
 
-    async generateFiltersDict(filter_list, finished) {
-      let filter = {};
-      if (!filter_list) {
-        this.filters_dict = {};
-      } else if (filter_list.selectedItem.length === 0) {
-        this.element_list[filter_list.index] = [];
-      } else {
-        let elements_list = this.allFilterDict.elements[filter_list.index];
-        let result_list = [];
-        for (let key in elements_list) {
-          if (filter_list.selectedItem.includes(key)) {
-            result_list = result_list.concat(key);
-          }
-        }
-        this.element_list[filter_list.index] = result_list;
-        filter[filter_list.node_field] = result_list;
+    handleRelation(val) {
+      if (typeof val === "boolean") {
+        this.relationAND = val;
+      } else if (val === "and") {
+        this.relationAND = true;
+      } else if (val === "or") {
+        this.relationAND = false;
       }
+      this.handleChange();
+    },
 
-      let empty = true;
-      for (let i = 0; i < this.element_list.length; i++) {
-        if (!this.element_list[i]) {
-          this.element_list[i] = [];
-        }
-        if (this.element_list[i].length > 0) {
-          empty = false;
-          break;
-        }
-      }
-      if (empty) {
-        this.filters_dict = {};
-      } else {
-        if (JSON.stringify(filter) === "{}") {
-          delete this.filters_dict[filter_list.node_field];
+    generateFiltersDict(selectedFilter = undefined) {
+      if (!selectedFilter) {
+        if (this.selectedFacetList.length === 0) {
+          this.filterDictResult = {};
         } else {
-          this.filters_dict = { ...this.filters_dict, ...filter };
+          for (const key in this.selectedFilterDict) {
+            const value = this.selectedFilterDict[key];
+            if (value.length > 0) {
+              this.filterDictResult[key] = this.selectedFilterDict[key];
+            }
+          }
+        }
+      } else {
+        const nodeField = selectedFilter.nodeField;
+        if (
+          this.selectedFilterDict[nodeField].length === 0 &&
+          nodeField in this.filterDictResult
+        ) {
+          delete this.filterDictResult[nodeField];
+        }
+        if (this.selectedFilterDict[nodeField].length > 0) {
+          this.filterDictResult[nodeField] = selectedFilter.selectedFacet;
         }
       }
-
-      if (finished != false) {
-        this.$emit("filter-dict", this.filters_dict, this.relation);
-      }
-    },
-
-    // update the page, selected facets & relation in the url
-    updateURL(page) {
-      let query = {
-        type: this.$route.query.type,
-        page: page,
-        limit: this.$route.query.limit,
-      };
-      if (this.selectedItems.length > 0) {
-        query.facets = this.selectedItems.toString();
-        query.relation = this.relation ? "and" : "or";
-      }
-      if (this.$route.query.search)
-        query.search = this.$route.query.search;
-      if (this.$route.query.order)
-        query.order = this.$route.query.order;
-      this.$router.push({
-        path: `${this.$route.path}`,
-        query: query,
-      });
-    },
-
-    handleSwitch(val) {
-      this.updateURL(1);
-      this.$emit("relation", val);
+      this.$emit("filter-facet", this.filterDictResult, this.selectedFacetList);
+      this.$emit("relation", this.relationAND);
     },
   },
 };

@@ -1,20 +1,34 @@
 <template>
   <div>
     <span v-if="$route.query.type === 'dataset'">
-      <SearchData v-on:search_content="updateSearchContent" />
+      <SearchData v-on:searchContent="updateSearch" />
       <div class="data-container">
         <div>
-          <FilterData :allFilterDict="allFilterDict" v-on:filter-dict="updateFilterDict" v-on:relation="updateRelation" />
+          <FilterData
+            v-on:filter-facet="updateFilterFacet"
+            v-on:relation="updateRelation"
+          />
         </div>
         <div>
+          <PaginationTool
+            v-if="totalCount >= 0"
+            :totalCount="totalCount"
+            v-on:page-limit="updatePageLimit"
+            v-on:order="updateOrder"
+          />
           <DisplayData
-            v-loading="isLoadingSearch"
+            v-loading="isLoading"
             element-loading-text="Loading..."
             element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
-            :isLoadingSearch="isLoadingSearch"
+            :isLoadingSearch="isLoading"
             :totalCount="totalCount"
-            v-on:sort_changed="updateSort"
+          />
+          <PaginationTool
+            v-if="totalCount >= 0"
+            :totalCount="totalCount"
+            v-on:page-limit="updatePageLimit"
+            v-on:order="updateOrder"
           />
         </div>
       </div>
@@ -58,105 +72,195 @@
       <div class="data-container">
         <FilterData />
       </div> -->
-      <br>
+      <br />
       <Dashboard />
     </span>
   </div>
 </template>
 
 <script>
-import backendQuery from '@/services/backendQuery';
+import backendQuery from "@/services/backendQuery";
+import PaginationTool from "./PaginationTool.vue";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
 import Dashboard from "./Dashboard.vue";
 
 export default {
-  components: { SearchData, FilterData, DisplayData, Dashboard },
-  props: [ "category" ],
+  components: {
+    PaginationTool,
+    SearchData,
+    FilterData,
+    DisplayData,
+    Dashboard,
+  },
+  props: ["category"],
   data: () => {
     return {
-      isLoadingSearch: true,
-      totalCount: 0,
+      isLoading: true,
+      totalCount: -1,
       currentData: [],
-      allFilterDict: {},
-      currentFilterDict: {},
-      file_type: [],
-      errorMessage: '',
-      searchContent: '',
-      relation: 'and',
-      sortBy: 'Published(asc)',
+      pageNumber: -1,
+      limitNumber: -1,
+      facetList: [],
+      filterDict: {},
+      searchContent: "",
+      relationAND: true,
+      currentOrder: undefined,
+    };
+  },
+
+  created: function() {
+    if (this.$route.query.facets) {
+      this.facetList = this.$route.query.facets.split(",");
+      this.relationAND = this.$route.query.relation === "and" ? true : false;
+    } else {
+      this.fetchData();
+    }
+    if (this.$route.query.search) {
+      this.searchContent = this.$route.query.search;
+    }
+    if (this.$route.query.order) {
+      this.currentOrder = this.$route.query.order;
     }
   },
 
-  created: function () {
-    // when open find data page, call the function to fetch the data
-    this.dataChange(this.$route.query.type);
-  },
-
   watch: {
-    // if the type variable in the url changes, change the current data to the data in that category
-    '$route.query.type': function (val) {
-      this.dataChange(val);
-    },
-
-    '$route.query.page': function () {
-      this.fetchData();
-    },
-
-    '$route.query.limit': function () {
-      this.fetchData();
+    "$route.query": {
+      handler() {
+        this.fetchData();
+      },
     },
   },
 
   methods: {
     async fetchData() {
-      this.isLoadingSearch = true;
-      let result = await backendQuery.fetchPaginationData(this.$config.query_api_url, this.currentFilterDict, this.$route.query.limit, this.$route.query.page, this.searchContent, this.relation, this.sortBy);
+      this.isLoading = true;
+      const result = await backendQuery.fetchPaginationData(
+        this.$config.query_api_url,
+        this.filterDict,
+        this.$route.query.limit,
+        this.$route.query.page,
+        this.searchContent,
+        this.relationAND ? "and" : "or",
+        this.currentOrder
+      );
       this.currentData = result["items"];
       this.totalCount = result["total"];
-      this.isLoadingSearch = false;
+      this.isLoading = false;
     },
 
-    async dataChange(val) {
-      this.isLoadingSearch = true;
-      this.currentData = [];
-      if (val === 'dataset') {
-        this.allFilterDict = await backendQuery.fetchFilterData(this.$config.query_api_url, false);
+    compareFilter(oldFilter, oldFilterLength, newFilter, newFilterLength) {
+      let isDifferent = false;
+      if (newFilterLength !== oldFilterLength) {
+        isDifferent = true;
+      } else {
+        const greaterEqualFilter =
+          newFilterLength <= oldFilterLength ? oldFilter : newFilter;
+        const lessFilter =
+          newFilterLength > oldFilterLength ? oldFilter : newFilter;
+        for (const key in greaterEqualFilter) {
+          if (key in lessFilter) {
+            if (lessFilter[key].length !== greaterEqualFilter[key].length) {
+              isDifferent = true;
+            }
+          } else {
+            isDifferent = true;
+          }
+        }
       }
+      return isDifferent;
     },
 
-    updateFilterDict(filter_dict, relation) {
-      this.currentFilterDict = filter_dict;
-      this.updateRelation(relation);
-    },
-
-    updateSearchContent(val) {
-      const isSearchChanged = this.searchContent === val ? false : true;
-      if (isSearchChanged) {
-        this.searchContent = val;
-        this.fetchData();
+    compareFacet(oldFacet, newFacet) {
+      if (newFacet.length !== oldFacet.length) {
+        return true;
       }
+      return false;
     },
 
-    updateLoading(val) {
-      this.isLoadingSearch = val;
+    updateFilterFacet(filterVal, facetVal) {
+      const currentFilterLength = Object.keys(this.filterDict).length;
+      const incomingFilterLength = Object.keys(filterVal).length;
+      const isRefreshWithFacet =
+        currentFilterLength === 0 && this.facetList.length !== 0;
+      const isFilterChanged = this.compareFilter(
+        this.filterDict,
+        currentFilterLength,
+        filterVal,
+        incomingFilterLength
+      );
+      const isFacetChanged = this.compareFacet(this.facetList, facetVal);
+      if (isFilterChanged || isFacetChanged) {
+        this.filterDict = JSON.parse(JSON.stringify(filterVal));
+        this.facetList = facetVal;
+        this.updateURL(isRefreshWithFacet ? this.$route.query.page : 1);
+        // url query not change, cannot trigger watch
+        // force fetch
+        if (isRefreshWithFacet) {
+          this.fetchData();
+        }
+      }
     },
 
     updateRelation(val) {
-      if (val)
-        this.relation = 'and';
-      else
-        this.relation = 'or';
-      this.fetchData();
+      // const relationVal = val ? "and" : "or";
+      const isRelationChanged = this.relationAND === val ? false : true;
+      if (isRelationChanged) {
+        this.relationAND = val;
+        this.updateURL(1);
+      }
     },
 
-    updateSort(val) {
-      this.sortBy = val;
-      this.fetchData();
-    }
+    updateSearch(val) {
+      const isSearchChanged = this.searchContent === val ? false : true;
+      if (isSearchChanged) {
+        this.searchContent = val;
+        this.updateURL(1);
+      }
+    },
+
+    updatePageLimit(pageVal, limitVal) {
+      const isPageChanged = this.pageNumber === pageVal ? false : true;
+      const isLimitChanged = this.limitNumber === limitVal ? false : true;
+      if (isPageChanged || isLimitChanged) {
+        this.pageNumber = pageVal;
+        this.limitNumber = limitVal;
+        this.updateURL(pageVal, limitVal);
+      }
+    },
+
+    updateOrder(val) {
+      const isOrderChanged = this.currentOrder === val ? false : true;
+      if (isOrderChanged) {
+        this.currentOrder = val;
+        this.updateURL(1);
+      }
+    },
+
+    updateURL(page = this.$route.query.page, limit = this.$route.query.limit) {
+      let query = {
+        type: this.$route.query.type,
+        page: page,
+        limit: limit,
+      };
+
+      if (this.facetList.length > 0) {
+        query.facets = this.facetList.toString();
+        query.relation = this.relationAND ? "and" : "or";
+      }
+      if (this.searchContent !== "") {
+        query.search = this.searchContent;
+      }
+      query.order = this.currentOrder;
+
+      this.$router.push({
+        path: this.$route.path,
+        query: query,
+      });
+    },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
