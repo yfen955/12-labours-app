@@ -111,15 +111,20 @@ export default {
   },
 
   created: function() {
+    // set exist url queries to corresponding data
+    // for future data change check
+    if (this.$route.query.search) {
+      this.searchContent = this.$route.query.search;
+    }
+    if (this.$route.query.order) {
+      this.currentOrder = this.$route.query.order;
+    }
     if (this.$route.query.facets) {
       this.facetList = this.$route.query.facets.split(",");
       this.relationAND = this.$route.query.relation === "and" ? true : false;
-    } else if (this.$route.query.search) {
-      this.searchContent = this.$route.query.search;
-    } else if (this.$route.query.order) {
-      this.currentOrder = this.$route.query.order;
+    } else {
+      this.fetchData();
     }
-    this.fetchData();
   },
 
   watch: {
@@ -201,7 +206,7 @@ export default {
     },
 
     updateRelation(val) {
-      const isRelationChanged = this.relationAND === val ? false : true;
+      const isRelationChanged = this.relationAND !== val;
       if (isRelationChanged) {
         this.relationAND = val;
         this.updateURL(1);
@@ -209,7 +214,7 @@ export default {
     },
 
     updateSearch(val) {
-      const isSearchChanged = this.searchContent === val ? false : true;
+      const isSearchChanged = this.searchContent !== val;
       if (isSearchChanged) {
         this.searchContent = val;
         this.updateURL(1);
@@ -217,8 +222,8 @@ export default {
     },
 
     updatePageLimit(pageVal, limitVal) {
-      const isPageChanged = this.pageNumber === pageVal ? false : true;
-      const isLimitChanged = this.limitNumber === limitVal ? false : true;
+      const isPageChanged = this.pageNumber !== pageVal;
+      const isLimitChanged = this.limitNumber !== limitVal;
       if (isPageChanged || isLimitChanged) {
         this.pageNumber = pageVal;
         this.limitNumber = limitVal;
@@ -227,7 +232,7 @@ export default {
     },
 
     updateOrder(val) {
-      const isOrderChanged = this.currentOrder === val ? false : true;
+      const isOrderChanged = this.currentOrder !== val;
       if (isOrderChanged) {
         this.currentOrder = val;
         this.updateURL(1);
