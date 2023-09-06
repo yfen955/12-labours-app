@@ -90,7 +90,13 @@ export default {
     handlePageLimit(page, limit) {
       this.page = parseInt(page);
       this.limit = parseInt(limit);
-      this.$emit("page-limit", this.page, this.limit);
+      const pageCount = Math.ceil(this.totalCount / this.limit);
+      this.$emit(
+        "page-limit",
+        // handle page in url out of range
+        this.page > pageCount ? 1 : this.page,
+        this.limit
+      );
     },
     // handle page render/refresh page
     // handle component return data
