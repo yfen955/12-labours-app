@@ -74,6 +74,24 @@
         circle
       />
 
+      <el-tooltip placement="bottom">
+        <div slot="content" v-for="desc in helpInfo" :key="desc.name">
+          <h3>{{ desc.name }}</h3>
+          <p>{{ desc.info }}</p>
+          <div v-if="'use' in desc">
+            <li v-for="act in desc.use" :key="act">
+              {{ act }}
+            </li>
+          </div>
+        </div>
+        <el-button
+          title="Help"
+          :disabled="!dataLoaded"
+          icon="el-icon-question"
+          circle
+        />
+      </el-tooltip>
+
       <div class="dropBox0">
         <div id="dropBox"></div>
       </div>
@@ -109,7 +127,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Button,
-  Dialog,
+  Tooltip,
 } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import lang from "element-ui/lib/locale/lang/en";
@@ -121,7 +139,7 @@ Vue.use(Popover);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Button);
-Vue.use(Dialog);
+Vue.use(Tooltip);
 
 // import
 import tagsTable from "./tags-table";
@@ -225,6 +243,50 @@ export default {
       loadFromOrthanc: false,
       dicom: [],
       instanceNumber: 1,
+      helpInfo: [
+        {
+          name: "*Scroll",
+          info: "Toggle instances",
+          use: [
+            "Mouse wheel scrolls over the image",
+            "Mouse click on the image to drag up and down",
+          ],
+        },
+        {
+          name: "*ZoomAndPan",
+          info: "Drag, zoom in and out",
+          use: [
+            "Mouse wheel scrolls over the image",
+            "Mouse click on the image to drag it",
+          ],
+        },
+        {
+          name: "*WindowLevel",
+          info: "Toggle Contrast",
+          use: ["Mouse click on the image to drag up, down, left and right"],
+        },
+        {
+          name: "Binder",
+          info: "Active in MPR mode",
+          use: ["Select WindowLevel/Position/Zoom/Offset/Opacity"],
+        },
+        {
+          name: "Reset",
+          info: "Reset image to default status",
+        },
+        {
+          name: "Toggle Orientation",
+          info: "Active in single mode, toggle coronal/sagittal/axial",
+        },
+        {
+          name: "Mode",
+          info: "Toggle between single and MPR mode",
+        },
+        {
+          name: "Size",
+          info: "Toggle image size",
+        },
+      ],
     };
     res.toolNames = Object.keys(res.tools);
     return res;
