@@ -174,4 +174,8 @@ export default {
 .el-checkbox + .el-checkbox {
   margin-left: 0.75rem;
 }
+
+.el-button {
+  padding: 0.25rem 1.5rem;
+}
 </style>
