@@ -444,12 +444,11 @@ export default {
   },
 
   created: async function() {
-    let {data, facets} = await backendQuery.fetchQueryData(
+    let { data, facets } = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
-      "",
-      [this.$route.query.access]
+      ""
     );
     this.handleFacets(facets);
     
@@ -468,7 +467,7 @@ export default {
       Flatmap: flatmap_data,
       Plot: data.plots,
       Thumbnail: data.thumbnails,
-      MRI: data.segmentations,
+      MRI: data.mris,
       DICOM: data.dicomImages,
     };
     this.handleCards(cardsData);
@@ -506,7 +505,6 @@ export default {
           type: "dataset",
           page: 1,
           limit: 10,
-          access: this.$route.query.access,
         },
       });
     },
@@ -516,7 +514,6 @@ export default {
       if (this.$route.query.path && this.$route.query.path !== "files")
         query.path = this.$route.query.path;
       else if (val === "files" && !this.$route.query.path) query.path = "files";
-      query.access = this.$route.query.access;
       this.$router.push({
         path: this.$route.path,
         query: query,
@@ -578,7 +575,6 @@ export default {
           page: 1,
           limit: 10,
           facets: result,
-          access: this.$route.query.access,
         },
       });
     },
@@ -726,20 +722,19 @@ export default {
         let query = {
           type: type.toLowerCase(),
           id: uuid,
-          access: this.$route.query.access,
-        }
-        if (type === "Scaffold")
+        };
+        if (type === "Scaffold") {
           query.dataset_id = this.$route.params.id;
+        }
         const route = this.$router.resolve({
           name: `data-maps`,
-          query: query
+          query: query,
         });
         window.open(route.href);
-      } else if (type === "Plot") {
+      } else if (type === "Plot" || type === "DICOM") {
         const route = this.$router.resolve({
           name: `data-maps-${type.toLowerCase()}-id`,
           params: { id: uuid },
-          query: { access: this.$route.query.access },
         });
         window.open(route.href);
       } else if (type === "MRI") {
@@ -754,8 +749,8 @@ export default {
           id: item,
           filename: item,
           additional_metadata: null,
-        })
-      })
+        });
+      });
       return flatmap_data;
     },
 

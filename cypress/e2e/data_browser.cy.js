@@ -60,7 +60,7 @@ describe('information in the data brower page', () =>{
     cy.wait(10000);
     cy.get('.dataset-img').find(`img[src="${Cypress.env('query_url')}/data/preview/dataset-34-version-5/derivative/Scaffolds/sub-all_direct-stim_distal-colon/sub-all_direct-stim_distal-colon_thumbnail.jpg"]`);
     cy.contains('Anatomical Structure colon');
-    cy.get('a[href="/data/browser/dataset/dataset-34-version-5?datasetTab=abstract&access=demo1-12L"]').should('contain', 'Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig').click();
+    cy.get('a[href="/data/browser/dataset/dataset-34-version-5?datasetTab=abstract"]').should('contain', 'Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig').click();
     cy.wait(10000);
     cy.url().should('include', '/data/browser/dataset/dataset-34-version-5?datasetTab=abstract');
   })

@@ -149,7 +149,6 @@ export default {
           query: {
             datasetTab: `${this.$route.query.datasetTab}`,
             path: folder_path,
-            access: this.$route.query.access
           }
         });
         this.files_data = [];

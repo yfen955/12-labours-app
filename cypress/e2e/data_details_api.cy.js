@@ -51,7 +51,7 @@ describe('test components that uses api', () =>{
       return true
     });
 
-    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=abstract&access=demo1-12L');
+    cy.visit('/data/browser/dataset/dataset-12L_1-version-1?datasetTab=abstract');
     cy.wait('@getDataset');
 
     cy.get('.page-title').should('contain', 'DYNAMIC CONTRAST-ENHANCED MAGNETIC...');
