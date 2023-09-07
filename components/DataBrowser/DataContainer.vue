@@ -21,7 +21,6 @@
             element-loading-text="Loading..."
             element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
-            :isLoadingSearch="isLoading"
             :totalCount="totalCount"
           />
           <PaginationTool
