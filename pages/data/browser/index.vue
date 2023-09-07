@@ -142,7 +142,4 @@ export default {
     width: 90rem;
   }
 }
-.el-scrollbar__wrap {
-  overflow: hidden;
-}
 </style>

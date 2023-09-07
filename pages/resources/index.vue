@@ -70,7 +70,7 @@ export default {
         title:'Workflows',
         imgFile:'clinician-in-frame.png',
         detail:'camera images -> point clouds -> scaffolds -> reduced parameter statistical shape models',
-        btnLink:{caption:'Find Research Data', to:'/workflow'}
+        btnLink:{caption:'Find Research Data', to:'/data/browser?type=workflows&page=1&limit=10'}
       },
       technicalResources:{
         title:'Technical Resources',
