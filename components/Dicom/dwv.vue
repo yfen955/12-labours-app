@@ -724,10 +724,8 @@ hr {
 }
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   &::before {
-    border-bottom: 3px solid $app-primary-color;
+    border-bottom: 2px solid $app-primary-color;
     background-color: $app-primary-color;
-    top: 8.5px;
-    left: 1px;
   }
 }
 </style>

@@ -166,9 +166,20 @@ export default {
 }
 
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner:before {
-  border-bottom: 0.2rem solid #00467f;
+  border-bottom: 0.1rem solid #00467f;
   background-color: $app-primary-color;
-  top: 0.5rem;
+}
+
+::v-deep .el-checkbox__inner {
+  width: 1rem;
+  height: 1rem;
+}
+
+::v-deep .el-checkbox__input.is-checked .el-checkbox__inner:after {
+  height: 0.5rem !important;
+  left: 0.3rem !important;
+  top: 0.1rem !important;
+  transform: rotate(45deg) scale(1.6) !important;
 }
 
 .el-checkbox + .el-checkbox {

@@ -6,9 +6,10 @@
         <el-option
           v-for="item in orderList"
           :key="item.value"
+          :label="item.label"
           :value="item.value"
         >
-          {{ item.value }}
+          {{ item.label }}
           <i class="el-icon-check" v-if="item.value === order"></i>
         </el-option>
       </el-select>
@@ -43,13 +44,13 @@ export default {
       page: 1,
       limit: 10,
       pageSizeOptions: [10, 20, 50, "View All"],
-      order: "Published(asc)",
+      order: "Oldest",
       orderList: [
-        { value: "Published(asc)" },
-        { value: "Published(desc)" },
-        { value: "Title(asc)" },
-        { value: "Title(desc)" },
-        { value: "Relevance" },
+        { value: "Published(asc)", label: "Oldest" },
+        { value: "Published(desc)", label: "Latest" },
+        { value: "Title(asc)", label: "A-Z" },
+        { value: "Title(desc)", label: "Z-A" },
+        { value: "Relevance", label: "Relevance" },
       ],
     };
   },
@@ -123,6 +124,8 @@ export default {
 
 .el-icon-check {
   color: $app-primary-color;
+  font-weight: 600;
+  margin-left: 0.5rem;
 }
 
 .pagination {
