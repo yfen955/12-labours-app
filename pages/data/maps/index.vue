@@ -293,8 +293,24 @@ export default {
   .time-slider-container .el-row {
     margin-bottom: 1rem !important;
   }
+
+  .el-col-8 {
+    width: 25%;
+  }
+
+  .el-icon-arrow-down {
+    font-size: 16px !important;
+  }
+  .minimap-resize.enlarge {
+    padding-bottom: 10px !important;
+    padding-left: 10px !important;
+  }
 }
 .pagination ul.el-pager li.number.active {
   background: $app-primary-color !important;
 }
 </style>
+
+<style
+  src="@12-labours/mapintegratedvuer/assets/mapicon-species-style.css"
+></style>

@@ -787,6 +787,16 @@ hr {
 ::v-deep .el-checkbox + .el-checkbox {
   margin-left: 0.75rem;
 }
+::v-deep .el-checkbox__inner {
+  width: 1rem;
+  height: 1rem;
+}
+::v-deep .el-checkbox__input.is-checked .el-checkbox__inner:after {
+  height: 0.5rem !important;
+  left: 0.3rem !important;
+  top: 0.1rem !important;
+  transform: rotate(45deg) scale(1.6) !important;
+}
 ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   &::before {
     border-bottom: 3px solid $app-primary-color;

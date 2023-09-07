@@ -47,7 +47,7 @@
           </el-popover>
           <div class="card-button">
             <el-button @click="view(card.type, card.url, card.id)">
-              {{ card.type }}
+              View {{ card.type }}
             </el-button>
           </div>
         </el-card>
@@ -173,5 +173,9 @@ export default {
 
 .el-checkbox + .el-checkbox {
   margin-left: 0.75rem;
+}
+
+.el-button {
+  padding: 0.25rem 1.5rem;
 }
 </style>

@@ -93,7 +93,6 @@ export default {
   @import '@/assets/google.scss';
 
   .signup{
-    height: 82.5vh;
     width:55%;
     @media only screen and (max-width:  $viewport-sm) {
       width:100%;
@@ -132,5 +131,4 @@ export default {
       }
     }
   }
-
 </style>

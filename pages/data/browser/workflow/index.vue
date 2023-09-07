@@ -3,17 +3,7 @@
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <div class="container-default">
       <h1>Workflow</h1>
-      <nuxt-link :to="{
-        name: 'data-browser-dataset-id',
-        params: {
-          id: 'dataset-76-version-7',
-        },
-        query: {
-          datasetTab: 'abstract',
-        }
-      }">
-        View
-      </nuxt-link>
+      <h3>{{ $route.query.model }}</h3>
     </div>
   </div>
 </template>
@@ -38,3 +28,7 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+// 
+</style>

@@ -42,9 +42,10 @@
               </p>
             </section>
             <el-card shadow="never">
-              <p>
+              <p><b>Dataset ID:</b> {{ $route.params.id }}</p>
+              <!-- <p>
                 <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
-              </p>
+              </p> -->
               <div v-if="detail_data.identifier_type[0] === 'DOI'">
                 <b>DOI: </b>
                 <div
@@ -64,9 +65,9 @@
               <p v-if="detail_data.size">
                 <i class="el-icon-files"></i> {{ detail_data.size }} GB
               </p>
-              <p>
+              <!-- <p>
                 <b>Latest version:</b> {{ detail_data.metadata_version[0] }}
-              </p>
+              </p> -->
               <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
               <p v-if="detail_data.other_version">View other version</p>
             </el-card>
