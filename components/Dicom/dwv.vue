@@ -125,28 +125,6 @@
 <script>
 // import
 import axios from "axios";
-import Vue from "vue";
-import {
-  Progress,
-  Popover,
-  Checkbox,
-  CheckboxGroup,
-  Button,
-  Tooltip,
-} from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-import lang from "element-ui/lib/locale/lang/en";
-import locale from "element-ui/lib/locale";
-
-locale.use(lang);
-Vue.use(Progress);
-Vue.use(Popover);
-Vue.use(Checkbox);
-Vue.use(CheckboxGroup);
-Vue.use(Button);
-Vue.use(Tooltip);
-
-// import
 import tagsTable from "./tags-table";
 
 // gui overrides
