@@ -68,6 +68,12 @@ export default {
       },
     },
 
+    "$route.query.limit": {
+      handler() {
+        this.handlePageLimit(this.$route.query.page, this.$route.query.limit);
+      },
+    },
+
     "$route.query.order": {
       handler(val) {
         this.handleOrder(val);
@@ -90,7 +96,7 @@ export default {
     // handle emit page/limit change
     handlePageLimit(page, limit) {
       this.page = parseInt(page);
-      this.limit = parseInt(limit);
+      this.limit = limit === "View All" ? 100 : parseInt(limit);
       this.$emit("page-limit", this.page, this.limit);
     },
     // handle page render/refresh page

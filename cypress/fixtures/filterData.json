@@ -1,12 +1,12 @@
 {
     "size": 6,
     "titles": [
-        "Age Category",
-        "Anatomical Structure",
+        "Age category",
+        "Anatomical structure",
         "Sex",
-        "Mime Type",
+        "Data type",
         "Species",
-        "Access Scope"
+        "Access scope"
     ],
     "nodes>fields": [
         "case_filter>age_category",
@@ -17,80 +17,46 @@
         "experiment_filter>project_id"
     ],
     "elements": [
-        {
-            "Adolescent": "Adolescent",
-            "Juvenile": "Juvenile",
-            "Prime Adult Stage": "prime adult stage",
-            "Young Adult": "young adult"
-        },
-        {
-            "Body Proper": "body proper",
-            "Brainstem": "brainstem",
-            "Breast": "breast",
-            "Cardiac Nerve Plexus": "cardiac nerve plexus",
-            "Colon": "colon",
-            "Diaphragm": "diaphragm",
-            "Heart": "heart",
-            "Lung": "lung",
-            "Skin Epidermis": "skin epidermis",
-            "Spinal Cord": "spinal cord",
-            "Stomach": "stomach",
-            "Urinary Bladder": "urinary bladder",
-            "Vagus Nerve": "vagus nerve"
-        },
-        {
-            "Female": "Female",
-            "Male": "Male"
-        },
-        {
-            "Plot": [
-                "text/vnd.abi.plot+tab-separated-values",
-                "text/vnd.abi.plot+Tab-separated-values",
-                "text/vnd.abi.plot+csv"
-            ],
-            "Scaffold": [
-                "application/x.vnd.abi.scaffold.meta+json",
-                "inode/vnd.abi.scaffold+file"
-            ]
-        },
-        {
-            "Cat": "Felis catus",
-            "Human": "Homo sapiens",
-            "Mouse": "Mus musculus",
-            "Pig": "Sus scrofa",
-            "Rat": "Rattus norvegicus"
-        },
-        {
-            "Demo1-12L": "demo1-12L"
-        }
-    ],
-    "ids": [
-        "Adolescent",
-        "Juvenile",
-        "Prime Adult Stage",
-        "Young Adult",
-        "Body Proper",
-        "Brainstem",
-        "Breast",
-        "Cardiac Nerve Plexus",
-        "Colon",
-        "Diaphragm",
-        "Heart",
-        "Lung",
-        "Skin Epidermis",
-        "Spinal Cord",
-        "Stomach",
-        "Urinary Bladder",
-        "Vagus Nerve",
-        "Female",
-        "Male",
-        "Plot",
-        "Scaffold",
-        "Cat",
-        "Human",
-        "Mouse",
-        "Pig",
-        "Rat",
-        "Demo1-12L"
+        [
+            "Adolescent",
+            "Juvenile",
+            "Prime adult stage",
+            "Young adult"
+        ],
+        [
+            "Body proper",
+            "Brainstem",
+            "Breast",
+            "Cardiac nerve plexus",
+            "Colon",
+            "Diaphragm",
+            "Heart",
+            "Lung",
+            "Skin epidermis",
+            "Spinal cord",
+            "Stomach",
+            "Urinary bladder",
+            "Vagus nerve"
+        ],
+        [
+            "F",
+            "Female",
+            "Male"
+        ],
+        [
+            "Plot",
+            "Scaffold",
+            "Dicom"
+        ],
+        [
+            "Cat",
+            "Human",
+            "Mouse",
+            "Pig",
+            "Rat"
+        ],
+        [
+            "Demo1-12l"
+        ]
     ]
 }

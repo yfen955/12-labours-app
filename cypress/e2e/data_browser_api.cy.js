@@ -41,7 +41,7 @@ describe('test api in data browser page', () =>{
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'filteredDatasets.json'
     });
-    cy.get('.el-collapse-item__header').filter(':contains("Mime Type")').click();
+    cy.get('.el-collapse-item__header').filter(':contains("Data type")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
     cy.contains('Results | Showing');
     cy.get('a').should('contain', 'Generic sheep brainstem scaffold');
@@ -62,14 +62,14 @@ describe('test api in data browser page', () =>{
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'turnPageDatasets.json'
     });
-    cy.get('.pagination-container.top').find('ul.el-pager').children('li.number').filter(':contains("2")').click();
+    cy.get('.pagination').first().find('ul.el-pager').children('li.number').filter(':contains("2")').click();
     cy.get('a').should('contain', 'Generic sheep brainstem scaffold');
 
     // page size
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {
       fixture: 'allDatasets.json'
     });
-    cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
+    cy.get('.pagination').first().find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("20")').click();
     cy.contains('Results | Showing');
     cy.get('a.title-link').should('have.length', 12);

@@ -16,7 +16,7 @@ describe('map sidebar', () =>{
     cy.contains('results | Showing');
     cy.get('.el-cascader').find('.el-input--suffix').click();
     // choose a facet
-    cy.get('.el-cascader-node__label').filter(':contains("Mime type")').click();
+    cy.get('.el-cascader-node__label').filter(':contains("Data type")').click();
     cy.get('.cascader').find('span').filter(':contains("Scaffold")').click();
     cy.get('.el-cascader').find('.el-input__suffix-inner').click();
     cy.wait(5000);
