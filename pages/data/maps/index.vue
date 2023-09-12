@@ -106,7 +106,6 @@ export default {
   methods: {
     fetchScaffold: async function() {
       let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id);
-      console.log(data);
       let dataset_id = data.experiments[0].submitter_id;
       this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
       this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
@@ -195,9 +194,6 @@ export default {
   }
   .search-container .magnify {
     background: $app-primary-color !important;
-  }
-  .drawer-button, .open-drawer {
-    margin-top: 21vh !important;
   }
   .pathways-display-text {
     font-size: inherit !important;
