@@ -111,7 +111,9 @@
             <p><b>Subject Information:</b> N/A</p>
             <p class="indent --2">
               <b>Anatomical structure:</b>
+              <span v-if="detail_data.study_organ_system.length === 0"> N/A</span>
               <nobr
+                v-else
                 v-for="(organ, i) in detail_data.study_organ_system"
                 :key="i"
               >
@@ -123,9 +125,54 @@
                 }}</nobr>
               </nobr>
             </p>
-            <p class="indent --2"><b>Species:</b> N/A</p>
-            <p class="indent --2"><b>Sex:</b> N/A</p>
-            <p class="indent --2"><b>Age range:</b> N/A</p>
+            <p class="indent --2">
+              <b>Species:</b>
+              <span v-if="species_list.length === 0"> N/A</span>
+              <nobr
+                v-else
+                v-for="(item, i) in species_list"
+                :key="i"
+              >
+                <nobr v-if="i < species_list.length - 1" >
+                  {{ item[0].toUpperCase() + item.slice(1) }},
+                </nobr>
+                <nobr v-else>
+                  {{ item[0].toUpperCase() + item.slice(1) }}
+                </nobr>
+              </nobr>
+            </p>
+            <p class="indent --2">
+              <b>Sex:</b>
+              <span v-if="sex_list.length === 0"> N/A</span>
+              <nobr
+                v-else
+                v-for="(item, i) in sex_list"
+                :key="i"
+              >
+                <nobr v-if="i < sex_list.length - 1" >
+                  {{ item[0].toUpperCase() + item.slice(1) }},
+                </nobr>
+                <nobr v-else>
+                  {{ item[0].toUpperCase() + item.slice(1) }}
+                </nobr>
+              </nobr>
+            </p>
+            <p class="indent --2">
+              <b>Age range:</b>
+              <span v-if="age_list.length === 0"> N/A</span>
+              <nobr
+                v-else
+                v-for="(item, i) in age_list"
+                :key="i"
+              >
+                <nobr v-if="i < age_list.length - 1" >
+                  {{ item[0].toUpperCase() + item.slice(1) }},
+                </nobr>
+                <nobr v-else>
+                  {{ item[0].toUpperCase() + item.slice(1) }}
+                </nobr>
+              </nobr>
+            </p>
             <div
               v-if="
                 detail_data.number_of_samples[0] > 0 ||
@@ -158,7 +205,7 @@
             <p><b>Institution(s):</b> N/A</p>
             <hr />
             <h2>About this version</h2>
-            <p><b>Version 3 Revision 1:</b> N/A</p>
+            <!-- <p><b>Version 3 Revision 1:</b> N/A</p> -->
             <p><b>Dataset DOI:</b> N/A</p>
           </span>
 
@@ -439,6 +486,7 @@ export default {
       datasetImage: "",
       species_list: [],
       sex_list: [],
+      age_list: [],
       // show_segmentation: false,
       // show_pdf: false,
     };
@@ -761,6 +809,8 @@ export default {
           this.species_list.push(item.facet);
         else if (item.term === "Sex")
           this.sex_list.push(item.facet);
+        else if (item.term === "Age category")
+          this.age_list.push(item.facet);
       })
     },
   },
