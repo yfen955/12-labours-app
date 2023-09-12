@@ -390,7 +390,7 @@ hr {
 
 ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
   &::after {
-    transform: rotate(45deg) scale(1) !important;
+    transform: rotate(45deg) scale(1.6) !important;
     left: 0.3rem !important;
     top: 0.1rem !important;
   }
