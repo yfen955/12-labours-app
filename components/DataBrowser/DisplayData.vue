@@ -35,6 +35,10 @@
                   </nuxt-link>
                 </div>
                 <div>
+                  <div>
+                    <strong>Dataset ID</strong>
+                    {{ item.datasetId }}
+                  </div>
                   <strong>Anatomical Structure</strong>
                   {{ displayKeywords(item.organs) }}
                 </div>
