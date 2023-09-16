@@ -1,6 +1,10 @@
 import { gql } from 'graphql-request';
+import cms from './cms/cms.json'
 
 async function content(graphcms, name) {
+  if (graphcms === null) {
+    return cms.content[name].data
+  }
   const variables = {
     "name": name
   }
@@ -20,6 +24,9 @@ async function content(graphcms, name) {
 
 
 async function multiContent(graphcms, name) {
+  if (graphcms === null) {
+    return cms.multiContent[name].data
+  }
   const variables = {
     "name": name
   }
@@ -37,6 +44,9 @@ async function multiContent(graphcms, name) {
 }
 
 async function projectInformation(graphcms, name) {
+  if (graphcms === null) {
+    return cms.projectInformation[name].data
+  }
   const variables = {
     "name": name
   }
@@ -57,6 +67,9 @@ async function projectInformation(graphcms, name) {
 }
 
 async function banner(graphcms, name) {
+  if (graphcms === null) {
+    return cms.banner[name].data
+  }
   const variables = {
     "name": name
   }
@@ -75,6 +88,9 @@ async function banner(graphcms, name) {
 
 
 async function topNews(graphcms, fetchCount) {
+  if (graphcms === null) {
+    return cms.topNews.data
+  }
   const variables = {
     "fetchCount":  fetchCount
   }
@@ -98,6 +114,9 @@ async function topNews(graphcms, fetchCount) {
 }
 
 async function news(graphcms,slug) {
+  if (graphcms === null) {
+    return cms.news[slug].data
+  }
   const variables = {
     "slug":slug
   }
@@ -117,6 +136,9 @@ async function news(graphcms,slug) {
 }
 
 async function newsCategory(graphcms) {
+  if (graphcms === null) {
+    return cms.newsCategory.data
+  }
   const query = gql`
     query introspectNewsCategoryType {
       __type(name: "NewsCategory") {
@@ -131,6 +153,9 @@ async function newsCategory(graphcms) {
 
 
 async function topEvents(graphcms, fetchCount) {
+  if (graphcms === null) {
+    return cms.topEvents.data
+  }
   const variables = {
     "fetchCount": fetchCount,
   }
@@ -155,6 +180,9 @@ async function topEvents(graphcms, fetchCount) {
 }
 
 async function event(graphcms,slug) {
+  if (graphcms === null) {
+    return cms.event[slug].data
+  }
   const variables = {
     "slug":slug
   }
@@ -176,6 +204,9 @@ async function event(graphcms,slug) {
 }
 
 async function eventsCategory(graphcms) {
+  if (graphcms === null) {
+    return cms.eventsCategory.data
+  }
   const query = gql`
     query introspectEventsCategoryType {
       __type(name: "EventsCategory") {
@@ -190,6 +221,9 @@ async function eventsCategory(graphcms) {
 
 
 async function feedbackReason(graphcms) {
+  if (graphcms === null) {
+    return cms.feedbackReason.data
+  }
   const query = gql`
     query introspectFeedbackReasonType {
       __type(name: "FeedbackReason") {
@@ -204,6 +238,9 @@ async function feedbackReason(graphcms) {
 
 
 async function contactReason(graphcms) {
+  if (graphcms === null) {
+    return cms.contactReason.data
+  }
   const query = gql`
     query introspectContactReasonType {
       __type(name: "ContactReason") {
@@ -218,6 +255,9 @@ async function contactReason(graphcms) {
 
 
 async function contactArea(graphcms) {
+  if (graphcms === null) {
+    return cms.contactArea.data
+  }
   const query = gql`
     query introspectContactAreaType {
       __type(name: "ContactArea") {
