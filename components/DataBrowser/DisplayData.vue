@@ -49,7 +49,7 @@
                 <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
                   <strong>Samples</strong>
                   {{ item.numberSamples }} samples out of
-                  {{ item.numberSubjects }} objects
+                  {{ item.numberSubjects }} subjects
                 </div>
               </section>
             </section>
