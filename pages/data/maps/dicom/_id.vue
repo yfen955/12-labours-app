@@ -1,7 +1,7 @@
 <template>
   <div class="page-outer">
     <client-only>
-      <dicomViewer :study="study" :series="series" />
+      <dicomViewer v-if="!isLoading" :study="study" :series="series" />
     </client-only>
   </div>
 </template>
@@ -18,22 +18,26 @@ export default {
   },
   data: () => {
     return {
+      isLoading: false,
       study: undefined,
       series: undefined,
     };
   },
-  async fetch() {
-    const data = await backendQuery.getSingleData(
-      this.$config.query_api_url,
-      this.$route.params.id
-    );
-    const filename = data["filename"].split("/");
-    this.study = filename[1].split("-")[1];
-    this.series = filename[2].split("-")[1];
+  created() {
+    this.handleStudySeries();
   },
-
-  mounted() {
-    this.$fetch();
+  methods: {
+    handleStudySeries: async function() {
+      this.isLoading = true;
+      const data = await backendQuery.getSingleData(
+        this.$config.query_api_url,
+        this.$route.params.id
+      );
+      const filename = data["filename"].split("/");
+      this.study = filename[1].split("-")[1];
+      this.series = filename[2].split("-")[1];
+      this.isLoading = false;
+    },
   },
 };
 </script>
