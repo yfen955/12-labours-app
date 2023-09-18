@@ -6,11 +6,9 @@
         <el-option
           v-for="item in orderList"
           :key="item.value"
+          :label="item.label"
           :value="item.value"
-        >
-          {{ item.value }}
-          <i class="el-icon-check" v-if="item.value === order"></i>
-        </el-option>
+        />
       </el-select>
     </div>
     <div class="pagination">
@@ -43,13 +41,13 @@ export default {
       page: 1,
       limit: 10,
       pageSizeOptions: [10, 20, 50, "View All"],
-      order: "Published(asc)",
+      order: "",
       orderList: [
-        { value: "Published(asc)" },
-        { value: "Published(desc)" },
-        { value: "Title(asc)" },
-        { value: "Title(desc)" },
-        { value: "Relevance" },
+        { value: "Published(asc)", label: "Oldest" },
+        { value: "Published(desc)", label: "Latest" },
+        { value: "Title(asc)", label: "A-Z" },
+        { value: "Title(desc)", label: "Z-A" },
+        { value: "Relevance", label: "Relevance" },
       ],
     };
   },
@@ -90,7 +88,13 @@ export default {
     handlePageLimit(page, limit) {
       this.page = parseInt(page);
       this.limit = parseInt(limit);
-      this.$emit("page-limit", this.page, this.limit);
+      const pageCount = Math.ceil(this.totalCount / this.limit);
+      this.$emit(
+        "page-limit",
+        // handle page in url out of range
+        this.page > pageCount ? 1 : this.page,
+        this.limit
+      );
     },
     // handle page render/refresh page
     // handle component return data

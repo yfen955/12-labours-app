@@ -74,6 +74,29 @@
         circle
       />
 
+      <el-tooltip placement="bottom">
+        <div
+          slot="content"
+          v-for="desc in helpInfo"
+          :key="desc.name"
+          class="helpInfo"
+        >
+          <h3>{{ desc.name }}</h3>
+          <p>{{ desc.info }}</p>
+          <div v-if="'use' in desc">
+            <li v-for="act in desc.use" :key="act">
+              {{ act }}
+            </li>
+          </div>
+        </div>
+        <el-button
+          title="Help"
+          :disabled="!dataLoaded"
+          icon="el-icon-question"
+          circle
+        />
+      </el-tooltip>
+
       <div class="dropBox0">
         <div id="dropBox"></div>
       </div>
@@ -102,28 +125,6 @@
 <script>
 // import
 import axios from "axios";
-import Vue from "vue";
-import {
-  Progress,
-  Popover,
-  Checkbox,
-  CheckboxGroup,
-  Button,
-  Dialog,
-} from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-import lang from "element-ui/lib/locale/lang/en";
-import locale from "element-ui/lib/locale";
-
-locale.use(lang);
-Vue.use(Progress);
-Vue.use(Popover);
-Vue.use(Checkbox);
-Vue.use(CheckboxGroup);
-Vue.use(Button);
-Vue.use(Dialog);
-
-// import
 import tagsTable from "./tags-table";
 
 // gui overrides
@@ -225,6 +226,54 @@ export default {
       loadFromOrthanc: false,
       dicom: [],
       instanceNumber: 1,
+      helpInfo: [
+        {
+          name: "*Scroll",
+          info: "Toggle instances.",
+          use: [
+            "Mouse wheel scrolls over the image.",
+            "Click and drag to change between slices.",
+          ],
+        },
+        {
+          name: "*ZoomAndPan",
+          info: "Drag, zoom in and out.",
+          use: [
+            "Mouse wheel scrolls over the image.",
+            "Mouse click on the image to drag it.",
+          ],
+        },
+        {
+          name: "*WindowLevel",
+          info: "Toggle Contrast.",
+          use: ["Mouse click on the image to drag up, down, left and right."],
+        },
+        {
+          name: "Binder",
+          info: "Only active in multiple panels mode.",
+          use: [
+            "Select WindowLevel/Position/Zoom/Offset/Opacity.",
+            "Only changes with checked options will apply to all three panels.",
+            "Changes will only applied to the primary panel if the associated option is unchecked.",
+          ],
+        },
+        {
+          name: "Reset",
+          info: "Reset image to default status.",
+        },
+        {
+          name: "Toggle Orientation",
+          info: "Active in single mode, toggle coronal/sagittal/axial.",
+        },
+        {
+          name: "Mode",
+          info: "Switch between single panel or multiple panels mode.",
+        },
+        {
+          name: "Size",
+          info: "Switch between between small, medium and large image size.",
+        },
+      ],
     };
     res.toolNames = Object.keys(res.tools);
     return res;
@@ -657,6 +706,10 @@ export default {
 
 hr {
   margin: 5px 0 5px 0;
+}
+
+.helpInfo {
+  padding: 2.5px 12.5px;
 }
 
 /* Layers */

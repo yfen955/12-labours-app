@@ -48,31 +48,28 @@
         </div>
       </div>
       <div>
-        <client-only>
-          <div
-            v-if="auth.loggedIn && auth.strategy.token.status().valid()"
-            class="login vertical-flex status1"
+        <div
+          v-if="auth.loggedIn && auth.strategy.token.status().valid()"
+          class="login vertical-flex status1"
+        >
+          <span id="welcome"
+            >Welcome {{ auth.user.first_name }} {{ auth.user.last_name }}</span
           >
-            <span id="welcome"
-              >Welcome {{ auth.user.first_name }}
-              {{ auth.user.last_name }}</span
-            >
-            <component :is="linkComponent" to="/profile">
-              <el-button>Account</el-button>
-            </component>
-            <component :is="linkComponent" @click.native="signOut" to="/">
-              Log out
-            </component>
-          </div>
-          <div v-else class="login vertical-flex status2">
-            <component :is="linkComponent" to="/login">
-              <el-button>Login</el-button>
-            </component>
-            <component :is="linkComponent" to="/signup">
-              Sign up Here
-            </component>
-          </div>
-        </client-only>
+          <component :is="linkComponent" to="/profile">
+            <el-button>Account</el-button>
+          </component>
+          <component :is="linkComponent" @click.native="signOut" to="/">
+            Log out
+          </component>
+        </div>
+        <div v-else class="login vertical-flex status2">
+          <component :is="linkComponent" to="/login">
+            <el-button>Login</el-button>
+          </component>
+          <component :is="linkComponent" to="/signup">
+            Sign up Here
+          </component>
+        </div>
       </div>
     </div>
   </div>

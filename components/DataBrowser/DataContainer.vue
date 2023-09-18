@@ -21,7 +21,6 @@
             element-loading-text="Loading..."
             element-loading-spinner="el-icon-loading"
             :dataDetails="currentData"
-            :isLoadingSearch="isLoading"
             :totalCount="totalCount"
           />
           <PaginationTool
@@ -106,22 +105,24 @@ export default {
       filterDict: {},
       searchContent: "",
       relationAND: true,
-      currentOrder: undefined,
+      currentOrder: "Published(asc)",
     };
   },
 
   created: function() {
-    if (this.$route.query.facets) {
-      this.facetList = this.$route.query.facets.split(",");
-      this.relationAND = this.$route.query.relation === "and" ? true : false;
-    } else {
-      this.fetchData();
-    }
+    // set exist url queries to corresponding data
+    // for future data change check
     if (this.$route.query.search) {
       this.searchContent = this.$route.query.search;
     }
     if (this.$route.query.order) {
       this.currentOrder = this.$route.query.order;
+    }
+    if (this.$route.query.facets) {
+      this.facetList = this.$route.query.facets.split(",");
+      this.relationAND = this.$route.query.relation === "and" ? true : false;
+    } else {
+      this.fetchData();
     }
   },
 
@@ -204,8 +205,7 @@ export default {
     },
 
     updateRelation(val) {
-      // const relationVal = val ? "and" : "or";
-      const isRelationChanged = this.relationAND === val ? false : true;
+      const isRelationChanged = this.relationAND !== val;
       if (isRelationChanged) {
         this.relationAND = val;
         this.updateURL(1);
@@ -213,7 +213,7 @@ export default {
     },
 
     updateSearch(val) {
-      const isSearchChanged = this.searchContent === val ? false : true;
+      const isSearchChanged = this.searchContent !== val;
       if (isSearchChanged) {
         this.searchContent = val;
         this.updateURL(1);
@@ -221,8 +221,8 @@ export default {
     },
 
     updatePageLimit(pageVal, limitVal) {
-      const isPageChanged = this.pageNumber === pageVal ? false : true;
-      const isLimitChanged = this.limitNumber === limitVal ? false : true;
+      const isPageChanged = this.pageNumber !== pageVal;
+      const isLimitChanged = this.limitNumber !== limitVal;
       if (isPageChanged || isLimitChanged) {
         this.pageNumber = pageVal;
         this.limitNumber = limitVal;
@@ -231,7 +231,7 @@ export default {
     },
 
     updateOrder(val) {
-      const isOrderChanged = this.currentOrder === val ? false : true;
+      const isOrderChanged = this.currentOrder !== val;
       if (isOrderChanged) {
         this.currentOrder = val;
         this.updateURL(1);
@@ -252,8 +252,9 @@ export default {
       if (this.searchContent !== "") {
         query.search = this.searchContent;
       }
-      query.order = this.currentOrder;
-
+      if (this.currentOrder !== "Published(asc)") {
+        query.order = this.currentOrder;
+      }
       this.$router.push({
         path: this.$route.path,
         query: query,
