@@ -167,13 +167,13 @@ export default {
       cards_list: [],
       all_models: undefined,
       datasetImage: "",
-      species_dict: {
-        "Felis catus": "Cat",
-        "Homo sapiens": "Human",
-        "Mus musculus": "Mouse",
-        "Sus scrofa": "Pig",
-        "Rattus norvegicus": "Rat",
-      },
+      // species_dict: {
+      //   "Felis catus": "Cat",
+      //   "Homo sapiens": "Human",
+      //   "Mus musculus": "Mouse",
+      //   "Sus scrofa": "Pig",
+      //   "Rattus norvegicus": "Rat",
+      // },
       species_list: [],
       sex_list: [],
       age_list: [],
@@ -421,15 +421,17 @@ export default {
       //   else if (item.term === "Age category")
       //     this.age_list.push(item.facet);
       // })
-      const all_species = Object.keys(this.species_dict);
+      // const all_species = Object.keys(this.species_dict);
       cases.forEach((item) => {
-        let species = this.species_dict[item.species];
-        if (all_species.indexOf(item.species) !== -1) {
-          if (species === "Human")
-            species = `${species} ${item.sex}`;
-          if (this.species_list.indexOf(species) === -1)
-            this.species_list.push(species);
-        }
+        // let species = this.species_dict[item.species];
+        // if (all_species.indexOf(item.species) !== -1) {
+        //   if (species === "Human")
+        //     species = `${species} ${item.sex}`;
+        //   if (this.species_list.indexOf(species) === -1)
+        //     this.species_list.push(species);
+        // }
+        if (item.species && !this.species_list.includes(item.species))
+          this.species_list.push(item.species);
         if (item.sex && !this.sex_list.includes(item.sex))
           this.sex_list.push(item.sex);
         if (item.age_category && !this.age_list.includes(item.age_category))
