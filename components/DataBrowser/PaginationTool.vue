@@ -8,7 +8,10 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
-        />
+        >
+          {{ item.label }}
+          <i class="el-icon-check" v-if="item.value === order"></i>
+        </el-option>
       </el-select>
     </div>
     <div class="pagination">
@@ -41,7 +44,7 @@ export default {
       page: 1,
       limit: 10,
       pageSizeOptions: [10, 20, 50, "View All"],
-      order: "",
+      order: "Oldest",
       orderList: [
         { value: "Published(asc)", label: "Oldest" },
         { value: "Published(desc)", label: "Latest" },
@@ -60,6 +63,12 @@ export default {
   // sync two pagination toll display
   watch: {
     "$route.query.page": {
+      handler() {
+        this.handlePageLimit(this.$route.query.page, this.$route.query.limit);
+      },
+    },
+
+    "$route.query.limit": {
       handler() {
         this.handlePageLimit(this.$route.query.page, this.$route.query.limit);
       },
@@ -127,6 +136,8 @@ export default {
 
 .el-icon-check {
   color: $app-primary-color;
+  font-weight: 600;
+  margin-left: 0.5rem;
 }
 
 .pagination {

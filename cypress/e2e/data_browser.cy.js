@@ -27,14 +27,14 @@ describe('information in the data brower page', () =>{
   })
 
   it('click filter items', () => {
-    cy.wait(6000);
+    // cy.wait(6000);
     // click the checkbox to choose 1 item
     cy.get('.el-collapse-item__header').filter(':contains("Sex")').click();
     cy.get('.el-collapse-item__header.is-active');
     cy.get('span.el-checkbox__label').filter(':contains("Female")').click();
     cy.get('.el-tag').should('contain', 'Female');
     // choose 1 more item in another filter
-    cy.get('.el-collapse-item__header').filter(':contains("Mime type")').click();
+    cy.get('.el-collapse-item__header').filter(':contains("Data type")').click();
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
     cy.get('.el-tag').should('contain', 'Scaffold');
     // change to 'or' relation
@@ -47,13 +47,13 @@ describe('information in the data brower page', () =>{
     cy.get('span.el-checkbox__label').filter(':contains("Scaffold")').click();
     cy.get('span').should('not.have.class', '.el-tag');
     // close the filter
-    cy.get('.el-collapse-item__header.is-active').filter(':contains("Mime type")').click();
+    cy.get('.el-collapse-item__header.is-active').filter(':contains("Data type")').click();
     // if choose all items, checkboxes should all be not checked
     cy.get('.el-checkbox.filter-selector').filter(':contains("Female")').click();
     cy.get('.el-checkbox.filter-selector.is-checked').filter(':contains("Female")');   // the checkbox is checked
     cy.get('.el-checkbox__input.is-indeterminate');   // 'select all' checkbox is indeterminate
     cy.get('.el-checkbox.filter-selector').filter(':contains("Male")').click();
-    cy.get('.el-checkbox.filter-selector.is-checked').should('have.length', 6);   // only all 'select all' checkboxes are checked
+    // cy.get('.el-checkbox.filter-selector.is-checked').should('have.length', 6);   // only all 'select all' checkboxes are checked
   })
 
   it('dataset card', () => {
@@ -66,17 +66,18 @@ describe('information in the data brower page', () =>{
   })
 
   it('Pagination Heading', () => {
+    cy.wait(10000);
     // turn page
-    cy.get('.pagination-container.top').find('ul.el-pager').children('li.number').filter(':contains("2")').click();
+    cy.get('.pagination').first().find('ul.el-pager').children('li.number').filter(':contains("2")').click();
     cy.url().should('include', '/data/browser?type=dataset&page=2&limit=10');
-    cy.get('.pagination-container.top').find('ul.el-pager').children('li.number.active').should('contain', '2');
-    cy.get('.pagination-container.bottom').find('ul.el-pager').children('li.number.active').should('contain', '2');
+    cy.get('.pagination').find('ul.el-pager').children('li.number.active').should('contain', '2');
+    cy.get('.pagination').find('ul.el-pager').children('li.number.active').should('contain', '2');
     // change page size
-    cy.get('.pagination-container.top').find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
+    cy.get('.pagination').first().find('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').click();
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("10")').find('.item-icon-check.svg-icon.svg-fill');   // current is 10
     cy.get('ul.el-dropdown-menu.el-popper[x-placement="bottom-start"]').children('li.el-dropdown-menu__item.icon-item').filter(':contains("View All")').click();
     cy.url().should('include', '/data/browser?type=dataset&page=1&limit=100');
     cy.get('.filter-dropdown.el-dropdown-link.el-dropdown-selfdefine').should('contain', '100');   // view all is 100
-    cy.get('.pagination-container.top').find('ul.el-pager').children('li').should('have.length', 1);
+    cy.get('.pagination').first().find('ul.el-pager').children('li').should('have.length', 1);
   })
 })

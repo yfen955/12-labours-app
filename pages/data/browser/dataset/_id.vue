@@ -12,72 +12,7 @@
 
     <div class="container-default" v-if="!isLoading">
       <div class="right-column">
-        <el-card shadow="never" class="description-container">
-          <h1>{{ title }}</h1>
-          <div class="information-top">
-            <section class="description">
-              <p>
-                <b>Contributors: </b>
-                <span
-                  v-if="
-                    detail_data.contributor_name.length !==
-                      detail_data.contributor_orcid.length
-                  "
-                >
-                  {{ combineNames() }}
-                </span>
-                <a
-                  v-else
-                  v-for="(name, i) in detail_data.contributor_name"
-                  :key="i"
-                  :href="modifyLink(i)"
-                >
-                  {{ modifyName(name, i) }}
-                </a>
-              </p>
-              <hr />
-              <p>
-                <b>Description: </b>
-                {{ detail_data.subtitle[0] }}
-              </p>
-            </section>
-            <el-card shadow="never">
-              <p><b>Dataset ID:</b> {{ $route.params.id }}</p>
-              <!-- <p>
-                <b>Viewing version:</b> {{ detail_data.metadata_version[0] }}
-              </p> -->
-              <div v-if="detail_data.identifier_type[0] === 'DOI'">
-                <b>DOI: </b>
-                <div
-                  v-for="(item, i) in detail_data.identifier"
-                  :key="i"
-                  class="indent display-ellipsis --1"
-                >
-                  <a :href="item" target="_blank">{{ item }}</a>
-                </div>
-              </div>
-              <!-- need more data to display these infomation -->
-              <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
-              <p v-if="detail_data.files">
-                <i class="el-icon-document-copy"></i>
-                {{ detail_data.files }} files
-              </p>
-              <p v-if="detail_data.size">
-                <i class="el-icon-files"></i> {{ detail_data.size }} GB
-              </p>
-              <!-- <p>
-                <b>Latest version:</b> {{ detail_data.metadata_version[0] }}
-              </p> -->
-              <p v-if="detail_data.date">Date: {{ detail_data.date }}</p>
-              <p v-if="detail_data.other_version">View other version</p>
-            </el-card>
-          </div>
-          <hr v-if="detail_data.download_num" />
-          <div class="information-bottom" v-if="detail_data.download_num">
-            <p class="usage"><b>Usage Rights:</b> N/A</p>
-            <p class="download"><b>Downloads:</b> N/A</p>
-          </div>
-        </el-card>
+        <HeaderInfo :detail_data="detail_data" :title="title" />
 
         <el-card shadow="never" class="detail-container">
           <tab-nav
@@ -92,112 +27,17 @@
             v-if="$route.query.datasetTab === 'abstract'"
             class="tab-content"
           >
-            <p>
-              <b>Study Purpose:</b>
-              {{
-                detail_data.study_purpose.length > 0
-                  ? detail_data.study_purpose[0]
-                  : "N/A"
-              }}
-            </p>
-            <p><b>Completeness:</b> N/A</p>
-            <p><b>Primary vs derivative data:</b> N/A</p>
-            <p><b>Important Notes:</b> N/A</p>
-            <hr />
-            <h2>Metadata</h2>
-            <p><b>Experimental Design:</b> N/A</p>
-            <p class="indent --2"><b>Protocol Links:</b> N/A</p>
-            <p class="indent --2"><b>Experimental Approach:</b> N/A</p>
-            <p><b>Subject Information:</b> N/A</p>
-            <p class="indent --2">
-              <b>Anatomical structure:</b>
-              <nobr
-                v-for="(organ, i) in detail_data.study_organ_system"
-                :key="i"
-              >
-                <nobr v-if="i < detail_data.study_organ_system.length - 1"
-                  >{{ organ[0].toUpperCase() + organ.slice(1) }},
-                </nobr>
-                <nobr v-else>{{
-                  organ[0].toUpperCase() + organ.slice(1)
-                }}</nobr>
-              </nobr>
-            </p>
-            <p class="indent --2"><b>Species:</b> N/A</p>
-            <p class="indent --2"><b>Sex:</b> N/A</p>
-            <p class="indent --2"><b>Age range:</b> N/A</p>
-            <div
-              v-if="
-                detail_data.number_of_samples[0] > 0 ||
-                  detail_data.number_of_subjects[0] > 0
-              "
-            >
-              <p class="indent --2">
-                <b>Number of samples:</b>
-                {{ detail_data.number_of_samples[0] }} samples from
-                {{ detail_data.number_of_subjects[0] }} subjects
-              </p>
-            </div>
-            <div v-else>
-              <p class="indent --2"><b>Number of samples:</b> N/A</p>
-            </div>
+            <AbstractInfo :detail_data="detail_data" :species_list="species_list" :sex_list="sex_list" :age_list="age_list" />
           </span>
 
           <!-- about content -->
           <span v-if="$route.query.datasetTab === 'about'" class="tab-content">
-            <h2>About this dataset</h2>
-            <p><b>Title:</b> {{ title }}</p>
-            <p><b>First Published:</b> N/A</p>
-            <p><b>Last Published:</b> N/A</p>
-            <hr />
-            <p><b>Contact Author:</b> N/A</p>
-            <hr />
-            <p><b>Award(s):</b> N/A</p>
-            <hr />
-            <p><b>Associated project(s):</b> N/A</p>
-            <p><b>Institution(s):</b> N/A</p>
-            <hr />
-            <h2>About this version</h2>
-            <p><b>Version 3 Revision 1:</b> N/A</p>
-            <p><b>Dataset DOI:</b> N/A</p>
+            <AboutInfo :detail_data="detail_data" :title="title" />
           </span>
 
           <!-- cite content -->
           <span v-if="$route.query.datasetTab === 'cite'" class="tab-content">
-            <h2>Dataset Citation</h2>
-            <p>
-              To promote reproducibility and give credit to investigators who
-              publish their data, we recommend citing your usage of 12-labours
-              datasets. To make it easy, the 12-labours Portal provides the full
-              data citation, including the option of different formats, under
-              the Cite tab of each dataset page. For more Information, please
-              see our Help page.
-            </p>
-            <div v-if="apaCitation.length > 0">
-              <h5 class="small-title">APA</h5>
-              <div class="citaiton-block">
-                <el-button
-                  icon="el-icon-copy-document"
-                  id="copy-btn"
-                  @click="copyText(apaCitation)"
-                  >Copy</el-button
-                >
-                <div class="citation-content indent">
-                  <div
-                    v-for="(item, i) in apaCitation"
-                    :key="i"
-                    v-html="item"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <p>
-              Click
-              <a href="https://citation.crosscite.org/" target="_blank">
-                here
-              </a>
-              to generate citations in more formats.
-            </p>
+            <CiteInfo :identifier="detail_data.identifier" />
           </span>
 
           <!-- files content -->
@@ -237,135 +77,26 @@
         </el-card>
       </div>
 
-      <div class="left-column">
-        <el-card shadow="never" class="image-container">
-          <div>
-            <img
-              :src="datasetImage"
-              alt="image"
-              @error="replaceByDefaultImage"
-            />
-          </div>
-          <!-- <div>
-            <el-button class="left-top-btn" @click="changeTab('files', true)">
-              <span class="display-ellipsis --1">Get Dataset</span>
-            </el-button>
-          </div>
-          <div>
-            <el-button class="left-top-btn secondary" @click="changeTab('cite', true)">
-              <span class="display-ellipsis --1">Cite Dataset</span>
-            </el-button>
-          </div> -->
-          <!-- <div class="pdf-bg" v-show="show_segmentation">
-            <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_segmentation')"></el-button>
-          </div> -->
-          <!-- <div>
-            <el-button @click="changeShowState('show_pdf')">{{ show_pdf ? "Hide PDF" : "Show PDF" }}</el-button>
-            <div class="pdf-bg" v-show="show_pdf">
-              <el-button class="view-btn" icon="el-icon-close" @click="changeShowState('show_pdf')"></el-button>
-              <div class="pdf-viewer">
-                <iframe src="/sample.pdf" style="height: 100%; width: 100%;"></iframe>
-              </div>
-            </div>
-          </div> -->
-        </el-card>
-
-        <el-card shadow="never" class="related-container">
-          <h4 class="clearfix">Search related datasets</h4>
-          <hr />
-          <section>
-            <div class="card-content">
-              <span class="card-title">PROJECT:</span><br />N/A
-            </div>
-            <hr />
-            <div class="card-content">
-              <span class="card-title">TYPE:</span><br />
-              <el-button
-                @click="goToDataset"
-                class="secondary"
-                id="datasetBrowser"
-              >
-                <span class="display-ellipsis --1">Dataset</span>
-              </el-button>
-              <hr />
-            </div>
-            <div class="card-content" v-if="detail_data.study_organ_system.length > 0">
-              <span class="card-title">ANATOMICAL STRUCTURE:</span><br />
-              <div>
-                <div v-for="(organ, i) in detail_data.study_organ_system" :key="i">
-                  <el-button @click="goWithFacet(organ)" class="secondary">
-                    <span class="display-ellipsis --1">{{ organ }}</span>
-                  </el-button>
-                </div>
-              </div>
-              <hr />
-            </div>
-            <div class="card-content" v-if="species_list.length > 0">
-              <span class="card-title">SPECIES:</span><br />
-              <div>
-                <div v-for="(species, i) in species_list" :key="i">
-                  <el-button @click="goWithFacet(species)" class="secondary">
-                    <span class="display-ellipsis --1">{{ species }}</span>
-                  </el-button>
-                </div>
-              </div>
-              <hr />
-            </div>
-            <!-- <div class="card-content">
-              <span class="card-title">EXPERIMENTAL APPROACH:</span><br />
-              <el-button
-                @click="goWithFacet('Anatomy')"
-                class="secondary"
-                :disabled="true"
-              >
-                <span class="display-ellipsis --1">N/A</span>
-              </el-button>
-            </div>
-            <hr /> -->
-            <div class="card-content" v-if="sex_list.length > 0">
-              <span class="card-title">SEX:</span><br />
-              <div>
-                <div v-for="(sex, i) in sex_list" :key="i">
-                  <el-button @click="goWithFacet(sex)" class="secondary">
-                    <span class="display-ellipsis --1">{{ sex }}</span>
-                  </el-button>
-                </div>
-              </div>
-              <hr />
-            </div>
-            <div class="card-content">
-              <span class="card-title">CONTRIBUTORS:</span><br />
-              <ul>
-                <li v-for="(name, i) in detail_data.contributor_name" :key="i">
-                  <span
-                    v-if="
-                      detail_data.contributor_name.length !==
-                        detail_data.contributor_orcid.length
-                    "
-                  >
-                    {{
-                      modifyName(name, detail_data.contributor_name.length - 1)
-                    }}
-                  </span>
-                  <a v-else :href="modifyLink(i)">
-                    {{
-                      modifyName(name, detail_data.contributor_name.length - 1)
-                    }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </el-card>
-      </div>
+      <RelatedInfo
+        :detail_data="detail_data"
+        :datasetImage="datasetImage"
+        :imagePlaceholder="imagePlaceholder"
+        :species_list="species_list"
+        :sex_list="sex_list"
+        :age_list="age_list"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import backendQuery from "@/services/backendQuery";
-import axios from "axios";
-import DatasetFiles from "../../../../components/DataBrowser/DatasetFiles.vue";
+import HeaderInfo from "../../../../components/DatasetDetails/HeaderInfo.vue";
+import AbstractInfo from "../../../../components/DatasetDetails/AbstractInfo.vue";
+import AboutInfo from "../../../../components/DatasetDetails/AboutInfo.vue";
+import CiteInfo from "../../../../components/DatasetDetails/CiteInfo.vue";
+import DatasetFiles from "../../../../components/DatasetDetails/DatasetFiles.vue";
+import RelatedInfo from "../../../../components/DatasetDetails/RelatedInfo.vue";
 
 const datasetTabs = [
   {
@@ -400,8 +131,8 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: ["id"],
-  components: { DatasetFiles },
+  props: [ "id" ],
+  components: { HeaderInfo, AbstractInfo, AboutInfo, CiteInfo, DatasetFiles, RelatedInfo },
   data: () => {
     return {
       breadcrumb: [
@@ -432,13 +163,13 @@ export default {
       title: "",
       scaffold_view_data: [],
       thumbnail_data: [],
-      apaCitation: [],
       spotlight_cards_list: [],
       cards_list: [],
       all_models: undefined,
       datasetImage: "",
       species_list: [],
       sex_list: [],
+      age_list: [],
       // show_segmentation: false,
       // show_pdf: false,
     };
@@ -473,8 +204,6 @@ export default {
     };
     this.handleCards(cardsData);
 
-    await this.handleCitation();
-
     // this.show_pdf = false;
     this.isLoading = false;
   },
@@ -499,17 +228,6 @@ export default {
   },
 
   methods: {
-    goToDataset() {
-      this.$router.push({
-        path: "/data/browser",
-        query: {
-          type: "dataset",
-          page: 1,
-          limit: 10,
-        },
-      });
-    },
-
     changeTab(val, jump = false) {
       let query = { datasetTab: val };
       if (this.$route.query.path && this.$route.query.path !== "files")
@@ -524,16 +242,6 @@ export default {
           .querySelector(".detail-container")
           .scrollIntoView({ behavior: "smooth" });
       }
-    },
-
-    combineNames() {
-      let result = "";
-      let name_list = this.detail_data.contributor_name;
-      name_list.map((item) => {
-        let person_names = item.split(", ");
-        result += person_names[1] + " " + person_names[0] + ", ";
-      });
-      return result.slice(0, -2);
     },
 
     modifyName(name, i) {
@@ -562,24 +270,6 @@ export default {
       return fileName;
     },
 
-    goWithFacet(facet) {
-      let words_list = facet.split(" ");
-      let result = "";
-      words_list.forEach((word) => {
-        result += " " + word[0].toUpperCase() + word.slice(1);
-      });
-      result = result.slice(1);
-      this.$router.push({
-        path: "/data/browser",
-        query: {
-          type: "dataset",
-          page: 1,
-          limit: 10,
-          facets: result,
-        },
-      });
-    },
-
     generateImage(method, filename, is_source_of) {
       let url = `${this.$config.query_api_url}/data/${method}`;
       if (!filename.includes(this.$route.params.id)) {
@@ -594,43 +284,6 @@ export default {
         url += `/${filename}`;
       }
       return url;
-    },
-
-    async handleCitation() {
-      for (let item of this.detail_data.identifier) {
-        await axios
-          .get(item, {
-            headers: {
-              Accept: "text/x-bibliography; style=apa",
-            },
-          })
-          .then((res) => {
-            if (!res.data.includes("<!doctype html>"))
-              this.apaCitation.push(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    },
-
-    copyText(text_list) {
-      let text = "";
-      text_list.map((item) => {
-        text += item;
-        if (!item.includes("\n")) {
-          text += "\n";
-        }
-      });
-      let inputNode = document.createElement("input");
-      inputNode.value = text;
-      document.body.appendChild(inputNode);
-      inputNode.select();
-      document.execCommand("copy");
-      inputNode.className = "oInput";
-      inputNode.id = "clipboard";
-      inputNode.style.display = "none";
-      this.$message.success("copied");
     },
 
     handleCards(allCards) {
@@ -671,10 +324,6 @@ export default {
       }
       this.all_models = model_set;
       this.cards_list = [...this.spotlight_cards_list, ...this.cards_list];
-    },
-
-    replaceByDefaultImage(error) {
-      error.target.src = this.imagePlaceholder;
     },
 
     getDatasetImage() {
@@ -761,6 +410,8 @@ export default {
           this.species_list.push(item.facet);
         else if (item.term === "Sex")
           this.sex_list.push(item.facet);
+        else if (item.term === "Age category")
+          this.age_list.push(item.facet);
       })
     },
   },
@@ -772,56 +423,13 @@ export default {
   min-height: 80vh;
 }
 
-.container-default {
+::v-deep .container-default {
   @media only screen and (min-width: $viewport-sm) {
     display: flex;
 
     @media only screen and (min-width: calc($viewport-lg - 20rem)) {
       margin: auto;
       width: 90rem;
-    }
-  }
-
-  .left-column {
-    order: 1;
-
-    @media only screen and (min-width: $viewport-sm) {
-      max-width: 20rem;
-    }
-
-    min-width: 15rem;
-
-    .image-container {
-      text-align: center;
-
-      img {
-        width: 13rem;
-      }
-
-      .left-top-btn {
-        margin: 1rem 0 0 0;
-      }
-    }
-
-    .related-container {
-      margin-top: 2rem;
-
-      .card-title {
-        font-size: 1.3rem;
-      }
-
-      .card-content {
-        margin: 1rem 0.5rem 1rem 0.5rem;
-
-        .secondary {
-          margin-top: 0.5rem;
-          padding: 0 1.5rem 0 1.5rem;
-
-          span {
-            font-size: 1rem;
-          }
-        }
-      }
     }
   }
 
@@ -873,16 +481,16 @@ export default {
   }
 }
 
-hr {
+::v-deep hr {
   border: 0.5px solid #e4e7ed;
   margin: 1rem 0 1rem 0;
 }
 
-p {
+::v-deep p {
   font-size: 1rem;
 }
 
-h2 {
+::v-deep h2 {
   margin: 0.5rem 0 0.5rem 0;
   font-size: 1.5rem;
 }
@@ -899,12 +507,6 @@ h2 {
 
 .tab-content {
   line-height: 2rem;
-}
-
-li {
-  a {
-    font-size: 1.13rem;
-  }
 }
 
 .gallery-img {

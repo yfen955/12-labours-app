@@ -195,9 +195,6 @@ export default {
   .search-container .magnify {
     background: $app-primary-color !important;
   }
-  .drawer-button, .open-drawer {
-    margin-top: 21vh !important;
-  }
   .pathways-display-text {
     font-size: inherit !important;
   }
