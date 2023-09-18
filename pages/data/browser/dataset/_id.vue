@@ -167,6 +167,13 @@ export default {
       cards_list: [],
       all_models: undefined,
       datasetImage: "",
+      species_dict: {
+        "Felis catus": "Cat",
+        "Homo sapiens": "Human",
+        "Mus musculus": "Mouse",
+        "Sus scrofa": "Pig",
+        "Rattus norvegicus": "Rat",
+      },
       species_list: [],
       sex_list: [],
       age_list: [],
@@ -182,7 +189,8 @@ export default {
       { submitter_id: [this.$route.params.id] },
       ""
     );
-    this.handleFacets(facets);
+    // this.handleFacets(facets);
+    this.handleFacets(data.cases);
     
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
@@ -404,14 +412,28 @@ export default {
       return flatmap_data;
     },
 
-    handleFacets(facets) {
-      facets.forEach((item) => {
-        if (item.term === "Species")
-          this.species_list.push(item.facet);
-        else if (item.term === "Sex")
-          this.sex_list.push(item.facet);
-        else if (item.term === "Age category")
-          this.age_list.push(item.facet);
+    handleFacets(cases) {
+      // facets.forEach((item) => {
+      //   if (item.term === "Species")
+      //     this.species_list.push(item.facet);
+      //   else if (item.term === "Sex")
+      //     this.sex_list.push(item.facet);
+      //   else if (item.term === "Age category")
+      //     this.age_list.push(item.facet);
+      // })
+      const all_species = Object.keys(this.species_dict);
+      cases.forEach((item) => {
+        let species = this.species_dict[item.species];
+        if (all_species.indexOf(item.species) !== -1) {
+          if (species === "Human")
+            species = `${species} ${item.sex}`;
+          if (this.species_list.indexOf(species) === -1)
+            this.species_list.push(species);
+        }
+        if (item.sex && !this.sex_list.includes(item.sex))
+          this.sex_list.push(item.sex);
+        if (item.age_category && !this.age_list.includes(item.age_category))
+          this.age_list.push(item.age_category);
       })
     },
   },
