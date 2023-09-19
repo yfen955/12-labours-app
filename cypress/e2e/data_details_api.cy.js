@@ -5,7 +5,7 @@ describe('test components that uses api', () =>{
     cy.get('@dataset').then((dataset) => {
       cy.intercept({
         method: 'POST', 
-        url: `${Cypress.env('query_url')}/graphql/query`
+        url: `${Cypress.env('query_url')}/graphql/query/?mode=detail`
       }, (req) => {
         expect(req.body.node).to.include('experiment_query');
         req.reply(dataset);
