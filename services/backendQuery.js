@@ -150,7 +150,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
   return fetched_data;
 }
 
-async function fetchQueryData(path, node, filter, search) {
+async function fetchQueryData(path, node, filter, search, mode) {
   const accessToken = getLocalStorage("access_token")
   let fetched_data = [];
   let payload = {
@@ -159,7 +159,7 @@ async function fetchQueryData(path, node, filter, search) {
     search: search
   };
   await axios
-    .post(`${path}/graphql/query`, payload, {
+    .post(`${path}/graphql/query/?mode=${mode}`, payload, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

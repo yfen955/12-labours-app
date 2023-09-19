@@ -176,13 +176,15 @@ export default {
   },
 
   created: async function() {
-    let { data, facets } = await backendQuery.fetchQueryData(
+    const result = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
-      ""
+      "",
+      "detail"
     );
-    this.handleFacets(facets);
+    const data = result.detail;
+    this.handleFacets(result.facet);
     
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
@@ -405,13 +407,11 @@ export default {
     },
 
     handleFacets(facets) {
-      facets.forEach((item) => {
-        if (item.term === "Species")
-          this.species_list.push(item.facet);
-        else if (item.term === "Sex")
-          this.sex_list.push(item.facet);
-        else if (item.term === "Age category")
-          this.age_list.push(item.facet);
+      Object.keys(facets).forEach((item) => {
+        if (item === "Species")
+          this.species_list = facets[item];
+        else if (item === "Sex")
+          this.sex_list = facets[item];
       })
     },
   },
