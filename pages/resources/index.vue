@@ -2,11 +2,7 @@
   <div class="page-outer vertical-flex">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
-    <div class="container-default">                
-      <!-- <div class="wide-cards">
-        <card-small class="item" :specs="dataAndModels"/>
-        <card-small class="item" :specs="tools"/>
-        <card-small class="item" :specs="workflows"/> -->
+    <div class="container-default">
       <div class="cards-in-row">
         <card :specs="dataAndModels"/>
         <card :specs="tools"/>

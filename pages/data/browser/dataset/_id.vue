@@ -246,14 +246,9 @@ export default {
       }
     },
 
-    modifyName(name, i) {
+    modifyName(name) {
       let name_list = name.split(", ");
-      let result;
-      if (i === this.detail_data.contributor_name.length - 1) {
-        result = name_list[1] + " " + name_list[0];
-      } else {
-        result = name_list[1] + " " + name_list[0] + ", ";
-      }
+      let result = name_list[1] + " " + name_list[0];
       return result;
     },
 
@@ -412,6 +407,8 @@ export default {
           this.species_list = facets[item];
         else if (item === "Sex")
           this.sex_list = facets[item];
+        else if (item === "Age category")
+          this.age_list = facets[item];
       })
     },
   },
@@ -493,6 +490,10 @@ export default {
 ::v-deep h2 {
   margin: 0.5rem 0 0.5rem 0;
   font-size: 1.5rem;
+}
+
+::v-deep a {
+  cursor: pointer;
 }
 
 .clearfix:before,

@@ -95,6 +95,18 @@
           </div>
           <hr />
         </div>
+        <div class="card-content" v-if="age_list.length > 0">
+          <span class="card-title">AGE:</span><br />
+          <div>
+            <div v-for="(age, i) in age_list" :key="i">
+              <el-button @click="goWithFacet(age)" class="secondary">
+                <span class="display-ellipsis --1">{{ age }}</span>
+              </el-button>
+            </div>
+          </div>
+          <hr />
+        </div>
+
         <div class="card-content">
           <span class="card-title">CONTRIBUTORS:</span><br />
           <ul>
