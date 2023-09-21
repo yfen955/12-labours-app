@@ -19,60 +19,60 @@ async function content(graphcms, name) {
   if (!graphcms) {
     return cms_content.content[name];
   }
-  const variables = {
+  const variable = {
     name: name,
   };
-  return await graphcms.request(contentQuery, variables);
+  return await graphcms.request(contentQuery, variable);
 }
 
 async function multiContent(graphcms, name) {
   if (!graphcms) {
     return cms_content.multiContent[name];
   }
-  const variables = {
+  const variable = {
     name: name,
   };
-  return await graphcms.request(multiContentQuery, variables);
+  return await graphcms.request(multiContentQuery, variable);
 }
 
 async function projectInformation(graphcms, name) {
   if (!graphcms) {
     return cms_content.projectInformation[name];
   }
-  const variables = {
+  const variable = {
     name: name,
   };
-  return await graphcms.request(projectInformationQuery, variables);
+  return await graphcms.request(projectInformationQuery, variable);
 }
 
 async function banner(graphcms, name) {
   if (!graphcms) {
     return cms_content.banner[name];
   }
-  const variables = {
+  const variable = {
     name: name,
   };
-  return await graphcms.request(bannerQuery, variables);
+  return await graphcms.request(bannerQuery, variable);
 }
 
 async function topNews(graphcms, fetchCount) {
   if (!graphcms) {
     return cms_content.topNews;
   }
-  const variables = {
+  const variable = {
     fetchCount: fetchCount,
   };
-  return await graphcms.request(topNewsQuery, variables);
+  return await graphcms.request(topNewsQuery, variable);
 }
 
 async function news(graphcms, slug) {
   if (!graphcms) {
     return cms_content.news[slug];
   }
-  const variables = {
+  const variable = {
     slug: slug,
   };
-  return await graphcms.request(newsQuery, variables);
+  return await graphcms.request(newsQuery, variable);
 }
 
 async function newsCategory(graphcms) {
@@ -86,20 +86,20 @@ async function topEvents(graphcms, fetchCount) {
   if (!graphcms) {
     return cms_content.topEvents;
   }
-  const variables = {
+  const variable = {
     fetchCount: fetchCount,
   };
-  return await graphcms.request(topEventsQuery, variables);
+  return await graphcms.request(topEventsQuery, variable);
 }
 
 async function event(graphcms, slug) {
   if (!graphcms) {
     return cms_content.event[slug];
   }
-  const variables = {
+  const variable = {
     slug: slug,
   };
-  return await graphcms.request(eventQuery, variables);
+  return await graphcms.request(eventQuery, variable);
 }
 
 async function eventsCategory(graphcms) {
