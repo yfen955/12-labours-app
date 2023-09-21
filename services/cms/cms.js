@@ -96,7 +96,7 @@ module.exports.cms_backup = async function() {
     console.log(`Progress...${Math.round((index / cms_types.length) * 100)}%`);
   }
 
-  console.log(`Progress...100%\nStart writing to JSON file`);
+  console.log(`Progress...100%\nStart generating JSON file`);
 
   fs.writeFile(
     "./services/cms/cms_content.json",
