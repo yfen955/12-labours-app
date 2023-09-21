@@ -1,233 +1,133 @@
-import { gql } from 'graphql-request';
+import cms_content from "./cms/cms_content.json";
+import {
+  contentQuery,
+  multiContentQuery,
+  projectInformationQuery,
+  bannerQuery,
+  topNewsQuery,
+  newsQuery,
+  newsCategoryQuery,
+  topEventsQuery,
+  eventQuery,
+  eventsCategoryQuery,
+  feedbackReasonQuery,
+  contactReasonQuery,
+  contactAreaQuery,
+} from "./cms/cms_query.js";
 
 async function content(graphcms, name) {
-  const variables = {
-    "name": name
+  if (!graphcms) {
+    return cms_content.content[name];
   }
-
-  const query = gql`
-    query ($name: String!) {
-      values: titledContent(where: {name: $name}) {
-        content {
-          html
-        }
-        title
-      }
-    }
-  ` 
-  return await graphcms.request(query,  variables);
+  const variables = {
+    name: name,
+  };
+  return await graphcms.request(contentQuery, variables);
 }
 
-
 async function multiContent(graphcms, name) {
-  const variables = {
-    "name": name
+  if (!graphcms) {
+    return cms_content.multiContent[name];
   }
-  const query1 = gql`
-    query ($name: String!) {
-      values: multiContent(where: {name: $name}) {
-        contents {
-          html
-        }
-        title
-      }
-    }
-  `
-  return await graphcms.request(query1,  variables);
+  const variables = {
+    name: name,
+  };
+  return await graphcms.request(multiContentQuery, variables);
 }
 
 async function projectInformation(graphcms, name) {
-  const variables = {
-    "name": name
+  if (!graphcms) {
+    return cms_content.projectInformation[name];
   }
-
-  const query2 = gql`
-    query ($name: String!) {
-      values: projectInformation(where: {name: $name}) {
-        content {
-          html
-        }
-        title,
-        linkCaption,
-        link
-      }
-    }
-  `
-  return await graphcms.request(query2,  variables);
+  const variables = {
+    name: name,
+  };
+  return await graphcms.request(projectInformationQuery, variables);
 }
 
 async function banner(graphcms, name) {
-  const variables = {
-    "name": name
+  if (!graphcms) {
+    return cms_content.banner[name];
   }
-  const query = gql`
-    query ($name: String!) {
-      values: bannerImage(where: {name: $name}) {
-        image {
-          url
-        }
-        title
-      }
-    }
-  `
-  return await graphcms.request(query, variables);
+  const variables = {
+    name: name,
+  };
+  return await graphcms.request(bannerQuery, variables);
 }
-
 
 async function topNews(graphcms, fetchCount) {
-  const variables = {
-    "fetchCount":  fetchCount
+  if (!graphcms) {
+    return cms_content.topNews;
   }
-  const query = gql`
-    query ($fetchCount: Int) {
-      newsList:  newsItems(
-        first: $fetchCount
-        orderBy: publishedDate_DESC
-      ) 
-      {
-        publishedDate
-        title
-        image{url}
-        category
-        blurb
-        slug
-      }
-    }
-  ` 
-  return await graphcms.request(query, variables);
+  const variables = {
+    fetchCount: fetchCount,
+  };
+  return await graphcms.request(topNewsQuery, variables);
 }
 
-async function news(graphcms,slug) {
-  const variables = {
-    "slug":slug
+async function news(graphcms, slug) {
+  if (!graphcms) {
+    return cms_content.news[slug];
   }
-  const query = gql`
-  query ($slug:String!) {
-    newsItem: newsItems(where: {slug:$slug})
-    {
-      publishedDate
-      title
-      image{url}
-      blurb
-      detail{html}
-    }
-  } 
-  ` 
-  return await graphcms.request(query, variables);   
+  const variables = {
+    slug: slug,
+  };
+  return await graphcms.request(newsQuery, variables);
 }
 
 async function newsCategory(graphcms) {
-  const query = gql`
-    query introspectNewsCategoryType {
-      __type(name: "NewsCategory") {
-        enumValues {
-          name
-        }
-      }
-    }
-  `
-  return await graphcms.request(query);
+  if (!graphcms) {
+    return cms_content.newsCategory;
+  }
+  return await graphcms.request(newsCategoryQuery);
 }
-
 
 async function topEvents(graphcms, fetchCount) {
-  const variables = {
-    "fetchCount": fetchCount,
+  if (!graphcms) {
+    return cms_content.topEvents;
   }
-  const query = gql`
-    query ($fetchCount: Int) {
-      eventsList:  eventsItems(
-        first: $fetchCount 
-        orderBy: startDate_DESC
-      ) 
-      {
-        startDate
-        endDate
-        title
-        image{url}
-        category
-        slug
-        blurb
-      }
-    }    
-  ` 
-  return await graphcms.request(query, variables);
+  const variables = {
+    fetchCount: fetchCount,
+  };
+  return await graphcms.request(topEventsQuery, variables);
 }
 
-async function event(graphcms,slug) {
-  const variables = {
-    "slug":slug
+async function event(graphcms, slug) {
+  if (!graphcms) {
+    return cms_content.event[slug];
   }
-  const query = gql`
-  query ($slug:String!) {
-    eventItem: eventsItems(where: {slug:$slug})
-    {
-      startDate
-      endDate
-      title
-      image{url}
-      detail{html}
-      blurb
-      externalLink
-    }
-  } 
-  ` 
-  return await graphcms.request(query, variables);   
+  const variables = {
+    slug: slug,
+  };
+  return await graphcms.request(eventQuery, variables);
 }
 
 async function eventsCategory(graphcms) {
-  const query = gql`
-    query introspectEventsCategoryType {
-      __type(name: "EventsCategory") {
-        enumValues {
-          name
-        }
-      }
-    }
-  `
-  return await graphcms.request(query);
+  if (!graphcms) {
+    return cms_content.eventsCategory;
+  }
+  return await graphcms.request(eventsCategoryQuery);
 }
-
 
 async function feedbackReason(graphcms) {
-  const query = gql`
-    query introspectFeedbackReasonType {
-      __type(name: "FeedbackReason") {
-        enumValues {
-          name
-        }
-      }
-    }
-  `
-  return await graphcms.request(query);
+  if (!graphcms) {
+    return cms_content.feedbackReason;
+  }
+  return await graphcms.request(feedbackReasonQuery);
 }
-
 
 async function contactReason(graphcms) {
-  const query = gql`
-    query introspectContactReasonType {
-      __type(name: "ContactReason") {
-        enumValues {
-          name
-        }
-      }
-    }
-  `
-  return await graphcms.request(query);
+  if (!graphcms) {
+    return cms_content.contactReason;
+  }
+  return await graphcms.request(contactReasonQuery);
 }
 
-
 async function contactArea(graphcms) {
-  const query = gql`
-    query introspectContactAreaType {
-      __type(name: "ContactArea") {
-        enumValues {
-          name
-        }
-      }
-    }
-  `
-  return await graphcms.request(query);
+  if (!graphcms) {
+    return cms_content.contactArea;
+  }
+  return await graphcms.request(contactAreaQuery);
 }
 
 export default {
@@ -243,5 +143,5 @@ export default {
   banner,
   feedbackReason,
   contactReason,
-  contactArea
-}
+  contactArea,
+};
