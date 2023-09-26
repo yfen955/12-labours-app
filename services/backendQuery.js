@@ -97,7 +97,7 @@ async function fetchAccessToken(path, user) {
   await axios
     .post(`${path}/access/token`, payload)
     .then((response) => {
-      setLocalStorage("access_token", response.data.access_token)
+      setLocalStorage("query_access_token", response.data.access_token)
     })
     .catch((error) => {
       throw new Error(`${error}`);
@@ -105,7 +105,7 @@ async function fetchAccessToken(path, user) {
 }
 
 async function revokeAccess(path) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token")
   if (accessToken) {
     await axios
       .delete(`${path}/access/revoke`, {
@@ -114,16 +114,16 @@ async function revokeAccess(path) {
         },
       })
       .then((response) => {
-        setLocalStorage("access_token", undefined)
+        setLocalStorage("query_access_token", undefined)
       })
       .catch((error) => {
-        setLocalStorage("access_token", undefined)
+        setLocalStorage("query_access_token", undefined)
       });
   }
 }
 
 async function fetchPaginationData(path, filter, limit, page, search, relation, sort) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token")
   let fetched_data = {
     items: [],
     total: 0
@@ -151,7 +151,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
 }
 
 async function fetchQueryData(path, node, filter, search) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token")
   let fetched_data = [];
   let payload = {
     node: node,
@@ -174,7 +174,7 @@ async function fetchQueryData(path, node, filter, search) {
 }
 
 async function getSingleData(path, uuid) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token")
   let fetched_data = [];
   await axios
     .get(`${path}/record/${uuid}`, {
@@ -192,7 +192,7 @@ async function getSingleData(path, uuid) {
 }
 
 async function fetchFilterData(path, sidebar) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token")
   let filter = {};
   await axios
     .get(`${path}/filter/?sidebar=${sidebar}`, {
