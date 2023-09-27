@@ -176,13 +176,15 @@ export default {
   },
 
   created: async function() {
-    let { data, facets } = await backendQuery.fetchQueryData(
+    const result = await backendQuery.fetchQueryData(
       this.$config.query_api_url,
       "experiment_query",
       { submitter_id: [this.$route.params.id] },
-      ""
+      "",
+      "detail"
     );
-    this.handleFacets(facets);
+    const data = result.detail;
+    this.handleFacets(result.facet);
     
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
@@ -244,14 +246,9 @@ export default {
       }
     },
 
-    modifyName(name, i) {
+    modifyName(name) {
       let name_list = name.split(", ");
-      let result;
-      if (i === this.detail_data.contributor_name.length - 1) {
-        result = name_list[1] + " " + name_list[0];
-      } else {
-        result = name_list[1] + " " + name_list[0] + ", ";
-      }
+      let result = name_list[1] + " " + name_list[0];
       return result;
     },
 
@@ -405,13 +402,13 @@ export default {
     },
 
     handleFacets(facets) {
-      facets.forEach((item) => {
-        if (item.term === "Species")
-          this.species_list.push(item.facet);
-        else if (item.term === "Sex")
-          this.sex_list.push(item.facet);
-        else if (item.term === "Age category")
-          this.age_list.push(item.facet);
+      Object.keys(facets).forEach((item) => {
+        if (item === "Species")
+          this.species_list = facets[item];
+        else if (item === "Sex")
+          this.sex_list = facets[item];
+        else if (item === "Age category")
+          this.age_list = facets[item];
       })
     },
   },
@@ -493,6 +490,10 @@ export default {
 ::v-deep h2 {
   margin: 0.5rem 0 0.5rem 0;
   font-size: 1.5rem;
+}
+
+::v-deep a {
+  cursor: pointer;
 }
 
 .clearfix:before,

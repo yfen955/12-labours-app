@@ -29,7 +29,13 @@
             <i v-if="card.type == 'Plot'" class="el-icon-data-analysis"></i>
             <i v-if="card.type == 'MRI'" class="el-icon-first-aid-kit"></i>
             <img
-              v-if="card.type !== 'Plot' && card.type !== 'MRI'"
+              v-if="card.type == 'Flatmap'"
+              :src="flatmapImg[card.id]"
+              :alt="card.filename"
+              @error="replaceByDefaultImage"
+            />
+            <img
+              v-if="card.type !== 'Plot' && card.type !== 'MRI' && card.type !== 'Flatmap'"
               :src="card.url"
               :alt="card.filename"
               @error="replaceByDefaultImage"
@@ -67,6 +73,13 @@ export default {
       isIndeterminate: false,
       selected_models: [],
       imagePlaceholder: require("../static/img/12-labours-logo-black.png"),
+      flatmapImg: {
+        Rat: require('~/assets/flatmap-thumbnails/rat.png'),
+        Mouse: require('~/assets/flatmap-thumbnails/mouse.png'),
+        Human: require('~/assets/flatmap-thumbnails/human.png'),
+        Pig: require('~/assets/flatmap-thumbnails/pig.png'),
+        Cat: require('~/assets/flatmap-thumbnails/cat.png')
+      },
     };
   },
 
@@ -148,11 +161,12 @@ export default {
   }
 
   .card-image {
-    width: 10rem;
+    width: 13rem;
     height: 9rem;
 
     img {
-      width: 9rem;
+      max-width: 100%;
+      max-height: 100%;
     }
   }
 

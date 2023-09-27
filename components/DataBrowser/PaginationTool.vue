@@ -96,7 +96,7 @@ export default {
     // handle emit page/limit change
     handlePageLimit(page, limit) {
       this.page = parseInt(page);
-      this.limit = parseInt(limit);
+      this.limit = limit === "View All" ? 100 : parseInt(limit);
       const pageCount = Math.ceil(this.totalCount / this.limit);
       this.$emit(
         "page-limit",

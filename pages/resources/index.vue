@@ -2,11 +2,11 @@
   <div class="page-outer vertical-flex">
     <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
     <banner :banner-data="banner.values" height="30rem"/>   <!-- Optional height attribute to display varying heights-->
-    <div class="container-default">                
-      <div class="wide-cards">
-        <card-small class="item" :specs="dataAndModels"/>
-        <card-small class="item" :specs="tools"/>
-        <card-small class="item" :specs="workflows"/>
+    <div class="container-default">
+      <div class="cards-in-row">
+        <card :specs="dataAndModels"/>
+        <card :specs="tools"/>
+        <card :specs="workflows"/>
       </div>          
     </div>
     <div class="container-default shaded">
@@ -51,13 +51,13 @@ export default {
         title:' Data and Models',
         imgFile:'patient-in-frame.png',
         detail:'  Want the latest research data and models.',
-        btnLink:{caption:'Find Research Data', to:'/data'}
+        btnLink:{caption:'Find Data & Models', to:'/data'}
       },
       tools:{
         title:'Tools',
         imgFile:'researcher-in-frame.png',
         detail:'Want the latest research tools.',
-        btnLink:{caption:'Find Research Tools', to: {
+        btnLink:{caption:'Find Tools', to: {
           path: '/data/browser',
           query: {
             type: 'tools',
@@ -70,7 +70,14 @@ export default {
         title:'Workflows',
         imgFile:'clinician-in-frame.png',
         detail:'camera images -> point clouds -> scaffolds -> reduced parameter statistical shape models',
-        btnLink:{caption:'Find Research Data', to:'/data/browser?type=workflows&page=1&limit=10'}
+        btnLink:{caption:'Find Workflows', to: {
+          path: '/data/browser',
+          query: {
+            type: 'workflows',
+            page: 1,
+            limit: 10,
+          }
+        }}
       },
       technicalResources:{
         title:'Technical Resources',

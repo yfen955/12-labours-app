@@ -14,14 +14,14 @@
             >
               {{ combineNames() }}
             </span>
-            <a
+            <span
               v-else
               v-for="(name, i) in detail_data.contributor_name"
               :key="i"
-              :href="modifyLink(i)"
             >
-              {{ modifyName(name, i) }}
-            </a>
+              <!-- Must be on one line so that there are no space between the text and comma -->
+              <a :href="modifyLink(i)">{{modifyName(name)}}</a>{{i===detail_data.contributor_name.length-1?'':','}}
+            </span>
           </p>
           <hr />
           <p>
@@ -97,5 +97,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// 
+//
 </style>
