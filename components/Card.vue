@@ -13,12 +13,16 @@
             <div class="nav-button">
                 <a v-if="specs.btnLink.external" :href="specs.btnLink.to" target="_blank">
                     <el-button>
-                        {{specs.btnLink.caption.toUpperCase()}}
+                        <span class="display-ellipsis --1">
+                            {{specs.btnLink.caption.toUpperCase()}}
+                        </span>
                     </el-button>
                 </a>
                 <nuxt-link v-else :to="specs.btnLink.to">
                     <el-button>
-                        {{specs.btnLink.caption.toUpperCase()}}
+                        <span class="display-ellipsis --1">
+                            {{specs.btnLink.caption.toUpperCase()}}
+                        </span>
                     </el-button>
                 </nuxt-link>
             </div>
@@ -99,8 +103,10 @@
 
     .nav-button{
         margin-top:auto;
-             
+        width: 100%;
+        
         .el-button{    
+            width: 100%;
             max-width:100%;
             @media only screen and (max-width: $viewport-md){
                 padding:0.375rem 0.625rem;

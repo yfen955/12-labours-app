@@ -11,8 +11,8 @@
     <h2>Metadata</h2>
     <!-- <p><b>Experimental Design:</b> N/A</p>
     <p class="indent --2"><b>Protocol Links:</b> N/A</p>
-    <p class="indent --2"><b>Experimental Approach:</b> N/A</p>
-    <p><b>Subject Information:</b> N/A</p> -->
+    <p class="indent --2"><b>Experimental Approach:</b> N/A</p> -->
+    <p><b>Subject Information:</b></p>
     <p class="indent --2">
       <b>Anatomical structure:</b>
       <span v-if="detail_data.study_organ_system.length === 0"> N/A</span>
@@ -86,6 +86,8 @@
     <div v-else>
       <p class="indent --2"><b>Number of samples:</b> N/A</p>
     </div>
+    <hr>
+    <p><b>Keywords:</b> {{ displayKeywords(detail_data.keywords) }}</p>
   </div>
 </template>
 
@@ -93,6 +95,16 @@
 export default {
   name: "AbstractInfo",
   props: [ "detail_data", "species_list", "sex_list", "age_list" ],
+  methods: {
+    displayKeywords(keywords) {
+      let result = "";
+      for (let i = 0; i < keywords.length; i++) {
+        let word = keywords[i].trim();
+        result += ", " + word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return result.slice(2);
+    }
+  }
 }
 </script>
 

@@ -159,7 +159,7 @@ async function fetchQueryData(path, node, filter, search) {
     search: search
   };
   await axios
-    .post(`${path}/graphql/query`, payload, {
+    .post(`${path}/graphql/query/?mode=${mode}`, payload, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

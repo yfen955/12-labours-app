@@ -35,6 +35,10 @@
                   </nuxt-link>
                 </div>
                 <div>
+                  <strong>Dataset ID</strong>
+                  {{ item.datasetId }}
+                </div>
+                <div>
                   <strong>Anatomical Structure</strong>
                   {{ displayKeywords(item.organs) }}
                 </div>
@@ -44,8 +48,8 @@
                 </div>
                 <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
                   <strong>Samples</strong>
-                  {{ item.numberSamples }} samples out of
-                  {{ item.numberSubjects }} objects
+                  {{ item.numberSamples }} {{ item.numberSamples > 1 ? 'samples' : 'sample' }} out of
+                  {{ item.numberSubjects }} {{ item.numberSubjects > 1 ? 'subjects' : 'subject' }}
                 </div>
               </section>
             </section>

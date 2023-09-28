@@ -158,9 +158,10 @@ export default {
           this.$config.query_api_url,
           "experiment_query",
           { submitter_id: [this.$route.query.dataset_id] },
-          ""
+          "",
+          "facet"
         );
-        this.relevant_facets = data.facets;
+        this.relevant_facets = data.facet;
       } else if (this.$route.query.type === 'flatmap')
         this.relevant_facets = [{facet: this.$route.query.id, term:'Species', facetPropPath: 'case_filter>species'}];
     },
