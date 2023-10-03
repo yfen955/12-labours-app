@@ -9,10 +9,5 @@ export default (
       nuxtState.nuxtState.config.graphcms_endpoint = graphcms_endpoint;
     });
   }
-  inject(
-    "graphcms",
-    graphcms_endpoint
-      ? new GraphQLClient(graphcms_endpoint)
-      : new GraphQLClient(undefined)
-  );
+  inject("graphcms", new GraphQLClient(graphcms_endpoint));
 };
