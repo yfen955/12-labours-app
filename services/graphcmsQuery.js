@@ -16,7 +16,7 @@ import {
 } from "./cms/cms_query.js";
 
 async function content(graphcms, name) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.content[name];
   }
   const variable = {
@@ -26,7 +26,7 @@ async function content(graphcms, name) {
 }
 
 async function multiContent(graphcms, name) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.multiContent[name];
   }
   const variable = {
@@ -36,7 +36,7 @@ async function multiContent(graphcms, name) {
 }
 
 async function projectInformation(graphcms, name) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.projectInformation[name];
   }
   const variable = {
@@ -46,7 +46,7 @@ async function projectInformation(graphcms, name) {
 }
 
 async function banner(graphcms, name) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.banner[name];
   }
   const variable = {
@@ -56,7 +56,7 @@ async function banner(graphcms, name) {
 }
 
 async function topNews(graphcms, fetchCount) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.topNews;
   }
   const variable = {
@@ -66,7 +66,7 @@ async function topNews(graphcms, fetchCount) {
 }
 
 async function news(graphcms, slug) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.news[slug];
   }
   const variable = {
@@ -76,14 +76,14 @@ async function news(graphcms, slug) {
 }
 
 async function newsCategory(graphcms) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.newsCategory;
   }
   return await graphcms.request(newsCategoryQuery);
 }
 
 async function topEvents(graphcms, fetchCount) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.topEvents;
   }
   const variable = {
@@ -93,7 +93,7 @@ async function topEvents(graphcms, fetchCount) {
 }
 
 async function event(graphcms, slug) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.event[slug];
   }
   const variable = {
@@ -103,28 +103,28 @@ async function event(graphcms, slug) {
 }
 
 async function eventsCategory(graphcms) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.eventsCategory;
   }
   return await graphcms.request(eventsCategoryQuery);
 }
 
 async function feedbackReason(graphcms) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.feedbackReason;
   }
   return await graphcms.request(feedbackReasonQuery);
 }
 
 async function contactReason(graphcms) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.contactReason;
   }
   return await graphcms.request(contactReasonQuery);
 }
 
 async function contactArea(graphcms) {
-  if (!graphcms) {
+  if (!graphcms.url) {
     return cms_content.contactArea;
   }
   return await graphcms.request(contactAreaQuery);

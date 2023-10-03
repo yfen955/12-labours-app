@@ -11,6 +11,8 @@ export default (
   }
   inject(
     "graphcms",
-    graphcms_endpoint ? new GraphQLClient(graphcms_endpoint) : graphcms_endpoint
+    graphcms_endpoint
+      ? new GraphQLClient(graphcms_endpoint)
+      : new GraphQLClient(undefined)
   );
 };
