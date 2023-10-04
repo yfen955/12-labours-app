@@ -1,0 +1,30 @@
+{
+    "content": {
+        "about": {},
+        "about_long": {}
+    },
+    "multiContent": {
+        "project_aims": {},
+        "partners": {},
+        "terms_of_service": {}
+    },
+    "projectInformation": {
+        "info": {}
+    },
+    "banner": {
+        "data_and_models": {},
+        "news_and_events": {},
+        "events": {},
+        "news": {},
+        "resources": {}
+    },
+    "topNews": {},
+    "news": {},
+    "newsCategory": {},
+    "topEvents": {},
+    "event": {},
+    "eventsCategory": {},
+    "feedbackReason": {},
+    "contactReason": {},
+    "contactArea": {}
+}

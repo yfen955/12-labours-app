@@ -1,4 +1,4 @@
-FROM node:14.17.6 as builder
+FROM --platform=linux/amd64 node:14.17.6 as builder
 
 WORKDIR /12-labours-app
 
@@ -19,7 +19,7 @@ RUN rm -rf node_modules && \
     --non-interactive \
     --production=true
 
-FROM node:14.17.6
+FROM --platform=linux/amd64 node:14.17.6
 
 WORKDIR /12-labours-app
 
