@@ -51,7 +51,7 @@
             v-if="$route.query.datasetTab === 'gallery'"
             class="tab-content"
           >
-            <carousel-card2
+            <carousel-card
               :cards="cards_list"
               :all_models="all_models"
               v-if="!isLoading"

@@ -11,6 +11,7 @@
               :share-link="shareLink"
               @updateShareLinkRequested="updateUUID"
               v-on:isReady="mapMounted"
+              @species-changed="speciesChanged"
             />
           </div>
         </client-only>
@@ -176,6 +177,10 @@ export default {
       this.currentEntryUpdated();
       if (JSON.stringify(this.$route.query) !== "{}")
         this.setFacets();
+    },
+    
+    speciesChanged: function(species) {
+      this.$refs.map.openSearch([], species);
     },
   }
 }

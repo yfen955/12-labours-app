@@ -150,7 +150,7 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
   return fetched_data;
 }
 
-async function fetchQueryData(path, node, filter, search) {
+async function fetchQueryData(path, node, filter, search, mode) {
   const accessToken = getLocalStorage("query_access_token")
   let fetched_data = [];
   let payload = {
