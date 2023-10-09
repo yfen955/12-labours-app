@@ -10,7 +10,8 @@
     "generate": "nuxt generate",
     "test": "jest",
     "test-e2e": "cypress open",
-    "test-e2e-ci": "cypress run --record"
+    "test-e2e-ci": "cypress run --record",
+    "cms": "node -e 'require(\"./services/cms/cms.js\").cms_backup()'"
   },
   "dependencies": {
     "@12-labours/mapintegratedvuer": "1.0.0-beta.12",
