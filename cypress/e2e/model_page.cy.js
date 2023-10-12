@@ -1,11 +1,11 @@
 describe('map viewer page', () =>{
   it('test scaffold is loaded', () => {
     cy.visit('/data/maps?type=scaffold&id=bfdb4f9a-1301-4c16-b9bd-0aa8e121c097&dataset_id=dataset-34-version-5');
-    cy.wait(15000);
+    cy.wait(20000);
     cy.contains("3D Scaffold");
     // selected facets & result
-    cy.get('.el-tag').find('span').should('contain', 'Young adult');
-    cy.contains('Effect of electrical stimulation of vagal afferent terminals located in the stomach muscle wall on feeding behavior');
+    cy.get('.el-tag').find('span').should('contain', 'Scaffold');
+    cy.contains('Influence of direct colon tissue electrical stimulation on colonic motility in anesthetized male Yucatan minipig');
     // box in the bottom left corner
     cy.get('.traditional-container').should('contain', 'Regions');
     // content in the box

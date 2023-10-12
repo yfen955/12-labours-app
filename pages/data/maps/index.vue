@@ -183,7 +183,7 @@ export default {
     
     mapMounted: function () {
       this.currentEntryUpdated();
-      if (JSON.stringify(this.$route.query) !== "{}")
+      if (this.$route.query.type === 'scaffold')
         this.setFacets();
     },
     
