@@ -27,7 +27,12 @@
             v-if="$route.query.datasetTab === 'abstract'"
             class="tab-content"
           >
-            <AbstractInfo :detail_data="detail_data" :species_list="species_list" :sex_list="sex_list" :age_list="age_list" />
+            <AbstractInfo
+              :detail_data="detail_data"
+              :species_list="species_list"
+              :sex_list="sex_list"
+              :age_list="age_list"
+            />
           </span>
 
           <!-- about content -->
@@ -131,8 +136,15 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ "id" ],
-  components: { HeaderInfo, AbstractInfo, AboutInfo, CiteInfo, DatasetFiles, RelatedInfo },
+  props: ["id"],
+  components: {
+    HeaderInfo,
+    AbstractInfo,
+    AboutInfo,
+    CiteInfo,
+    DatasetFiles,
+    RelatedInfo,
+  },
   data: () => {
     return {
       breadcrumb: [
@@ -185,7 +197,7 @@ export default {
     );
     const data = result.detail;
     this.handleFacets(result.facet);
-    
+
     this.detail_data = data.dataset_descriptions[0];
     this.title = data.dataset_descriptions[0].title[0];
 
@@ -193,8 +205,7 @@ export default {
     this.thumbnail_data = data.thumbnails;
     this.getDatasetImage();
     let flatmap_data = [];
-    if (this.species_list.length > 0)
-      flatmap_data = this.handleSpecies();
+    if (this.species_list.length > 0) flatmap_data = this.handleSpecies();
 
     const cardsData = {
       Scaffold: data.scaffoldViews,
@@ -268,6 +279,7 @@ export default {
     },
 
     generateImage(method, filename, is_source_of) {
+      const oneOffToken = backendQuery.getLocalStorage("one_off_token")
       let url = `${this.$config.query_api_url}/data/${method}`;
       if (!filename.includes(this.$route.params.id)) {
         url += `/${this.$route.params.id}`;
@@ -280,6 +292,7 @@ export default {
       } else {
         url += `/${filename}`;
       }
+      url += `?token=${oneOffToken}`;
       return url;
     },
 
@@ -403,13 +416,10 @@ export default {
 
     handleFacets(facets) {
       Object.keys(facets).forEach((item) => {
-        if (item === "Species")
-          this.species_list = facets[item];
-        else if (item === "Sex")
-          this.sex_list = facets[item];
-        else if (item === "Age category")
-          this.age_list = facets[item];
-      })
+        if (item === "Species") this.species_list = facets[item];
+        else if (item === "Sex") this.sex_list = facets[item];
+        else if (item === "Age category") this.age_list = facets[item];
+      });
     },
   },
 };

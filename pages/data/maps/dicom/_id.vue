@@ -29,7 +29,7 @@ export default {
   methods: {
     handleStudySeries: async function() {
       this.isLoading = true;
-      const data = await backendQuery.getSingleData(
+      const data = await backendQuery.fetchRecordData(
         this.$config.query_api_url,
         this.$route.params.id
       );

@@ -2,11 +2,11 @@ import axios from "axios";
 
 function getLocalStorage(key) {
   if (process.client) {
-    const value = localStorage.getItem(key)
+    const value = localStorage.getItem(key);
     if (!value || value === "undefined") {
-      return undefined
+      return undefined;
     }
-    return value
+    return value;
   }
 }
 
@@ -21,17 +21,20 @@ function getDeviceType() {
   if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
     // return "Tablet";
     return "T";
-  }
-  else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+  } else if (
+    /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+      ua
+    )
+  ) {
     // return "Mobile";
     return "M";
   }
   // return "Desktop";
   return "D";
-};
+}
 
 function getBrowserType() {
-  const test = regexp => {
+  const test = (regexp) => {
     return regexp.test(navigator.userAgent);
   };
 
@@ -65,12 +68,12 @@ function getBrowserType() {
   }
 }
 
-
 function generateMachineId() {
   const deviceType = getDeviceType();
   const browserType = getBrowserType();
   let result = `${deviceType}_${browserType}_`;
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   for (let i = 0; i < 12; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -78,11 +81,10 @@ function generateMachineId() {
   return result;
 }
 
-
 function getMachineId() {
   let machineId = getLocalStorage("machine_id");
   if (!machineId) {
-    machineId = generateMachineId()
+    machineId = generateMachineId();
     setLocalStorage("machine_id", machineId);
   }
   return machineId;
@@ -90,14 +92,34 @@ function getMachineId() {
 
 async function fetchAccessToken(path, user) {
   const machineId = getMachineId();
-  const expiration = getLocalStorage("auth.strategy") === "local" ? getLocalStorage("auth._token_expiration.local") : getLocalStorage("auth._token_expiration.google");
+  const expiration =
+    getLocalStorage("auth.strategy") === "local"
+      ? getLocalStorage("auth._token_expiration.local")
+      : getLocalStorage("auth._token_expiration.google");
   const payload = {
-    identity: `${user}>${machineId}>${expiration}`,
+    email: user,
+    machine: machineId,
+    expiration: expiration,
   };
   await axios
     .post(`${path}/access/token`, payload)
     .then((response) => {
-      setLocalStorage("access_token", response.data.access_token)
+      setLocalStorage("query_access_token", response.data.access_token);
+    })
+    .catch((error) => {
+      throw new Error(`${error}`);
+    });
+}
+async function fetchOneOffToken(path) {
+  const accessToken = getLocalStorage("query_access_token");
+  await axios
+    .get(`${path}/access/oneoff`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => {
+      setLocalStorage("one_off_token", response.data.one_off_token);
     })
     .catch((error) => {
       throw new Error(`${error}`);
@@ -105,7 +127,7 @@ async function fetchAccessToken(path, user) {
 }
 
 async function revokeAccess(path) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token");
   if (accessToken) {
     await axios
       .delete(`${path}/access/revoke`, {
@@ -113,36 +135,48 @@ async function revokeAccess(path) {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response) => {
-        setLocalStorage("access_token", undefined)
+      .then((res) => {
+        setLocalStorage(
+          "query_access_token",
+          res.headers["public-access-token"]
+        );
       })
-      .catch((error) => {
-        setLocalStorage("access_token", undefined)
+      .catch((err) => {
+        console.log(err);
       });
   }
 }
 
-async function fetchPaginationData(path, filter, limit, page, search, relation, sort) {
-  const accessToken = getLocalStorage("access_token")
+async function fetchPaginationData(
+  path,
+  filter,
+  limit,
+  page,
+  search,
+  relation,
+  sort
+) {
+  const accessToken = getLocalStorage("query_access_token");
   let fetched_data = {
     items: [],
-    total: 0
+    total: 0,
   };
   const payload = {
     filter: filter,
     limit: parseInt(limit),
     page: parseInt(page),
     relation: relation,
-    order: sort
+    order: sort,
   };
   await axios
-    .post(`${path}/graphql/pagination/?search=${search}`, payload, {
+    .post(`${path}/graphql/pagination?search=${search}`, payload, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
     .then((res) => {
       fetched_data = res.data;
+      setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
       console.log(err);
@@ -151,21 +185,22 @@ async function fetchPaginationData(path, filter, limit, page, search, relation, 
 }
 
 async function fetchQueryData(path, node, filter, search, mode) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token");
   let fetched_data = [];
   let payload = {
     node: node,
     filter: filter,
-    search: search
+    search: search,
   };
   await axios
-    .post(`${path}/graphql/query/?mode=${mode}`, payload, {
+    .post(`${path}/graphql/query?mode=${mode}`, payload, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
     .then((res) => {
       fetched_data = res.data;
+      setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
       console.log(err);
@@ -173,8 +208,8 @@ async function fetchQueryData(path, node, filter, search, mode) {
   return fetched_data;
 }
 
-async function getSingleData(path, uuid) {
-  const accessToken = getLocalStorage("access_token")
+async function fetchRecordData(path, uuid) {
+  const accessToken = getLocalStorage("query_access_token");
   let fetched_data = [];
   await axios
     .get(`${path}/record/${uuid}`, {
@@ -184,6 +219,7 @@ async function getSingleData(path, uuid) {
     })
     .then((res) => {
       fetched_data = res.data.record;
+      setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
       console.log(err);
@@ -192,10 +228,10 @@ async function getSingleData(path, uuid) {
 }
 
 async function fetchFilterData(path, sidebar) {
-  const accessToken = getLocalStorage("access_token")
+  const accessToken = getLocalStorage("query_access_token");
   let filter = {};
   await axios
-    .get(`${path}/filter/?sidebar=${sidebar}`, {
+    .get(`${path}/filter?sidebar=${sidebar}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -210,19 +246,28 @@ async function fetchFilterData(path, sidebar) {
 }
 
 async function fetchFiles(path, payload) {
+  const accessToken = getLocalStorage("query_access_token");
   let files_data = {};
-  await axios.post(path, payload).then((res) => {
-    files_data = res.data;
-  });
+  await axios
+    .post(path, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      files_data = res.data;
+    });
   return files_data;
 }
 
 export default {
+  getLocalStorage,
   fetchAccessToken,
+  fetchOneOffToken,
   revokeAccess,
   fetchPaginationData,
   fetchQueryData,
-  getSingleData,
+  fetchRecordData,
   fetchFilterData,
   fetchFiles,
 };
