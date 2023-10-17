@@ -20,7 +20,13 @@ const searchDataset = async (payload, callback) => {
       }
     }
   }
-  const searchData = await backendQuery.fetchPaginationData(payload.queryUrl, allFilter, payload.numberPerPage, payload.page, search);
+  const searchData = await backendQuery.fetchPaginationData(
+    payload.queryUrl,
+    allFilter,
+    payload.numberPerPage,
+    payload.page,
+    search
+  );
   callback(searchData);
 };
 
@@ -32,6 +38,11 @@ const getFacets = async (payload, callback) => {
   callback(returnedPayload);
 };
 
+const getOneOffToken = async (payload, callback) => {
+  await backendQuery.fetchOneOffToken(payload.queryUrl);
+  callback();
+};
+
 export const mySearch = (payload, callback) => {
   if (payload && callback) {
     if (payload.requestType == "Search") {
@@ -39,6 +50,8 @@ export const mySearch = (payload, callback) => {
       return;
     } else if (payload.requestType == "getFacets") {
       getFacets(payload, callback);
+    } else if (payload.requestType == "getToken") {
+      getOneOffToken(payload, callback);
     }
   }
 };

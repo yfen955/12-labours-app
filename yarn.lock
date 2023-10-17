@@ -11,10 +11,10 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@12-labours/map-side-bar@^2.0.0-response.6":
-  version "2.0.0-response.6"
-  resolved "https://registry.yarnpkg.com/@12-labours/map-side-bar/-/map-side-bar-2.0.0-response.6.tgz#af39e5ca967c6e793526db4624ae310d952f48c9"
-  integrity sha512-3XrZUuH4DV2QXn03BQnr5x/PIA0acGBE0ToZIQGuR+sTyNRqkJKab31NBETjPmSX1vG4+3hpUWn6GvMAsQ06PA==
+"@12-labours/map-side-bar@^2.0.0-response.10":
+  version "2.0.0-response.10"
+  resolved "https://registry.yarnpkg.com/@12-labours/map-side-bar/-/map-side-bar-2.0.0-response.10.tgz#9021d6387afc849887e698b23a0f57b9eaa70fb7"
+  integrity sha512-KnIY1hh2mFKazbSP5N2gffaA2Y7CC31ZU5Xbzmmjy1+bBtXZo9VKvFm+uHsSxGXkyXavKKDVzn5veFRJU/c6aA==
   dependencies:
     "@abi-software/gallery" "^0.3.3"
     "@abi-software/svg-sprite" "^0.2.0"
@@ -24,12 +24,12 @@
     vue "^2.6.10"
     xss "^1.0.14"
 
-"@12-labours/mapintegratedvuer@1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.11.tgz#d19537f64d8b35a88b106c67b1b89a11d6d86188"
-  integrity sha512-6fBhSuTZe43TkJPCRrT2k1MuDfKCLbIUchIS2/DdIvICSAsuuDZE+8ohZjYeySe30Ne9P2lt2PmE48P01ZccYw==
+"@12-labours/mapintegratedvuer@1.0.0-beta.14":
+  version "1.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@12-labours/mapintegratedvuer/-/mapintegratedvuer-1.0.0-beta.14.tgz#95df2639b34c96223fab1905bf3b0bb6fe840a54"
+  integrity sha512-SV7VE6ivNlizhdRSfZ4aGJ93x+/gTx37Q5oP1eRBCtZprzhbG/W8F9pFuD2537bNLrElU0tAhOEq+Fl0GDL/eg==
   dependencies:
-    "@12-labours/map-side-bar" "^2.0.0-response.6"
+    "@12-labours/map-side-bar" "^2.0.0-response.10"
     "@abi-software/flatmapvuer" "^0.5.6"
     "@abi-software/plotvuer" "^0.3.9"
     "@abi-software/scaffoldvuer" "^0.2.2"
@@ -4849,9 +4849,9 @@ core-js@^3.22.5, core-js@^3.3.2, core-js@^3.6.5, core-js@^3.7.0:
   integrity sha512-IeOyT8A6iK37Ep4kZDD423mpi6JfPRoPUdQwEWYiGolvn4o6j2diaRzNfDfpTdu3a5qMbrGUzKUpYpRY8jXCkQ==
 
 core-js@^3.30.1:
-  version "3.32.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.32.2.tgz#172fb5949ef468f93b4be7841af6ab1f21992db7"
-  integrity sha512-pxXSw1mYZPDGvTQqEc5vgIb83jGQKFGYWY76z4a7weZXUolw3G+OvpZqSRcfYOoOVUQJYEPsWeQK8pKEnUtWxQ==
+  version "3.33.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.33.0.tgz#70366dbf737134761edb017990cf5ce6c6369c40"
+  integrity sha512-HoZr92+ZjFEKar5HS6MC776gYslNOKHt75mEBKWKnPeFDpZ6nH5OeF3S6HFT1mUAUZKrzkez05VboaX8myjSuw==
 
 core-js@^3.8.3:
   version "3.32.0"
