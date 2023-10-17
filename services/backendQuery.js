@@ -136,7 +136,12 @@ async function revokeAccess(path, token) {
       },
     })
     .then((res) => {
-      setLocalStorage("query_access_token", res.headers["x-public-access"]);
+      const tokenMatch =
+        getLocalStorage("query_access_token") ===
+        res.headers["x-public-access"];
+      if (!tokenMatch) {
+        setLocalStorage("query_access_token", res.headers["x-public-access"]);
+      }
     })
     .catch((err) => {
       console.log(err);
