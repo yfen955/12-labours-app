@@ -72,7 +72,13 @@
         <FilterData />
       </div> -->
       <br />
-      <Dashboard />
+      <dashboard
+        :user="user"
+        :table_data="table_data"
+        :columns_list="columns_list"
+        :default_columns="selected_columns"
+        v-on:open-page="showPage"
+      />
     </span>
   </div>
 </template>
@@ -83,7 +89,6 @@ import PaginationTool from "./PaginationTool.vue";
 import SearchData from "./SearchData.vue";
 import FilterData from "./FilterData.vue";
 import DisplayData from "./DisplayData.vue";
-import Dashboard from "./Dashboard.vue";
 
 export default {
   components: {
@@ -91,7 +96,6 @@ export default {
     SearchData,
     FilterData,
     DisplayData,
-    Dashboard,
   },
   props: ["category"],
   data: () => {
@@ -106,6 +110,36 @@ export default {
       searchContent: "",
       relationAND: true,
       currentOrder: "Published(asc)",
+      table_data: [
+        {
+          workflow: 'Cardiac',
+          subject: 'Patient 1',
+          progress: 'Step 4/5',
+          time: '1.5 mins',
+          age: '40',
+          height: '170',
+          logs: 'Link'
+        },
+        {
+          workflow: 'Shoulder',
+          subject: 'Patient 1',
+          progress: 'Finished',
+          time: '60 mins',
+          age: '50',
+          height: '160',
+          logs: 'Link'
+        },
+        {
+          workflow: 'Shoulder',
+          subject: 'Patient 2',
+          progress: 'Step 2/3',
+          time: '150 mins',
+          age: '60',
+          height: '150',
+          logs: 'Link'
+        },
+      ],
+      selected_columns: ['Workflow', 'Subject ID', 'Progress', 'Actions'],
     };
   },
 
@@ -124,6 +158,18 @@ export default {
     } else {
       this.fetchData();
     }
+  },
+
+  computed: {
+    user: function() {
+      return this.$auth.user;
+    },
+    columns_list: function() {
+      if (this.user && this.user.type_name && this.user.type_name === 'Researcher')
+        return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Logs', 'Actions'];
+      else
+        return ['Workflow', 'Subject ID', 'Progress', 'Time', 'Age', 'Height', 'Actions'];
+    },
   },
 
   watch: {
@@ -261,6 +307,23 @@ export default {
         query: query,
       });
     },
+
+    showPage(val) {
+      let route;
+      if (val.includes('Workflow')) {
+        route = this.$router.resolve({
+          name: `data-browser-workflow`,
+          query: { model: val.slice(9) },
+        });
+      } else {
+        route = this.$router.resolve({
+          name: `data-browser-dataset-id`,
+          params: { id: 'dataset-102-version-4' },
+          query: { datasetTab: 'abstract' },
+        });
+      }
+      window.open(route.href, '_self');
+    }
   },
 };
 </script>

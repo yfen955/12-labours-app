@@ -51,13 +51,13 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "element-ui/lib/theme-chalk/index.css",
-    "@abi-software/twelve-labours-design-system-components/dist/twelve-labours-design-system-components.css",
+    "@12-labours/twelve-labours-design-system-components/dist/twelve-labours-design-system-components.css",
   ],
 
   //Improt scss resources to all pages/components
   styleResources: {
     scss: [
-      "@abi-software/twelve-labours-design-system-components/src/assets/_variables.scss",
+      "@12-labours/twelve-labours-design-system-components/src/assets/_variables.scss",
       "@/assets/_common.scss",
     ],
   },
