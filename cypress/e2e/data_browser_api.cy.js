@@ -35,7 +35,7 @@ describe('test api in data browser page', () =>{
     cy.get('a').should('contain', 'Dynamic contrast-enhanced magnetic resonance images of breast cancer patients with tumor locations (Duke-Breast-Cancer-MRI)');
     cy.contains('Anatomical Structure breast');
     cy.contains('Keywords breast, human');
-    cy.contains('Samples 1 samples out of 1 subjects');
+    cy.contains('Samples 1 sample out of 1 subject');
 
     // filter
     cy.intercept('POST', `${Cypress.env('query_url')}/graphql/pagination/?search=`, {

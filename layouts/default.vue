@@ -1,6 +1,6 @@
 <template>
   <div>
-    <twelve-labours-header2
+    <twelve-labours-header
       :auth="$auth"
       :headerLinks="headerLinks"
       @isSignOut="signOut"
@@ -8,7 +8,7 @@
       <template v-slot:logo>
         <img class="header-logo" :src="headerLogo" alt="Logo for 12 Labours" />
       </template>
-    </twelve-labours-header2>
+    </twelve-labours-header>
     <nuxt />
     <twelve-labours-footer :footerLinks="footerLinks">
       <template v-slot:logo>

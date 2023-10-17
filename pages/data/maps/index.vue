@@ -11,6 +11,7 @@
               :share-link="shareLink"
               @updateShareLinkRequested="updateUUID"
               v-on:isReady="mapMounted"
+              @species-changed="speciesChanged"
             />
           </div>
         </client-only>
@@ -103,6 +104,15 @@ export default {
     };
   },
 
+  watch: {
+    "$route.query.id": {
+      handler() {
+        if (this.$refs.map && this.$route.query.type === 'flatmap')
+          this.$refs.map.openSearch([], this.$route.query.id);
+      },
+    },
+  },
+
   methods: {
     fetchScaffold: async function() {
       let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id);
@@ -162,8 +172,7 @@ export default {
           "facet"
         );
         this.relevant_facets = data.facet;
-      } else if (this.$route.query.type === 'flatmap')
-        this.relevant_facets = [{facet: this.$route.query.id, term:'Species', facetPropPath: 'case_filter>species'}];
+      }
     },
 
     setFacets: async function() {
@@ -174,8 +183,24 @@ export default {
     
     mapMounted: function () {
       this.currentEntryUpdated();
-      if (JSON.stringify(this.$route.query) !== "{}")
+      if (this.$route.query.type === 'scaffold')
         this.setFacets();
+    },
+    
+    speciesChanged: function(species) {
+      if (this.$route.query.type === 'flatmap') {
+        if (this.$route.query.id !== species) {
+          this.$router.push({
+            query: {
+              type: 'flatmap',
+              id: species,
+            }
+          })
+        } else if (this.$refs.map) {
+          this.$refs.map.openSearch([], this.$route.query.id);
+        }
+      }
+      
     },
   }
 }

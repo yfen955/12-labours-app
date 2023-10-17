@@ -159,19 +159,14 @@ export default {
     },
 
     goWithFacet(facet) {
-      let words_list = facet.split(" ");
-      let result = "";
-      words_list.forEach((word) => {
-        result += " " + word[0].toUpperCase() + word.slice(1);
-      });
-      result = result.slice(1);
       this.$router.push({
         path: "/data/browser",
         query: {
           type: "dataset",
           page: 1,
           limit: 10,
-          facets: result,
+          facets: facet[0].toUpperCase() + facet.slice(1),
+          relation: "and"
         },
       });
     },

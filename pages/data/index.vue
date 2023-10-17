@@ -48,7 +48,11 @@ export default {
         btnLink:{
           caption:'Launch Interactive Viewer',
           to: {
-            path: '/data/maps'
+            path: '/data/maps',
+            query: {
+              type: 'flatmap',
+              id: 'Rat',
+            }
           }
         }
       },
