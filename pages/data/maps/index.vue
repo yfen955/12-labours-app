@@ -107,7 +107,8 @@ export default {
     fetchScaffold: async function() {
       const data = await backendQuery.fetchRecordData(
         this.$config.query_api_url,
-        this.$route.query.id
+        this.$route.query.id,
+        this.$config.query_access_token
       );
       const dataset_id = data.experiments[0].submitter_id;
       const endpoint = `${this.$config.query_api_url}/data/download`;
@@ -170,7 +171,8 @@ export default {
           "experiment_query",
           { submitter_id: [this.$route.query.dataset_id] },
           "",
-          "facet"
+          "facet",
+          this.$config.query_access_token
         );
         this.relevant_facets = data.facet;
       } else if (this.$route.query.type === "flatmap")

@@ -40,18 +40,15 @@ export default {
   },
 
   methods: {
-    tokenExist() {
-      const token = localStorage.getItem("access_token");
-      if (!token || token === "undefined") {
-        return false
-      };
-      return true
+    privateTokenExist() {
+      const token = backendQuery.getLocalStorage("query_access_token", this.$config.query_access_token);
+      return token === this.$config.query_access_token ? false : true
     }
   },
 
   async mounted() {
     const loginSuccess = this.$route.query.login
-    if (loginSuccess && !this.tokenExist()) {
+    if (loginSuccess && !this.privateTokenExist()) {
       this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
       await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
     }

@@ -181,9 +181,7 @@ export default {
           },
         });
         this.files_data = [];
-        let new_files = await backendQuery.fetchFiles(this.get_file_path, {
-          path: path,
-        });
+        let new_files = await backendQuery.fetchFiles(this.get_file_path, path, this.$config.query_access_token);
         this.handleFilesData(new_files);
         this.isLoadingFile = false;
       } else {
@@ -201,7 +199,7 @@ export default {
 
     async downloadFile(path) {
       const endpoint = `${this.$config.query_api_url}/data/download`;
-      await backendQuery.fetchOneOffToken(this.$config.query_api_url);
+      await backendQuery.fetchOneOffToken(this.$config.query_api_url, this.$config.query_access_token);
       let file_path = path.slice(path.indexOf(`${this.$route.params.id}`));
       const oneOffToken = backendQuery.getLocalStorage("one_off_token");
       let download_path = endpoint + `/${file_path}` + `?token=${oneOffToken}`;

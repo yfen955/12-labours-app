@@ -137,7 +137,8 @@ export default {
     async fetchFilter() {
       this.allFilterDict = await backendQuery.fetchFilterData(
         this.$config.query_api_url,
-        false
+        false, 
+        this.$config.query_access_token
       );
     },
 

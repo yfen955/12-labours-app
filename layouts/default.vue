@@ -81,15 +81,18 @@ export default {
   methods: {
     async signOut(bool) {
       if (bool) {
-        await backendQuery.revokeAccess(this.$config.query_api_url);
+        await backendQuery.revokeAccess(
+          this.$config.query_api_url,
+          this.$config.query_access_token
+        );
       }
     },
 
     // clean the access_token after auto logout
     async checkAutoLogout() {
       try {
-        await this.$axios.get('/');
-      } catch(ExpiredAuthSessionError) {
+        await this.$axios.get("/");
+      } catch (ExpiredAuthSessionError) {
         this.signOut(true);
       }
     },
@@ -98,13 +101,13 @@ export default {
   mounted: function() {
     this.checkAutoLogout();
   },
-  
+
   watch: {
-    '$route.fullPath': function () {
+    "$route.fullPath": function() {
       this.checkAutoLogout();
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

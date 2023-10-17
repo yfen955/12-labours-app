@@ -1,10 +1,10 @@
 import axios from "axios";
 
-function getLocalStorage(key) {
+function getLocalStorage(key, defaultToken = undefined) {
   if (process.client) {
     const value = localStorage.getItem(key);
-    if (!value || value === "undefined") {
-      return undefined;
+    if (key === "query_access_token" && !value) {
+      return defaultToken;
     }
     return value;
   }
@@ -110,8 +110,9 @@ async function fetchAccessToken(path, user) {
       throw new Error(`${error}`);
     });
 }
-async function fetchOneOffToken(path) {
-  const accessToken = getLocalStorage("query_access_token");
+
+async function fetchOneOffToken(path, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
   await axios
     .get(`${path}/access/oneoff`, {
       headers: {
@@ -126,25 +127,20 @@ async function fetchOneOffToken(path) {
     });
 }
 
-async function revokeAccess(path) {
-  const accessToken = getLocalStorage("query_access_token");
-  if (accessToken) {
-    await axios
-      .delete(`${path}/access/revoke`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        setLocalStorage(
-          "query_access_token",
-          res.headers["public-access-token"]
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+async function revokeAccess(path, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
+  await axios
+    .delete(`${path}/access/revoke`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      setLocalStorage("query_access_token", res.headers["x-public-access"]);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 async function fetchPaginationData(
@@ -154,9 +150,10 @@ async function fetchPaginationData(
   page,
   search,
   relation,
-  sort
+  sort,
+  token
 ) {
-  const accessToken = getLocalStorage("query_access_token");
+  const accessToken = getLocalStorage("query_access_token", token);
   let fetched_data = {
     items: [],
     total: 0,
@@ -184,8 +181,8 @@ async function fetchPaginationData(
   return fetched_data;
 }
 
-async function fetchQueryData(path, node, filter, search, mode) {
-  const accessToken = getLocalStorage("query_access_token");
+async function fetchQueryData(path, node, filter, search, mode, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
   let fetched_data = [];
   let payload = {
     node: node,
@@ -208,8 +205,8 @@ async function fetchQueryData(path, node, filter, search, mode) {
   return fetched_data;
 }
 
-async function fetchRecordData(path, uuid) {
-  const accessToken = getLocalStorage("query_access_token");
+async function fetchRecordData(path, uuid, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
   let fetched_data = [];
   await axios
     .get(`${path}/record/${uuid}`, {
@@ -227,8 +224,8 @@ async function fetchRecordData(path, uuid) {
   return fetched_data;
 }
 
-async function fetchFilterData(path, sidebar) {
-  const accessToken = getLocalStorage("query_access_token");
+async function fetchFilterData(path, sidebar, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
   let filter = {};
   await axios
     .get(`${path}/filter?sidebar=${sidebar}`, {
@@ -245,8 +242,8 @@ async function fetchFilterData(path, sidebar) {
   return filter;
 }
 
-async function fetchFiles(path, payload) {
-  const accessToken = getLocalStorage("query_access_token");
+async function fetchFiles(path, payload, token) {
+  const accessToken = getLocalStorage("query_access_token", token);
   let files_data = {};
   await axios
     .post(path, payload, {

@@ -31,7 +31,8 @@ export default {
       this.isLoading = true;
       const data = await backendQuery.fetchRecordData(
         this.$config.query_api_url,
-        this.$route.params.id
+        this.$route.params.id,
+        this.$config.query_access_token
       );
       const filename = data["filename"].split("/");
       this.study = filename[1].split("-")[1];

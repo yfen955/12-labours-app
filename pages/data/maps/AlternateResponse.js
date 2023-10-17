@@ -1,6 +1,13 @@
 import backendQuery from "../../../services/backendQuery";
 
 /* eslint-disable no-alert, no-console */
+
+const handleToken = () => {
+  const query_access_token = backendQuery.getLocalStorage("query_access_token");
+  const one_off_token = backendQuery.getLocalStorage("one_off_token");
+  return query_access_token ? query_access_token : one_off_token;
+};
+
 const searchDataset = async (payload, callback) => {
   let search = "";
   let allFilter = {};
@@ -25,13 +32,20 @@ const searchDataset = async (payload, callback) => {
     allFilter,
     payload.numberPerPage,
     payload.page,
-    search
+    search,
+    "and",
+    "published(asc)",
+    handleToken()
   );
   callback(searchData);
 };
 
 const getFacets = async (payload, callback) => {
-  const facets = await backendQuery.fetchFilterData(payload.queryUrl, true);
+  const facets = await backendQuery.fetchFilterData(
+    payload.queryUrl,
+    true,
+    handleToken()
+  );
   const returnedPayload = {
     data: facets,
   };
@@ -39,7 +53,7 @@ const getFacets = async (payload, callback) => {
 };
 
 const getOneOffToken = async (payload, callback) => {
-  await backendQuery.fetchOneOffToken(payload.queryUrl);
+  await backendQuery.fetchOneOffToken(payload.queryUrl, handleToken());
   callback();
 };
 
