@@ -68,7 +68,6 @@ export default {
   data: () => {
     return {
       isLoadingFile: false,
-      get_file_path: "",
       files_data: [],
       breadcrumb: [
         {
@@ -80,7 +79,6 @@ export default {
   },
 
   created: function() {
-    this.get_file_path = `${this.$config.query_api_url}/collection`;
     let file_path = `/${this.$route.params.id}`;
     if (
       this.$route.query.path &&
@@ -181,7 +179,7 @@ export default {
           },
         });
         this.files_data = [];
-        let new_files = await backendQuery.fetchFiles(this.get_file_path, path, this.$config.query_access_token);
+        let new_files = await backendQuery.fetchFiles(this.$config.query_api_url, path, this.$config.query_access_token);
         this.handleFilesData(new_files);
         this.isLoadingFile = false;
       } else {

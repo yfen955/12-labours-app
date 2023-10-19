@@ -107,7 +107,7 @@ export default {
   watch: {
     "$route.query.id": {
       handler() {
-        if (this.$refs.map && this.$route.query.type === 'flatmap')
+        if (this.$refs.map && this.$route.query.type === "flatmap")
           this.$refs.map.openSearch([], this.$route.query.id);
       },
     },
@@ -120,6 +120,12 @@ export default {
         this.$route.query.id,
         this.$config.query_access_token
       );
+      if ("status" in data && data.status === 404) {
+        this.$toast.error(data.message, {
+          duration: 3000,
+          position: "bottom-right",
+        });
+      }
       const dataset_id = data.experiments[0].submitter_id;
       const endpoint = `${this.$config.query_api_url}/data/download`;
       const oneOffToken = backendQuery.getLocalStorage("one_off_token");
@@ -195,27 +201,25 @@ export default {
 
     mapMounted: function() {
       this.currentEntryUpdated();
-      if (this.$route.query.type === 'scaffold')
-        this.setFacets();
+      if (this.$route.query.type === "scaffold") this.setFacets();
     },
-    
+
     speciesChanged: function(species) {
-      if (this.$route.query.type === 'flatmap') {
+      if (this.$route.query.type === "flatmap") {
         if (this.$route.query.id !== species) {
           this.$router.push({
             query: {
-              type: 'flatmap',
+              type: "flatmap",
               id: species,
-            }
-          })
+            },
+          });
         } else if (this.$refs.map) {
           this.$refs.map.openSearch([], this.$route.query.id);
         }
       }
-      
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

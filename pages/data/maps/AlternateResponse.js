@@ -1,11 +1,8 @@
 import backendQuery from "../../../services/backendQuery";
 
 /* eslint-disable no-alert, no-console */
-
 const handleToken = () => {
-  const query_access_token = backendQuery.getLocalStorage("query_access_token");
-  const one_off_token = backendQuery.getLocalStorage("one_off_token");
-  return query_access_token ? query_access_token : one_off_token;
+  return backendQuery.getLocalStorage("query_access_token");
 };
 
 const searchDataset = async (payload, callback) => {

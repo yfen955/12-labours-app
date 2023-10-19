@@ -111,8 +111,8 @@ async function fetchAccessToken(path, user) {
     });
 }
 
-async function fetchOneOffToken(path, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
+async function fetchOneOffToken(path, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
   await axios
     .get(`${path}/access/oneoff`, {
       headers: {
@@ -127,8 +127,8 @@ async function fetchOneOffToken(path, token) {
     });
 }
 
-async function revokeAccess(path, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
+async function revokeAccess(path, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
   await axios
     .delete(`${path}/access/revoke`, {
       headers: {
@@ -156,10 +156,10 @@ async function fetchPaginationData(
   search,
   relation,
   sort,
-  token
+  defaultToke
 ) {
-  const accessToken = getLocalStorage("query_access_token", token);
-  let fetched_data = {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
+  let pagination = {
     items: [],
     total: 0,
   };
@@ -177,18 +177,18 @@ async function fetchPaginationData(
       },
     })
     .then((res) => {
-      fetched_data = res.data;
+      pagination = res.data;
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
       console.log(err);
     });
-  return fetched_data;
+  return pagination;
 }
 
-async function fetchQueryData(path, node, filter, search, mode, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
-  let fetched_data = [];
+async function fetchQueryData(path, node, filter, search, mode, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
+  let query = {};
   let payload = {
     node: node,
     filter: filter,
@@ -201,18 +201,18 @@ async function fetchQueryData(path, node, filter, search, mode, token) {
       },
     })
     .then((res) => {
-      fetched_data = res.data;
+      query = res.data;
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
       console.log(err);
     });
-  return fetched_data;
+  return query;
 }
 
-async function fetchRecordData(path, uuid, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
-  let fetched_data = [];
+async function fetchRecordData(path, uuid, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
+  let record = {};
   await axios
     .get(`${path}/record/${uuid}`, {
       headers: {
@@ -220,17 +220,21 @@ async function fetchRecordData(path, uuid, token) {
       },
     })
     .then((res) => {
-      fetched_data = res.data.record;
+      record = res.data.record;
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
+      const public_access = res.headers["x-public-access"];
+      if (public_access === accessToken)
+        setLocalStorage("query_access_token", public_access);
     })
     .catch((err) => {
-      console.log(err);
+      record.status = err.response.status;
+      record.message = err.response.data.detail;
     });
-  return fetched_data;
+  return record;
 }
 
-async function fetchFilterData(path, sidebar, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
+async function fetchFilterData(path, sidebar, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
   let filter = {};
   await axios
     .get(`${path}/filter?sidebar=${sidebar}`, {
@@ -247,23 +251,27 @@ async function fetchFilterData(path, sidebar, token) {
   return filter;
 }
 
-async function fetchFiles(path, payload, token) {
-  const accessToken = getLocalStorage("query_access_token", token);
-  let files_data = {};
+async function fetchFiles(path, filepath, defaultToke) {
+  const accessToken = getLocalStorage("query_access_token", defaultToke);
+  let files = {};
+  let payload = {
+    path: filepath,
+  };
   await axios
-    .post(path, payload, {
+    .post(`${path}/collection`, payload, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
     .then((res) => {
-      files_data = res.data;
+      files = res.data;
     });
-  return files_data;
+  return files;
 }
 
 export default {
   getLocalStorage,
+  setLocalStorage,
   fetchAccessToken,
   fetchOneOffToken,
   revokeAccess,
