@@ -217,9 +217,6 @@ async function fetchRecordData(path, uuid, defaultToke) {
     .then((res) => {
       record = res.data.record;
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
-      const public_access = res.headers["x-public-access"];
-      if (public_access === accessToken)
-        setLocalStorage("query_access_token", public_access);
     })
     .catch((err) => {
       record.status = err.response.status;
