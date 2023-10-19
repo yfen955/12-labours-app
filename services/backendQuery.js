@@ -92,10 +92,10 @@ function getMachineId() {
 
 async function fetchAccessToken(path, user) {
   const machineId = getMachineId();
-  const expiration =
-    getLocalStorage("auth.strategy") === "local"
-      ? getLocalStorage("auth._token_expiration.local")
-      : getLocalStorage("auth._token_expiration.google");
+  const strategy = getLocalStorage("auth.strategy");
+  const local = getLocalStorage("auth._token_expiration.local");
+  const google = getLocalStorage("auth._token_expiration.google");
+  const expiration = strategy === "local" ? local : google;
   const payload = {
     email: user,
     machine: machineId,
@@ -135,17 +135,12 @@ async function revokeAccess(path, defaultToke) {
         Authorization: `Bearer ${accessToken}`,
       },
     })
-    .then((res) => {
-      const tokenMatch =
-        getLocalStorage("query_access_token") ===
-        res.headers["x-public-access"];
-      if (!tokenMatch) {
-        setLocalStorage("query_access_token", res.headers["x-public-access"]);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      throw new Error(`${error}`);
     });
+  setLocalStorage("query_access_token", defaultToke);
+  setLocalStorage("auth._token_expiration.local", false);
+  setLocalStorage("auth._token_expiration.google", false);
 }
 
 async function fetchPaginationData(
@@ -181,7 +176,7 @@ async function fetchPaginationData(
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
-      console.log(err);
+      throw new Error(`${err}`);
     });
   return pagination;
 }
@@ -205,7 +200,7 @@ async function fetchQueryData(path, node, filter, search, mode, defaultToke) {
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
-      console.log(err);
+      throw new Error(`${err}`);
     });
   return query;
 }
@@ -246,7 +241,7 @@ async function fetchFilterData(path, sidebar, defaultToke) {
       filter = res.data;
     })
     .catch((err) => {
-      console.log(err);
+      throw new Error(`${err}`);
     });
   return filter;
 }
@@ -265,6 +260,9 @@ async function fetchFiles(path, filepath, defaultToke) {
     })
     .then((res) => {
       files = res.data;
+    })
+    .catch((err) => {
+      throw new Error(`${err}`);
     });
   return files;
 }

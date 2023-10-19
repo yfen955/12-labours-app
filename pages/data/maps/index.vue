@@ -122,7 +122,7 @@ export default {
       );
       if ("status" in data && data.status === 404) {
         this.$toast.error(data.message, {
-          duration: 3000,
+          duration: 6000,
           position: "bottom-right",
         });
       }

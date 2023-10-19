@@ -99,7 +99,6 @@ export default {
           this.$config.query_access_token
         );
       }
-      const currentTime = Date.now();
       const strategy = backendQuery.getLocalStorage("auth.strategy");
       const local = backendQuery.getLocalStorage(
         "auth._token_expiration.local"
@@ -108,7 +107,7 @@ export default {
         "auth._token_expiration.google"
       );
       const endTime = strategy === "local" ? local : google;
-      if (this.$auth.user && currentTime >= endTime) {
+      if (Date.now() >= endTime) {
         this.signOut(true);
       }
     },
