@@ -44,7 +44,9 @@ export default {
     };
   },
   created() {
-    this.handlePlot();
+    if (process.client) {
+      this.handlePlot();
+    }
   },
   methods: {
     handlePlot: async function() {

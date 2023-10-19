@@ -24,7 +24,9 @@ export default {
     };
   },
   created() {
-    this.handleStudySeries();
+    if (process.client) {
+      this.handleStudySeries();
+    }
   },
   methods: {
     handleStudySeries: async function() {
