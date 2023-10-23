@@ -44,25 +44,32 @@ export default {
     };
   },
   created() {
-    this.handlePlot();
+    if (process.client) {
+      this.handlePlot();
+    }
   },
   methods: {
     handlePlot: async function() {
       this.isLoading = true;
-      let data = await backendQuery.getSingleData(
+      const data = await backendQuery.fetchRecordData(
         this.$config.query_api_url,
-        this.$route.params.id
+        this.$route.params.id,
+        this.$config.query_access_token
       );
-      let filename = data.filename;
-      let dataset_id = data.experiments[0].submitter_id;
-      this.source_url = `${this.$config.query_api_url}/data/download/${dataset_id}/${filename}`;
+      const filename = data.filename;
+      const dataset_id = data.experiments[0].submitter_id;
+      const endpoint = `${this.$config.query_api_url}/data/download`;
+      const oneOffToken = backendQuery.getLocalStorage("one_off_token");
+      this.source_url =
+        endpoint + `/${dataset_id}/${filename}` + `?token=${oneOffToken}`;
       this.metadata = JSON.parse(
         data.supplemental_json_metadata.replace(/'/g, '"')
       );
-      let supplementPath = data.is_described_by;
+      const supplementPath = data.is_described_by;
+
       this.supplemental_data = [
         {
-          url: `${this.$config.query_api_url}/data/download/${supplementPath}`,
+          url: endpoint + `/${supplementPath}` + `?token=${oneOffToken}`,
         },
       ];
       this.isLoading = false;

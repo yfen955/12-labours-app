@@ -40,6 +40,7 @@ export default {
   },
 
   privateRuntimeConfig: {
+    query_access_token: process.env.QUERY_ACCESS_TOKEN,
     login_api_key: process.env.LOGIN_API_KEY,
     login_secret_key: process.env.LOGIN_SECRET_KEY,
     graphcms_endpoint: process.env.GRAPHCMS_ENDPOINT,

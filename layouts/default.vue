@@ -81,30 +81,48 @@ export default {
   methods: {
     async signOut(bool) {
       if (bool) {
-        await backendQuery.revokeAccess(this.$config.query_api_url);
+        await backendQuery.revokeAccess(
+          this.$config.query_api_url,
+          this.$config.query_access_token
+        );
       }
     },
 
     // clean the access_token after auto logout
-    async checkAutoLogout() {
-      try {
-        await this.$axios.get('/');
-      } catch(ExpiredAuthSessionError) {
+    checkLoginStatus() {
+      const queryAccessToken = backendQuery.getLocalStorage(
+        "query_access_token"
+      );
+      if (!queryAccessToken) {
+        backendQuery.setLocalStorage(
+          "query_access_token",
+          this.$config.query_access_token
+        );
+      }
+      const strategy = backendQuery.getLocalStorage("auth.strategy");
+      const local = backendQuery.getLocalStorage(
+        "auth._token_expiration.local"
+      );
+      const google = backendQuery.getLocalStorage(
+        "auth._token_expiration.google"
+      );
+      const endTime = strategy === "local" ? local : google;
+      if (Date.now() >= endTime) {
         this.signOut(true);
       }
     },
   },
 
   mounted: function() {
-    this.checkAutoLogout();
+    this.checkLoginStatus();
   },
-  
+
   watch: {
-    '$route.fullPath': function () {
-      this.checkAutoLogout();
+    "$route.fullPath": function() {
+      this.checkLoginStatus();
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -27,7 +27,12 @@
             v-if="$route.query.datasetTab === 'abstract'"
             class="tab-content"
           >
-            <AbstractInfo :detail_data="detail_data" :species_list="species_list" :sex_list="sex_list" :age_list="age_list" />
+            <AbstractInfo
+              :detail_data="detail_data"
+              :species_list="species_list"
+              :sex_list="sex_list"
+              :age_list="age_list"
+            />
           </span>
 
           <!-- about content -->
@@ -131,8 +136,15 @@ const datasetTabs = [
 
 export default {
   name: "DataDetails",
-  props: [ "id" ],
-  components: { HeaderInfo, AbstractInfo, AboutInfo, CiteInfo, DatasetFiles, RelatedInfo },
+  props: ["id"],
+  components: {
+    HeaderInfo,
+    AbstractInfo,
+    AboutInfo,
+    CiteInfo,
+    DatasetFiles,
+    RelatedInfo,
+  },
   data: () => {
     return {
       breadcrumb: [
@@ -170,44 +182,48 @@ export default {
       species_list: [],
       sex_list: [],
       age_list: [],
+      flatmap_data: [],
       // show_segmentation: false,
       // show_pdf: false,
     };
   },
 
   created: async function() {
-    const result = await backendQuery.fetchQueryData(
-      this.$config.query_api_url,
-      "experiment_query",
-      { submitter_id: [this.$route.params.id] },
-      "",
-      "detail"
-    );
-    const data = result.detail;
-    this.handleFacets(result.facet);
-    
-    this.detail_data = data.dataset_descriptions[0];
-    this.title = data.dataset_descriptions[0].title[0];
-
-    this.scaffold_view_data = data.scaffoldViews;
-    this.thumbnail_data = data.thumbnails;
-    this.getDatasetImage();
-    let flatmap_data = [];
-    if (this.species_list.length > 0)
-      flatmap_data = this.handleSpecies();
-
-    const cardsData = {
-      Scaffold: data.scaffoldViews,
-      Flatmap: flatmap_data,
-      Plot: data.plots,
-      Thumbnail: data.thumbnails,
-      MRI: data.mris,
-      DICOM: data.dicomImages,
-    };
-    this.handleCards(cardsData);
-
-    // this.show_pdf = false;
-    this.isLoading = false;
+    if (process.client) {
+      const result = await backendQuery.fetchQueryData(
+        this.$config.query_api_url,
+        "experiment_query",
+        { submitter_id: [this.$route.params.id] },
+        "",
+        "detail",
+        this.$config.query_access_token
+      );
+      if (result.detail) {
+        const data = result.detail;
+        this.detail_data = data.dataset_descriptions[0];
+        this.title = data.dataset_descriptions[0].title[0];
+        this.scaffold_view_data = data.scaffoldViews;
+        this.thumbnail_data = data.thumbnails;
+        this.getDatasetImage();
+        if (this.species_list.length > 0) {
+          this.handleSpecies();
+        }
+        const cardsData = {
+          Scaffold: data.scaffoldViews,
+          Flatmap: this.flatmap_data,
+          Plot: data.plots,
+          Thumbnail: data.thumbnails,
+          MRI: data.mris,
+          DICOM: data.dicomImages,
+        };
+        this.handleCards(cardsData);
+      }
+      if (result.facet) {
+        this.handleFacets(result.facet);
+      }
+      // this.show_pdf = false;
+      this.isLoading = false;
+    }
   },
 
   mounted() {
@@ -268,6 +284,7 @@ export default {
     },
 
     generateImage(method, filename, is_source_of) {
+      const oneOffToken = backendQuery.getLocalStorage("one_off_token");
       let url = `${this.$config.query_api_url}/data/${method}`;
       if (!filename.includes(this.$route.params.id)) {
         url += `/${this.$route.params.id}`;
@@ -280,6 +297,7 @@ export default {
       } else {
         url += `/${filename}`;
       }
+      url += `?token=${oneOffToken}`;
       return url;
     },
 
@@ -390,26 +408,21 @@ export default {
     },
 
     handleSpecies() {
-      let flatmap_data = [];
       this.species_list.forEach((item) => {
-        flatmap_data.push({
+        this.flatmap_data.push({
           id: item,
           filename: item,
           additional_metadata: null,
         });
       });
-      return flatmap_data;
     },
 
     handleFacets(facets) {
       Object.keys(facets).forEach((item) => {
-        if (item === "Species")
-          this.species_list = facets[item];
-        else if (item === "Sex")
-          this.sex_list = facets[item];
-        else if (item === "Age category")
-          this.age_list = facets[item];
-      })
+        if (item === "Species") this.species_list = facets[item];
+        else if (item === "Sex") this.sex_list = facets[item];
+        else if (item === "Age category") this.age_list = facets[item];
+      });
     },
   },
 };

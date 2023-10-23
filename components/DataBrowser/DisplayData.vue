@@ -9,12 +9,10 @@
             <section class="element">
               <div class="dataset-img">
                 <img
-                  v-if="getDatasetImg(item)"
                   :src="getDatasetImg(item)"
                   @error="replaceByDefaultImage"
                   alt="image"
                 />
-                <img v-else :src="imgPlaceholder" alt="image" />
               </div>
 
               <section class="content">
@@ -48,8 +46,10 @@
                 </div>
                 <div v-if="item.numberSamples > 0 || item.numberSubjects > 0">
                   <strong>Samples</strong>
-                  {{ item.numberSamples }} {{ item.numberSamples > 1 ? 'samples' : 'sample' }} out of
-                  {{ item.numberSubjects }} {{ item.numberSubjects > 1 ? 'subjects' : 'subject' }}
+                  {{ item.numberSamples }}
+                  {{ item.numberSamples > 1 ? "samples" : "sample" }} out of
+                  {{ item.numberSubjects }}
+                  {{ item.numberSubjects > 1 ? "subjects" : "subject" }}
                 </div>
               </section>
             </section>
@@ -74,6 +74,8 @@
 </template>
 
 <script>
+import backendQuery from "@/services/backendQuery";
+
 export default {
   name: "DisplayData",
   props: ["dataDetails"],
@@ -97,11 +99,13 @@ export default {
     },
 
     getDatasetImg(item) {
-      let url = "";
+      let url;
+      const endpoint = this.$config.query_api_url;
+      const oneOffToken = backendQuery.getLocalStorage("one_off_token");
       if (item.scaffoldViews.length > 0) {
-        url = this.$config.query_api_url + item.scaffoldViews[0].image_url;
+        url = endpoint + item.scaffoldViews[0].image_url + `?token=${oneOffToken}`;
       } else if (item.thumbnails.length > 0) {
-        url = this.$config.query_api_url + item.thumbnails[0].image_url;
+        url = endpoint + item.thumbnails[0].image_url + `?token=${oneOffToken}`;
       } else {
         url = this.imgPlaceholder;
       }

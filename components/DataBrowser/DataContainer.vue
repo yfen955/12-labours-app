@@ -190,7 +190,8 @@ export default {
         this.$route.query.page,
         this.searchContent,
         this.relationAND ? "and" : "or",
-        this.currentOrder
+        this.currentOrder,
+        this.$config.query_access_token
       );
       this.currentData = result["items"];
       this.totalCount = result["total"];

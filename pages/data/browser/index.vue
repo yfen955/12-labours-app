@@ -12,9 +12,11 @@
         />
       </section>
       <!-- data container -->
-      <DataContainer
-        :category="category"
-      />
+      <client-only>
+        <DataContainer
+          :category="category"
+        />
+      </client-only>
     </div>
   </div>
 </template>
