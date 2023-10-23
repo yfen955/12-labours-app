@@ -24,14 +24,17 @@ export default {
     };
   },
   created() {
-    this.handleStudySeries();
+    if (process.client) {
+      this.handleStudySeries();
+    }
   },
   methods: {
     handleStudySeries: async function() {
       this.isLoading = true;
-      const data = await backendQuery.getSingleData(
+      const data = await backendQuery.fetchRecordData(
         this.$config.query_api_url,
-        this.$route.params.id
+        this.$route.params.id,
+        this.$config.query_access_token
       );
       const filename = data["filename"].split("/");
       this.study = filename[1].split("-")[1];

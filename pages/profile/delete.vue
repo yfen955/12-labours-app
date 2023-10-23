@@ -69,7 +69,7 @@ export default {
           await this.$auth.logout().then(() => {
             this.$toast.success('Your account is deleted successfully!', { duration: 3000, position: 'bottom-right' })
           })
-          await backendQuery.revokeAccess(this.$config.query_api_url);
+          await backendQuery.revokeAccess(this.$config.query_api_url, this.$config.query_access_token);
           this.$router.replace('/')
         }
       }

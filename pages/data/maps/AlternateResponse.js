@@ -1,6 +1,10 @@
 import backendQuery from "../../../services/backendQuery";
 
 /* eslint-disable no-alert, no-console */
+const handleToken = () => {
+  return backendQuery.getLocalStorage("query_access_token");
+};
+
 const searchDataset = async (payload, callback) => {
   let search = "";
   let allFilter = {};
@@ -20,16 +24,34 @@ const searchDataset = async (payload, callback) => {
       }
     }
   }
-  const searchData = await backendQuery.fetchPaginationData(payload.queryUrl, allFilter, payload.numberPerPage, payload.page, search);
+  const searchData = await backendQuery.fetchPaginationData(
+    payload.queryUrl,
+    allFilter,
+    payload.numberPerPage,
+    payload.page,
+    search,
+    "and",
+    "published(asc)",
+    handleToken()
+  );
   callback(searchData);
 };
 
 const getFacets = async (payload, callback) => {
-  const facets = await backendQuery.fetchFilterData(payload.queryUrl, true);
+  const facets = await backendQuery.fetchFilterData(
+    payload.queryUrl,
+    true,
+    handleToken()
+  );
   const returnedPayload = {
     data: facets,
   };
   callback(returnedPayload);
+};
+
+const getOneOffToken = async (payload, callback) => {
+  await backendQuery.fetchOneOffToken(payload.queryUrl, handleToken());
+  callback();
 };
 
 export const mySearch = (payload, callback) => {
@@ -39,6 +61,8 @@ export const mySearch = (payload, callback) => {
       return;
     } else if (payload.requestType == "getFacets") {
       getFacets(payload, callback);
+    } else if (payload.requestType == "getToken") {
+      getOneOffToken(payload, callback);
     }
   }
 };

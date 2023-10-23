@@ -25,11 +25,11 @@ import { mySearch } from "./AlternateResponse.js";
 import backendQuery from "@/services/backendQuery";
 
 export default {
-  name: 'MapViewer',
+  name: "MapViewer",
   components: {
     MapContent: process.client
-      ? () => import('@12-labours/mapintegratedvuer').then(m => m.MapContent)
-      : null
+      ? () => import("@12-labours/mapintegratedvuer").then((m) => m.MapContent)
+      : null,
   },
   provide: function() {
     return {
@@ -47,44 +47,44 @@ export default {
       shareLink: undefined,
       currentEntry: undefined,
       flatmap_dict: {
-        "Cat": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:9685',
+        Cat: {
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:9685",
           biologicalSex: undefined,
           uuid: undefined,
           organ: undefined,
         },
         "Human Male": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:9606',
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:9606",
           biologicalSex: "PATO:0000384",
           uuid: undefined,
           organ: undefined,
         },
         "Human Female": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:9606',
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:9606",
           biologicalSex: "PATO:0000383",
           uuid: undefined,
           organ: undefined,
         },
-        "Mouse": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:10090',
+        Mouse: {
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:10090",
           biologicalSex: undefined,
           uuid: undefined,
           organ: undefined,
         },
-        "Pig": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:9823',
+        Pig: {
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:9823",
           biologicalSex: undefined,
           uuid: undefined,
           organ: undefined,
         },
-        "Rat": {
-          type: 'MultiFlatmap',
-          taxo: 'NCBITaxon:10114',
+        Rat: {
+          type: "MultiFlatmap",
+          taxo: "NCBITaxon:10114",
           biologicalSex: undefined,
           uuid: undefined,
           organ: undefined,
@@ -97,7 +97,7 @@ export default {
 
   created: function() {
     this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
-    this.options= {
+    this.options = {
       flatmapAPI: this.$config.flatmap_api,
       rootUrl: this.$config.portal_url,
       queryUrl: this.$config.query_api_url,
@@ -107,7 +107,7 @@ export default {
   watch: {
     "$route.query.id": {
       handler() {
-        if (this.$refs.map && this.$route.query.type === 'flatmap')
+        if (this.$refs.map && this.$route.query.type === "flatmap")
           this.$refs.map.openSearch([], this.$route.query.id);
       },
     },
@@ -115,61 +115,80 @@ export default {
 
   methods: {
     fetchScaffold: async function() {
-      let data = await backendQuery.getSingleData(this.$config.query_api_url, this.$route.query.id);
-      let dataset_id = data.experiments[0].submitter_id;
-      this.url = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename.substring(0, data.filename.lastIndexOf("/"))}/${data.is_derived_from}`;
-      this.viewUrl = `${this.$config.query_api_url}/data/download/${dataset_id}/${data.filename}`;
+      const data = await backendQuery.fetchRecordData(
+        this.$config.query_api_url,
+        this.$route.query.id,
+        this.$config.query_access_token
+      );
+      if ("status" in data && data.status === 404) {
+        this.$toast.error(data.message, {
+          duration: 6000,
+          position: "bottom-right",
+        });
+      }
+      const dataset_id = data.experiments[0].submitter_id;
+      const endpoint = `${this.$config.query_api_url}/data/download`;
+      const oneOffToken = backendQuery.getLocalStorage("one_off_token");
+      this.url =
+        endpoint +
+        `/${dataset_id}/${data.filename.substring(
+          0,
+          data.filename.lastIndexOf("/")
+        )}/${data.is_derived_from}` +
+        `?token=${oneOffToken}`;
+      this.viewUrl =
+        endpoint + `/${dataset_id}/${data.filename}` + `?token=${oneOffToken}`;
     },
 
-    openViewWithQuery: async function () {
-      if (this.$route.query.type === 'scaffold') {
+    openViewWithQuery: async function() {
+      if (this.$route.query.type === "scaffold") {
         await this.fetchScaffold();
         this.currentEntry = {
           type: "Scaffold",
           // label: "Colon",
           url: this.url,
-          viewUrl: this.viewUrl
+          viewUrl: this.viewUrl,
         };
-      } else if (this.$route.query.type === 'flatmap')
+      } else if (this.$route.query.type === "flatmap")
         this.currentEntry = this.flatmap_dict[this.$route.query.id];
     },
 
     updateUUID: function() {
-      let url = this.options.sparcApi + `map/getshareid`
-      let state = this.$refs.map.getState()
+      let url = this.options.sparcApi + `map/getshareid`;
+      let state = this.$refs.map.getState();
       fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-type': 'application/json'
+          "Content-type": "application/json",
         },
-        body: JSON.stringify({ state: state })
+        body: JSON.stringify({ state: state }),
       })
-        .then(response => response.json())
-        .then(data => {
-          this.uuid = data.uuid
+        .then((response) => response.json())
+        .then((data) => {
+          this.uuid = data.uuid;
           this.$router.replace(
             { query: { ...this.$route.query, id: data.uuid } },
             () => {
-              this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`
+              this.shareLink = `${this.$config.portal_url}${this.$route.fullPath}`;
             }
-          )
-        })
+          );
+        });
     },
 
-    currentEntryUpdated: async function () {
+    currentEntryUpdated: async function() {
       await this.openViewWithQuery();
-      if (this.$refs.map)
-        this.$refs.map.setCurrentEntry(this.currentEntry);
+      if (this.$refs.map) this.$refs.map.setCurrentEntry(this.currentEntry);
     },
 
-    getFacets: async function () {
-      if (this.$route.query.type === 'scaffold') {
+    getFacets: async function() {
+      if (this.$route.query.type === "scaffold") {
         let data = await backendQuery.fetchQueryData(
           this.$config.query_api_url,
           "experiment_query",
           { submitter_id: [this.$route.query.dataset_id] },
           "",
-          "facet"
+          "facet",
+          this.$config.query_access_token
         );
         this.relevant_facets = data.facet;
       }
@@ -177,45 +196,44 @@ export default {
 
     setFacets: async function() {
       await this.getFacets();
-      if (this.$refs.map)
-        this.$refs.map.openSearch(this.relevant_facets, '');
+      if (this.$refs.map) this.$refs.map.openSearch(this.relevant_facets, "");
     },
-    
-    mapMounted: function () {
+
+    mapMounted: function() {
       this.currentEntryUpdated();
-      if (this.$route.query.type === 'scaffold')
-        this.setFacets();
+      if (this.$route.query.type === "scaffold") this.setFacets();
     },
-    
+
     speciesChanged: function(species) {
-      if (this.$route.query.type === 'flatmap') {
+      if (this.$route.query.type === "flatmap") {
         if (this.$route.query.id !== species) {
           this.$router.push({
             query: {
-              type: 'flatmap',
+              type: "flatmap",
               id: species,
-            }
-          })
+            },
+          });
         } else if (this.$refs.map) {
           this.$refs.map.openSearch([], this.$route.query.id);
         }
       }
-      
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">
 .map-container {
-  @import '~@12-labours/mapintegratedvuer/dist/mapintegratedvuer';
+  @import "~@12-labours/mapintegratedvuer/dist/mapintegratedvuer";
   height: 85vh;
 
   .icon-group {
     position: relative !important;
     justify-content: right !important;
   }
-  .header-icon, .magnify, .map-icon {
+  .header-icon,
+  .magnify,
+  .map-icon {
     color: $app-primary-color !important;
   }
   .search-container .magnify {
@@ -251,11 +269,15 @@ export default {
     padding-top: 0 !important;
   }
 
-  .open-tab, .close-tab, .drawer-button, .open-drawer {
+  .open-tab,
+  .close-tab,
+  .drawer-button,
+  .open-drawer {
     border: 1px solid $app-primary-color !important;
     background-color: #e6edf2 !important;
   }
-  .el-icon-arrow-left, .el-icon-arrow-right {
+  .el-icon-arrow-left,
+  .el-icon-arrow-right {
     color: $app-primary-color !important;
   }
   .el-button {
@@ -282,7 +304,9 @@ export default {
   .tag-button.active {
     background: $app-primary-color !important;
   }
-  span, .details, .title {
+  span,
+  .details,
+  .title {
     font-family: arimo !important;
   }
   .dataset-results-feedback {
@@ -303,7 +327,8 @@ export default {
     width: 1rem;
     height: 1rem;
   }
-  .el-radio, .el-radio+.el-radio {
+  .el-radio,
+  .el-radio + .el-radio {
     margin-left: 0;
   }
   .el-radio__input.is-checked .el-radio__inner:after {

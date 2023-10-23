@@ -3,7 +3,9 @@
     <div class="banner-home">
       <div class="title-box">
         <span>
-          Welcome to the <br /> 12 Labours Portal, the gateway<br /> to predictive <br />medical modelling
+          Welcome to the <br />
+          12 Labours Portal, the gateway<br />
+          to predictive <br />medical modelling
         </span>
       </div>
     </div>
@@ -26,37 +28,39 @@
 </template>
 
 <script>
-
-import graphcmsQuery from '@/services/graphcmsQuery'
-import backendQuery from '@/services/backendQuery';
+import graphcmsQuery from "@/services/graphcmsQuery";
+import backendQuery from "@/services/backendQuery";
 
 export default {
-  name: 'App',
+  name: "App",
 
   async asyncData({ $graphcms }) {
-    const content = await graphcmsQuery.content($graphcms, 'about');
+    const content = await graphcmsQuery.content($graphcms, "about");
     const topNews = await graphcmsQuery.topNews($graphcms, 3);
-    return { content, topNews }
+    return { content, topNews };
   },
 
   methods: {
-    tokenExist() {
-      const token = localStorage.getItem("access_token");
-      if (!token || token === "undefined") {
-        return false
-      };
-      return true
-    }
+    privateTokenExist() {
+      const token = backendQuery.getLocalStorage("query_access_token");
+      return !token || token === this.$config.query_access_token ? false : true;
+    },
   },
 
   async mounted() {
-    const loginSuccess = this.$route.query.login
-    if (loginSuccess && !this.tokenExist()) {
-      this.$toast.success('Successfully Logged In!', { duration: 3000, position: 'bottom-right' })
-      await backendQuery.fetchAccessToken(this.$config.query_api_url, this.$auth.$state.user.email);
+    const loginSuccess = this.$route.query.login;
+    if (loginSuccess && !this.privateTokenExist()) {
+      this.$toast.success("Successfully Logged In!", {
+        duration: 3000,
+        position: "bottom-right",
+      });
+      await backendQuery.fetchAccessToken(
+        this.$config.query_api_url,
+        this.$auth.$state.user.email
+      );
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -110,7 +114,7 @@ export default {
   text-align: right;
 
   a {
-    font-weight: 600
+    font-weight: 600;
   }
 }
 </style>
