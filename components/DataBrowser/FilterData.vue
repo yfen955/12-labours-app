@@ -37,11 +37,12 @@
         </div>
       </div>
 
-      <el-collapse>
+      <el-collapse v-model="activeNames">
         <el-collapse-item
           v-for="(filter, index) in convertedFilterList"
           :key="index"
           :title="filter.title"
+          :name="index"
         >
           <el-checkbox
             :indeterminate="filter.isIndeterminate"
@@ -84,6 +85,7 @@ export default {
       selectedFilterDict: {},
       filterDictResult: {},
       relationAND: true,
+      activeNames: [],
     };
   },
 
@@ -178,6 +180,8 @@ export default {
             // check whether facet in URL is valid
             const index = filter.filterFacetName.indexOf(facet);
             if (index > -1) {
+              if (!this.activeNames.includes(j))
+                this.activeNames.push(j);
               // Add facets from URL
               filter.selectedFacet.push(filter.filterFacetName[index]);
               this.selectedFilterDict[filter.nodeField] = filter.selectedFacet;
@@ -270,6 +274,8 @@ export default {
             this.convertedFilterList[i].isIndeterminate = true;
           }
           this.handleChange(this.convertedFilterList[i]);
+          if (this.convertedFilterList[i].selectedFacet.length === 0)
+            this.activeNames.splice(this.activeNames.indexOf(this.convertedFilterList[i].index), 1)
           break;
         }
       }
