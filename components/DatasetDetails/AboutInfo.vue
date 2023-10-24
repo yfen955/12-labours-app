@@ -8,14 +8,14 @@
     <p><b>Title:</b> {{ title }}</p>
     <p>
       <b>First Published:</b>
-      {{ detail_data.created_datetime ?
-        detail_data.created_datetime.slice(0, 10) :
+      {{ detail_data.created ?
+        detail_data.created.slice(0, 10) :
         "N/A" }}
     </p>
     <p>
       <b>Last Published:</b>
-      {{ detail_data.updated_datetime ?
-        detail_data.updated_datetime.slice(0, 10) :
+      {{ detail_data.updated ?
+        detail_data.updated.slice(0, 10) :
         "N/A" }}
     </p>
     <hr />
@@ -65,7 +65,7 @@ export default {
     },
 
     async handelNames(val) {
-      let result = "";
+      let result = [];
       for (let i = 0; i < val.length; i++) {
         let name = val[i];
         if (name.includes("ror.org")) {
@@ -79,9 +79,9 @@ export default {
               console.log(err);
             });
         }
-        result += "; " + name;
+        result.push(name);
       }
-      return result.slice(2);
+      return result.join('; ');
     },
   }
 }

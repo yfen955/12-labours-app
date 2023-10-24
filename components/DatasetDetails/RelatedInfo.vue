@@ -40,92 +40,31 @@
           <span class="card-title">PROJECT:</span><br />N/A
         </div>
         <hr /> -->
-        <div class="card-content">
-          <span class="card-title">TYPE:</span><br />
-          <el-button
-            @click="goToDataset"
-            class="secondary"
-            id="datasetBrowser"
-          >
-            <span class="display-ellipsis --1">Dataset</span>
-          </el-button>
-          <hr />
-        </div>
-        <div class="card-content" v-if="detail_data.study_organ_system.length > 0">
-          <span class="card-title">ANATOMICAL STRUCTURE:</span><br />
-          <div>
-            <div v-for="(organ, i) in detail_data.study_organ_system" :key="i">
-              <el-button @click="goWithFacet(organ)" class="secondary">
-                <span class="display-ellipsis --1">{{ organ }}</span>
-              </el-button>
+        <div v-for="facet_list, key, i in facets_dict" :key="i">
+          <div class="card-content" v-if="facet_list.length > 0">
+            <span class="card-title">{{ key.toUpperCase() }}:</span><br />
+            <div>
+              <div v-for="(facet, n) in facet_list" :key="n">
+                <el-button @click="goWithFacet(facet)" class="secondary">
+                  <span class="display-ellipsis --1">{{ facet }}</span>
+                </el-button>
+              </div>
             </div>
+            <hr />
           </div>
-          <hr />
         </div>
-        <div class="card-content" v-if="species_list.length > 0">
-          <span class="card-title">SPECIES:</span><br />
-          <div>
-            <div v-for="(species, i) in species_list" :key="i">
-              <el-button @click="goWithFacet(species)" class="secondary">
-                <span class="display-ellipsis --1">{{ species }}</span>
-              </el-button>
-            </div>
-          </div>
-          <hr />
-        </div>
-        <!-- <div class="card-content">
-          <span class="card-title">EXPERIMENTAL APPROACH:</span><br />
-          <el-button
-            @click="goWithFacet('Anatomy')"
-            class="secondary"
-            :disabled="true"
-          >
-            <span class="display-ellipsis --1">N/A</span>
-          </el-button>
-        </div>
-        <hr /> -->
-        <div class="card-content" v-if="sex_list.length > 0">
-          <span class="card-title">SEX:</span><br />
-          <div>
-            <div v-for="(sex, i) in sex_list" :key="i">
-              <el-button @click="goWithFacet(sex)" class="secondary">
-                <span class="display-ellipsis --1">{{ sex }}</span>
-              </el-button>
-            </div>
-          </div>
-          <hr />
-        </div>
-        <div class="card-content" v-if="age_list.length > 0">
-          <span class="card-title">AGE:</span><br />
-          <div>
-            <div v-for="(age, i) in age_list" :key="i">
-              <el-button @click="goWithFacet(age)" class="secondary">
-                <span class="display-ellipsis --1">{{ age }}</span>
-              </el-button>
-            </div>
-          </div>
-          <hr />
-        </div>
-
+        
         <div class="card-content">
           <span class="card-title">CONTRIBUTORS:</span><br />
           <ul>
-            <li v-for="(name, i) in detail_data.contributor_name" :key="i">
+            <li v-for="(name, i) in detail_data.contributors" :key="i">
               <span
                 v-if="
-                  detail_data.contributor_name.length !==
-                    detail_data.contributor_orcid.length
+                  detail_data.contributors.length !==
+                    detail_data.contributor_orcids.length
                 "
-              >
-                {{
-                  modifyName(name, detail_data.contributor_name.length - 1)
-                }}
-              </span>
-              <a v-else :href="modifyLink(i)">
-                {{
-                  modifyName(name, detail_data.contributor_name.length - 1)
-                }}
-              </a>
+              >{{ name }}</span>
+              <a v-else :href="modifyLink(i)">{{ name }}</a>
             </li>
           </ul>
         </div>
@@ -137,10 +76,7 @@
 <script>
 export default {
   name: "RelatedInfo",
-  props: [ "detail_data", "datasetImage", "imagePlaceholder", "species_list", "sex_list", "age_list" ],
-  // data: () => {
-  //   imagePlaceholder: require("../../../../static/img/12-labours-logo-black.png")
-  // },
+  props: [ "detail_data", "datasetImage", "imagePlaceholder", "facets_dict" ],
 
   methods: {
     replaceByDefaultImage(error) {
@@ -165,7 +101,7 @@ export default {
           type: "dataset",
           page: 1,
           limit: 10,
-          facets: facet[0].toUpperCase() + facet.slice(1),
+          facets: facet,
           relation: "and"
         },
       });
@@ -173,10 +109,6 @@ export default {
 
     modifyLink(i) {
       return this.$parent.modifyLink(i);
-    },
-
-    modifyName(name, i) {
-      return this.$parent.modifyName(name, i);
     },
   }
 }

@@ -176,7 +176,7 @@ async function fetchPaginationData(
       setLocalStorage("one_off_token", res.headers["x-one-off"]);
     })
     .catch((err) => {
-      throw new Error(`${err}`);
+      // throw new Error(`${err}`);
     });
   return pagination;
 }

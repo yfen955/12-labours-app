@@ -29,9 +29,7 @@
           >
             <AbstractInfo
               :detail_data="detail_data"
-              :species_list="species_list"
-              :sex_list="sex_list"
-              :age_list="age_list"
+              :facets_dict="facets_dict"
             />
           </span>
 
@@ -86,9 +84,7 @@
         :detail_data="detail_data"
         :datasetImage="datasetImage"
         :imagePlaceholder="imagePlaceholder"
-        :species_list="species_list"
-        :sex_list="sex_list"
-        :age_list="age_list"
+        :facets_dict="facets_dict"
       />
     </div>
   </div>
@@ -179,9 +175,7 @@ export default {
       cards_list: [],
       all_models: undefined,
       datasetImage: "",
-      species_list: [],
-      sex_list: [],
-      age_list: [],
+      facets_dict: {},
       flatmap_data: [],
       // show_segmentation: false,
       // show_pdf: false,
@@ -198,28 +192,26 @@ export default {
         "detail",
         this.$config.query_access_token
       );
+      if (result.facet)
+        this.handleFacets(result.facet);
       if (result.detail) {
-        const data = result.detail;
-        this.detail_data = data.dataset_descriptions[0];
-        this.title = data.dataset_descriptions[0].title[0];
-        this.scaffold_view_data = data.scaffoldViews;
-        this.thumbnail_data = data.thumbnails;
+        this.detail_data = result.detail;
+        this.title = this.detail_data.name;
+        this.scaffold_view_data = this.detail_data.scaffoldViews;
+        this.thumbnail_data = this.detail_data.thumbnails;
         this.getDatasetImage();
-        if (this.species_list.length > 0) {
-          this.handleSpecies();
-        }
+
+        if (this.facets_dict.Species && this.facets_dict.Species.length > 0)
+          this.handleFlatmapData();
         const cardsData = {
-          Scaffold: data.scaffoldViews,
+          Scaffold: this.detail_data.scaffoldViews,
           Flatmap: this.flatmap_data,
-          Plot: data.plots,
-          Thumbnail: data.thumbnails,
-          MRI: data.mris,
-          DICOM: data.dicomImages,
+          Plot: this.detail_data.plots,
+          Thumbnail: this.detail_data.thumbnails,
+          MRI: this.detail_data.mris,
+          DICOM: this.detail_data.dicomImages,
         };
         this.handleCards(cardsData);
-      }
-      if (result.facet) {
-        this.handleFacets(result.facet);
       }
       // this.show_pdf = false;
       this.isLoading = false;
@@ -262,42 +254,17 @@ export default {
       }
     },
 
-    modifyName(name) {
-      let name_list = name.split(", ");
-      let result = name_list[1] + " " + name_list[0];
-      return result;
-    },
-
     modifyLink(i) {
-      let link = this.detail_data.contributor_orcid[i];
+      let link = this.detail_data.contributor_orcids[i];
       if (!link.includes("http")) {
         link = "https://orcid.org/" + link;
       }
       return link;
     },
 
-    generateFilename(name) {
-      let name_list = name.split("/");
-      let index = name_list.length - 1;
-      let fileName = name_list[index];
-      return fileName;
-    },
-
-    generateImage(method, filename, is_source_of) {
+    generateImage(img_url) {
       const oneOffToken = backendQuery.getLocalStorage("one_off_token");
-      let url = `${this.$config.query_api_url}/data/${method}`;
-      if (!filename.includes(this.$route.params.id)) {
-        url += `/${this.$route.params.id}`;
-      }
-      if (is_source_of) {
-        url += `/${filename.substring(
-          0,
-          filename.lastIndexOf("/")
-        )}/${is_source_of}`;
-      } else {
-        url += `/${filename}`;
-      }
-      url += `?token=${oneOffToken}`;
+      let url = `${this.$config.query_api_url}${img_url}?token=${oneOffToken}`;
       return url;
     },
 
@@ -313,16 +280,12 @@ export default {
             type: cardType,
             url:
               cardType === "Scaffold" || cardType === "Thumbnail"
-                ? this.generateImage(
-                    "preview",
-                    element.filename,
-                    element.is_source_of
-                  )
+                ? this.generateImage(element.image_url)
                 : "",
-            filename: this.generateFilename(element.filename),
-            id: element.id,
+            filename: element.name,
+            id: element.identifier,
           };
-          if (element.additional_metadata !== null) {
+          if (element.additional_metadata) {
             const spotlight =
               JSON.parse(
                 element.additional_metadata
@@ -342,21 +305,12 @@ export default {
     },
 
     getDatasetImage() {
-      let item = {};
-      if (this.scaffold_view_data.length > 0) {
-        item = this.scaffold_view_data[0];
-      } else if (this.thumbnail_data.length > 0) {
-        item = this.thumbnail_data[0];
-      }
-      if (JSON.stringify(item) === "{}") {
+      if (this.scaffold_view_data.length > 0)
+        this.datasetImage = this.generateImage(this.scaffold_view_data[0].image_url);
+      else if (this.thumbnail_data.length > 0)
+        this.datasetImage = this.generateImage(this.thumbnail_data[0].image_url);
+      else
         this.datasetImage = this.imagePlaceholder;
-      } else {
-        this.datasetImage = this.generateImage(
-          "preview",
-          item.filename,
-          item.is_source_of
-        );
-      }
     },
 
     // changeShowState(val) {
@@ -407,11 +361,11 @@ export default {
       }
     },
 
-    handleSpecies() {
-      this.species_list.forEach((item) => {
+    handleFlatmapData() {
+      this.facets_dict.Species.forEach((item) => {
         this.flatmap_data.push({
-          id: item,
-          filename: item,
+          name: item,
+          identifier: item,
           additional_metadata: null,
         });
       });
@@ -419,9 +373,7 @@ export default {
 
     handleFacets(facets) {
       Object.keys(facets).forEach((item) => {
-        if (item === "Species") this.species_list = facets[item];
-        else if (item === "Sex") this.sex_list = facets[item];
-        else if (item === "Age category") this.age_list = facets[item];
+        this.facets_dict[item] = facets[item];
       });
     },
   },
