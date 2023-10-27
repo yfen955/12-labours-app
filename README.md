@@ -55,9 +55,15 @@ $ yarn generate
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
+## End-to-end Testing
+
+This repo is set up to run testing automatically when there are any commits in GitHub. You can see all testing results on the `Actions` page and [Cypress Cloud](https://cloud.cypress.io/projects/zadmv6/runs?branches=%5B%5D&committers=%5B%5D&flaky=%5B%5D&page=1&status=%5B%5D&tags=%5B%5D&timeRange=%7B%22startDate%22%3A%221970-01-01%22%2C%22endDate%22%3A%222038-01-19%22%7D).
+
+To run the testing manually, please run this command: `yarn cypress open`. Then click on `E2E Testing` and select any browser you prefer. Finally choose the testing you want to run.
+
 ## Special Directories
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+You can create the following extra directories, some of which have special behaviours. Only `pages` is required; you can delete them if you don't want to use their functionality.
 
 ### `assets`
 
